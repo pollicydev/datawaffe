@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load static i18n crispy_forms_tags user_extras %}
+
+{% block title %}{% trans "Update Your Profile" %}{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container d-flex flex-column">
+  <div class="row align-items-center justify-content-center no-gutters py-12">
+
+    <div class="col-md-6 mx-auto py-xl-0">
+
+      <div class="mb-4">
+        <a href="/"><img src="{% static 'images/logo/logo-full-color.png' %}" height="50" alt="" class="mb-4" /></a>
+        <h1 class="h2">Welcome Aboard!</h1>
+        <p class="text-muted">Lets get to know you a little better.</p>
+      </div>
+      <!-- Form -->
+      <form method="post">
+        {% crispy form %}
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,108 @@
+from django.contrib.auth.models import AbstractUser
+import pyavagen
+import io
+from django.conf import settings
+from django.db import models
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from django.core.files.base import ContentFile
+from django.utils import timezone
+
+
+class User(AbstractUser):
+    """
+    Default custom user model for rrap.
+    If adding fields that need to be filled at user signup,
+    check forms.SignupForm and forms.SocialSignupForms accordingly.
+    """
+
+    #: First and last name do not cover name patterns around the globe
+    first_name = None  # type: ignore
+    last_name = None  # type: ignore
+
+    def get_absolute_url(self):
+        """Get url for user's detail view.
+
+        Returns:
+            str: URL for user detail.
+
+        """
+        return reverse("users:detail", kwargs={"username": self.username})
+
+def get_avatar_full_path(instance, filename):
+    ext = filename.split(".")[-1]
+    path = f"{settings.MEDIA_PUBLIC_ROOT}/avatars"
+    name = f"{instance.id}_{instance.avatar_version:04d}"
+    return f"{path}/{name}.{ext}"
+
+
+def generate_avatar(user):
+    img_io = io.BytesIO()
+    avatar = pyavagen.Avatar(
+        pyavagen.CHAR_SQUARE_AVATAR, size=500, string=user.name, blur_radius=100
+    )
+    avatar.generate().save(img_io, format="PNG", quality=100)
+    img_content = ContentFile(img_io.getvalue(), f"{user.pk}.png")
+
+    return img_content
+
+
+def change_avatar(user, image_file):
+    if user.avatar:
+        user.avatar.delete()
+    user.avatar_version += 1
+    user.avatar = image_file
+    user.save()
+
+    return user
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(_("Your name"), blank=True, max_length=255)
+    bio = models.TextField(_("Your bio"), blank=True, max_length=300)
+
+    # avatar stuff
+    avatar = models.ImageField(upload_to=get_avatar_full_path, blank=True)
+    avatar_version = models.IntegerField(default=0, blank=True, editable=False)
+
+    # The date the user last logged in.
+    last_login = models.DateTimeField(null=True, max_length=255, db_index=True)
+
+    # The date the user joined.
+    date_joined = models.DateTimeField(auto_now_add=True, max_length=255)
+    has_finished_registration = models.BooleanField(default=False, null=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.date_joined = self.date_joined or timezone.now()
+        self.last_login = self.last_login or timezone.now()  # - timedelta(days=1)
+        super(Profile, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        """Get url for user's detail view.
+
+        Returns:
+            str: URL for user detail.
+
+        """
+        return reverse("users:detail", kwargs={"username": self.username})
+
+    def get_initials(self):
+        xs = self.name
+        name_list = xs.split()
+        initials = ""
+
+        for name in name_list:  # go through each name
+            initials += name[0].upper()  # append the initial
+
+        return initials
+
+    @property
+    def recently_joined(self):
+        """
+        User that joined X amount of days are considered new.
+        """
+        recent = (timezone.now() - self.date_joined).days > settings.RECENTLY_JOINED_DAYS
+        return recent
