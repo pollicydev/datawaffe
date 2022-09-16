@@ -5,6 +5,8 @@ from pathlib import Path
 
 import environ
 
+from rrap.core.constants import Environments
+
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # rrap/
 APPS_DIR = ROOT_DIR / "rrap"
@@ -75,7 +77,13 @@ THIRD_PARTY_APPS = [
     "taggit",
 ]
 
-LOCAL_APPS = ["rrap.users", "rrap.core", "rrap.organizations", "rrap.datasets"]
+LOCAL_APPS = [
+    "rrap.users",
+    "rrap.core",
+    "rrap.organizations",
+    "rrap.datasets",
+    "rrap.invites",
+]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -179,6 +187,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "rrap.users.context_processors.allauth_settings",
+                "rrap.core.context_processors.settings",
             ],
         },
     }
@@ -289,3 +298,11 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
 # GRAVATAR SETTINGS
 GRAVATAR_ICON = ""
+
+# APP SETTINGS & CONTEXT
+RRAP_VERSION = "0.1.0"
+RRAP_ENVIRONMENT = env("RRAP_ENVIRONMENT", default=Environments.LOCAL)
+GOOGLE_RECAPTCHA_ENABLED = env.bool("GOOGLE_RECAPTCHA_ENABLED", default=False)
+GOOGLE_RECAPTCHA_SITE_KEY = env("GOOGLE_RECAPTCHA_SITE_KEY", default="")
+GOOGLE_ANALYTICS_UA = env("GOOGLE_ANALYTICS_UA", default="")
+SENTRY_DSN = env("SENTRY_DSN", default="")

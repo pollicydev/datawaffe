@@ -18,3 +18,5 @@ crispy-bootstrap5==0.6  # https://github.com/django-crispy-forms/crispy-bootstra
 django-compressor==4.1  # https://github.com/django-compressor/django-compressor
 django-redis==5.2.0  # https://github.com/jazzband/django-redis
 django-taggit==3.0.0 # https://github.com/jazzband/django-taggit
+django-multiselectfield==0.1.12 
+django-select2==7.10.1

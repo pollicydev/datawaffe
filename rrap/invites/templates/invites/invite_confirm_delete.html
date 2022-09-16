@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_filters i18n tiet_invites static %}
+
+{% block title %}{% trans "Delete invite" %} · {{ organisation.title }}{% endblock %}
+
+{% block content %}
+
+<header class="page-title-bar">
+  <h1 class="page-title"> Delete invitation </h1>
+</header>
+
+<div class="page-section">
+  <div class="section-block">
+    <form method="post">
+      {% csrf_token %}
+      <p class="lead">
+        {% blocktrans trimmed with invitee_email=invite.get_invitee_email %}
+        Are you sure you want to delete the invite sent to <strong>{{ invitee_email }}</strong>?
+        {% endblocktrans %}
+      </p>
+      <div>
+        <button type="submit" class="btn btn-danger">{% trans "Yes, delete" %}</button>
+        <a href="{% url "invites:manage_access" organisation.owner.username organisation.name %}"
+          class="btn btn-default">{% trans "Never mind" %}</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
