@@ -1,0 +1,17 @@
+<header class="page-title-bar">
+  <div class="row text-center text-sm-left">
+    <!-- grid column -->
+    <div class="col-sm-auto col-12 mb-2">
+      <!-- .has-badge -->
+      <div class="has-badge has-badge-bottom">
+        <a href="#"><span class="tile tile-circle tile-xl bg-orange">{{ organisation.get_initials }}</span></a>
+      </div><!-- /.has-badge -->
+    </div><!-- /grid column -->
+    <!-- grid column -->
+    <div class="col">
+      <h1 class="page-title">{{ organisation.title }} </h1>
+      <p class="text-muted"> {{ organisation.description }} </p>
+    </div><!-- /grid column -->
+  </div><!-- /grid row -->
+</header>
+<input type="hidden" id="organisation-id" value="{{ organisation.id }}">

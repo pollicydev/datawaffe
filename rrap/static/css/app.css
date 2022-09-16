@@ -699,7 +699,7 @@ pre code {
   .container-md,
   .container-lg,
   .container-xl {
-    max-width: 1140px;
+    max-width: 1380px; // was 1140px
   }
 }
 
@@ -27042,7 +27042,8 @@ fieldset[disabled] .btn-color.btn-evernote.active {
 
 .table tbody tr td.cell-detail .cell-detail-description {
   display: block;
-  font-size: 0.8462rem;
+  font-size: 14px;
+  line-height: 1.6;
   color: #999999;
 }
 

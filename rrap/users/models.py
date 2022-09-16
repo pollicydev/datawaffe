@@ -29,6 +29,7 @@ class User(AbstractUser):
         """
         return reverse("users:detail", kwargs={"username": self.username})
 
+
 def get_avatar_full_path(instance, filename):
     ext = filename.split(".")[-1]
     path = f"{settings.MEDIA_PUBLIC_ROOT}/avatars"
@@ -56,6 +57,7 @@ def change_avatar(user, image_file):
 
     return user
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(_("Your name"), blank=True, max_length=255)
@@ -73,7 +75,7 @@ class Profile(models.Model):
     has_finished_registration = models.BooleanField(default=False, null=True)
 
     def __str__(self):
-        return self.name
+        return self.get_screen_name()
 
     def save(self, *args, **kwargs):
         self.date_joined = self.date_joined or timezone.now()
@@ -99,10 +101,40 @@ class Profile(models.Model):
 
         return initials
 
+    def get_screen_name(self):
+        try:
+            if self.user.get_full_name():
+                return self.user.get_full_name()
+            else:
+                return self.user.username
+        except Exception:
+            return self.user.username
+
     @property
     def recently_joined(self):
         """
         User that joined X amount of days are considered new.
         """
-        recent = (timezone.now() - self.date_joined).days > settings.RECENTLY_JOINED_DAYS
+        recent = (
+            timezone.now() - self.date_joined
+        ).days > settings.RECENTLY_JOINED_DAYS
         return recent
+
+    def get_organizations(self):
+        from django.apps import apps
+
+        Organization = apps.get_model("organizations", "Organization")
+
+        user_organizations = []
+        owner_organizations = Organization.objects.select_related(
+            "owner__profile"
+        ).filter(owner=self.user)
+        member_organizations = Organization.objects.select_related(
+            "owner__profile"
+        ).filter(members=self.user)
+        for r in owner_organizations:
+            user_organizations.append(r)
+        for r in member_organizations:
+            user_organizations.append(r)
+        user_organizations.sort(key=lambda r: r.last_update, reverse=True)
+        return user_organizations

@@ -9,7 +9,7 @@ class CreateOrganizationForm(forms.ModelForm):
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "class": "form-control form-control-lg",
+                "class": "form-control",
                 "placeholder": "Name of organization",
             }
         ),
@@ -22,8 +22,8 @@ class CreateOrganizationForm(forms.ModelForm):
                 "placeholder": "Write a brief summary of the work at your organization",
             }
         ),
-        max_length=500,
-        help_text="Try to keep it short, max 500 characters :)",
+        max_length=300,
+        help_text="Try to keep it short, max 300 characters :)",
         required=False,
     )
 
@@ -31,6 +31,7 @@ class CreateOrganizationForm(forms.ModelForm):
         model = Organization
         fields = [
             "title",
+            "org_type",
             "acronym",
             "about",
             "logo",
@@ -40,14 +41,20 @@ class CreateOrganizationForm(forms.ModelForm):
         widgets = {
             "locations": s2forms.Select2MultipleWidget(
                 attrs={
-                    "class": "form-control form-control-lg select2-hidden-accessible",
+                    "class": "form-control form-control-lg",
                     "placeholder": "Select a district",
                     "data-toggle": "select2",
                     "data-placeholder": "Select a district",
                     "data-select2-id": "id_locations",
                 }
             ),
-            "website": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "org_type": forms.Select(
+                choices=Organization.ORGANIZATION_TYPE,
+                attrs={
+                    "class": "form-control",
+                },
+            ),
+            "website": forms.TextInput(attrs={"class": "form-control"}),
         }
         labels = {"locations": "Select all the districts in Uganda where you operate"}
 
@@ -55,15 +62,20 @@ class CreateOrganizationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
-            "title",
-            "acronym",
+            Row(
+                Column("title", css_class="col-md-6"),
+                Column("acronym", css_class="col-md-3"),
+                Column("org_type", css_class="col-md-3"),
+            ),
             "about",
             "logo",
             "locations",
             "website",
             ButtonHolder(
                 Submit(
-                    "submit", "Create Organisation", css_class="btn btn-md btn-success"
+                    "submit",
+                    "Create Organisation",
+                    css_class="btn btn-lg btn-md btn-success",
                 ),
                 HTML('<a href="" class="btn btn-default">Cancel</a>'),
             ),
@@ -86,6 +98,7 @@ class OrganizationForm(forms.ModelForm):
         fields = [
             "title",
             "acronym",
+            "org_type",
             "about",
             "logo",
             "locations",
@@ -94,13 +107,19 @@ class OrganizationForm(forms.ModelForm):
         widgets = {
             "locations": s2forms.Select2MultipleWidget(
                 attrs={
-                    "class": "form-control form-control-lg select2-hidden-accessible",
+                    "class": "form-control form-control-lg",
                     "placeholder": "Select a district",
                     "data-toggle": "select2",
                     "data-placeholder": "Select a district",
                     "data-select2-id": "id_locations",
                 }
             ),
-            "website": forms.TextInput(attrs={"class": "form-control form-control-lg"}),
+            "org_type": forms.Select(
+                choices=Organization.ORGANIZATION_TYPE,
+                attrs={
+                    "class": "form-control",
+                },
+            ),
+            "website": forms.TextInput(attrs={"class": "form-control"}),
         }
         labels = {"districts": "Select all the districts in Uganda where you operate"}

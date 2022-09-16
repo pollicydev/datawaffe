@@ -10,13 +10,14 @@ urlpatterns = [
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
+    path("dashboard/", include("rrap.core.urls")),
+    path("organizations/", include("rrap.organizations.urls")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("rrap.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path("dashboard/", include("core.urls")),
-    # Your stuff: custom urls includes go here
+    path("select2/", include("django_select2.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

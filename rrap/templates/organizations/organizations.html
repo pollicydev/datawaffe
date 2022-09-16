@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% load compress i18n static %}
+
+{% block title %}Organizations · Rapid Research for Agile Policymaking{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static 'lib/select2/css/select2.min.css' %}" />
+{% endblock %}
+
+{% block sidebar %}
+{% endblock sidebar %}
+
+{% block content %}
+<div class="page-head">
+  <h2 class="page-head-title">All Organizations</h2>
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb page-head-nav">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item active"><a href="#">Organizations</a></li>
+    </ol>
+  </nav>
+</div>
+<div class="main-content container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-table">
+        <div class="row table-filters-container">
+          <div class="col-12 col-lg-12 col-xl-12">
+            <div class="row">
+              <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4">
+                <div class="filter-container">
+                  <div class="input-group input-search input-group-sm">
+                    <input class="form-control" type="text" placeholder="Search # organizations..."><span
+                      class="input-group-btn">
+                      <button class="btn btn-secondary" type="button"><i
+                          class="icon mdi mdi-search"></i></button></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4">
+                <div class="filter-container">
+                  SHOW 25 | 50 | 100
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4">
+                <div class="filter-container">
+                  ORDER BY Name Ascending
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="card-body">
+          <div class="noSwipe">
+            <table class="table table-striped table-hover be-table-responsive" id="organizationsTable">
+              <thead>
+                <tr>
+                  <th style="width:10%;padding:0px;"></th>
+                  <th style="width:10%;padding:0px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for organization in organizations %}
+                <tr>
+                  <td class="user-avatar cell-detail org-info">
+                    <h4 class="text-bold"><a href="">{{ organization.title }}</a></h4><span
+                      class="cell-detail-description">15
+                      Datasets - 6
+                      Members - 100 Followers</span><span class="cell-detail-description">Member since 10 September 2022
+                  </td>
+                  <td class="cell-detail" data-organization="{{ organization.name }}">
+                    <span class="cell-detail-description">{{ organization.about }}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'lib/jquery-ui/jquery-ui.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/select2/js/select2.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net/js/jquery.dataTables.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/buttons.flash.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/jszip/jszip.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/pdfmake/pdfmake.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/pdfmake/vfs_fonts.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/buttons.print.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/buttons.html5.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"
+  type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js' %}"
+  type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"
+  type="text/javascript"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var table = $('#organizationsTable').DataTable({
+      pageLength: 5,
+      dom: "<'row be-datatable-body'<'col-sm-12'tr>>" +
+        "<'row be-datatable-footer'<'col-sm-5'i><'col-sm-7'p>>"
+    });
+  });
+
+</script>
+{% endblock %}

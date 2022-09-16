@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse as r
@@ -12,8 +12,10 @@ from .models import Organization
 from rrap.invites.constants import InviteStatus
 from django.core.paginator import Paginator
 
+User = get_user_model()
 
-@login_required()
+
+@login_required
 def organizations(request):
     username = request.user.username
     user = get_object_or_404(User, username__iexact=username)
@@ -62,7 +64,9 @@ def new(request):
             form.instance.name = unique_name
             organization = form.save()
             messages.success(request, "Organization created successfully.")
-            return redirect(r("organization", kwargs={"org_name": organization.name}))
+            return redirect(
+                r("organizations:organization", kwargs={"org_name": organization.name})
+            )
     else:
         form = CreateOrganizationForm()
     return render(request, "organizations/new.html", {"form": form})
@@ -71,7 +75,6 @@ def new(request):
 # @member_required
 @login_required
 def organization(request, org_name):
-    username = request.user.username
     organization = Organization.objects.get(name=org_name)
     # get user's organizations
     user_organizations = request.user.profile.get_organizations()
@@ -86,7 +89,7 @@ def organization(request, org_name):
         form = OrganizationForm(instance=organization)
     return render(
         request,
-        "organizations/organization.html",
+        "organizations/single/data.html",
         {
             "organization": organization,
             "form": form,

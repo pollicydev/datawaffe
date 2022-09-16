@@ -2,22 +2,21 @@ from django.urls import include, path
 
 from rrap.organizations import views
 
-app_name = "organisations"
+app_name = "organizations"
 
 urlpatterns = [
-    path("", views.remove_owner_from_organization, name="organisations"),
+    path("", views.organizations, name="organizations"),
     path(
-        "organizations/<str:org_name>/",
+        "<str:org_name>/",
         views.organization,
-        name="organisation",
+        name="organization",
     ),
     path(
-        "organizations/<str:org_name>/members/",
+        "<str:org_name>/members/",
         views.view_members,
         name="members",
     ),
-    path("organizations/", views.organizations, name="organizations"),
-    path("new/", views.new, name="new"),
+    path("request/new/", views.new, name="new"),
     path(
         "remove_owner/",
         views.remove_owner_from_organization,
@@ -25,7 +24,7 @@ urlpatterns = [
     ),
     path("leave/", views.leave, name="leave"),
     path(
-        "organizations/<str:org_name>/members/invites/",
+        "<str:org_name>/members/invites/",
         include("rrap.invites.urls", namespace="invites"),
     ),
     # path(

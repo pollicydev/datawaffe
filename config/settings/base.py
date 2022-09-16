@@ -12,7 +12,7 @@ ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = ROOT_DIR / "rrap"
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR / ".env"))
@@ -75,6 +75,8 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "taggit",
+    "multiselectfield",
+    "django_select2",
 ]
 
 LOCAL_APPS = [
@@ -279,7 +281,7 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "users:onboarding"
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = LOGIN_URL
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "users:onboarding"
-LOGIN_REDIRECT_URL = "/dashboard"
+LOGIN_REDIRECT_URL = "/"
 
 
 def ACCOUNT_USER_DISPLAY(user):
@@ -299,6 +301,8 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 # GRAVATAR SETTINGS
 GRAVATAR_ICON = ""
 
+RECENTLY_JOINED_DAYS = 10
+
 # APP SETTINGS & CONTEXT
 RRAP_VERSION = "0.1.0"
 RRAP_ENVIRONMENT = env("RRAP_ENVIRONMENT", default=Environments.LOCAL)
@@ -306,3 +310,19 @@ GOOGLE_RECAPTCHA_ENABLED = env.bool("GOOGLE_RECAPTCHA_ENABLED", default=False)
 GOOGLE_RECAPTCHA_SITE_KEY = env("GOOGLE_RECAPTCHA_SITE_KEY", default="")
 GOOGLE_ANALYTICS_UA = env("GOOGLE_ANALYTICS_UA", default="")
 SENTRY_DSN = env("SENTRY_DSN", default="")
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    },
+    "select2": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    },
+}
+# DJANGO-SELECT2
+SELECT2_CACHE_BACKEND = "default"
+SELECT2_CSS = "lib/select2/css/select2.min.css"
