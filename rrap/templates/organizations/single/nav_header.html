@@ -1,0 +1,19 @@
+<div class="page-head">
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'home' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'organizations:organizations' %}">Organizations</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="{% url 'organizations:organization' 'matchstick-studio'  %}"><i
+            class="breadcrumb-icon fa fa-angle-left"></i>Matchstick Studio</a>
+      </li>
+    </ol>
+  </nav>
+  <h2 class="page-head-title"> {{ organization.title }} ({{ organization.acronym }}) </h2>
+  <p class="text-muted"> {{ organization.about }} </p>
+  Member since {{ organization.create_date }}
+</div>

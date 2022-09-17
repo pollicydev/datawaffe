@@ -9,12 +9,13 @@ from taggit.managers import TaggableManager
 from rrap.core.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
 
+
 User = get_user_model()
 
 
 class Dataset(models.Model):
     organization = models.ForeignKey(
-        "organizations.Organization", on_delete=models.CASCADE
+        "organizations.Organization", on_delete=models.CASCADE, related_name="datasets"
     )
     title = models.CharField(max_length=255)
     date = models.DateTimeField(default=timezone.now)

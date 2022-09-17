@@ -13,13 +13,13 @@
 
 {% block content %}
 <div class="page-head">
-  <h2 class="page-head-title">All Organizations</h2>
   <nav aria-label="breadcrumb" role="navigation">
     <ol class="breadcrumb page-head-nav">
       <li class="breadcrumb-item"><a href="#">Home</a></li>
       <li class="breadcrumb-item active"><a href="#">Organizations</a></li>
     </ol>
   </nav>
+  <h2 class="page-head-title">All Organizations</h2>
 </div>
 <div class="main-content container-fluid">
   <div class="row">
@@ -68,8 +68,19 @@
                 {% for organization in organizations %}
                 <tr>
                   <td class="user-avatar cell-detail org-info">
-                    <h4 class="text-bold"><a href="">{{ organization.title }}</a></h4><span
-                      class="cell-detail-description">15
+                    {% if organization.status == 0 %}
+                    <span style="display: inline-block;"
+                      class="badge badge-lg badge-warning">{{ organization.get_status_display }}</span>
+                    {% elif organization.status == 1 %}
+                    <span style="display: inline-block;"
+                      class="badge badge-lg badge-success">{{ organization.get_status_display }}</span>
+                    {% else %}
+                    <span style="display: inline-block;"
+                      class="badge badge-lg badge-danger">{{ organization.get_status_display }}</span>
+                    {% endif %}
+                    <h3 class="text-bold mt-1"><a
+                        href="{% url 'organizations:organization' organization.name %}">{{ organization.title }}</a>
+                    </h3><span class="cell-detail-description">15
                       Datasets - 6
                       Members - 100 Followers</span><span class="cell-detail-description">Member since 10 September 2022
                   </td>

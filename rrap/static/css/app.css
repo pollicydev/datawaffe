@@ -121,7 +121,7 @@ body {
   line-height: 1.428571;
   color: #404040;
   text-align: left;
-  background-color: #eeeeee;
+  background-color: #ffffff;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -13856,7 +13856,7 @@ html {
 
 body {
   padding: 0;
-  background-color: #eeeeee;
+  background-color: #ffffff;
   height: auto;
   min-height: 100%;
   line-height: 1.42857143;
@@ -15465,7 +15465,7 @@ canvas {
 
 .be-notifications .be-scroller-notifications {
   position: relative;
-  height: 222px;
+  /* height: 222px; */
 }
 
 .be-notifications .be-scroller-notifications > .content > ul {
@@ -25793,8 +25793,8 @@ fieldset[disabled] .btn-color.btn-evernote.active {
   [Tabs]
 */
 .nav-tabs {
-  background-color: #ffffff;
-  border-bottom: 2px solid #ebebeb;
+  /* background-color: #ffffff; */
+  border-bottom: 3px solid #ebebeb;
 }
 
 .nav-tabs > li.nav-item {
@@ -25809,6 +25809,7 @@ fieldset[disabled] .btn-color.btn-evernote.active {
   text-align: center;
   border-radius: 0;
   color: #404040;
+  font-size: 16px;
   border-width: 0;
 }
 
