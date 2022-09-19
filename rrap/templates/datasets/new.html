@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% load static crispy_forms_tags %}
+
+{% block stylesheet %}
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'lib/jquery-ui/jquery-ui.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/bs-custom-file-input/bs-custom-file-input.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('.inputfile').each(function () {
+      var $input = $(this),
+        $label = $input.next('label'),
+        labelVal = $label.html();
+
+      $input.on('change', function (e) {
+        var fileName = '';
+
+        if (this.files && this.files.length > 1)
+          fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files
+            .length);
+        else if (e.target.value)
+          fileName = e.target.value.split('\\').pop();
+
+        if (fileName)
+          $label.find('span').html(fileName);
+        else
+          $label.html(labelVal);
+      });
+    });
+
+    // Custom input file
+    bsCustomFileInput.init();
+  });
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+<input type="hidden" id="organization-id" value="{{ organization.id }}">
+
+<header class="page-title-bar">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active">
+      </li>
+    </ol>
+  </nav>
+  <h1 class="page-title"> Add dataset </h1>
+</header>
+<div class="page-section">
+  <div class="card">
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% crispy form %}
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock content %}

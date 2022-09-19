@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% load compress i18n static crispy_forms_tags %}
+
+{% block title %}{{ dataset.title }} · Rapid Research for Agile Policymaking {% endblock %}
+
+{% block javascript %}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'home' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'organizations:organizations' %}">Organizations</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'organizations:organization' dataset.organization.name  %}"><i
+            class="breadcrumb-icon fa fa-angle-left"></i>{{ dataset.organization.title }}</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'datasets:datasets' dataset.organization.name %}"><i
+            class="breadcrumb-icon fa fa-angle-left"></i>Datasets</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="{% url 'datasets:dataset' dataset.organization.name dataset.name  %}"><i
+            class="breadcrumb-icon fa fa-angle-left"></i>{{ dataset.title }}</a>
+      </li>
+    </ol>
+  </nav>
+  <h2 class="page-head-title"> {{ dataset.title }}</h2>
+  <p class="text-muted"> {{ dataset.summary }} </p>
+
+</div>
+
+
+<div class="main-content container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="be-booking-promo be-booking-promo-primary be-booking-promo-color">
+        <div class="be-booking-desc">
+          <h4 class="be-booking-desc-title">Uploaded</h4>
+          <span class="be-booking-desc-details">
+            File name: {{ dataset.file.name }}<br>
+            File URL: <a style="color: #f2f2f2" target="_blank" href="{{ dataset.file.url }}">{{ dataset.file.url }}</a>
+          </span>
+        </div>
+        <div class="be-booking-promo-price">
+          <div class="be-booking-promo-amount">
+            <span class="price">
+              <span class="be-promo-big-title icon mdi mdi-fire"></span>
+              <span style="padding-left:10px" class="currency">{{dataset.mime}}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      Overwrite file
+    </div>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {% crispy form %}
+  </form>
+</div>
+
+{% endblock content %}

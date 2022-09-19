@@ -12,6 +12,7 @@ urlpatterns = [
     ),
     path("dashboard/", include("rrap.core.urls")),
     path("organizations/", include("rrap.organizations.urls")),
+    path("datasets/", include("rrap.datasets.urls")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
