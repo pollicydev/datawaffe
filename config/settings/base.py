@@ -199,8 +199,8 @@ TEMPLATES = [
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bootstrap5"
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bamby_forms"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bamby_forms"
 
 # FIXTURES
 # ------------------------------------------------------------------------------
@@ -326,3 +326,4 @@ CACHES = {
 # DJANGO-SELECT2
 SELECT2_CACHE_BACKEND = "default"
 SELECT2_CSS = "lib/select2/css/select2.min.css"
+SELECT2_JS = "lib/select2/js/select2.full.min.js"

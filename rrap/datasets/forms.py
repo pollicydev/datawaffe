@@ -1,9 +1,9 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML, Div
-from crispy_forms.bootstrap import InlineRadios
+from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML
 from .models import Dataset
 from django_select2 import forms as s2forms
+from taggit.forms import TagWidget
 
 
 class NewDatasetForm(forms.ModelForm):
@@ -43,14 +43,48 @@ class DatasetForm(forms.ModelForm):
         required=False,
         help_text="What type of data is included in this dataset. Provide a brief summary",
     )
+    caveats = forms.CharField(
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 2}),
+        required=False,
+        help_text="Add some private caveats/notes/comments about this dataset",
+    )
+    start_date = forms.DateTimeField(
+        input_formats=["%d/%m/%Y %H:%M"],
+        widget=forms.DateTimeInput(
+            format="%d-%m-%Y %H:%M",
+            attrs={
+                "class": "form-control flatpickr-input",
+                "placeholder": "Pike a date",
+                "data-toggle": "flatpickr",
+                "data-enable-time": "true",
+                "data-date-format": "d-m-Y H:i",
+            },
+        ),
+        label="Start date for this dataset",
+        required=False,
+    )
+    end_date = forms.DateTimeField(
+        input_formats=["%d/%m/%Y %H:%M"],
+        widget=forms.DateTimeInput(
+            format="%d-%m-%Y %H:%M",
+            attrs={
+                "class": "form-control flatpickr-input",
+                "placeholder": "Pike a date",
+                "data-toggle": "flatpickr",
+                "data-enable-time": "true",
+                "data-date-format": "d-m-Y H:i",
+            },
+        ),
+        label="End date for this dataset",
+        required=False,
+    )
 
     class Meta:
         model = Dataset
         fields = [
             "title",
             "summary",
-            "file",
-            "mime",
+            "file_mime",
             "privacy",
             "update_frequency",
             "methodology",
@@ -64,6 +98,8 @@ class DatasetForm(forms.ModelForm):
             "has_pii",
             "has_microdata",
             "quality_confirmed",
+            "caveats",
+            "tags",
         ]
         widgets = {
             "locations": s2forms.Select2MultipleWidget(
@@ -102,36 +138,55 @@ class DatasetForm(forms.ModelForm):
                     "class": "form-control",
                 },
             ),
+            "tags": TagWidget(
+                attrs={
+                    "class": "form-control",
+                }
+            ),
         }
         labels = {
-            "locations": "Select all the districts in Uganda where this project operates"
+            "locations": "Select all the districts in Uganda for which this dataset is relevant"
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
-            "file",
-            Row(
-                Column("title", css_class="col-md-8"),
-                Column("mime", css_class="col-md-4"),
-                css_class="form-group",
-            ),
+            "title",
             "summary",
-            "privacy",
-            "methodology",
-            "update_frequency",
-            "locations",
-            "topics",
             "has_pii",
             "has_microdata",
             "quality_confirmed",
+            HTML(
+                """
+                <hr>
+                """
+            ),
+            "privacy",
+            HTML(
+                """
+                <hr>
+                """
+            ),
             Row(
                 Column("start_date", css_class="col-md-4"),
                 Column("end_date", css_class="col-md-4"),
                 Column("ongoing", css_class="col-md-4"),
                 css_class="form-group",
             ),
+            HTML(
+                """
+                <hr>
+                """
+            ),
+            Row(
+                Column("methodology", css_class="col-md-6"),
+                Column("update_frequency", css_class="col-md-6"),
+            ),
+            "locations",
+            "topics",
+            "tags",
+            "caveats",
             ButtonHolder(
                 Submit("submit", "Save dataset", css_class="btn btn-lg btn-success"),
                 HTML('<a href="" class="btn btn-lg btn-secondary">Cancel</a>'),

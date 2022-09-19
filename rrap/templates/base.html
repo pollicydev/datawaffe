@@ -20,8 +20,8 @@
     {% compress css %}
     <link rel="stylesheet" type="text/css" href="{% static 'lib/material-design-icons/css/material-design-iconic-font.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/perfect-scrollbar/css/perfect-scrollbar.css' %}">
-    <link href="{% static 'css/app.css' %}" rel="stylesheet">
     {% block stylesheet %}{% endblock %}
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
     {% endcompress %}
     {% endblock %}
     <!-- Le javascript

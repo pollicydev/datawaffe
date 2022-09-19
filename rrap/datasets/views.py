@@ -59,9 +59,10 @@ def new_dataset(request, org_name):
                 unique_name = "{0}-{1}".format(name, i)
             form.instance.name = unique_name
             dataset = form.save(commit=False)
-            # get mime type on save
-            dataset.mime = request.FILES["file"].content_type
+            # Save file information to db
+            dataset.file_mime = request.FILES["file"].content_type
             dataset.save()
+            form.save_m2m()  # save the tags too
             messages.success(request, "Dataset saved successfully.")
             return redirect(
                 r(

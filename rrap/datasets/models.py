@@ -69,18 +69,16 @@ class Dataset(models.Model):
 
     name = models.SlugField("name", max_length=255)
     title = models.CharField("title", max_length=255, help_text="Title of dataset")
-    file = models.FileField(null=True, max_length=255, upload_to="datasets/")
-    url = models.URLField(max_length=3000)
-    size = models.IntegerField(default=0)
-    mime = models.CharField(max_length=255, null=True)
     summary = models.TextField(
         "overview",
         max_length=2000,
         blank=True,
         help_text="Please provide a summary of this dataset.",
     )
+    file = models.FileField(null=True, max_length=255, upload_to="datasets/")
+    file_mime = models.CharField(max_length=255, null=True)
     privacy = models.CharField(
-        "Privacy setting", blank=True, max_length=20, choices=DATA_PRIVACY, default=2
+        "Privacy setting", blank=False, max_length=20, choices=DATA_PRIVACY, default=2
     )
     organization = models.ForeignKey(
         "organizations.Organization", on_delete=models.CASCADE, related_name="datasets"
@@ -101,7 +99,11 @@ class Dataset(models.Model):
     )
     start_date = models.DateTimeField(verbose_name="Start date", blank=False, null=True)
     end_date = models.DateTimeField(verbose_name="End date", blank=True, null=True)
-    ongoing = models.BooleanField("Ongoing (?)", default=False)
+    ongoing = models.BooleanField(
+        "Ongoing (?)",
+        default=False,
+        help_text="The end date will always advance to be the current date",
+    )
     created = models.DateTimeField("date created", auto_now_add=True, null=True)
     last_updated = models.DateTimeField("last updated", auto_now=True, null=True)
     archived = models.BooleanField("Archived?", default=False)
@@ -147,27 +149,15 @@ class Dataset(models.Model):
     class Meta:
         ordering = ["title"]
 
-    def set_active(self, active):
-        self.is_active = active
-        if not self.is_active:
-            self.removed = timezone.now().date()
-        self.save()
-
     def delete(self, using=None, **kwargs):
         Dataset.objects.filter(dataset=self).delete()
         super(Dataset, self).delete(using)
 
-    def description(self):
-        return self.dataset.summary
-
-    def created(self):
-        return self.dataset.created
-
     def get_icon(self):
-        return get_icon_for_mime(self.mime)
+        return get_icon_for_mime(self.file_mime)
 
     def get_alt(self):
-        return get_alt_for_mime(self.mime)
+        return get_alt_for_mime(self.file_mime)
 
     def __str__(self):
         return self.title
