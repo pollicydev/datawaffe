@@ -1,10 +1,13 @@
+from this import d
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 from uuid import uuid4
 from taggit.managers import TaggableManager
+from taggit.models import Tag
 from rrap.core.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
+from django.utils import timezone
 
 
 User = get_user_model()
@@ -123,6 +126,10 @@ class Dataset(models.Model):
         "Caveats/Comments", max_length=400, null=True, blank=True
     )
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4, editable=False)
+    # The tag value is the canonical form of the dataset's tags
+    tag_val = models.CharField(
+        max_length=100, default="", blank=True, verbose_name="Spaces"
+    )
     tags = TaggableManager(blank=True)
     has_pii = models.BooleanField(
         "Contains Personally Identifiable Information (PII) e.g names, phone numbers, Identification number, etc",
@@ -139,6 +146,14 @@ class Dataset(models.Model):
         choices=STATUS,
         default=0,
     )
+    # INCREMENTALS
+
+    # The number of views for the dataset.
+    download_count = models.IntegerField(default=0, blank=True, db_index=True)
+    # The number of views for the dataset.
+    view_count = models.IntegerField(default=0, blank=True, db_index=True)
+    # The numner of people following the dataset
+    follow_count = models.IntegerField(default=0)
 
     objects = ActiveManager()
 
@@ -155,5 +170,19 @@ class Dataset(models.Model):
     def get_alt(self):
         return get_alt_for_mime(self.file_mime)
 
+    def parse_tags(self):
+        return [tag.lower() for tag in self.tag_val.split(",") if tag]
+
+    def age_in_days(self):
+        delta = timezone.now() - self.created
+        return delta.days
+
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.tag_val = self.tag_val.replace(" ", "")
+        # Default tags
+        self.tag_val = self.tag_val or "tag1, tag2,"
+
+        super(Dataset, self).save(*args, **kwargs)

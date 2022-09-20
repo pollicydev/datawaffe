@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from allauth.account.models import EmailAddress
 from django.contrib import messages
@@ -60,3 +60,27 @@ def locations(request):
     context = {"locations": locations}
 
     return render(request, "core/locations.html", context)
+
+
+def dataset(request, dataset_uuid):
+    dataset = get_object_or_404(Dataset, uuid=dataset_uuid)
+
+    return render(
+        request,
+        "core/dataset.html",
+        {
+            "dataset": dataset,
+        },
+    )
+
+
+def organization(request, org_name):
+    organization = get_object_or_404(Organization, name=org_name)
+
+    return render(
+        request,
+        "core/organization.html",
+        {
+            "organization": organization,
+        },
+    )

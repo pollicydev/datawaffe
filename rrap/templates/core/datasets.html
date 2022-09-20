@@ -18,14 +18,36 @@
       </li>
     </ol>
   </nav>
-  <h2 class="page-head-title"> All datasets</h2>
-
 </div>
-
 
 <div class="main-content container-fluid">
   <div class="row table-filters-container">
-
+    <div class="general-filters">
+      <div class="general-filters-left">
+        <h4 style="display:inline-flex" class="text-bold">All {{ datasets|length }} datasets </h4>
+        <div style="display: inline-flex;margin-left:50px;min-width:450px;" class="be-aside-header-search">
+          <div class="input-group input-search input-group-sm">
+            <input class="form-control" type="text" placeholder="Search {{datasets|length }} datasets">
+          </div>
+        </div>
+      </div>
+      <div class="general-filters-right">
+        <div class="btn-group">
+          <button class="btn btn-secondary" type="button">10</button>
+          <button class="btn btn-secondary" type="button">25</button>
+          <button class="btn btn-secondary" type="button">50</button>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" type="button">Order by <span
+              class="caret"></span></button>
+          <div class="dropdown-menu dropdown-menu-right" role="menu"><a class="dropdown-item" href="#">Name
+              Ascending</a><a class="dropdown-item" href="#">Name Descending</a><a class="dropdown-item"
+              href="#">Dataset Count Descending</a>
+            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Dataset Count Ascending</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-3">
@@ -46,23 +68,17 @@
                 {% for data in datasets %}
                 <tr>
                   <td class="user-avatar cell-detail data-info">
-                    <h3 class="text-bold mt-1"><a
-                        href="{% url 'data:dataset' data.organization.name data.name %}">{{ data.title }}</a>
-                    </h3>
-                    <span class="cell-detail-description"><a
-                        href="{% url 'organizations:organization' data.organization.name %}">{{ data.organization.title }}</a></span>
-                    <span class="cell-detail-description">Updated 20 September 2022 | Dataset date: September 20,
-                      2022-September 20, 2022</span>
+                    <h4 class="text-bold mt-1"><a href="{% url 'core:single_dataset' data.uuid %}">{{ data.title }}</a>
+                    </h4>
+                    <h6><a
+                        href="{% url 'organizations:organization' data.organization.name %}">{{ data.organization.title }}</a>
+                    </h6>
+                    <span class="cell-detail-description">Updated {{ data.last_updated|date:"d F, Y" }} | Dataset date:
+                      {{ data.created|date:"d F, Y" }}</span>
                   </td>
                   <td class="cell-detail" data-set="{{ data.name }}">
-                    <span class="cell-detail-description">This dataset brings together data from a range of sources to
-                      provide a greater overall and comparative understanding of the current situation and context
-                      inside each district. The core indicators consist of key drivers (conflict, basic commodity
-                      prices, exclusion and marginalization, and disrupted access to life-saving services and income
-                      sources) and their major expected humanitarian impacts (food insecurity, cholera). ACAPS tracks
-                      changes in these indicators and alerts the humanitarian community to emerging trends or risks that
-                      could overwhelm local coping mechanisms in Afghanistan, triggering a humanitarian
-                      emergency.</span></td>
+                    <p>{{ data.summary|truncatechars:300 }}</p>
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% load compress i18n static crispy_forms_tags %}
+
+{% block title %}{{ dataset.title }} · Rapid Research for Agile Policymaking {% endblock %}
+
+{% block content %}
+
+<div class="page-head">
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'core:home' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'core:datasets' %}"><i class="breadcrumb-icon fa fa-angle-left"></i>Datasets</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="{% url 'core:single_dataset' dataset.uuid  %}"><i
+            class="breadcrumb-icon fa fa-angle-left"></i>{{ dataset.title }}</a>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- dataset information -->
+  <div class="row">
+    <div class="col-md-9">
+      <h2 class="page-head-title"> {{ dataset.title }}</h2>
+      <p class="text-muted"> {{ dataset.summary }} </p>
+      <button class="btn btn-space btn-success btn-lg"><i class="icon icon-left mdi mdi-cloud-download"></i>Download
+        this dataset (PDF)</button>
+      <p class="text-muted">Size: {{ dataset.file.size|filesizeformat }}</p>
+    </div>
+    <div class="col-md-3 logo">
+      <a href="{% url 'core:single_org' dataset.organization.name %}">
+        <img src="https://doodleipsum.com/185?shape=circle&bg=ceebff" alt="{{ dataset.organization.title }} logo" />
+      </a>
+    </div>
+  </div>
+
+  <!-- dataset toolbar -->
+  <div class="row mt-4 mb-3">
+    <div class="col-md-7 d-flex">
+      <h6 class="mr-2 text-muted"><i class="icon icon-left mdi mdi-gps-dot"></i> Includes sub-national data</h6>
+      <h6 class="mr-2 text-muted"><i class="icon icon-left mdi mdi-cloud-download"></i> # downloads</h6>
+      <h6 class="text-muted"><i class="icon icon-left mdi mdi-refresh"></i> This dataset updates:
+        {{ dataset.get_update_frequency_display }}</h6>
+    </div>
+    <div class="col-md-5">
+      <p class="mt-2 mb-2">
+        <button class="btn btn-space btn-primary">Follow
+          dataset</button>
+        <button class="btn btn-space btn-secondary"><i class="icon icon-left mdi mdi-comment-text"></i>Contact the
+          contributor</button>
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i
+            class="icon mdi mdi-facebook"></i></button>
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i
+            class="icon mdi mdi-twitter"></i></button>
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i class="icon mdi mdi-email"></i></button>
+
+      </p>
+    </div>
+  </div>
+
+</div>
+
+
+<div class="main-content container-fluid bg-white border-top">
+  <div class="row">
+    <div class="col-md-4 border-right">
+      <div class="card">
+        <div class="card-header">Activity stream</div>
+        <div class="card-body">
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">Resource & Metadata</div>
+        <div class="card-body">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td><b>Visibility</b></td>
+                <td>{{ dataset.get_privacy_display }}</td>
+              </tr>
+              <tr>
+                <td><b>Source</b></td>
+                <td><a href="{% url 'core:single_org' dataset.organization.name %}">{{ dataset.organization.title }}</a>
+                </td>
+              </tr>
+              <tr>
+                <td><b>Date of dataset</b></td>
+                <td>{{ dataset.start_date|date:"d F, Y" }} - {{ dataset.end_date|date:"d F, Y" }}
+                </td>
+              </tr>
+              <tr>
+                <td><b>Last updated</b></td>
+                <td>{{ dataset.last_updated|date:"d F, Y" }}</td>
+              </tr>
+              <tr>
+                <td><b>Expected updated frequency</b></td>
+                <td>{{ dataset.get_update_frequency_display }}</td>
+              </tr>
+              <tr>
+                <td><b>Data methodology</b></td>
+                <td>{{ dataset.get_methodology_display }}</td>
+              </tr>
+              <tr>
+                <td><b>Locations</b></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><b>Topics</b></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td><b>Caveats / comments</b></td>
+                <td>
+                  <p>{{ dataset.caveats }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td><b>Tags</b></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

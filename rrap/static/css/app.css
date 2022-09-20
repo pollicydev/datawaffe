@@ -121,7 +121,7 @@ body {
   line-height: 1.428571;
   color: #404040;
   text-align: left;
-  background-color: #ffffff;
+  background-color: #f6f7f9;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -13856,7 +13856,7 @@ html {
 
 body {
   padding: 0;
-  background-color: #ffffff;
+  background-color: #f6f7f9;
   height: auto;
   min-height: 100%;
   line-height: 1.42857143;
@@ -26857,7 +26857,7 @@ fieldset[disabled] .btn-color.btn-evernote.active {
 
 .table > tbody > tr > td {
   font-weight: 400;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .be-table-responsive {
@@ -27043,8 +27043,7 @@ fieldset[disabled] .btn-color.btn-evernote.active {
 
 .table tbody tr td.cell-detail .cell-detail-description {
   display: block;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 0.8462rem;
   color: #999999;
 }
 
@@ -28219,67 +28218,67 @@ select.form-control-xs:not([size]):not([multiple]) {
   margin-left: 3px;
 }
 
-.email-filters {
-  padding: 0 20px 30px;
-  border-bottom: 1px solid #e6e6e6;
-  background-color: #ffffff;
+.general-filters {
+  padding: 10px 20px 15px;
+  border-bottom: 1px solid #cccccc;
+  background-color: #edf6fd;
   display: table;
   width: 100%;
 }
 
-.email-filters .dropdown-toggle:after {
+.general-filters .dropdown-toggle:after {
   display: inline-block;
 }
 
-.email-filters > div {
+.general-filters > div {
   display: table-cell;
   vertical-align: middle;
 }
 
 @media (max-width: 991.98px) {
-  .email-filters > div {
+  .general-filters > div {
     vertical-align: top;
   }
 }
 
-.email-filters .btn-group + .btn-group {
+.general-filters .btn-group + .btn-group {
   margin-left: 10px;
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
-  .email-filters .btn-group + .btn-group {
+  .general-filters .btn-group + .btn-group {
     margin-left: 0;
     margin-top: 10px;
   }
 }
 
 @media (max-width: 575.98px) {
-  .email-filters .btn-group + .btn-group {
+  .general-filters .btn-group + .btn-group {
     margin-left: 0;
     margin-top: 10px;
   }
 }
 
-.email-filters .be-select-all.custom-checkbox {
+.general-filters .be-select-all.custom-checkbox {
   display: inline-block;
   vertical-align: middle;
   padding: 0;
   margin: 0 1rem 0 0;
 }
 
-.email-filters .be-select-all.custom-checkbox .custom-control-label::before {
+.general-filters .be-select-all.custom-checkbox .custom-control-label::before {
   margin-right: 18px;
 }
 
-.email-filters .email-filters-right {
+.general-filters .general-filters-right {
   text-align: right;
 }
 
-.email-filters input {
+.general-filters input {
   margin-right: 8px;
 }
 
-.email-pagination-indicator {
+.general-pagination-indicator {
   display: inline-block;
   vertical-align: middle;
   margin-right: 13px;
