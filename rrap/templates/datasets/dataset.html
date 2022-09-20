@@ -76,7 +76,8 @@
             </div>
           </div>
 
-          <form method="post">
+          <form method="post" enctype="multipart/form-data">
+            {{ form.errors }}
             {% csrf_token %}
             {% crispy form %}
           </form>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% load compress i18n static %}
+
+{% block title %}Locations · Rapid Research for Agile Policymaking{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb page-head-nav">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item active"><a href="{% url 'core:locations' %}">Locations</a></li>
+    </ol>
+  </nav>
+  <h2 class="page-head-title">All Locations</h2>
+</div>
+<div class="main-content container-fluid">
+</div>
+
+{% endblock content %}

@@ -62,7 +62,6 @@ def new_dataset(request, org_name):
             # Save file information to db
             dataset.file_mime = request.FILES["file"].content_type
             dataset.save()
-            form.save_m2m()  # save the tags too
             messages.success(request, "Dataset saved successfully.")
             return redirect(
                 r(
@@ -84,9 +83,13 @@ def dataset(request, org_name, dataset_name):
     dataset = get_object_or_404(Dataset, name=dataset_name, organization__name=org_name)
 
     if request.method == "POST":
-        form = DatasetForm(request.POST, instance=dataset)
+        form = DatasetForm(request.POST, request.FILES, instance=dataset)
+        print(form.errors)
         if form.is_valid():
-            dataset = form.save()
+            dataset = form.save(commit=False)
+            dataset.status = 1
+            dataset.save()
+            form.save_m2m()  # save the tags too
             messages.success(request, "Dataset details saved successfully.")
             return redirect(
                 r("datasets:dataset", args=(dataset.organization.name, dataset.name))

@@ -71,14 +71,14 @@ class Dataset(models.Model):
     title = models.CharField("title", max_length=255, help_text="Title of dataset")
     summary = models.TextField(
         "overview",
-        max_length=2000,
-        blank=True,
+        max_length=300,
+        blank=False,
         help_text="Please provide a summary of this dataset.",
     )
     file = models.FileField(null=True, max_length=255, upload_to="datasets/")
     file_mime = models.CharField(max_length=255, null=True)
-    privacy = models.CharField(
-        "Privacy setting", blank=False, max_length=20, choices=DATA_PRIVACY, default=2
+    privacy = models.SmallIntegerField(
+        "Privacy setting", blank=False, choices=DATA_PRIVACY, default=2
     )
     organization = models.ForeignKey(
         "organizations.Organization", on_delete=models.CASCADE, related_name="datasets"
@@ -97,7 +97,7 @@ class Dataset(models.Model):
         related_name="datasets_updated",
         on_delete=models.SET_NULL,
     )
-    start_date = models.DateTimeField(verbose_name="Start date", blank=False, null=True)
+    start_date = models.DateTimeField(verbose_name="Start date", blank=True, null=True)
     end_date = models.DateTimeField(verbose_name="End date", blank=True, null=True)
     ongoing = models.BooleanField(
         "Ongoing (?)",
@@ -107,17 +107,15 @@ class Dataset(models.Model):
     created = models.DateTimeField("date created", auto_now_add=True, null=True)
     last_updated = models.DateTimeField("last updated", auto_now=True, null=True)
     archived = models.BooleanField("Archived?", default=False)
-    topics = models.ManyToManyField("core.Topic")
-    locations = models.ManyToManyField("core.Location")
-    update_frequency = models.CharField(
+    topics = models.ManyToManyField("core.Topic", blank=True)
+    locations = models.ManyToManyField("core.Location", blank=True)
+    update_frequency = models.SmallIntegerField(
         "Update frequency",
-        max_length=20,
         choices=UPDATE_FREQUENCY,
         default=6,
     )
-    methodology = models.CharField(
+    methodology = models.SmallIntegerField(
         "Data methodology",
-        max_length=20,
         choices=DATA_METHODOLOGY,
         default=1,
     )
@@ -137,9 +135,7 @@ class Dataset(models.Model):
     quality_confirmed = models.BooleanField(
         "Dataset's quality has been confirmed", default=False
     )
-    status = models.CharField(
-        blank=False,
-        max_length=20,
+    status = models.SmallIntegerField(
         choices=STATUS,
         default=0,
     )

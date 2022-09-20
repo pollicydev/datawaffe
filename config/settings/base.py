@@ -327,3 +327,5 @@ CACHES = {
 SELECT2_CACHE_BACKEND = "default"
 SELECT2_CSS = "lib/select2/css/select2.min.css"
 SELECT2_JS = "lib/select2/js/select2.full.min.js"
+
+TAGGIT_CASE_INSENSITIVE = True

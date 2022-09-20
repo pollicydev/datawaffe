@@ -2,7 +2,7 @@ from django.urls import include, path
 
 from rrap.datasets import views
 
-app_name = "datasets"
+app_name = "data"
 
 urlpatterns = [
     path("", views.datasets, name="datasets"),

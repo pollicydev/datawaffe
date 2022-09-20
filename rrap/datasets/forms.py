@@ -7,12 +7,24 @@ from taggit.forms import TagWidget
 
 
 class NewDatasetForm(forms.ModelForm):
+    title = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Title of dataset",
+            }
+        ),
+        max_length=255,
+        help_text="Add a descriptive title",
+    )
+
     class Meta:
         model = Dataset
         fields = [
             "title",
             "file",
         ]
+        labels = {"file": "Click below to choose dataset file"}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -40,7 +52,7 @@ class DatasetForm(forms.ModelForm):
     )
     summary = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control", "rows": 3}),
-        required=False,
+        required=True,
         help_text="What type of data is included in this dataset. Provide a brief summary",
     )
     caveats = forms.CharField(
@@ -84,7 +96,6 @@ class DatasetForm(forms.ModelForm):
         fields = [
             "title",
             "summary",
-            "file_mime",
             "privacy",
             "update_frequency",
             "methodology",
