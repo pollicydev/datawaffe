@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.apps import apps
 import pyavagen
 import io
 from django.conf import settings
@@ -7,6 +8,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.core.files.base import ContentFile
 from django.utils import timezone
+from rrap.activities.constants import ActivityTypes
 
 
 class User(AbstractUser):
@@ -110,7 +112,6 @@ class Profile(models.Model):
         except Exception:
             return self.user.username
 
-    @property
     def recently_joined(self):
         """
         User that joined X amount of days are considered new.
@@ -121,8 +122,6 @@ class Profile(models.Model):
         return recent
 
     def get_organizations(self):
-        from django.apps import apps
-
         Organization = apps.get_model("organizations", "Organization")
 
         user_organizations = []
@@ -138,3 +137,37 @@ class Profile(models.Model):
             user_organizations.append(r)
         user_organizations.sort(key=lambda r: r.last_update, reverse=True)
         return user_organizations
+
+    def get_followers(self):
+        Activity = apps.get_model("activities", "Activity")
+        activities = Activity.objects.select_related("from_user__profile").filter(
+            to_user=self.user, activity_type=ActivityTypes.FOLLOW
+        )
+        followers = []
+        for activity in activities:
+            followers.append(activity.from_user)
+        return followers
+
+    def get_followers_count(self):
+        Activity = apps.get_model("activities", "Activity")
+        followers_count = Activity.objects.filter(
+            to_user=self.user, activity_type=ActivityTypes.FOLLOW
+        ).count()
+        return followers_count
+
+    def get_following(self):
+        Activity = apps.get_model("activities", "Activity")
+        activities = Activity.objects.select_related("to_user__profile").filter(
+            from_user=self.user, activity_type=ActivityTypes.FOLLOW
+        )
+        following = []
+        for activity in activities:
+            following.append(activity.to_user)
+        return following
+
+    def get_following_count(self):
+        Activity = apps.get_model("activities", "Activity")
+        following_count = Activity.objects.filter(
+            from_user=self.user, activity_type=ActivityTypes.FOLLOW
+        ).count()
+        return following_count

@@ -2,18 +2,52 @@
 
 {% load compress i18n static %}
 
-{% block title %}{{ organization.title }} · Rapid Research for Agile Policymaking {% endblock %}
-
-{% block javascript %}
-{% endblock %}
+{% block title %}{{ location.name }} · Rapid Research for Agile Policymaking {% endblock %}
 
 {% block content %}
 
-{% include "organizations/single/nav_header.html" with active_tab="data" %}
+<div class="page-head">
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'core:home' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'core:locations' %}">Locations</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="{% url 'core:single_location' location.pk  %}"><i
+            class="breadcrumb-icon fa fa-angle-left"></i>{{ location.name }}</a>
+      </li>
+    </ol>
+  </nav>
+  <!-- organization information -->
+  <div class="row">
+    <div class="col-md-9">
+      <h2 class="page-head-title"> {{ location.name }}</h2>
+    </div>
+  </div>
 
+  <!-- organization toolbar -->
+  <div class="row mt-4">
+    <div class="col-md-7 d-flex">
+      <h6 class="mr-2 text-muted">7 Datasets</h6>
+      <h6 class="mr-2 text-muted">54 Organizations</h6>
+    </div>
+    <div class="col-md-5">
+      <p class="mt-2 mb-2">
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i
+            class="icon mdi mdi-facebook"></i></button>
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i
+            class="icon mdi mdi-twitter"></i></button>
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i class="icon mdi mdi-email"></i></button>
+
+      </p>
+    </div>
+  </div>
+</div>
 
 <div class="main-content container-fluid">
-
   <div class="row">
     <div class="col-md-12">
       <div class="row table-filters-container">

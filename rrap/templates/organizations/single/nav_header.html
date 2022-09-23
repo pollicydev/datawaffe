@@ -19,9 +19,46 @@
       <h2 class="page-head-title"> {{ organization.title }} ({{ organization.acronym }})</h2>
       <p class="text-muted"> {{ organization.about }} </p>
       <p class="text-muted">Member since {{ organization.create_date }}</p>
+
+      <a href="{% url 'data:add_data' organization.name %}" class="btn btn-lg btn-primary" role="button">Add data</a>
     </div>
     <div class="col-md-3 logo">
       <img src="https://doodleipsum.com/185?shape=circle&bg=ceebff" alt="{{ dataset.organization.title }} logo" />
     </div>
   </div>
+
+  <!-- organization toolbar -->
+  <div class="row mt-4 mb-3">
+    <div class="col-md-7 d-flex">
+      <h6 class="mr-2 text-muted">7 MEMBERS</h6>
+      <h6 class="mr-2 text-muted">54 FOLLOWERS</h6>
+      <h6 class="text-muted">VISIT WEBSITE</h6>
+    </div>
+    <div class="col-md-5">
+      <p class="mt-2 mb-2">
+        <button class="btn btn-space btn-success">Follow
+          Organization</button>
+        <button class="btn btn-space btn-secondary"><i class="icon icon-left mdi mdi-comment-text"></i>Request
+          Membership</button>
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i
+            class="icon mdi mdi-facebook"></i></button>
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i
+            class="icon mdi mdi-twitter"></i></button>
+        <button class="btn btn-space btn-secondary btn-social" type="button"><i class="icon mdi mdi-email"></i></button>
+
+      </p>
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item"><a class="nav-link {% if active_tab == 'data' %}active{% endif %}"
+        href="{% url 'core:single_org' organization.name %}" role="tab">Datasets</a></li>
+    <li class="nav-item"><a class="nav-link {% if active_tab == 'activity' %}active{% endif %}"
+        href="{% url 'core:org_activity' organization.name %}" role="tab">Activity stream</a></li>
+    <li class="nav-item"><a class="nav-link {% if active_tab == 'members' %}active{% endif %}"
+        href="{% url 'core:org_members' organization.name %}" role="tab">Members</a></li>
+    <li class="nav-item"><a class="nav-link {% if active_tab == 'stats' %}active{% endif %}" href="" data-toggle="tab"
+        role="tab">Stats</a></li>
+  </ul>
+
 </div>

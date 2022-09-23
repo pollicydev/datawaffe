@@ -5,17 +5,60 @@
 
 {% block title %}Locations · Rapid Research for Agile Policymaking{% endblock %}
 
+{% block stylesheet %}
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="page-head">
-  <nav aria-label="breadcrumb" role="navigation">
-    <ol class="breadcrumb page-head-nav">
-      <li class="breadcrumb-item"><a href="#">Home</a></li>
-      <li class="breadcrumb-item active"><a href="{% url 'core:locations' %}">Locations</a></li>
-    </ol>
-  </nav>
-  <h2 class="page-head-title">All Locations</h2>
-</div>
-<div class="main-content container-fluid">
+<div class="main-content container-fluid" style="padding:0!important">
+  <input type="hidden" id="mapboxToken" value="{{ mapbox_access_token }}">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header" style="padding:0!important;margin: 0!important;">
+          <div class="row table-filters-container">
+            <div class="general-filters">
+              <div class="general-filters-left">
+                <h4 style="display:inline-flex" class="text-bold">All Locations </h4>
+                <h4 style="display:inline-flex" class="ml-5">Map of Uganda </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body" style="padding:0!important">
+          <div style="height:660px!important;" class="map" id="map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-bold">All districts</h3>
+        </div>
+        <div class="card-body">
+          <div id="district_list" class="row">
+            {% for location in locations %}
+            <div class="col-md-2">
+              <a href="{% url 'core:single_location' location.pk %}">
+                <p class="text-bold">{{ location.name }}</p>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
+<script src="{% static 'js/map.js' %}" defer></script>
+<script src="{% static 'geojson/districts.js' %}" defer></script>
+<script src="{% static 'geojson/district-list.js' %}"></script>
+{% endblock javascript %}

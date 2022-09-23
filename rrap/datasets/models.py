@@ -1,10 +1,8 @@
-from this import d
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 from uuid import uuid4
 from taggit.managers import TaggableManager
-from taggit.models import Tag
 from rrap.core.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
 from django.utils import timezone

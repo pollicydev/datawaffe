@@ -85,6 +85,7 @@ LOCAL_APPS = [
     "rrap.organizations",
     "rrap.datasets",
     "rrap.invites",
+    "rrap.activities",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -329,3 +330,5 @@ SELECT2_CSS = "lib/select2/css/select2.min.css"
 SELECT2_JS = "lib/select2/js/select2.full.min.js"
 
 TAGGIT_CASE_INSENSITIVE = True
+
+MAPBOX_ACCESS_TOKEN = env("MAPBOX_ACCESS_TOKEN", default="")
