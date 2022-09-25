@@ -9,7 +9,7 @@ from rrap.users.decorators import onboarding_required
 from rrap.datasets.models import Dataset
 from rrap.organizations.models import Organization
 from .models import Location
-from rrap.datasets.filters import DatasetFilterSet
+from rrap.datasets.filters import location_based_filter
 
 
 @login_required()
@@ -104,8 +104,7 @@ def locations(request):
 
 def location(request, location_pk):
     location = get_object_or_404(Location, pk=location_pk)
-    datasets = location.datasets.all()
-    dataset_filter = DatasetFilterSet(request.GET, queryset=datasets)
+    datasets = location_based_filter(request, location.pk)
     organizations = location.organizations.all()
     return render(
         request,
@@ -114,7 +113,6 @@ def location(request, location_pk):
             "location": location,
             "datasets": datasets,
             "organizations": organizations,
-            "dataset_filter": dataset_filter,
         },
     )
 

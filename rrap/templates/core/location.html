@@ -56,9 +56,13 @@
             <h4 style="display:inline-flex" class="text-bold">All {{ datasets|length }} datasets </h4>
             <div style="display: inline-flex;margin-left:50px;min-width:450px;" class="be-aside-header-search">
               <div class="input-group input-search input-group-sm">
-                <input class="form-control" type="text" placeholder="Search {{datasets|length }} datasets" name="search"
-                  {% if filter.form.search.value != None %} value="{{ filter.form.search.value|stringformat:'s' }}"
-                  {% endif %}>
+                <input class="form-control" type="text" placeholder="Search {{datasets|length }} datasets"
+                  name="title_contains">
+                <span class="input-group-append">
+                  <div class="input-group-text bg-transparent">
+                    <i class="icon mdi mdi-search"></i>
+                  </div>
+                </span>
               </div>
             </div>
           </div>
@@ -82,12 +86,61 @@
       </div>
       <div class="row">
         <div class="col-md-3 border-right">
-          <div class="card">
-            <div class="card-header">Data filter</div>
-            <div class="card-body">
-              {% show_facets dataset_filter %}
+          <h4 class="text-bold my-5">Filter datasets</h4>
+          <form method="GET" action=".">
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by location</div>
+              <div class="card-body card-body-contrast">
+                <div class="form-group row">
+                  <div class="col-12">
+                    <!-- only show current location already selected -->
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" checked="" id="{{ location.id }}"
+                        name="location" value="{{ location.id }}">
+                      <label class="custom-control-label" for="{{ location.id }}">{{ location.name }}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by organization</div>
+              <div class="card-body card-body-contrast">
+                <div class="form-group row">
+                  <div class="col-12">
+                    {% for org in organizations %}
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" id="{{ org.name }}" value="{{ org.name }}"
+                        name="organization">
+                      <label class="custom-control-label" for="{{ org.name }}">{{ org.title }}</label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by topic</div>
+              <div class="card-body card-body-contrast">
+                <div class="form-group row">
+                  <div class="col-12">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by format</div>
+              <div class="card-body card-body-contrast">
+                <div class="form-group row">
+                  <div class="col-12">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-block btn-lg btn-primary">Filter</button>
+          </form>
         </div>
         <div class="col-md-9">
           <div class="card card-table">
@@ -131,3 +184,41 @@
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'lib/jquery-ui/jquery-ui.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/select2/js/select2.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net/js/jquery.dataTables.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net-bs4/js/dataTables.bootstrap4.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/dataTables.buttons.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/buttons.flash.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/jszip/jszip.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/pdfmake/pdfmake.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/pdfmake/vfs_fonts.js' %}" type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/buttons.colVis.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/buttons.print.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons/js/buttons.html5.min.js' %}" type="text/javascript">
+</script>
+<script src="{% static 'lib/datatables/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"
+  type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js' %}"
+  type="text/javascript"></script>
+<script src="{% static 'lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"
+  type="text/javascript"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    var table = $('#dataTable').DataTable({
+      pageLength: 20,
+      dom: "<'row be-datatable-body'<'col-sm-12'tr>>" +
+        "<'row be-datatable-footer'<'col-sm-5'i><'col-sm-7'p>>"
+    });
+  });
+
+</script>
+
+{% endblock javascript %}
