@@ -9,6 +9,7 @@ from rrap.users.decorators import onboarding_required
 from rrap.datasets.models import Dataset
 from rrap.organizations.models import Organization
 from .models import Location
+from rrap.datasets.filters import DatasetFilterSet
 
 
 @login_required()
@@ -67,7 +68,7 @@ def locations(request):
             # we need the ids of all the valid projects first
             datasets_ids = datasets.values_list("id", flat=True)
             # then we use the ids to get a query of all the districts chosen
-            locations_involved = Location.objects.filter(dataset__in=datasets_ids)
+            locations_involved = Location.objects.filter(datasets__in=datasets_ids)
             # get the geojson of all these districts to be used to render on map.
             all_locations = serialize(
                 "geojson",
@@ -103,12 +104,17 @@ def locations(request):
 
 def location(request, location_pk):
     location = get_object_or_404(Location, pk=location_pk)
-
+    datasets = location.datasets.all()
+    dataset_filter = DatasetFilterSet(request.GET, queryset=datasets)
+    organizations = location.organizations.all()
     return render(
         request,
         "core/location.html",
         {
             "location": location,
+            "datasets": datasets,
+            "organizations": organizations,
+            "dataset_filter": dataset_filter,
         },
     )
 

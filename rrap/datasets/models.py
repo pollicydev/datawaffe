@@ -108,8 +108,10 @@ class Dataset(models.Model):
     created = models.DateTimeField("date created", auto_now_add=True, null=True)
     last_updated = models.DateTimeField("last updated", auto_now=True, null=True)
     archived = models.BooleanField("Archived?", default=False)
-    topics = models.ManyToManyField("core.Topic", blank=True)
-    locations = models.ManyToManyField("core.Location", blank=True)
+    topics = models.ManyToManyField("core.Topic", blank=True, related_name="datasets")
+    locations = models.ManyToManyField(
+        "core.Location", blank=True, related_name="datasets"
+    )
     update_frequency = models.SmallIntegerField(
         "Update frequency",
         choices=UPDATE_FREQUENCY,

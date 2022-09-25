@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load compress i18n static %}
+{% load compress i18n static search_tags %}
 
 {% block title %}{{ location.name }} · Rapid Research for Agile Policymaking {% endblock %}
 
@@ -31,8 +31,8 @@
   <!-- organization toolbar -->
   <div class="row mt-4">
     <div class="col-md-7 d-flex">
-      <h6 class="mr-2 text-muted">7 Datasets</h6>
-      <h6 class="mr-2 text-muted">54 Organizations</h6>
+      <h6 class="mr-2 text-muted">{{ datasets|length }} Datasets</h6>
+      <h6 class="mr-2 text-muted">{{ organizations|length }} Organizations</h6>
     </div>
     <div class="col-md-5">
       <p class="mt-2 mb-2">
@@ -56,7 +56,9 @@
             <h4 style="display:inline-flex" class="text-bold">All {{ datasets|length }} datasets </h4>
             <div style="display: inline-flex;margin-left:50px;min-width:450px;" class="be-aside-header-search">
               <div class="input-group input-search input-group-sm">
-                <input class="form-control" type="text" placeholder="Search {{datasets|length }} datasets">
+                <input class="form-control" type="text" placeholder="Search {{datasets|length }} datasets" name="search"
+                  {% if filter.form.search.value != None %} value="{{ filter.form.search.value|stringformat:'s' }}"
+                  {% endif %}>
               </div>
             </div>
           </div>
@@ -83,7 +85,7 @@
           <div class="card">
             <div class="card-header">Data filter</div>
             <div class="card-body">
-
+              {% show_facets dataset_filter %}
             </div>
           </div>
         </div>

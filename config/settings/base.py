@@ -65,7 +65,7 @@ DJANGO_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.gis",
-    # "django.contrib.humanize", # Handy template tags
+    "django.contrib.humanize",  # Handy template tags
     "django.contrib.admin",
     "django.forms",
 ]
@@ -77,6 +77,7 @@ THIRD_PARTY_APPS = [
     "taggit",
     "multiselectfield",
     "django_select2",
+    "django_filters_facet",
 ]
 
 LOCAL_APPS = [

@@ -50,7 +50,7 @@ class Organization(models.Model):
     members = models.ManyToManyField(
         User, related_name="members", verbose_name="members"
     )
-    locations = models.ManyToManyField("core.Location")
+    locations = models.ManyToManyField("core.Location", related_name="organizations")
     org_type = models.CharField(
         "Type of organization",
         blank=True,
