@@ -1,5 +1,9 @@
+import pyavagen
+import io
 from django.contrib.auth import get_user_model
+from django.core.files.base import ContentFile
 from django.urls import reverse
+from django.conf import settings
 from django.db import models
 from uuid import uuid4
 from rrap.core.managers import ActiveManager
@@ -7,6 +11,37 @@ from rrap.datasets.models import Dataset
 from multiselectfield import MultiSelectField
 
 User = get_user_model()
+
+
+def get_logo_full_path(instance, filename):
+    ext = filename.split(".")[-1]
+    path = f"{settings.MEDIA_PUBLIC_ROOT}/organizations/logos"
+    name = f"{instance.id}_{instance.logo_version:04d}"
+    return f"{path}/{name}.{ext}"
+
+
+def generate_logo(organization):
+    img_io = io.BytesIO()
+    logo = pyavagen.Avatar(
+        pyavagen.CHAR_SQUARE_AVATAR,
+        size=500,
+        string=organization.acronym,
+        blur_radius=100,
+    )
+    logo.generate().save(img_io, format="PNG", quality=100)
+    img_content = ContentFile(img_io.getvalue(), f"{organization.pk}.png")
+
+    return img_content
+
+
+def change_logo(organization, image_file):
+    if organization.logo:
+        organization.logo.delete()
+    organization.logo_version += 1
+    organization.logo = image_file
+    organization.save()
+
+    return organization
 
 
 class Organization(models.Model):
@@ -41,7 +76,8 @@ class Organization(models.Model):
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
     acronym = models.CharField(max_length=10, null=True, blank=True)
     about = models.TextField(max_length=400, null=True, blank=True)
-    logo = models.ImageField(null=True, blank=True)
+    logo = models.ImageField(upload_to=get_logo_full_path, blank=True)
+    logo_version = models.IntegerField(default=0, blank=True, editable=False)
     website = models.URLField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     create_date = models.DateTimeField("date created", auto_now_add=True)

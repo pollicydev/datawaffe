@@ -32,19 +32,21 @@ urlpatterns = [
         "<str:org_name>/members/invites/",
         include("rrap.invites.urls", namespace="invites"),
     ),
-    # path(
-    #     "organizations/<str:org_name>/info/",
-    #     views.info,
-    #     name="info",
-    # ),
-    # path(
-    #     "organizations/<str:org_name>/settings/",
-    #     views.settings,
-    #     name="settings",
-    # ),
-    # path(
-    #     "organizations/<str:org_name>/settings/delete/",
-    #     views.DeleteOrganizationView.as_view(),
-    #     name="delete_organization",
-    # ),
+    path(
+        "<str:org_name>/settings/",
+        views.settings,
+        name="settings",
+    ),
+    path(
+        "transfer/",
+        views.transfer,
+        name="transfer_organization",
+    ),
+    path(
+        "<str:org_name>/settings/delete/",
+        views.DeleteOrganizationView.as_view(),
+        name="delete_organization",
+    ),
+    path("<str:org_name>/logo/update/", views.update_logo, name="update_logo"),
+    path("<str:org_name>/logo/delete/", views.delete_logo, name="delete_logo"),
 ]

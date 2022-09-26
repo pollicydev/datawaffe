@@ -1,5 +1,5 @@
 from django import forms
-from .models import Organization
+from .models import Organization, generate_logo
 from django_select2 import forms as s2forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML
@@ -15,10 +15,15 @@ class CreateOrganizationForm(forms.ModelForm):
         ),
         max_length=255,
     )
+    acronym = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+        max_length=10,
+    )
     about = forms.CharField(
         widget=forms.Textarea(
             attrs={
                 "class": "form-control",
+                "rows": "3",
                 "placeholder": "Write a brief summary of the work at your organization",
             }
         ),
@@ -62,19 +67,19 @@ class CreateOrganizationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
+            "logo",
             Row(
                 Column("title", css_class="col-md-6"),
                 Column("acronym", css_class="col-md-3"),
                 Column("org_type", css_class="col-md-3"),
             ),
             "about",
-            "logo",
             "locations",
             "website",
             ButtonHolder(
                 Submit(
                     "submit",
-                    "Create Organisation",
+                    "Request organization",
                     css_class="btn btn-lg btn-md btn-success",
                 ),
                 HTML('<a href="" class="btn btn-default">Cancel</a>'),
@@ -87,8 +92,12 @@ class OrganizationForm(forms.ModelForm):
         widget=forms.TextInput(attrs={"class": "form-control form-control-lg"}),
         max_length=255,
     )
+    acronym = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+        max_length=10,
+    )
     about = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "4"}),
+        widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "3"}),
         max_length=500,
         required=False,
     )
@@ -128,19 +137,19 @@ class OrganizationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
+            "logo",
             Row(
                 Column("title", css_class="col-md-6"),
                 Column("acronym", css_class="col-md-3"),
                 Column("org_type", css_class="col-md-3"),
             ),
             "about",
-            "logo",
             "locations",
             "website",
             ButtonHolder(
                 Submit(
                     "submit",
-                    "Create Organisation",
+                    "Request organization",
                     css_class="btn btn-lg btn-md btn-success",
                 ),
                 HTML('<a href="" class="btn btn-default">Cancel</a>'),
@@ -158,7 +167,7 @@ class EditOrganizationForm(forms.ModelForm):
         max_length=10,
     )
     about = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "4"}),
+        widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "3"}),
         max_length=500,
         required=False,
     )
@@ -198,13 +207,13 @@ class EditOrganizationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
+            "logo",
             Row(
                 Column("title", css_class="col-md-6"),
                 Column("acronym", css_class="col-md-3"),
                 Column("org_type", css_class="col-md-3"),
             ),
             "about",
-            "logo",
             "locations",
             "website",
             ButtonHolder(
@@ -216,3 +225,46 @@ class EditOrganizationForm(forms.ModelForm):
                 HTML('<a href="" class="btn btn-default">Cancel</a>'),
             ),
         )
+
+
+class OrganizationSettingsForm(forms.ModelForm):
+    name = forms.SlugField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+        label="URL",
+        help_text="Only letters, numbers, underscores or hyphens are allowed.",
+        max_length=255,
+    )
+
+    class Meta:
+        model = Organization
+        fields = [
+            "name",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            "name",
+            Submit(
+                "submit",
+                "Update slug",
+                css_class="btn btn-lg btn-success",
+            ),
+        )
+
+
+class DeleteLogoForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        fields = ()
+
+    def save(self, commit=True):
+        if self.instance.logo:
+            self.instance.logo.delete()
+            self.instance.logo_version += 1
+            self.instance.logo = generate_logo(self.instance)
+
+        # regenerate a new text-based avatar when profile is deleted.
+        self.instance.logo = generate_logo(self.instance)
+        return super().save(commit)

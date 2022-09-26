@@ -1,16 +1,29 @@
+import base64
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
+from django.db import transaction
 from django.urls import reverse as r
+from django.utils.translation import gettext
 from django.utils.text import slugify
 from django.views.decorators.http import require_POST
 from .decorators import member_required, main_owner_required
-from .forms import CreateOrganizationForm, OrganizationForm, EditOrganizationForm
-from .models import Organization
+from .forms import (
+    CreateOrganizationForm,
+    OrganizationForm,
+    EditOrganizationForm,
+    OrganizationSettingsForm,
+    DeleteLogoForm,
+)
+from .models import Organization, change_logo
 from rrap.invites.constants import InviteStatus
 from django.core.paginator import Paginator
+from rrap.organizations.mixins import MainOwnerRequiredMixin, OrganizationMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+from django.core.files.base import ContentFile
 
 User = get_user_model()
 
@@ -72,6 +85,31 @@ def new(request):
     return render(request, "organizations/new.html", {"form": form})
 
 
+@login_required
+def update_logo(request, org_name):
+    organization = Organization.objects.get(name=org_name)
+    # Received base64 string starts with 'data:image/jpeg;base64,........'
+    # We need to use 'jpeg' as an extension and everything after base64,
+    # as the image itself:
+    fmt, imgstr = request.POST["logo"].split(";base64")
+    ext = fmt.split("/")[-1]
+    if ext == "svg+xml":
+        ext = "svg"
+    img = ContentFile(base64.b64decode(imgstr), name=f"{organization.id}.{ext}")
+    change_logo(organization, img)
+
+    return redirect(r("organizations:edit", args=(organization.name)))
+
+
+@login_required
+def delete_logo(request, org_name):
+    organization = Organization.objects.get(name=org_name)
+    form = DeleteLogoForm(request.POST, instance=organization)
+    form.save()
+
+    return redirect(r("organizations:edit", args=(organization.name)))
+
+
 # @member_required
 @login_required
 def organization(request, org_name):
@@ -84,7 +122,7 @@ def organization(request, org_name):
         if form.is_valid():
             organization = form.save()
             messages.success(request, "Organization was saved successfully.")
-            return redirect(r("organization", args=(organization.name)))
+            return redirect(r("organizations:organization", args=(organization.name)))
     else:
         form = OrganizationForm(instance=organization)
     return render(
@@ -99,7 +137,7 @@ def organization(request, org_name):
     )
 
 
-# @member_required
+# @main_owner_required
 @login_required
 def edit_organization(request, org_name):
     organization = Organization.objects.get(name=org_name)
@@ -108,7 +146,7 @@ def edit_organization(request, org_name):
         if form.is_valid():
             organization = form.save()
             messages.success(request, "Organization was saved successfully.")
-            return redirect(r("organization", args=(organization.name)))
+            return redirect(r("organizations:edit", args=(organization.name,)))
     else:
         form = EditOrganizationForm(instance=organization)
     return render(
@@ -162,3 +200,84 @@ def leave(request):
         "You successfully left the organization {0}.".format(organization.title),
     )
     return redirect("/" + request.user.username + "/")
+
+
+# ORGANIZATION SETTINGS
+
+# @main_owner_required
+@login_required
+def settings(request, org_name):
+    username = request.user.username
+    organization = Organization.objects.get(
+        name=org_name, owner__username__iexact=username
+    )
+    if request.method == "POST":
+        form = OrganizationSettingsForm(request.POST, instance=organization)
+        if form.is_valid():
+            name = slugify(form.instance.name)
+            unique_name = name
+            if unique_name != org_name:
+                i = 0
+                while Organization.objects.filter(
+                    name=unique_name, owner__username=organization.owner.username
+                ):
+                    i = i + 1
+                    unique_name = "{0}-{1}".format(name, i)
+            form.instance.name = unique_name
+            organization = form.save()
+            messages.success(request, "Organization updated successfully.")
+            return redirect(r("organizations:settings", args=(unique_name,)))
+    else:
+        form = OrganizationSettingsForm(instance=organization)
+    return render(
+        request,
+        "organizations/settings.html",
+        {"organization": organization, "form": form},
+    )
+
+
+# @main_owner_required
+@login_required
+def transfer(request):
+    try:
+        organization_id = request.POST["organization-id"]
+        transfer_user_username = request.POST["transfer-user"]
+        organization = Organization.objects.get(pk=organization_id)
+        try:
+            transfer_user = User.objects.get(username=transfer_user_username)
+        except Exception:
+            messages.warning(request, "User not found.")
+            return redirect(
+                "organizations:settings", organization.owner.username, organization.name
+            )
+
+        current_user = request.user
+        if current_user != transfer_user:
+            if transfer_user in organization.members.all():
+                organization.members.remove(transfer_user)
+            organization.owner = transfer_user
+            organization.members.add(current_user)
+            organization.save()
+            return redirect(
+                "organization", organization.owner.username, organization.name
+            )
+        else:
+            messages.warning(
+                request, "Hey! You can't transfer the organization to yourself."
+            )
+            return redirect(
+                "organizations:settings", organization.owner.username, organization.name
+            )
+
+    except Exception:
+        return HttpResponseBadRequest("Something went wrong.")
+
+
+class DeleteOrganizationView(
+    LoginRequiredMixin, MainOwnerRequiredMixin, OrganizationMixin, View
+):
+    @transaction.atomic()
+    def post(self, request, *args, **kwargs):
+        self.organization.delete()
+        messages.success(request, gettext("The organization was deleted with success."))
+        return redirect(request.user)

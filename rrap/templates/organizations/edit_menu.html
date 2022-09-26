@@ -1,0 +1,8 @@
+<ul class="nav nav-tabs nav-tabs-classic" role="tablist">
+  <li class="nav-item"><a class="nav-link {% if menu == "edit" %} active{% endif %}"
+      href="{% url 'organizations:edit' organization.name %}" role="tab">Edit
+      Organization</a></li>
+  <li class="nav-item"><a class="nav-link {% if menu == "settings" %} active{% endif %}"
+      href="{% url 'organizations:settings' organization.name %}" role="tab">Organization
+      Settings</a></li>
+</ul>
