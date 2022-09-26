@@ -123,3 +123,96 @@ class OrganizationForm(forms.ModelForm):
             "website": forms.TextInput(attrs={"class": "form-control"}),
         }
         labels = {"districts": "Select all the districts in Uganda where you operate"}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Row(
+                Column("title", css_class="col-md-6"),
+                Column("acronym", css_class="col-md-3"),
+                Column("org_type", css_class="col-md-3"),
+            ),
+            "about",
+            "logo",
+            "locations",
+            "website",
+            ButtonHolder(
+                Submit(
+                    "submit",
+                    "Create Organisation",
+                    css_class="btn btn-lg btn-md btn-success",
+                ),
+                HTML('<a href="" class="btn btn-default">Cancel</a>'),
+            ),
+        )
+
+
+class EditOrganizationForm(forms.ModelForm):
+    title = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+        max_length=255,
+    )
+    acronym = forms.CharField(
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+        max_length=10,
+    )
+    about = forms.CharField(
+        widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "4"}),
+        max_length=500,
+        required=False,
+    )
+
+    class Meta:
+        model = Organization
+        fields = [
+            "title",
+            "acronym",
+            "org_type",
+            "about",
+            "logo",
+            "locations",
+            "website",
+        ]
+        widgets = {
+            "locations": s2forms.Select2MultipleWidget(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Select a district",
+                    "data-toggle": "select2",
+                    "data-placeholder": "Select a district",
+                    "data-select2-id": "id_locations",
+                }
+            ),
+            "org_type": forms.Select(
+                choices=Organization.ORGANIZATION_TYPE,
+                attrs={
+                    "class": "form-control",
+                },
+            ),
+            "website": forms.TextInput(attrs={"class": "form-control"}),
+        }
+        labels = {"districts": "Select all the districts in Uganda where you operate"}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Row(
+                Column("title", css_class="col-md-6"),
+                Column("acronym", css_class="col-md-3"),
+                Column("org_type", css_class="col-md-3"),
+            ),
+            "about",
+            "logo",
+            "locations",
+            "website",
+            ButtonHolder(
+                Submit(
+                    "submit",
+                    "Update organization",
+                    css_class="btn btn-lg btn-md btn-success",
+                ),
+                HTML('<a href="" class="btn btn-default">Cancel</a>'),
+            ),
+        )

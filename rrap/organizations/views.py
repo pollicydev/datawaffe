@@ -7,7 +7,7 @@ from django.urls import reverse as r
 from django.utils.text import slugify
 from django.views.decorators.http import require_POST
 from .decorators import member_required, main_owner_required
-from .forms import CreateOrganizationForm, OrganizationForm
+from .forms import CreateOrganizationForm, OrganizationForm, EditOrganizationForm
 from .models import Organization
 from rrap.invites.constants import InviteStatus
 from django.core.paginator import Paginator
@@ -95,6 +95,28 @@ def organization(request, org_name):
             "form": form,
             "user_organizations": user_organizations,
             "organization_datasets": organization_datasets,
+        },
+    )
+
+
+# @member_required
+@login_required
+def edit_organization(request, org_name):
+    organization = Organization.objects.get(name=org_name)
+    if request.method == "POST":
+        form = EditOrganizationForm(request.POST, instance=organization)
+        if form.is_valid():
+            organization = form.save()
+            messages.success(request, "Organization was saved successfully.")
+            return redirect(r("organization", args=(organization.name)))
+    else:
+        form = EditOrganizationForm(instance=organization)
+    return render(
+        request,
+        "organizations/edit.html",
+        {
+            "organization": organization,
+            "form": form,
         },
     )
 

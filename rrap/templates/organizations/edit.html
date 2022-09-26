@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags static %}
 
+{% block title %}{{ organization.title }} · Rapid Research for Agile Policymaking {% endblock %}
+
 {% block stylesheet %}
 <link rel="stylesheet" type="text/css" href="{% static 'lib/select2/css/select2.min.css' %}" />
 {% endblock %}
@@ -26,19 +28,15 @@
         <a href="{% url 'core:home' %}">Home</a>
       </li>
       <li class="breadcrumb-item">
-        <a href="{% url 'organizations:organizations' %}">Organizations</a>
+        <a href="{% url 'users:organizations' user.username %}">Your Organizations</a>
       </li>
       <li class="breadcrumb-item active">
-        <a href="{% url 'organizations:new' %}"><i class="breadcrumb-icon fa fa-angle-left"></i>Request new
-          organization</a>
+        <a href="{% url 'organizations:organization' organization.name  %}"><i
+            class="breadcrumb-icon fa fa-angle-left"></i>{{ organization.title }}</a>
       </li>
     </ol>
   </nav>
-  <h2 class="page-head-title">Request new organisation</h2>
-  <p class="text-muted">Please tell us more about your organisation. The organization will remain unverified until we
-    can confirm more details through you. The review process will not take longer than 48 hours and in this time, you
-    will be unable to upload any data. Important: Please confirm that your organisation does not already exist by
-    checking the existing list of organizations here.</p>
+  <h2 class="page-head-title">Edit organization</h2>
 </div>
 
 <div class="main-content container-fluid">
