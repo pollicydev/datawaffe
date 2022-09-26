@@ -9,7 +9,7 @@ from rrap.users.decorators import onboarding_required
 from rrap.datasets.models import Dataset
 from rrap.organizations.models import Organization
 from .models import Location
-from rrap.datasets.filters import location_based_filter
+from rrap.datasets.filters import location_based_filter, dataset_filter
 
 
 @login_required()
@@ -43,9 +43,15 @@ def home(request):
 
 
 def datasets(request):
-    datasets = Dataset.objects.all()
+    datasets = dataset_filter(request)
+    organizations = Organization.objects.all().order_by("title")
+    locations = Location.objects.all().order_by("name")
 
-    context = {"datasets": datasets}
+    context = {
+        "datasets": datasets,
+        "organizations": organizations,
+        "locations": locations,
+    }
 
     return render(request, "core/datasets.html", context)
 

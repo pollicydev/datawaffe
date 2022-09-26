@@ -84,8 +84,8 @@
                 <div class="dropdown-menu" role="menu">     
                   <div class="user-info">
                     <div class="user-name">{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}</div>
-                    <div class="user-position online">Available</div>
-                  </div><a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><span class="icon mdi mdi-face"></span>Account</a><a class="dropdown-item" href="#"><span class="icon mdi mdi-settings"></span>Settings</a><a class="dropdown-item" href="{% url 'account_logout' %}"><span class="icon mdi mdi-power"></span>Logout</a>
+                    <div class="user-position online">Online</div>
+                  </div><a class="dropdown-item" href="{% url 'users:organizations' user.username %}"><span class="icon mdi mdi-apps"></span>Your organizations</a><a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><span class="icon mdi mdi-face"></span>Account</a><a class="dropdown-item" href="#"><span class="icon mdi mdi-settings"></span>Settings</a><a class="dropdown-item" href="{% url 'account_logout' %}"><span class="icon mdi mdi-power"></span>Logout</a>
                 </div>
               </li>
             </ul>
@@ -112,6 +112,7 @@
                     </div>
                     <div class="footer"> <a href="#">View all notifications</a></div>
                   </li>
+                  
                 </ul>
               </li>
             </ul>

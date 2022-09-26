@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-head">
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'core:home' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="#">Your Organizations</a>
+      </li>
+    </ol>
+  </nav>
+  <h2 class="page-head-title">Your Organizations</h2>
+</div>
+
+<div class="main-content container-fluid">
+  <div class="row">
+    {% if user_organizations %}
+    {% for organization in user_organizations %}
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header card-header-divider"><span class="text-bold">{{ organization.title }}</span><span
+            class="card-subtitle">{{ organization.acronym }}</span></div>
+        <div class="card-body">
+          <p>{{ organization.about }}</p>
+          <a class="btn btn-space btn-primary" href="#">Add data</a>
+          <a class="btn btn-space btn-success" href="#">Edit organization</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="col-lg-12">
+      <p>Thank you for becoming a registered RRAP user. If you want plan on sharing data, you need to create an
+        organization or become a member of an existing organization on this platform.</p>
+      <a class="btn btn-space btn-primary">Find your organization</a><a class="btn btn-space btn-primary">Request new
+        organization</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}

@@ -10,7 +10,7 @@ from .forms import DeleteUserForm
 from .utils import DeleteAvatarForm, OnboardingForm, ProfileForm
 from .models import change_avatar
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.core.files.base import ContentFile
 
 User = get_user_model()
@@ -74,10 +74,14 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         if self.object in followers:
             is_following = True
 
+        user_organizations = self.object.profile.get_organizations()
+
         context["is_following"] = is_following
         context["followers"] = followers
         context["followers_count"] = self.object.profile.get_followers_count()
         context["following_count"] = self.object.profile.get_following_count()
+
+        context["user_organizations"] = user_organizations
 
         return context
 
@@ -130,6 +134,7 @@ def user_delete_account(request):
 
 
 # onboarding
+@login_required
 def onboard_user(request):
     profile = request.user.profile
     if request.method == "POST":
@@ -142,3 +147,14 @@ def onboard_user(request):
     else:
         form = OnboardingForm(instance=profile)
     return render(request, "account/onboarding.html", {"form": form})
+
+
+@login_required
+def user_organizations(request, username):
+    username = request.user.username
+    user = get_object_or_404(User, username__iexact=username)
+    user_organizations = user.profile.get_organizations()
+
+    return render(
+        request, "users/organizations.html", {"user_organizations": user_organizations}
+    )

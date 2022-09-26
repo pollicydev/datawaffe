@@ -77,9 +77,11 @@
                     {% endif %}
                     <h3 class="text-bold mt-1"><a
                         href="{% url 'organizations:organization' organization.name %}">{{ organization.title }}</a>
-                    </h3><span class="cell-detail-description">15
-                      Datasets - 6
-                      Members - 100 Followers</span><span class="cell-detail-description">Member since 10 September 2022
+                    </h3><span class="cell-detail-description">{{ organization.get_datasets|length }}
+                      Datasets - {{ organization.members|length|add:1 }}
+                      <!-- plus 1 member for the owner-->
+                      Members - 100 Followers</span><span class="cell-detail-description">Added:
+                      {{ organization.create_date|date:"F j, Y"}}
                   </td>
                   <td class="cell-detail" data-organization="{{ organization.name }}">
                     <span class="cell-detail-description">{{ organization.about }}</span></td>

@@ -8,7 +8,8 @@ from rrap.users.views import (
     update_avatar,
     user_delete_account,
     delete_avatar,
-    onboard_user
+    onboard_user,
+    user_organizations,
 )
 
 app_name = "users"
@@ -26,4 +27,5 @@ urlpatterns = [
         name="onboarding",
     ),
     path("onboarding/profile", view=onboard_user, name="onboarding"),
+    path("<str:username>/organizations", view=user_organizations, name="organizations"),
 ]

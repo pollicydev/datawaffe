@@ -1,0 +1,31 @@
+[{
+  "model": "core.topic",
+  "pk": 1,
+  "fields": {
+    "name": "Education"
+  }
+}, {
+  "model": "core.topic",
+  "pk": 2,
+  "fields": {
+    "name": "Health"
+  }
+}, {
+  "model": "core.topic",
+  "pk": 3,
+  "fields": {
+    "name": "Laws"
+  }
+}, {
+  "model": "core.topic",
+  "pk": 4,
+  "fields": {
+    "name": "Employment"
+  }
+}, {
+  "model": "core.topic",
+  "pk": 5,
+  "fields": {
+    "name": "Safety"
+  }
+}]
