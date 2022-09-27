@@ -80,7 +80,8 @@
                     </h3><span class="cell-detail-description">{{ organization.get_datasets|length }}
                       Datasets - {{ organization.members|length|add:1 }}
                       <!-- plus 1 member for the owner-->
-                      Members - 100 Followers</span><span class="cell-detail-description">Added:
+                      Members - {{ organization.get_followers_count }} Followers</span><span
+                      class="cell-detail-description">Added:
                       {{ organization.create_date|date:"F j, Y"}}
                   </td>
                   <td class="cell-detail" data-organization="{{ organization.name }}">

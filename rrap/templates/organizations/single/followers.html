@@ -9,7 +9,7 @@
 
 {% block content %}
 
-{% include "organizations/single/nav_header.html" with active_tab="members" %}
+{% include "organizations/single/nav_header.html" with active_tab="followers" %}
 
 
 <div class="main-content container-fluid">
@@ -17,31 +17,15 @@
   <div class="row">
     <div class="col-md-12">
 
-      <h3>Administrator</h3>
+      <h3>Followers ({{ followers|length }})</h3>
 
       <div class="list-group">
-        <a class="list-group-item d-flex list-group-item-action"
-          href="{% url 'users:detail' organization.owner.username  %}">
+        {% for follower in followers %}
+        <a class="list-group-item d-flex list-group-item-action" href="{% url 'users:detail' follower.username  %}">
           <img class="rounded-circle mr-2 mb-2" width="50"
-            src="{% if organization.owner.profile.avatar %}{{ organization.owner.profile.avatar.url }}{% else %}{% gravatar user=organization.owner %}{% endif %}"
+            src="{% if follower.profile.avatar %}{{ follower.profile.avatar.url }}{% else %}{% gravatar user=follower %}{% endif %}"
             alt="Avatar" />
-          <h4 class="list-group-item-title">
-            {{ organization.owner.profile.name }}
-          </h4>
-        </a>
-      </div>
-
-      <h3>Members ({{ organization.members.all|length }})</h3>
-
-      <div class="list-group">
-        {% for member in organization.members.all %}
-        <a class="list-group-item d-flex list-group-item-action" href="{% url 'users:detail' member.username  %}">
-          <img class="rounded-circle mr-2 mb-2" width="50"
-            src="{% if member.profile.avatar %}{{ member.profile.avatar.url }}{% else %}{% gravatar user=member %}{% endif %}"
-            alt="Avatar" />
-          <h4 class="list-group-item-title">
-            <a href="#">{{ member.profile.name }}</a>
-          </h4>
+          <h4 class="list-group-item-title">{{ follower.profile.name }}</h4>
         </a>
         {% endfor %}
       </div>

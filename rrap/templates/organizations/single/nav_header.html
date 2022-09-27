@@ -77,8 +77,8 @@
         href="{% url 'core:org_activity' organization.name %}" role="tab">Activity stream</a></li>
     <li class="nav-item"><a class="nav-link {% if active_tab == 'members' %}active{% endif %}"
         href="{% url 'core:org_members' organization.name %}" role="tab">Members</a></li>
-    <li class="nav-item"><a class="nav-link {% if active_tab == 'stats' %}active{% endif %}" href=""
-        role="tab">Followers</a></li>
+    <li class="nav-item"><a class="nav-link {% if active_tab == 'followers' %}active{% endif %}"
+        href="{% url 'core:org_followers' organization.name %}" role="tab">Followers</a></li>
     <li class="nav-item"><a class="nav-link {% if active_tab == 'stats' %}active{% endif %}" href="" data-toggle="tab"
         role="tab">Stats</a></li>
   </ul>

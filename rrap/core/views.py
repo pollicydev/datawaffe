@@ -162,20 +162,63 @@ def organization(request, org_name):
 def organization_activity(request, org_name):
     organization = get_object_or_404(Organization, name=org_name)
     activity = {}
+    followers = organization.get_followers()
+    is_following = False
+    if request.user in followers:
+        is_following = True
+
+    followers_count = organization.get_followers_count()
 
     return render(
         request,
         "organizations/single/activity.html",
-        {"organization": organization, "activity": activity},
+        {
+            "organization": organization,
+            "activity": activity,
+            "is_following": is_following,
+            "follower_count": followers_count,
+        },
     )
 
 
 def organization_members(request, org_name):
     organization = get_object_or_404(Organization, name=org_name)
     members = {}
+    followers = organization.get_followers()
+    is_following = False
+    if request.user in followers:
+        is_following = True
+
+    followers_count = organization.get_followers_count()
 
     return render(
         request,
         "organizations/single/members.html",
-        {"organization": organization, "members": members},
+        {
+            "organization": organization,
+            "members": members,
+            "is_following": is_following,
+            "follower_count": followers_count,
+        },
+    )
+
+
+def organization_followers(request, org_name):
+    organization = get_object_or_404(Organization, name=org_name)
+    followers = organization.get_followers()
+    is_following = False
+    if request.user in followers:
+        is_following = True
+
+    followers_count = organization.get_followers_count()
+
+    return render(
+        request,
+        "organizations/single/followers.html",
+        {
+            "organization": organization,
+            "followers": followers,
+            "is_following": is_following,
+            "follower_count": followers_count,
+        },
     )

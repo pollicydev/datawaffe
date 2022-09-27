@@ -25,4 +25,9 @@ urlpatterns = [
         views.organization_members,
         name="org_members",
     ),
+    path(
+        "organizations/<str:org_name>/followers/",
+        views.organization_followers,
+        name="org_followers",
+    ),
 ]
