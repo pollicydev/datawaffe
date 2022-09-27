@@ -1,9 +1,9 @@
 $(function () {
-  $.fn.updateFollowersCount = function (org_id) {
+  $.fn.updateFollowersCount = function (organization_id) {
     var container = $(this);
     $.ajax({
       url: "/activity/update_followers_count/",
-      data: { "org-id": org_id },
+      data: { "organization-id": organization_id },
       type: "get",
       cache: false,
       success: function (data) {
@@ -15,12 +15,12 @@ $(function () {
   $(".user-actions button").click(function () {
     var btn = $(this);
     var user_actions = $(this).closest(".user-actions");
-    var org_id = $(user_actions).attr("data-org-id");
+    var organization_id = $(user_actions).attr("data-organization-id");
     // Unfollow action
     if ($(user_actions).hasClass("following")) {
       $.ajax({
         url: "/activity/unfollow/",
-        data: { "org-id": org_id },
+        data: { "organization-id": organization_id },
         type: "get",
         cache: false,
         beforeSend: function () {
@@ -33,7 +33,7 @@ $(function () {
           $(btn).addClass("btn-success");
           $(btn).html("<span class='icon mdi mdi-check-circle'></span> Follow");
           if ($(user_actions).hasClass("update-count")) {
-            $(".followers-count").updateFollowersCount(org_id);
+            $(".followers-count").updateFollowersCount(organization_id);
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {},
@@ -46,7 +46,7 @@ $(function () {
     else {
       $.ajax({
         url: "/activity/follow/",
-        data: { "org-id": org_id },
+        data: { "organization-id": organization_id },
         type: "get",
         cache: false,
         beforeSend: function () {
@@ -61,7 +61,7 @@ $(function () {
             "<span class='icon mdi mdi-minus-circle'></span> Unfollow"
           );
           if ($(user_actions).hasClass("update-count")) {
-            $(".followers-count").updateFollowersCount(org_id);
+            $(".followers-count").updateFollowersCount(organization_id);
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {},

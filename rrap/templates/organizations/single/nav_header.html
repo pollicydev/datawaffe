@@ -4,6 +4,7 @@
 <script type="text/javascript" src="{% static 'lib/rrap/activities.js' %}"></script>
 {% endblock javascript %}
 
+
 <div class="page-head">
   <nav aria-label="breadcrumb" role="navigation">
     <ol class="breadcrumb">
@@ -41,7 +42,7 @@
   <div class="row mt-4 mb-3">
     <div class="col-md-7 d-flex">
       <h6 class="mr-2 text-muted">{{ organization.members|length|add:1 }} MEMBERS</h6>
-      <h6 class="mr-2 text-muted">54 FOLLOWERS</h6>
+      <h6 class="mr-2 text-muted"><span class="followers-count">{{ follower_count }}</span> FOLLOWERS</h6>
       {% if organization.website %}
       <h6 class="text-muted"><a href="{{ organization.website }}" target="_blank">VISIT WEBSITE</a></h6>
       {% endif %}
@@ -49,14 +50,12 @@
     <div class="col-md-5">
       <p class="mt-2 mb-2">
         {% if is_following %}
-        is following
-        <span class="user-actions following update-count" data-org-id="{{ organization.id }}">
-          <button class="btn btn-space btn-danger">Unfollow</button>
+        <span class="user-actions following update-count" data-organization-id="{{ organization.id }}">
+          <button class="btn btn-space btn-danger"><span class='icon mdi mdi-minus-circle'></span> Unfollow</button>
         </span>
         {% else %}
-        not following lol
-        <span class="user-actions not-following update-count" data-org-id="{{ organization.id }}">
-          <button class="btn btn-space btn-success">Follow</button>
+        <span class="user-actions not-following update-count" data-organization-id="{{ organization.id }}">
+          <button class="btn btn-space btn-success"><span class='icon mdi mdi-check-circle'></span> Follow</button>
         </span>
         {% endif %}
         <button class="btn btn-space btn-secondary"><i class="icon icon-left mdi mdi-comment-text"></i>Request
@@ -78,6 +77,8 @@
         href="{% url 'core:org_activity' organization.name %}" role="tab">Activity stream</a></li>
     <li class="nav-item"><a class="nav-link {% if active_tab == 'members' %}active{% endif %}"
         href="{% url 'core:org_members' organization.name %}" role="tab">Members</a></li>
+    <li class="nav-item"><a class="nav-link {% if active_tab == 'stats' %}active{% endif %}" href=""
+        role="tab">Followers</a></li>
     <li class="nav-item"><a class="nav-link {% if active_tab == 'stats' %}active{% endif %}" href="" data-toggle="tab"
         role="tab">Stats</a></li>
   </ul>

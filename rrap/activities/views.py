@@ -19,8 +19,8 @@ User = get_user_model()
 @login_required
 def follow(request):
     try:
-        org_id = request.GET["organization-id"]
-        organization = get_object_or_404(Organization, pk=org_id)
+        organization_id = request.GET.get("organization-id")
+        organization = get_object_or_404(Organization, pk=organization_id)
         from_user = request.user
 
         following = from_user.profile.get_following()
@@ -42,8 +42,8 @@ def follow(request):
 @login_required
 def unfollow(request):
     try:
-        org_id = request.GET["organization-id"]
-        organization = get_object_or_404(Organization, pk=org_id)
+        organization_id = request.GET["organization-id"]
+        organization = get_object_or_404(Organization, pk=organization_id)
         from_user = request.user
 
         following = from_user.profile.get_following()
@@ -64,8 +64,8 @@ def unfollow(request):
 
 def update_followers_count(request):
     try:
-        org_id = request.GET["organization-id"]
-        organization = get_object_or_404(Organization, pk=org_id)
+        organization_id = request.GET["organization-id"]
+        organization = get_object_or_404(Organization, pk=organization_id)
         followers_count = organization.get_followers_count()
         return HttpResponse(followers_count)
     except Exception:
