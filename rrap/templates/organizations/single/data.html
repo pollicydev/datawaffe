@@ -46,12 +46,60 @@
       </div>
       <div class="row">
         <div class="col-md-3 border-right">
-          <div class="card">
-            <div class="card-header">Data filter</div>
-            <div class="card-body">
-
+          <h4 class="text-bold my-5">Filter datasets</h4>
+          <form method="GET" action=".">
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by location</div>
+              <div class="card-body card-body-contrast" style="max-height:200px; overflow-y: scroll;">
+                <div class="form-group row">
+                  <div class="col-12">
+                    {% for location in locations %}
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" id="{{ location.id }}" name="location"
+                        value="{{ location.id }}">
+                      <label class="custom-control-label" for="{{ location.id }}">{{ location.name }}</label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by organization</div>
+              <div class="card-body card-body-contrast">
+                <div class="form-group row">
+                  <div class="col-12">
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" id="{{ organization.name }}"
+                        value="{{ organization.name }}" name="organization" checked>
+                      <label class="custom-control-label" for="{{ organization.name }}">{{ organization.title }}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by topic</div>
+              <div class="card-body card-body-contrast">
+                <div class="form-group row">
+                  <div class="col-12">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by format</div>
+              <div class="card-body card-body-contrast">
+                <div class="form-group row">
+                  <div class="col-12">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-block btn-lg btn-primary">Filter</button>
+          </form>
         </div>
         <div class="col-md-9">
           <div class="card card-table">

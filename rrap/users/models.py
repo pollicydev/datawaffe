@@ -138,31 +138,14 @@ class Profile(models.Model):
         user_organizations.sort(key=lambda r: r.last_update, reverse=True)
         return user_organizations
 
-    def get_followers(self):
-        Activity = apps.get_model("activities", "Activity")
-        activities = Activity.objects.select_related("from_user__profile").filter(
-            to_user=self.user, activity_type=ActivityTypes.FOLLOW
-        )
-        followers = []
-        for activity in activities:
-            followers.append(activity.from_user)
-        return followers
-
-    def get_followers_count(self):
-        Activity = apps.get_model("activities", "Activity")
-        followers_count = Activity.objects.filter(
-            to_user=self.user, activity_type=ActivityTypes.FOLLOW
-        ).count()
-        return followers_count
-
     def get_following(self):
         Activity = apps.get_model("activities", "Activity")
-        activities = Activity.objects.select_related("to_user__profile").filter(
+        activities = Activity.objects.select_related("organization").filter(
             from_user=self.user, activity_type=ActivityTypes.FOLLOW
         )
         following = []
         for activity in activities:
-            following.append(activity.to_user)
+            following.append(activity.organization)
         return following
 
     def get_following_count(self):

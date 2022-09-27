@@ -1,3 +1,9 @@
+{% load static %}
+
+{% block javascript %}
+<script type="text/javascript" src="{% static 'lib/rrap/activities.js' %}"></script>
+{% endblock javascript %}
+
 <div class="page-head">
   <nav aria-label="breadcrumb" role="navigation">
     <ol class="breadcrumb">
@@ -23,21 +29,36 @@
       <a href="{% url 'data:add_data' organization.name %}" class="btn btn-lg btn-primary" role="button">Add data</a>
     </div>
     <div class="col-md-3 logo">
-      <img src="https://doodleipsum.com/185?shape=circle&bg=ceebff" alt="{{ dataset.organization.title }} logo" />
+      {% if organization.logo %}
+      <img src="{{ organization.logo.url }}" alt="{{ organization.title }} logo" height="150" />
+      {% else %}
+      <img src="https://doodleipsum.com/185?shape=circle&bg=ceebff" alt="{{ organization.title }} logo" />
+      {% endif %}
     </div>
   </div>
 
   <!-- organization toolbar -->
   <div class="row mt-4 mb-3">
     <div class="col-md-7 d-flex">
-      <h6 class="mr-2 text-muted">7 MEMBERS</h6>
+      <h6 class="mr-2 text-muted">{{ organization.members|length|add:1 }} MEMBERS</h6>
       <h6 class="mr-2 text-muted">54 FOLLOWERS</h6>
-      <h6 class="text-muted">VISIT WEBSITE</h6>
+      {% if organization.website %}
+      <h6 class="text-muted"><a href="{{ organization.website }}" target="_blank">VISIT WEBSITE</a></h6>
+      {% endif %}
     </div>
     <div class="col-md-5">
       <p class="mt-2 mb-2">
-        <button class="btn btn-space btn-success">Follow
-          Organization</button>
+        {% if is_following %}
+        is following
+        <span class="user-actions following update-count" data-org-id="{{ organization.id }}">
+          <button class="btn btn-space btn-danger">Unfollow</button>
+        </span>
+        {% else %}
+        not following lol
+        <span class="user-actions not-following update-count" data-org-id="{{ organization.id }}">
+          <button class="btn btn-space btn-success">Follow</button>
+        </span>
+        {% endif %}
         <button class="btn btn-space btn-secondary"><i class="icon icon-left mdi mdi-comment-text"></i>Request
           Membership</button>
         <button class="btn btn-space btn-secondary btn-social" type="button"><i

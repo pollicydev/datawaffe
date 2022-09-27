@@ -4,14 +4,13 @@ from django.dispatch import receiver
 from .models import Organization, generate_logo
 
 
+@receiver(pre_save, sender=Organization)
+def check_logo_exists(sender, instance, **kwargs):
+    if not instance.logo:
+        instance.logo = generate_logo(instance)
+
+
 @receiver(post_save, sender=Organization)
 def create_organization(sender, instance, created, **kwargs):
     if created:
-        Organization.objects.create(organization=instance)
-        organization = instance.organization
-        organization.logo = generate_logo(organization)
-
-
-@receiver(post_save, sender=Organization)
-def save_organization_profile(sender, instance, **kwargs):
-    instance.save()
+        instance.logo = generate_logo(instance)

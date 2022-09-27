@@ -138,11 +138,24 @@ def dataset(request, dataset_uuid):
 def organization(request, org_name):
     organization = get_object_or_404(Organization, name=org_name)
     datasets = organization.get_datasets()
+    locations = Location.objects.all()
+    followers = organization.get_followers()
+    is_following = False
+    if request.user in followers:
+        is_following = True
+
+    followers_count = organization.get_followers_count()
 
     return render(
         request,
         "organizations/single/data.html",
-        {"organization": organization, "datasets": datasets},
+        {
+            "organization": organization,
+            "datasets": datasets,
+            "locations": locations,
+            "is_following": is_following,
+            "follower_count": followers_count,
+        },
     )
 
 

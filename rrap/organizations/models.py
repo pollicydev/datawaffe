@@ -1,5 +1,6 @@
 import pyavagen
 import io
+from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.urls import reverse
@@ -8,7 +9,7 @@ from django.db import models
 from uuid import uuid4
 from rrap.core.managers import ActiveManager
 from rrap.datasets.models import Dataset
-from multiselectfield import MultiSelectField
+from rrap.activities.constants import ActivityTypes
 
 User = get_user_model()
 
@@ -25,8 +26,7 @@ def generate_logo(organization):
     logo = pyavagen.Avatar(
         pyavagen.CHAR_SQUARE_AVATAR,
         size=500,
-        string=organization.acronym,
-        blur_radius=100,
+        string=organization.title,
     )
     logo.generate().save(img_io, format="PNG", quality=100)
     img_content = ContentFile(img_io.getvalue(), f"{organization.pk}.png")
@@ -118,3 +118,20 @@ class Organization(models.Model):
 
     def get_datasets(self):
         return Dataset.objects.filter(organization__id=self.id)
+
+    def get_followers(self):
+        Activity = apps.get_model("activities", "Activity")
+        activities = Activity.objects.select_related("from_user__profile").filter(
+            organization=self, activity_type=ActivityTypes.FOLLOW
+        )
+        followers = []
+        for activity in activities:
+            followers.append(activity.from_user)
+        return followers
+
+    def get_followers_count(self):
+        Activity = apps.get_model("activities", "Activity")
+        followers_count = Activity.objects.filter(
+            organization=self, activity_type=ActivityTypes.FOLLOW
+        ).count()
+        return followers_count
