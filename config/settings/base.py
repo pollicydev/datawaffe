@@ -268,7 +268,7 @@ LOGGING = {
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_UNIQUE_EMAIL = True
@@ -290,7 +290,10 @@ def ACCOUNT_USER_DISPLAY(user):
     return user.username
 
 
-ACCOUNT_FORMS = {"signup": "rrap.users.forms.UserSignupForm"}
+ACCOUNT_FORMS = {
+    "signup": "rrap.users.forms.UserSignupForm",
+    "login": "rrap.users.forms.CustomLoginForm",
+}
 # django-compressor
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation

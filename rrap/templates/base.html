@@ -71,9 +71,11 @@
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'core:home' %}">TOPICS</a>
               </li>
+              {% if request.user.is_authenticated %}
               <li class="nav-item">
                 <a role="button" href="{% url 'users:organizations' user.username %}" class="nav-link btn btn-success text-white">ADD DATA</a>
               </li>
+              {% endif %}
             </ul>
           </div>
 
