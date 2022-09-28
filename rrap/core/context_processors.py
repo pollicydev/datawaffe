@@ -6,6 +6,7 @@ from rrap.core.models import Location
 
 def settings(request):
     return {
+        "rrap_logo": "http://127.0.0.1:8000/static/images/logo/logo.png",
         "rrap_version": django_settings.RRAP_VERSION,
         "rrap_environment": django_settings.RRAP_ENVIRONMENT,
         "recaptcha_enabled": django_settings.GOOGLE_RECAPTCHA_ENABLED,

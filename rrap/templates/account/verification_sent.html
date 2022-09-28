@@ -1,12 +1,18 @@
 {% extends "account/base.html" %}
 
-{% load i18n %}
+{% load static i18n %}
 
 {% block head_title %}{% translate "Verify Your E-mail Address" %}{% endblock %}
 
 {% block inner %}
-    <h1>{% translate "Verify Your E-mail Address" %}</h1>
-
-    <p>{% blocktranslate %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
-
+<div class="card card-border-color card-border-color-primary">
+  <div class="card-header card-header-divider"><a href="/"><img class="logo-img"
+        src="{% static 'images/logo/logo.png' %}" alt="logo" width="150" /></a><span
+      class="splash-description text-bold">Verify your email address</span></div>
+  <div class="card-body">
+    <p>{% blocktranslate %}We have sent an e-mail to you for verification. Follow the link provided to finalize the
+      signup process. Please contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
+  </div>
+</div>
+<div class="splash-footer"><span><a href="/">Return home</a></span></div>
 {% endblock %}

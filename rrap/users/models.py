@@ -62,8 +62,12 @@ def change_avatar(user, image_file):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(_("Your name"), blank=True, max_length=255)
-    bio = models.TextField(_("Your bio"), blank=True, max_length=300)
+    name = models.CharField(_("Your full name"), blank=True, max_length=255)
+    bio = models.TextField(
+        _("Add a short biography to tell others who you are"),
+        blank=True,
+        max_length=300,
+    )
 
     # avatar stuff
     avatar = models.ImageField(upload_to=get_avatar_full_path, blank=True)
