@@ -32402,10 +32402,12 @@ fieldset[disabled] .full-calendar .fc-button.active {
 }
 
 .widget.widget-tile .data-info .desc {
-  font-size: 1.077rem;
-  line-height: 18px;
+  font-size: 1.5rem;
+  line-height: 1.3;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-transform: uppercase !important;
+  font-weight: 900 !important;
+  text-overflow: ellipsis !important;
   white-space: nowrap;
 }
 

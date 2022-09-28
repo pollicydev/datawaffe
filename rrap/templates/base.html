@@ -13,10 +13,6 @@
     <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
 
     {% block css %}
-    <!-- Latest compiled and minified Bootstrap CSS -->
-    <!-- Your stuff: Third-party CSS libraries go here -->
-
-    <!-- This file stores project-specific CSS -->
     {% compress css %}
     <link rel="stylesheet" type="text/css" href="{% static 'lib/material-design-icons/css/material-design-iconic-font.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'lib/perfect-scrollbar/css/perfect-scrollbar.css' %}">
@@ -24,24 +20,51 @@
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     {% endcompress %}
     {% endblock %}
-    <!-- Le javascript
-    ================================================== -->
-    {# Placed at the top of the document so pages load faster with defer #}
 
-      <!-- place project specific Javascript in this file -->
-      {% compress js %}
-      <script src="{% static 'lib/jquery/jquery.min.js' %}" type="text/javascript"></script>				
-      <script src="{% static 'lib/perfect-scrollbar/js/perfect-scrollbar.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'lib/bootstrap/dist/js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
-      <script defer src="{% static 'js/app.js' %}"></script>
-      {% block javascript %}{% endblock javascript %}
-      <script type="text/javascript">
-        $(document).ready(function(){
-          //initialize the javascript
-          App.init();
+    {% compress js %}
+    <script src="{% static 'lib/jquery/jquery.min.js' %}" type="text/javascript"></script>				
+    <script src="{% static 'lib/perfect-scrollbar/js/perfect-scrollbar.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'lib/bootstrap/dist/js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+    <script defer src="{% static 'js/app.js' %}"></script>
+    {% block javascript %}{% endblock javascript %}
+    <script type="text/javascript">
+      $(document).ready(function(){
+        //initialize the javascript
+        App.init();
+      });
+    </script>
+    {% endcompress %}
+
+  {% if rrap_environment == "production" %}
+    {% if google_analytics_ua %}
+      <!-- Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_analytics_ua }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ google_analytics_ua }}'{% if user.is_authenticated %}, {'user_id': '{{ user.pk }}'}{% endif %});
+      </script>
+    {% endif %}
+
+    {% if sentry_dsn %}
+      <!-- Sentry -->
+      <script
+        src="https://browser.sentry-cdn.com/6.12.0/bundle.tracing.min.js"
+        integrity="sha384-rw3H9WWu9WpZYuqFa9AinpFrirprH4iUuo0HWGP2cjf0wZIa4wH+Wbo4vjkaH+bX"
+        crossorigin="anonymous"
+      ></script>
+      <script>
+        Sentry.init({
+          dsn: "{{ sentry_dsn }}",
+          release: "{{ rrap_version }}",
+          environment: "{{ rrap_environment }}",
+          integrations: [new Sentry.Integrations.BrowserTracing()],
+          tracesSampleRate: 0.01
         });
       </script>
-      {% endcompress %}
+    {% endif %}
+  {% endif %}
 
   </head>
 
@@ -114,7 +137,7 @@
                           <ul>
                             <li class="notification notification-unread"><a href="#">
                                 <div class="notification-info">
-                                  <div class="text"><span class="user-name">Jessica Nambi</span> added a dataset to UBOS.</div><span class="date">2 min ago</span>
+                                  <div class="text"><span class="user-name">Jessica Nambi</span> added a dataset to Uganda Bureau of Statistics.</div><span class="date">2 min ago</span>
                                 </div></a></li>
                             <li class="notification"><a href="#">
                                 <div class="notification-info">
@@ -176,6 +199,7 @@
         <div class="row">
           <div class="col-sm-12 col-md-8">
             <ul class="nav">
+              <li class="nav-item"><a class="nav-link text-secondary" href="/">v{{rrap_version}}</a></li>
               <li class="nav-item"><a class="nav-link text-secondary" href="#">Terms of service</a></li>
               <li class="nav-item"><a class="nav-link text-secondary" href="#">Privacy policy</a></li>
               <li class="nav-item"><a class="nav-link text-secondary" href="#">Open Source &amp; QA</a></li>
