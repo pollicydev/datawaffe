@@ -7,8 +7,8 @@
 {% block inner %}
 
 <div class="card card-border-color card-border-color-primary">
-  <div class="card-header"><img class="logo-img" src="{% static 'images/logo/logo.png' %}" alt="logo" width="150"><span
-      class="splash-description">Sign Up</span></div>
+  <div class="card-header"><a href="/"><img class="logo-img" src="{% static 'images/logo/logo.png' %}" alt="logo"
+        width="150" /></a><span class="splash-description">Sign Up</span></div>
   <div class="card-body">
     <form class="login" method="POST" action="{% url 'account_login' %}">
       {% csrf_token %}

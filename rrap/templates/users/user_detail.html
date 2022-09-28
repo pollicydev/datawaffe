@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% load static user_extras %}
 
-{% block title %}User: {{ object.username }}{% endblock %}
+{% block title %}User:
+{% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}{% endblock %}
 
 {% block content %}
 
@@ -19,71 +20,100 @@
       </li>
     </ol>
   </nav>
+  <h2 class="page-head-title">
+    {% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}</h2>
 </div>
 
 <div class="main-content container-fluid">
   <div class="user-profile mt-5">
     <div class="row">
-      <div class="col-lg-12">
-        <div class="user-display">
-          <div class="user-display-bg"><img src="{% static 'img/user-profile-display.png' %}" alt="Profile Background">
-          </div>
-          <div class="user-display-bottom">
-            <div class="user-display-avatar"><img
-                src="{% if object.profile.avatar %}{{ object.profile.avatar.url }}{% else %}{% gravatar user=object %}{% endif %}"
-                alt="Avatar"></div>
-            <div class="user-display-info">
-              <div class="name">
-                {% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}</div>
-              <div class="nick"><span class="mdi mdi-account"></span> {{ object.username }}</div>
-              <p class="text-muted">Member since {{ object.date_joined|date:"d F, Y" }}</p>
-            </div>
-            <div class="row user-display-details">
-              <div class="col-3">
-                <div class="title">Organizations</div>
-                <div class="counter">{{ user_organizations|length }}</div>
-              </div>
-              <div class="col-3">
-                <div class="title">Datasets</div>
-                <div class="counter">26</div>
-              </div>
-              <div class="col-3">
-                <div class="title">Followers</div>
-                <div class="counter followers-count">{{ followers_count }}</div>
-              </div>
-              <div class="col-3">
-                <div class="title">Following</div>
-                <div class="counter following-count">{{ following_count }}</div>
-              </div>
-            </div>
-            {% if object == request.user %}
-            <div class="row mt-5">
-
-              <div class="col-sm-12">
-                <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">Edit profile</a>
-                <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">User settings</a>
-              </div>
-            </div>
-            {% else %}
-            {% if is_following %}
-            <span class="user-actions following update-count" data-user-id="{{ object.id }}">
-              <button class="btn btn-danger" type="button"><span class="icon mdi mdi-minus-circle"></span>
-                Unfollow</button>
-            </span>
-            {% else %}
-            <span class="user-actions not-following update-count" data-user-id="{{ object.id }}">
-              <button class="btn btn-success" type="button"><span class="icon mdi mdi-check-circle"></span>
-                Follow</button>
-            </span>
-            {% endif %}
-            {% endif %}
-          </div>
-        </div>
+      <div class="col-md-3 border-right">
         <div class="user-info-list card">
-          <div class="card-header card-header-divider">About Me<span class="card-subtitle">I am a web developer and
-              designer based in Montreal - Canada, I like read books, good music and nature.</span></div>
           <div class="card-body">
-            {{ followers }}
+            <img class="rounded-circle img-thumbnail"
+              src="{% if object.profile.avatar %}{{ object.profile.avatar.url }}{% else %}{% gravatar user=object %}{% endif %}"
+              alt="Avatar">
+            <h3 class="text-center text-bold mb-3">
+              {% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}
+            </h3>
+            {% if object.profile.bio %}
+            <p class="text-center">{{ object.profile.bio }}</p>
+            {% else %}
+            <p class="text-center">This user has no biography yet</p>
+            {% endif %}
+            <table class="no-border no-strip skills">
+              <tbody class="no-border-x no-border-y">
+                <tr>
+                  <td class="icon"><span class="mdi mdi-account"></span></td>
+                  <td class="item">Username:</td>
+                  <td>{{ object.username }}</td>
+                </tr>
+                <tr>
+                  <td class="icon"><span class="mdi mdi-time"></span></td>
+                  <td class="item">Joined:</td>
+                  <td>{{ object.date_joined|date:"d F, Y" }}</td>
+                </tr>
+                <tr>
+                  <td class="icon"><span class="mdi mdi-check-circle"></span></td>
+                  <td class="item">Following:</td>
+                  <td>{{ following_count }} organizations</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer card-footer-contrast"><a class="btn btn-secondary btn-lg btn-block"
+              href="{% url 'users:update_profile' %}">Edit profile</a></div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item"><a class="nav-link active" href="#organizations" data-toggle="tab" role="tab">User's
+              organizations
+              ({{ user_organizations|length }})</a></li>
+          <li class="nav-item"><a class="nav-link" href="#activity" role="tab" data-toggle="tab">Activity stream</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="organizations" role="tabpanel">
+            <table class="table table-hover be-table-responsive" id="organizationsTable">
+              <thead>
+                <tr>
+                  <th style="width:10%;padding:0px;"></th>
+                  <th style="width:10%;padding:0px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for organization in user_organizations %}
+                <tr>
+                  <td class="user-avatar cell-detail org-info">
+                    {% if organization.status == 0 %}
+                    <span style="display: inline-block;"
+                      class="badge badge-lg badge-warning">{{ organization.get_status_display }}</span>
+                    {% elif organization.status == 1 %}
+                    <span style="display: inline-block;"
+                      class="badge badge-lg badge-success">{{ organization.get_status_display }}</span>
+                    {% else %}
+                    <span style="display: inline-block;"
+                      class="badge badge-lg badge-danger">{{ organization.get_status_display }}</span>
+                    {% endif %}
+                    <h3 class="text-bold mt-1"><a
+                        href="{% url 'organizations:organization' organization.name %}">{{ organization.title }}</a>
+                    </h3><span class="cell-detail-description">{{ organization.get_datasets|length }}
+                      Datasets - {{ organization.members|length|add:1 }}
+                      <!-- plus 1 member for the owner-->
+                      Members - {{ organization.get_followers_count }} Followers</span><span
+                      class="cell-detail-description">Added:
+                      {{ organization.create_date|date:"F j, Y"}}
+                  </td>
+                  <td class="cell-detail" data-organization="{{ organization.name }}">
+                    <span class="cell-detail-description">{{ organization.about }}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane" id="activity" role="tabpanel">
+            <h4>Activity</h4>
           </div>
         </div>
       </div>

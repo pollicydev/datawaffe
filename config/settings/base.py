@@ -2,7 +2,7 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
-
+import mimetypes
 import environ
 
 from rrap.core.constants import Environments
@@ -294,6 +294,7 @@ def ACCOUNT_USER_DISPLAY(user):
 ACCOUNT_FORMS = {
     "signup": "rrap.users.forms.UserSignupForm",
     "login": "rrap.users.forms.CustomLoginForm",
+    "reset_password": "rrap.users.forms.CustomResetPasswordForm",
 }
 # django-compressor
 # ------------------------------------------------------------------------------
@@ -337,3 +338,6 @@ SELECT2_JS = "lib/select2/js/select2.full.min.js"
 TAGGIT_CASE_INSENSITIVE = True
 
 MAPBOX_ACCESS_TOKEN = env("MAPBOX_ACCESS_TOKEN", default="")
+
+mimetypes.add_type("image/svg+xml", ".svg", True)
+mimetypes.add_type("image/svg+xml", ".svgz", True)

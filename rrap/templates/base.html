@@ -73,7 +73,7 @@
               </li>
               {% if request.user.is_authenticated %}
               <li class="nav-item">
-                <a role="button" href="{% url 'users:organizations' user.username %}" class="nav-link btn btn-success text-white">ADD DATA</a>
+                <a role="button" href="{% url 'users:organizations' user.username %}" class="nav-link btn btn-primary text-white">ADD DATA</a>
               </li>
               {% endif %}
             </ul>

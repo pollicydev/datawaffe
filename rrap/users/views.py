@@ -69,18 +69,10 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        followers = self.object.profile.get_followers()
-        is_following = False
-        if self.object in followers:
-            is_following = True
 
         user_organizations = self.object.profile.get_organizations()
-
-        context["is_following"] = is_following
-        context["followers"] = followers
-        context["followers_count"] = self.object.profile.get_followers_count()
+        context["following"] = self.object.profile.get_following()
         context["following_count"] = self.object.profile.get_following_count()
-
         context["user_organizations"] = user_organizations
 
         return context

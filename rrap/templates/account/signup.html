@@ -6,7 +6,8 @@
 
 {% block inner %}
 <div class="card card-border-color card-border-color-primary">
-  <div class="card-header"><img class="logo-img" src="{% static 'images/logo/logo.png' %}" alt="logo" width="150"></div>
+  <div class="card-header"><a href="/"><img class="logo-img" src="{% static 'images/logo/logo.png' %}" alt="logo"
+        width="150" /></a></div>
   <div class="card-body">
     <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}

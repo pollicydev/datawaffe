@@ -12,8 +12,8 @@ from .models import Location
 from rrap.datasets.filters import location_based_filter, dataset_filter
 
 
-@login_required()
-@onboarding_required()
+@login_required
+@onboarding_required
 def home(request):
     profile = request.user.profile
 
