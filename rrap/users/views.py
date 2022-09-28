@@ -135,7 +135,7 @@ def onboard_user(request):
             form.save()
             profile.has_finished_registration = True
             form.save()
-            return redirect("dashboard")
+            return redirect("core:home")
     else:
         form = OnboardingForm(instance=profile)
     return render(request, "account/onboarding.html", {"form": form})
