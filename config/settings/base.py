@@ -295,6 +295,8 @@ ACCOUNT_FORMS = {
     "signup": "rrap.users.forms.UserSignupForm",
     "login": "rrap.users.forms.CustomLoginForm",
     "reset_password": "rrap.users.forms.CustomResetPasswordForm",
+    "add_email": "rrap.users.forms.CustomAddEmailForm",
+    "change_password": "rrap.users.forms.CustomChangePasswordForm",
 }
 # django-compressor
 # ------------------------------------------------------------------------------

@@ -1,7 +1,16 @@
 {% extends "base.html" %}
-{% load i18n static user_extras crispy_forms_tags %}
+{% load static user_extras crispy_forms_tags %}
 
 {% block title %}Edit Profile{% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'lib/sweetalert2/sweetalert2.min.css' %}">
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'lib/sweetalert2/sweetalert2.min.js' %}"></script>
+{% endblock %}
+
 
 {% block content %}
 <div class="page-head">
@@ -13,9 +22,12 @@
       <li class="breadcrumb-item">
         <a href="#">Users</a>
       </li>
-      <li class="breadcrumb-item active">
-        <a href=""><i
+      <li class="breadcrumb-item">
+        <a href="{% url 'users:detail' user.username %}"><i
             class="breadcrumb-icon fa fa-angle-left"></i>{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href=""><i class="breadcrumb-icon fa fa-angle-left"></i>Edit profile</a>
       </li>
     </ol>
   </nav>
@@ -31,9 +43,15 @@
       </div>
       <div class="col-md-9">
         <ul class="nav nav-tabs" role="tablist">
-          {% include 'users/menu.html' with active='account_email' %}
+          {% include 'users/menu.html' with active='update_profile' %}
         </ul>
         <div class="tab-content">
+          <div class="tab-pane active" id="profile" role="tabpanel">
+            <form class="form-horizontal" method="post" action="{% url 'users:update_profile' %}">
+              {% csrf_token %}
+              {% crispy form %}
+            </form>
+          </div>
           <div class="tab-pane" id="avatar" role="tabpanel">
             <div class="d-lg-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center mb-4 mb-lg-0">
@@ -46,7 +64,7 @@
                   alt="" />
                 {% endif %}
                 <div class="ml-3">
-                  <h4 class="mb-0">Update your avatar</h4>
+                  <h4 class="mb-0">Update your avatar?</h4>
                   <p class="mb-0">
                     PNG or JPG no bigger than 800px wide and tall.
                   </p>
@@ -70,64 +88,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane active" id="email" role="tabpanel">
-            <h3 class="text-bold">E-mail Addresses</h3>
 
-            {% if user.emailaddress_set.all %}
-            <p>{% translate 'The following e-mail addresses are associated with your account:' %}</p>
-
-            <form action="{% url 'account_email' %}" class="email_list" method="post">
-              {% csrf_token %}
-              <fieldset class="blockLabels">
-
-                {% for emailaddress in user.emailaddress_set.all %}
-                <div class="radio">
-                  <label for="email_radio_{{forloop.counter}}"
-                    class="{% if emailaddress.primary %}primary_email{%endif%} custom-control custom-radio">
-
-                    <input id="email_radio_{{forloop.counter}}" type="radio" name="email" class="custom-control-input"
-                      {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked" {%endif %}
-                      value="{{emailaddress.email}}" />
-
-                    <span class="custom-control-label">{{ emailaddress.email }}</span>
-                    {% if emailaddress.verified %}
-                    <span class="badge badge-success verified">{% translate "Verified" %}</span>
-                    {% else %}
-                    <span class="badge badge-danger unverified">{% translate "Unverified" %}</span>
-                    {% endif %}
-                    {% if emailaddress.primary %}<span
-                      class="badge badge-primary primary">{% translate "Primary" %}</span>{% endif %}
-                  </label>
-                </div>
-                {% endfor %}
-
-                <div class="form-group">
-                  <button class="secondaryAction btn btn-outline-primary" type="submit"
-                    name="action_primary">{% translate 'Make primary' %}</button>
-                  <button class="secondaryAction btn btn-outline-success" type="submit"
-                    name="action_send">{% translate 'Re-send verification' %}</button>
-                  <button class="primaryAction btn btn-outline-danger" type="submit"
-                    name="action_remove">{% translate 'Remove email' %}</button>
-                </div>
-
-              </fieldset>
-            </form>
-            {% else %}
-            <p><strong>{% translate 'Warning:'%}</strong>
-              {% translate "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}
-            </p>
-
-            {% endif %}
-
-
-            <h3 class="text-bold">Add e-mail address</h3>
-
-            <form method="post" action="{% url 'account_email' %}" class="add_email">
-              {% csrf_token %}
-              {{ form|crispy }}
-              <button class="btn btn-primary" name="action_add" type="submit">{% translate "Add E-mail" %}</button>
-            </form>
-          </div>
           <div class="tab-pane" id="account" role="tabpanel">
             <div class="card">
               <!-- Card header -->
@@ -183,23 +144,6 @@
 {% endblock modal %}
 
 {% block inline_javascript %}
-
-<script type="text/javascript">
-  window.addEventListener('DOMContentLoaded', function () {
-    const message = "{% translate 'Do you really want to remove the selected e-mail address?' %}";
-    const actions = document.getElementsByName('action_remove');
-    if (actions.length) {
-      actions[0].addEventListener("click", function (e) {
-        if (!confirm(message)) {
-          e.preventDefault();
-        }
-      });
-    }
-    Array.from(document.getElementsByClassName('form-group')).forEach(x => x.classList.remove('row'));
-  });
-
-</script>
-
 <script>
   (function ($) {
 
@@ -224,7 +168,7 @@
             var reader = new FileReader();
             reader.onload = function (re) {
               Swal.fire({
-                text: 'Use this as your avatar? Confirm that your face is front and center',
+                text: 'Does this look good? Confirm that your face is front and center!',
                 imageUrl: re.target.result,
                 imageWidth: 240,
                 imageHeight: 240,
@@ -234,9 +178,9 @@
                 cancelButtonText: 'No',
                 confirmButtonText: 'Yes',
                 customClass: {
-                  image: 'avatar-xl rounded-circle',
-                  confirmButton: 'btn btn-md btn-primary mr-3',
-                  cancelButton: 'btn btn-md btn-secondary',
+                  image: 'img-thumbnail rounded-circle',
+                  confirmButton: 'btn btn-primary btn-space',
+                  cancelButton: 'btn btn-secondary btn-space',
                 },
                 buttonsStyling: false
               }).then(result => {
@@ -253,10 +197,9 @@
                   // Display progress
                   var preview = $(form.attr('data-preview'));
                   preview.html(
-                    '<div style="width: 120px; height: 120px; padding: 30px; margin: 0;">' +
-                    '<div class="spinner-border dccn-loading-progress" ' +
-                    'style="margin: 0; padding: 0; width: 60px; height: 60px;" role="status">' +
-                    '<span class="sr-only">Loading...</span>' +
+                    '<div class="be-loading">' +
+                    '<div class="be-spinner">' +
+                    '<svg width="40px" height="40px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"<circle fill="none" stroke-width="4" stroke-linecap="round" cx="33" cy="33" r="30" class="circle"></circle></svg>' +
                     '</div></div>'
                   )
                 } else {

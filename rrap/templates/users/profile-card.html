@@ -1,0 +1,40 @@
+{% load user_extras %}
+
+<div class="user-info-list card">
+  <div class="card-body">
+    <img class="rounded-circle img-thumbnail"
+      src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% gravatar user=user %}{% endif %}"
+      alt="Avatar">
+    <h3 class="text-center text-bold mb-3">
+      {% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}
+    </h3>
+    {% if user.profile.bio %}
+    <p class="text-center">{{ user.profile.bio }}</p>
+    {% else %}
+    <p class="text-center">This user has no biography yet</p>
+    {% endif %}
+    <table class="no-border no-strip skills">
+      <tbody class="no-border-x no-border-y">
+        <tr>
+          <td class="icon"><span class="mdi mdi-email"></span></td>
+          <td class="item">Email:</td>
+          <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+          <td class="icon"><span class="mdi mdi-account"></span></td>
+          <td class="item">Username:</td>
+          <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+          <td class="icon"><span class="mdi mdi-time"></span></td>
+          <td class="item">Joined:</td>
+          <td>{{ user.date_joined|date:"d F, Y" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  {% if request.user == user %}
+  <div class="card-footer card-footer-contrast"><a class="btn btn-primary btn-lg btn-block"
+      href="{% url 'users:update_profile' %}">Edit profile</a></div>
+  {% endif %}
+</div>

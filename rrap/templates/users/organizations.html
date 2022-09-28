@@ -38,8 +38,10 @@
             class="card-subtitle">{{ organization.acronym }}</span></div>
         <div class="card-body">
           <p>{{ organization.about }}</p>
-          <a class="btn btn-space btn-primary" href="{% url 'data:add_data' organization.name %}">Add data</a>
-          <a class="btn btn-space btn-success" href="{% url 'organizations:edit' organization.name %}">Edit
+          <a class="btn btn-space btn-secondary"
+            href="{% url 'organizations:organization' organization.name %}">View</a>
+          <a class="btn btn-space btn-success" href="{% url 'data:add_data' organization.name %}">Add data</a>
+          <a class="btn btn-space btn-primary" href="{% url 'organizations:edit' organization.name %}">Edit
             organization</a>
         </div>
       </div>

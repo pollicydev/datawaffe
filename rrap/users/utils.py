@@ -10,6 +10,12 @@ from crispy_forms.layout import Layout, Submit
 
 
 class ProfileForm(forms.ModelForm):
+    bio = forms.CharField(
+        widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "3"}),
+        max_length=500,
+        required=False,
+    )
+
     class Meta:
         model = Profile
         fields = (
@@ -19,6 +25,8 @@ class ProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
         self.helper = FormHelper()
         self.helper.layout = Layout(
             "name",
@@ -37,6 +45,8 @@ class OnboardingForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
         self.helper = FormHelper()
         self.helper.layout = Layout(
             "name",

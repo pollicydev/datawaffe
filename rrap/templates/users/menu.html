@@ -1,0 +1,14 @@
+<li class="nav-item"><a class="nav-link {% if active == 'update_profile' %}active{% endif %}"
+    href="{% url 'users:update_profile' %}" role="tab">Edit profile</a>
+</li>
+<li class="nav-item"><a class="nav-link" href="#avatar" data-toggle="tab" role="tab">Avatar</a>
+</li>
+<li class="nav-item"><a class="nav-link {% if active == 'account_email' %}active{% endif %}"
+    href="{% url 'account_email' %}" role="tab">Email settings</a>
+</li>
+<li class="nav-item"><a class="nav-link {% if active == 'account_change_password' %}active{% endif %}"
+    href="{% url 'account_change_password' %}" role="tab">Security
+    settings</a>
+</li>
+<li class="nav-item"><a class="nav-link" href="#account" role="tab" data-toggle="tab">Account settings</a>
+</li>

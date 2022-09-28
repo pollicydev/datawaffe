@@ -87,7 +87,19 @@
                   <div class="user-info">
                     <div class="user-name">{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}</div>
                     <div class="user-position online">Online</div>
-                  </div><a class="dropdown-item" href="{% url 'users:organizations' user.username %}"><span class="icon mdi mdi-apps"></span>Your organizations</a><a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><span class="icon mdi mdi-face"></span>Account</a><a class="dropdown-item" href="#"><span class="icon mdi mdi-settings"></span>Settings</a><a class="dropdown-item" href="{% url 'account_logout' %}"><span class="icon mdi mdi-power"></span>Logout</a>
+                  </div>
+                  <a class="dropdown-item" href="{% url 'users:organizations' user.username %}">
+                    <span class="icon mdi mdi-apps"></span>Your organizations
+                  </a>
+                  <a class="dropdown-item" href="{% url 'users:detail' user.username  %}">
+                    <span class="icon mdi mdi-face"></span>Profile
+                  </a>
+                  <a class="dropdown-item" href="{% url 'users:update_profile'  %}">
+                    <span class="icon mdi mdi-settings"></span>Account Settings
+                  </a>
+                  <a class="dropdown-item" href="{% url 'account_logout' %}">
+                    <span class="icon mdi mdi-power"></span>Logout
+                  </a>
                 </div>
               </li>
             </ul>
@@ -102,11 +114,11 @@
                           <ul>
                             <li class="notification notification-unread"><a href="#">
                                 <div class="notification-info">
-                                  <div class="text"><span class="user-name">Jessica Caruso</span> accepted your invitation to join the team.</div><span class="date">2 min ago</span>
+                                  <div class="text"><span class="user-name">Jessica Nambi</span> added a dataset to UBOS.</div><span class="date">2 min ago</span>
                                 </div></a></li>
                             <li class="notification"><a href="#">
                                 <div class="notification-info">
-                                  <div class="text"><span class="user-name">Joel King</span> is now following you</div><span class="date">2 days ago</span>
+                                  <div class="text"><span class="user-name">Joel Kintu</span> is now following your organization IBU</div><span class="date">2 days ago</span>
                                 </div></a></li>
                           </ul>
                         </div>

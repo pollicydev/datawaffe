@@ -5,7 +5,12 @@ from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, HTML
 from .utils import PasswordProtectedForm
-from allauth.account.forms import LoginForm, ResetPasswordForm
+from allauth.account.forms import (
+    LoginForm,
+    ResetPasswordForm,
+    AddEmailForm,
+    ChangePasswordForm,
+)
 
 User = get_user_model()
 
@@ -73,5 +78,19 @@ class CustomLoginForm(LoginForm):
 class CustomResetPasswordForm(ResetPasswordForm):
     def __init__(self, *args, **kwargs):
         super(CustomResetPasswordForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+
+
+class CustomAddEmailForm(AddEmailForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomAddEmailForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+
+
+class CustomChangePasswordForm(ChangePasswordForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomChangePasswordForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs["class"] = "form-control"
