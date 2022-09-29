@@ -114,6 +114,9 @@
                   <a class="dropdown-item" href="{% url 'users:organizations' user.username %}">
                     <span class="icon mdi mdi-apps"></span>Your organizations
                   </a>
+                  <a class="dropdown-item" href="{% url 'users:user_invites' user.username %}">
+                    <span class="icon mdi mdi-email-open"></span>Your invitations {% if total_pending_invitations != 0 %}({{total_pending_invitations}}){% endif %}
+                  </a>
                   <a class="dropdown-item" href="{% url 'users:detail' user.username  %}">
                     <span class="icon mdi mdi-face"></span>Profile
                   </a>
@@ -127,27 +130,36 @@
               </li>
             </ul>
             <ul class="nav navbar-nav float-right be-icons-nav">
-              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="icon mdi mdi-notifications"></span><span class="indicator"></span></a>
+              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span class="icon mdi mdi-notifications"></span>{% if total_pending_invitations != 0 %}<span class="indicator"></span>{% endif %}</a>
                 <ul class="dropdown-menu be-notifications">
                   <li>
-                    <div class="title">Notifications<span class="badge badge-pill">2</span></div>
+                    <div class="title">Invitations<span class="badge badge-pill">{{total_pending_invitations}}</span></div>
                     <div class="list">
                       <div class="be-scroller-notifications">
                         <div class="content">
                           <ul>
-                            <li class="notification notification-unread"><a href="#">
+                            {% if pending_invitations %}
+                            {% for invitation in pending_invitations %}
+                            <li class="notification notification-unread">
+                              <a href="{{ invitation.full_invitation_url }}">
                                 <div class="notification-info">
-                                  <div class="text"><span class="user-name">Jessica Nambi</span> added a dataset to Uganda Bureau of Statistics.</div><span class="date">2 min ago</span>
-                                </div></a></li>
-                            <li class="notification"><a href="#">
+                                  <div class="text"><span class="user-name">{{ invitation.invited_by.profile.name }}</span> invited you to collaborate on {{ invitation.organization.title }}.</div><span class="date">{{ invitation.date_sent|date:"SHORT_DATE_FORMAT" }}</span>
+                                </div>
+                              </a>
+                            </li>
+                              {% endfor %}
+                              {% else %}
+                              <li class="notification notification-unread">
                                 <div class="notification-info">
-                                  <div class="text"><span class="user-name">Joel Kintu</span> is now following your organization IBU</div><span class="date">2 days ago</span>
-                                </div></a></li>
+                                  <div class="text p-3"><span class="user-name">You have no invitations at this time.</span></div>
+                                </div>
+                              </li>
+                              {% endif %}
                           </ul>
                         </div>
                       </div>
                     </div>
-                    <div class="footer"> <a href="#">View all notifications</a></div>
+                    <div class="footer"> <a href="{% url 'users:user_invites' user.username %}">View all</a></div>
                   </li>
                   
                 </ul>
@@ -176,10 +188,24 @@
       <div class="container">
       {% if messages %}
         {% for message in messages %}
-          <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="mdi mdi-close" aria-hidden="true"></span></button>
-            {% if message.tags %}
-            <div class="icon"><span class="mdi mdi-{{ message.tags }}"></span></div>
+        <div class="alert alert-success alert-icon alert-icon-border alert-dismissible" role="alert">
+          <div class="icon"><span class="mdi mdi-check"></span></div>
+          <div class="message">
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="mdi mdi-close" aria-hidden="true"></span></button><strong>Good!</strong> Better check yourself, you're not looking too good.
+          </div>
+        </div>
+          <div class="alert alert-icon alert-dismissible alert-icon-border {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="mdi mdi-close-circle-o" aria-hidden="true"></span></button>
+            {% if message.tags == 'success' %}
+            <div class="icon"><span class="mdi mdi-check"></span></div>
+            {% elif message.tags == 'info' %}
+            <div class="icon"><span class="mdi mdi-info-outline"></span></div>
+            {% elif message.tags == 'error' or message.tags == 'danger' %}
+            <div class="icon"><span class="mdi mdi-close-circle-o"></span></div>
+            {% elif message.tags == 'warning' %}
+            <div class="icon"><span class="mdi mdi-alert-triangle"></span></div>
+            {% else %}
+            <div class="icon"><span class="mdi mdi-notifications"></span></div>
             {% endif %}
             <div class="message">
             {{ message }}

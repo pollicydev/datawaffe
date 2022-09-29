@@ -1,16 +1,13 @@
 from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden
-
+from django.contrib import messages
 from rrap.organizations.models import Organization
 
 
 def main_owner_required(f):
     def wrap(request, *args, **kwargs):
-        if "org_name" in kwargs and "username" in kwargs:
+        if "org_name" in kwargs:
             try:
-                organization = Organization.objects.get(
-                    name=kwargs["org_name"],
-                    owner__username__iexact=kwargs["username"],
-                )
+                organization = Organization.objects.get(name=kwargs["org_name"])
                 if organization.owner.id == request.user.id:
                     return f(request, *args, **kwargs)
                 else:
@@ -39,12 +36,9 @@ def main_owner_required(f):
 
 def member_required(f):
     def wrap(request, *args, **kwargs):
-        if "org_name" in kwargs and "username" in kwargs:
+        if "org_name" in kwargs:
             try:
-                organization = Organization.objects.get(
-                    name=kwargs["org_name"],
-                    owner__username__iexact=kwargs["username"],
-                )
+                organization = Organization.objects.get(name=kwargs["org_name"])
                 if organization.is_owner_or_member(request.user):
                     return f(request, *args, **kwargs)
                 else:

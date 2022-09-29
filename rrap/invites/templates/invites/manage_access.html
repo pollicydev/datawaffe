@@ -77,6 +77,25 @@
       <div class="card">
         <div class="card-header">Send invitation</div>
         <div class="card-body">
+          {% if form.invitee.errors %}
+          <ul class="parsley-errors-list filled" id="parsley-invites">
+            {% for error in form.invitee.errors %}
+            <li class="parsley-required">{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% elif form.invitee_email.errors %}
+          <ul class="parsley-errors-list filled" id="parsley-invites">
+            {% for error in form.invitee_email.errors %}
+            <li class="parsley-required">{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% elif form.non_field_errors %}
+          <ul class="parsley-errors-list filled" id="parsley-invites">
+            {% for error in form.non_field_errors %}
+            <li class="parsley-required">{{ error }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
           <form action="" method="post">
             {% csrf_token %}
             {{ form|crispy }}

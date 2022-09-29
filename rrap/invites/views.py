@@ -105,7 +105,7 @@ class AcceptUserInviteView(LoginRequiredMixin, View):
             request,
             _("You have joined the organization %s.") % invite.organization.title,
         )
-        return redirect(invite.organization)
+        return redirect("users:organizations", invite.invitee.username)
 
 
 class RejectUserInviteView(LoginRequiredMixin, View):
@@ -120,4 +120,4 @@ class RejectUserInviteView(LoginRequiredMixin, View):
             _("You have rejected the invitation to join the organization %s.")
             % invite.organization.title,
         )
-        return redirect("user_invites")
+        return redirect("users:organizations", invite.invitee.username)

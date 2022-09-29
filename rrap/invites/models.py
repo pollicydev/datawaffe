@@ -52,7 +52,7 @@ class Invite(models.Model):
         return f"{self.organization.name} - {self.get_invitee_email()} - {self.status}"
 
     def get_absolute_url(self):
-        return reverse("organizations:invite", args=(self.code,))
+        return reverse("invitations:invite", args=(self.code,))
 
     def full_invitation_url(self):
         domain = Site.objects.get_current().domain

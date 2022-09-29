@@ -10,6 +10,7 @@ urlpatterns = [
     path("organizations/", include("rrap.organizations.urls")),
     path("data/", include("rrap.datasets.urls")),
     path("activity/", include("rrap.activities.urls", namespace="activities")),
+    path("invitations/", include("rrap.invites.urls", namespace="invitations")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

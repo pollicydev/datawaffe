@@ -86,6 +86,7 @@ def new(request):
 
 
 @login_required
+@main_owner_required
 def update_logo(request, org_name):
     organization = Organization.objects.get(name=org_name)
     # Received base64 string starts with 'data:image/jpeg;base64,........'
@@ -102,6 +103,7 @@ def update_logo(request, org_name):
 
 
 @login_required
+@main_owner_required
 def delete_logo(request, org_name):
     organization = Organization.objects.get(name=org_name)
     form = DeleteLogoForm(request.POST, instance=organization)
@@ -137,7 +139,7 @@ def organization(request, org_name):
     )
 
 
-# @main_owner_required
+@main_owner_required
 @login_required
 def edit_organization(request, org_name):
     organization = Organization.objects.get(name=org_name)
@@ -159,7 +161,7 @@ def edit_organization(request, org_name):
     )
 
 
-# @member_required
+@member_required
 @login_required
 def view_members(request, org_name):
     username = request.user.username
@@ -187,7 +189,7 @@ def remove_owner_from_organization(request):
         return HttpResponseBadRequest()
 
 
-# @member_required
+@member_required
 @login_required
 def leave(request):
     organization_id = request.POST.get("organization-id")
@@ -204,7 +206,8 @@ def leave(request):
 
 # ORGANIZATION SETTINGS
 
-# @main_owner_required
+
+@main_owner_required
 @login_required
 def settings(request, org_name):
     username = request.user.username
@@ -236,7 +239,7 @@ def settings(request, org_name):
     )
 
 
-# @main_owner_required
+@main_owner_required
 @login_required
 def transfer(request):
     try:

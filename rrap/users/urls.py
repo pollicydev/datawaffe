@@ -11,6 +11,7 @@ from rrap.users.views import (
     onboard_user,
     user_organizations,
 )
+from rrap.invites import views as invite_views
 
 app_name = "users"
 urlpatterns = [
@@ -28,4 +29,10 @@ urlpatterns = [
     ),
     path("onboarding/profile", view=onboard_user, name="onboarding"),
     path("<str:username>/organizations", view=user_organizations, name="organizations"),
+    # Invitation routes
+    path(
+        "<str:username>/invitations/",
+        invite_views.UserInviteListView.as_view(),
+        name="user_invites",
+    ),
 ]

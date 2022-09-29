@@ -1,7 +1,6 @@
 import time
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse as r
 from django.utils.text import slugify
@@ -36,11 +35,9 @@ def datasets(request, org_name):
 
 
 @login_required
+@member_required
 def new_dataset(request, org_name):
-    username = request.user.username
-    organization = get_object_or_404(
-        Organization, name=org_name, owner__username__iexact=username
-    )
+    organization = get_object_or_404(Organization, name=org_name)
 
     if request.method == "POST":
         form = NewDatasetForm(request.POST, request.FILES)

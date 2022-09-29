@@ -52,22 +52,6 @@ urlpatterns = [
         invite_views.ManageAccessView.as_view(),
         name="manage_access",
     ),
-    # path("<str:org_name>/members/invites/list/", invite_views.UserInviteListView.as_view(), name="user_invites"),
-    path(
-        "<str:org_name>/members/invites/<int:invite_id>/accept/",
-        invite_views.AcceptUserInviteView.as_view(),
-        name="accept_user_invite",
-    ),
-    path(
-        "<str:org_name>/members/invites/<int:invite_id>/reject/",
-        invite_views.RejectUserInviteView.as_view(),
-        name="reject_user_invite",
-    ),
-    path(
-        "<uuid:code>/invitation",
-        invite_views.InviteDetailView.as_view(),
-        name="invite",
-    ),
     path(
         "<str:org_name>/members/invites/<int:invite_id>/delete/",
         invite_views.InviteDeleteView.as_view(),

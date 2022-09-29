@@ -31,6 +31,8 @@
         role="button">Edit</a>
       <a href="{% url 'data:add_data' organization.name %}" class="btn btn-lg btn-primary btn-space" role="button">Add
         data</a>
+      <a href="{% url 'organizations:manage_access' organization.name %}" class="btn btn-outline-dark btn-lg btn-space"
+        role="button">Invite members</a>
     </div>
     <div class="col-md-3 logo">
       {% if organization.logo %}

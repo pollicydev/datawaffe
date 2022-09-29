@@ -28,9 +28,6 @@
       </div>
 
       <h3 class="text-bold mb-3">Members ({{ organization.members.all|length }})</h3>
-      <a href="{% url 'organizations:manage_access' organization.name %}" class="btn btn-outline-primary"
-        role="button">Invite
-        members</a>
       <div class="list-group">
         {% for member in organization.members.all %}
         <a class="list-group-item d-flex list-group-item-action" href="{% url 'users:detail' member.username  %}">

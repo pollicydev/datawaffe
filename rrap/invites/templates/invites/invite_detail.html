@@ -25,75 +25,70 @@
 {% endblock %}
 
 {% block content %}
-<div class="wrapper">
-  <div class="container">
 
-    <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-
-        <h1>Parsifal</h1>
-        <div class="panel panel-default">
-          <div class="panel-body" style="padding-top: 30px; padding-bottom: 30px;">
-            <p class="lead">
-              {% blocktrans trimmed with invited_by=invite.invited_by.profile.get_screen_name organization_title=invite.organization.title %}
-              <strong>{{ invited_by }}</strong> invited you to collaborate on the organization
-              <strong>"{{ organization_title }}"</strong>
-              {% endblocktrans %}
-            </p>
-            {% if invite.invitee %}
-            {% if user.is_authenticated and invite.invitee == user %}
-            <div style="margin-bottom: 20px;">
-              <form action="{% url "accept_user_invite" invite.pk %}" method="post" style="display: inline-block">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-success btn-lg">
-                  <span class="glyphicon glyphicon-ok"></span>
-                  {% trans "Accept" %}
-                </button>
-              </form>
-              <form action="{% url "reject_user_invite" invite.pk %}" method="post" style="display: inline-block">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-lg">
-                  <span class="glyphicon glyphicon-remove"></span>
-                  {% trans "Reject" %}
-                </button>
-              </form>
-            </div>
-            <small class="text-muted">
-              {% blocktrans trimmed with username=invite.invitee.username %}
-              You are currently logged in as <strong>{{ username }}</strong>.
-              {% endblocktrans %}
-            </small>
-            {% else %}
-            <p>
-              {% blocktrans trimmed %}
-              To accept the invitation, you must log in to your account <strong>{{ invitee_masked_email }}</strong>
-              {% endblocktrans %}
-            </p>
-            <a href="{% url "account_login" %}?next={% url "user_invites" %}"
-              class="btn btn-primary btn-lg">{% trans "Log in" %}</a>
-            {% endif %}
-            {% else %}
-            <p>
-              {% blocktrans trimmed %}
-              To accept the invitation, you must create an account on the TEDT NGO Partners Harmonization Dashboard
-              {% endblocktrans %}
-            </p>
-            <p>
-              <a href="{% url "account_signup" %}?invite={{ invite.code }}"
-                class="btn btn-primary btn-lg">{% trans "Sign up" %}</a>
-            </p>
-            <small class="text-muted">{% blocktrans %}This invitation was sent to
-              <strong>{{ invitee_masked_email }}</strong>{% endblocktrans %}</small>
-            {% endif %}
+<div class="main-content container-fluid">
+  <div class="row my-8">
+    <div class="col-md-6 mx-auto">
+      <div class="card text-center">
+        <div class="card-header text-bold">Invitation to collaborate</div>
+        <div class="card-body">
+          {% blocktrans trimmed with invited_by=invite.invited_by.profile.name organization_title=invite.organization.title %}
+          <p>
+            <h4 class="mb-3">Hello 👋🏿</h4><strong>{{ invited_by }}</strong> invited you to collaborate on the
+            organization
+            <strong>"{{ organization_title }}"</strong>
+            {% endblocktrans %}
+          </p>
+          {% if invite.invitee %}
+          {% if user.is_authenticated and invite.invitee == user %}
+          <div style="margin-bottom: 20px;">
+            <form action="{% url 'users:accept_user_invite' invite.organization.name invite.pk %}" method="post"
+              style="display: inline-block">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success btn-lg btn-space">
+                <span class="glyphicon glyphicon-ok"></span>
+                {% trans "Accept invitation" %}
+              </button>
+            </form>
+            <form action="{% url 'users:reject_user_invite' invite.organization.name invite.pk %}" method="post"
+              style="display: inline-block">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-lg btn-space">
+                <span class="glyphicon glyphicon-remove"></span>
+                {% trans "Decline" %}
+              </button>
+            </form>
           </div>
+          <p class="text-muted">
+            {% blocktrans trimmed with username=invite.invitee.username email=invite.invitee.email %}
+            You are currently logged in as <strong>{{ username }}</strong> ({{ email }}).
+            {% endblocktrans %}
+          </p>
+          {% else %}
+          <p>
+            {% blocktrans trimmed %}
+            To accept the invitation, you must log in to your account <strong>{{ invitee_masked_email }}</strong>
+            {% endblocktrans %}
+          </p>
+          <a href="{% url 'account_logout' %}?next={% url 'users:user_invites' invite.invitee.username %}"
+            class="btn btn-primary btn-lg">{% trans "Log in" %}</a>
+          {% endif %}
+          {% else %}
+          <p>
+            {% blocktrans trimmed %}
+            To accept the invitation, you must create an account on the Rapid Research for Agile Policymaking Platform
+            {% endblocktrans %}
+          </p>
+          <p>
+            <a href="{% url "account_signup" %}?invite={{ invite.code }}"
+              class="btn btn-primary btn-lg">{% trans "Sign up" %}</a>
+          </p>
+          <small class="text-muted">{% blocktrans %}This invitation was sent to
+            <strong>{{ invitee_masked_email }}</strong>{% endblocktrans %}</small>
+          {% endif %}
         </div>
-
       </div>
     </div>
-
-
   </div>
-  <div class="push"></div>
 </div>
-{% include 'includes/footer.html' %}
 {% endblock %}

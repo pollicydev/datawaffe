@@ -16,5 +16,5 @@ urlpatterns = [
         views.dataset,
         name="dataset",
     ),
-    path("<str:org_name>/datasets/add/", views.new_dataset, name="add_data"),
+    path("<str:org_name>/add/", views.new_dataset, name="add_data"),
 ]
