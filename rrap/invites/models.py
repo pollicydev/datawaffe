@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .constants import InviteStatus
 from rrap.organizations.models import Organization
-
+from django.contrib.sites.models import Site
 
 User = get_user_model()
 
@@ -52,7 +52,13 @@ class Invite(models.Model):
         return f"{self.organization.name} - {self.get_invitee_email()} - {self.status}"
 
     def get_absolute_url(self):
-        return reverse("invite", args=(self.code,))
+        return reverse("organizations:invite", args=(self.code,))
+
+    def full_invitation_url(self):
+        domain = Site.objects.get_current().domain
+        path = self.get_absolute_url()
+        url = "https://{domain}{path}".format(domain=domain, path=path)
+        return url
 
     def get_invitee_email(self):
         if self.invitee:

@@ -27,8 +27,8 @@ class ManageAccessView(
 
     def get_success_url(self):
         return reverse(
-            "invites:manage_access",
-            args=(self.organization.name),
+            "organizations:manage_access",
+            args=(self.organization.name,),
         )
 
     def get_success_message(self, cleaned_data):
@@ -59,8 +59,8 @@ class InviteDeleteView(
 
     def get_success_url(self):
         return reverse(
-            "invites:manage_access",
-            args=(self.organization.name),
+            "organizations:manage_access",
+            args=(self.organization.name,),
         )
 
     def delete(self, request, *args, **kwargs):
@@ -78,8 +78,7 @@ class InviteDetailView(DetailView):
     def get_queryset(self):
         return Invite.objects.filter(status=InviteStatus.PENDING)
 
-    def get_context_data(self, *args, **kwargs):
-        args.update(self.organization.name)
+    def get_context_data(self, **kwargs):
         kwargs.update(invitee_masked_email=mask_email(self.object.get_invitee_email()))
         return super().get_context_data(**kwargs)
 

@@ -64,8 +64,13 @@ urlpatterns = [
         name="reject_user_invite",
     ),
     path(
-        "<str:org_name>/members/invites/<uuid:code>/",
+        "<uuid:code>/invitation",
         invite_views.InviteDetailView.as_view(),
         name="invite",
+    ),
+    path(
+        "<str:org_name>/members/invites/<int:invite_id>/delete/",
+        invite_views.InviteDeleteView.as_view(),
+        name="invite_delete",
     ),
 ]

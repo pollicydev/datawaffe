@@ -1,30 +1,49 @@
 {% extends "base.html" %}
 
-{% load crispy_forms_filters i18n tiet_invites static %}
+{% load crispy_forms_filters i18n rrap_invites static %}
 
 {% block title %}{% trans "Delete invite" %} · {{ organisation.title }}{% endblock %}
 
 {% block content %}
 
-<header class="page-title-bar">
-  <h1 class="page-title"> Delete invitation </h1>
-</header>
+<div class="page-head">
+  <nav aria-label="breadcrumb" role="navigation">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'core:home' %}">Home</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'organizations:organizations' %}">Organizations</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="% url 'organizations:organization' organization.name %}">{{ organization.title }}</a>
+      </li>
+      <li class="breadcrumb-item active">
+        <a href="#">Discard invitation</a>
+      </li>
+    </ol>
+  </nav>
+  <h2 class="page-head-title">Discard invitation</h2>
+</div>
 
-<div class="page-section">
-  <div class="section-block">
-    <form method="post">
-      {% csrf_token %}
-      <p class="lead">
-        {% blocktrans trimmed with invitee_email=invite.get_invitee_email %}
-        Are you sure you want to delete the invite sent to <strong>{{ invitee_email }}</strong>?
-        {% endblocktrans %}
-      </p>
-      <div>
-        <button type="submit" class="btn btn-danger">{% trans "Yes, delete" %}</button>
-        <a href="{% url "invites:manage_access" organisation.owner.username organisation.name %}"
-          class="btn btn-default">{% trans "Never mind" %}</a>
-      </div>
-    </form>
+<div class="main-content container-fluid">
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <form method="post">
+        {% csrf_token %}
+        <p>
+          {% blocktrans trimmed with invitee_email=invite.get_invitee_email %}
+          Are you sure you want to delete the invite sent to <strong>{{ invitee_email }}</strong>?
+          {% endblocktrans %}
+        </p>
+        <div>
+          <button type="submit" class="btn btn-danger btn-lg btn-space">{% trans "Yes, delete" %}</button>
+          <a href="{% url "organizations:manage_access" organization.name %}"
+            class="btn btn-secondary btn-lg btn-space">{% trans "Never mind" %}</a>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
+
 {% endblock content %}

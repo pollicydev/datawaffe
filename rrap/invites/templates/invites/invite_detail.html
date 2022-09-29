@@ -2,7 +2,7 @@
 
 {% load compress i18n %}
 
-{% block title %}{% trans "Invite" %} · {{ invite.organisation.title }}{% endblock %}
+{% block title %}{% trans "Invite" %} · {{ invite.organization.title }}{% endblock %}
 
 {% block stylesheet %}
 {% compress css %}
@@ -24,7 +24,7 @@
 {% endcompress %}
 {% endblock %}
 
-{% block body %}
+{% block content %}
 <div class="wrapper">
   <div class="container">
 
@@ -35,9 +35,9 @@
         <div class="panel panel-default">
           <div class="panel-body" style="padding-top: 30px; padding-bottom: 30px;">
             <p class="lead">
-              {% blocktrans trimmed with invited_by=invite.invited_by.profile.get_screen_name organisation_title=invite.organisation.title %}
-              <strong>{{ invited_by }}</strong> invited you to collaborate on the organisation
-              <strong>"{{ organisation_title }}"</strong>
+              {% blocktrans trimmed with invited_by=invite.invited_by.profile.get_screen_name organization_title=invite.organization.title %}
+              <strong>{{ invited_by }}</strong> invited you to collaborate on the organization
+              <strong>"{{ organization_title }}"</strong>
               {% endblocktrans %}
             </p>
             {% if invite.invitee %}
@@ -69,7 +69,7 @@
               To accept the invitation, you must log in to your account <strong>{{ invitee_masked_email }}</strong>
               {% endblocktrans %}
             </p>
-            <a href="{% url "login" %}?next={% url "user_invites" %}"
+            <a href="{% url "account_login" %}?next={% url "user_invites" %}"
               class="btn btn-primary btn-lg">{% trans "Log in" %}</a>
             {% endif %}
             {% else %}
@@ -79,7 +79,7 @@
               {% endblocktrans %}
             </p>
             <p>
-              <a href="{% url "signup" %}?invite={{ invite.code }}"
+              <a href="{% url "account_signup" %}?invite={{ invite.code }}"
                 class="btn btn-primary btn-lg">{% trans "Sign up" %}</a>
             </p>
             <small class="text-muted">{% blocktrans %}This invitation was sent to
