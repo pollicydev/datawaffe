@@ -27,7 +27,10 @@
       <p class="text-muted"> {{ organization.about }} </p>
       <p class="text-muted">Member since {{ organization.create_date }}</p>
 
-      <a href="{% url 'data:add_data' organization.name %}" class="btn btn-lg btn-primary" role="button">Add data</a>
+      <a href="{% url 'organizations:edit' organization.name %}" class="btn btn-lg btn-secondary btn-space"
+        role="button">Edit</a>
+      <a href="{% url 'data:add_data' organization.name %}" class="btn btn-lg btn-primary btn-space" role="button">Add
+        data</a>
     </div>
     <div class="col-md-3 logo">
       {% if organization.logo %}

@@ -1,19 +1,39 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMultiAlternatives
 from django.db.models.functions import Lower
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
-
 from .constants import InviteStatus
 from .models import Invite
+from django_select2 import forms as s2forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML
+
+User = get_user_model()
 
 
 class SendInviteForm(forms.ModelForm):
+    invitee_email = forms.CharField(
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Email address",
+            }
+        ),
+    )
+
     class Meta:
         model = Invite
         fields = ("invitee", "invitee_email")
+        widgets = {
+            "invitee": forms.Select(
+                attrs={
+                    "class": "form-control select2",
+                }
+            ),
+        }
 
     def __init__(self, *args, request, organization, **kwargs):
         self.request = request
@@ -29,7 +49,7 @@ class SendInviteForm(forms.ModelForm):
         )
         self.fields["invitee"].label = _("Select existing user")
         self.fields["invitee"].help_text = _(
-            "Search from the list of people already on the TEDT NGO Partners Harmonization Dashboard by username"
+            "Search from the list of people already on the RRAP platform by username"
         )
 
         self.fields["invitee_email"].label = _(
@@ -46,14 +66,14 @@ class SendInviteForm(forms.ModelForm):
             self.add_error(
                 None,
                 _(
-                    "You must either select an existing user on TEDT NGO Partners Harmonization Dashboard or add an email address, but not both at the same time."
+                    "You must either select an existing user on the RRAP platform or add an email address, but not both at the same time."
                 ),
             )
         if not cleaned_data.get("invitee") and not cleaned_data.get("invitee_email"):
             self.add_error(
                 None,
                 _(
-                    "You must either select an existing user on TEDT NGO Partners Harmonization Dashboard or add an email address"
+                    "You must either select an existing user on the RRAP platform or add an email address"
                 ),
             )
         return cleaned_data
@@ -114,8 +134,8 @@ class SendInviteForm(forms.ModelForm):
         current_site = get_current_site(self.request)
         site_name = current_site.name
         domain = current_site.domain
-        invited_by_name = self.instance.invited_by.profile.get_screen_name()
-        from_email = f"{invited_by_name} via TEDT NGO Partners Harmonization Dashboard <noreply@moes.go.ug>"
+        invited_by_name = self.instance.invited_by.profile.name
+        from_email = f"{invited_by_name} via Rapid Research for Agile Policymaking <noreply@rrap.org>"
         to_email = self.instance.get_invitee_email()
         body = render_to_string(
             "invites/invite_email.html",

@@ -111,6 +111,9 @@ class Profile(models.Model):
         try:
             if self.user.get_full_name():
                 return self.user.get_full_name()
+
+            elif self.name:
+                return self.name
             else:
                 return self.user.username
         except Exception:

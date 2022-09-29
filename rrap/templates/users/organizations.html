@@ -13,22 +13,18 @@
       </li>
     </ol>
   </nav>
+  <h2 class="page-head-title">Your Organizations</h2>
 </div>
 
 <div class="main-content container-fluid">
-  <div class="row">
+  <div class="row mb-5">
     <div class="col-md-12">
-      <p>Thank you for becoming a registered RRAP user. If you want plan on sharing data, you need to create an
-        organization or become a member of an existing organization on this platform.</p>
       <button data-toggle="modal" data-target="#findOrganizationModal" type="button"
-        class="btn btn-space btn-dark btn-lg text-white">Find your organization</button><a
-        href="{% url 'organizations:new' %}" class="btn btn-space btn-primary btn-lg text-white">Request
-        new
+        class="btn btn-space btn-dark btn-lg text-white">Find your organization</button>
+      <a href="{% url 'organizations:new' %}" class="btn btn-space btn-primary btn-lg text-white">Request new
         organization</a>
     </div>
   </div>
-  <hr class="my-5" />
-  <h3 class="my-3 text-bold">Your Organizations</h3>
   <div class="row">
     {% if user_organizations %}
     {% for organization in user_organizations %}
@@ -49,12 +45,8 @@
     {% endfor %}
     {% else %}
     <div class="col-lg-12">
-      <p>Thank you for becoming a registered RRAP user. If you want plan on sharing data, you need to create an
+      <p>Thank you for becoming a registered RRAP user. If you plan on sharing data, you need to create an
         organization or become a member of an existing organization on this platform.</p>
-      <button data-toggle="modal" data-target="#findOrganizationModal" type="button"
-        class="btn btn-space btn-dark btn-lg text-white">Find your organization</button>
-      <a href="{% url 'organizations:new' %}" class="btn btn-space btn-primary btn-lg text-white">Request new
-        organization</a>
     </div>
     {% endif %}
   </div>

@@ -19,7 +19,6 @@ class OrganizationMixin:
         return get_object_or_404(
             queryset,
             name=self.kwargs.get("org_name"),
-            owner__username=self.kwargs.get("username"),
         )
 
     def get_context_data(self, **kwargs):

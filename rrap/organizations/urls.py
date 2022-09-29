@@ -1,6 +1,7 @@
 from django.urls import include, path
 
 from rrap.organizations import views
+from rrap.invites import views as invite_views
 
 app_name = "organizations"
 
@@ -29,10 +30,6 @@ urlpatterns = [
     ),
     path("leave/", views.leave, name="leave"),
     path(
-        "<str:org_name>/members/invites/",
-        include("rrap.invites.urls", namespace="invites"),
-    ),
-    path(
         "<str:org_name>/settings/",
         views.settings,
         name="settings",
@@ -49,4 +46,26 @@ urlpatterns = [
     ),
     path("<str:org_name>/logo/update/", views.update_logo, name="update_logo"),
     path("<str:org_name>/logo/delete/", views.delete_logo, name="delete_logo"),
+    # Invitation routes
+    path(
+        "<str:org_name>/members/invites/",
+        invite_views.ManageAccessView.as_view(),
+        name="manage_access",
+    ),
+    # path("<str:org_name>/members/invites/list/", invite_views.UserInviteListView.as_view(), name="user_invites"),
+    path(
+        "<str:org_name>/members/invites/<int:invite_id>/accept/",
+        invite_views.AcceptUserInviteView.as_view(),
+        name="accept_user_invite",
+    ),
+    path(
+        "<str:org_name>/members/invites/<int:invite_id>/reject/",
+        invite_views.RejectUserInviteView.as_view(),
+        name="reject_user_invite",
+    ),
+    path(
+        "<str:org_name>/members/invites/<uuid:code>/",
+        invite_views.InviteDetailView.as_view(),
+        name="invite",
+    ),
 ]

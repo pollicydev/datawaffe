@@ -17,27 +17,12 @@
         <div class="general-filters">
           <div class="general-filters-left">
             <h4 style="display:inline-flex" class="text-bold">All {{ datasets|length }} datasets </h4>
-            <div style="display: inline-flex;margin-left:50px;min-width:450px;" class="be-aside-header-search">
-              <div class="input-group input-search input-group-sm">
-                <input class="form-control" type="text" placeholder="Search {{datasets|length }} datasets">
-              </div>
-            </div>
+            <a href="{% url 'data:add_data' organization.name %}" class="btn btn-outline-primary btn-space ml-5"
+              role="button">Add
+              data</a>
           </div>
           <div class="general-filters-right">
-            <div class="btn-group">
-              <button class="btn btn-secondary" type="button">10</button>
-              <button class="btn btn-secondary" type="button">25</button>
-              <button class="btn btn-secondary" type="button">50</button>
-            </div>
-            <div class="btn-group">
-              <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" type="button">Order by <span
-                  class="caret"></span></button>
-              <div class="dropdown-menu dropdown-menu-right" role="menu"><a class="dropdown-item" href="#">Name
-                  Ascending</a><a class="dropdown-item" href="#">Name Descending</a><a class="dropdown-item"
-                  href="#">Dataset Count Descending</a>
-                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Dataset Count Ascending</a>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>

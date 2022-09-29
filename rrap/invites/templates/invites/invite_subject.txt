@@ -1,1 +1,1 @@
-{% load i18n %}{% blocktranslate with name=invite.invited_by.profile.get_screen_name title=invite.organisation.title %}{{ name }} is inviting you to collaborate on the TEDT NGO Partners Harmonization Dashboard {{ title }}{% endblocktranslate %}
+{% load i18n %}{% blocktranslate with name=invite.invited_by.profile.name title=invite.organisation.title %}{{ name }} is inviting you to collaborate on the Rapid Research for Agile Policymaking platform {{ title }}{% endblocktranslate %}
