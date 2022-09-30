@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponseBadRequest, HttpResponseForbidden
-from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from rrap.organizations.models import Organization
 
 
@@ -11,9 +11,9 @@ def main_owner_required(f):
                 if organization.owner.id == request.user.id:
                     return f(request, *args, **kwargs)
                 else:
-                    raise Http404
+                    raise PermissionDenied
             except Organization.DoesNotExist:
-                raise Http404
+                raise PermissionDenied
         else:
             try:
                 organization_id = request.POST["organization-id"]
@@ -42,9 +42,9 @@ def member_required(f):
                 if organization.is_owner_or_member(request.user):
                     return f(request, *args, **kwargs)
                 else:
-                    raise Http404
+                    raise PermissionDenied
             except Organization.DoesNotExist:
-                raise Http404
+                raise PermissionDenied
         else:
             try:
                 organization_id = request.POST["organization-id"]

@@ -22,6 +22,11 @@ urlpatterns = [
         views.view_members,
         name="members",
     ),
+    path(
+        "membership/request/",
+        views.request_membership,
+        name="request_membership",
+    ),
     path("request/new/", views.new, name="new"),
     path(
         "remove_owner/",

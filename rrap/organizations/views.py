@@ -24,6 +24,9 @@ from rrap.organizations.mixins import MainOwnerRequiredMixin, OrganizationMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.core.files.base import ContentFile
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 User = get_user_model()
 
@@ -284,3 +287,61 @@ class DeleteOrganizationView(
         self.organization.delete()
         messages.success(request, gettext("The organization was deleted with success."))
         return redirect(request.user)
+
+
+@login_required
+def request_membership(request):
+    try:
+        organization_id = request.GET.get("organization-id")
+        organization = get_object_or_404(Organization, pk=organization_id)
+
+        admin_subject = render_to_string(
+            "organizations/emails/request_membership_subject.txt",
+            {"organization": organization},
+        )
+        # Email subject *must not* contain newlines
+        admin_subject = "".join(admin_subject.splitlines())
+
+        current_site = get_current_site(request)
+        site_name = current_site.name
+        domain = current_site.domain
+        # Organization admin email
+        requester_name = request.user.profile.name
+        requester = request.user
+        requester_email = f"{requester_name} via Rapid Research for Agile Policymaking <noreply@rrap.org>"
+        admin_email = organization.owner.email
+        admin_email_body = render_to_string(
+            "organizations/emails/request_membership_email.html",
+            {
+                "requester": requester,
+                "organization": organization,
+                "site_name": site_name,
+                "domain": domain,
+                "protocol": "https" if request.is_secure() else "http",
+            },
+        )
+
+        email_message_admin = EmailMultiAlternatives(
+            admin_subject, admin_email_body, requester_email, [admin_email]
+        )
+        email_message_admin.send()
+
+        # Requester email
+        requester_subject = "Your membership request has been delivered"
+        from_email = "noreply@rrap.org"
+        email_body = render_to_string(
+            "organizations/emails/request_sent.html",
+            {
+                "requester": requester,
+                "organization": organization,
+            },
+        )
+        email_message_requester = EmailMultiAlternatives(
+            requester_subject, email_body, from_email, [requester_email]
+        )
+        email_message_requester.send()
+        return HttpResponse()
+
+    except Exception:
+        messages.error("An error occurred while trying to send your request.")
+        return HttpResponseBadRequest()

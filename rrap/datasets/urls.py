@@ -1,16 +1,12 @@
 from django.urls import include, path
 
 from rrap.datasets import views
+from rrap.core import views as core_views
 
 app_name = "data"
 
 urlpatterns = [
-    path("", views.datasets, name="datasets"),
-    path(
-        "<str:org_name>/datasets/",
-        views.datasets,
-        name="datasets",
-    ),
+    path("", core_views.datasets, name="datasets"),
     path(
         "<str:org_name>/datasets/<str:dataset_name>",
         views.dataset,

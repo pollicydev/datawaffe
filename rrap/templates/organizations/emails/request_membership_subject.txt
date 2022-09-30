@@ -1,0 +1,1 @@
+Request to join your organization ({{ organization.title }}) on the Rapid Research for Agile Policymaking platform

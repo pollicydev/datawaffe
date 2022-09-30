@@ -6,6 +6,15 @@ from rrap.invites.constants import InviteStatus
 
 
 def settings(request):
+    if request.user.is_authenticated:
+        pending_invitations = request.user.invites_received.filter(
+            status=InviteStatus.PENDING
+        )
+        total_pending_invitations = pending_invitations.count()
+
+    else:
+        pending_invitations = None
+        total_pending_invitations = 0
     return {
         "rrap_logo": "http://127.0.0.1:8000/static/images/logo/logo.png",
         "rrap_version": django_settings.RRAP_VERSION,
@@ -17,10 +26,6 @@ def settings(request):
         "total_datasets": Dataset.objects.count(),
         "total_organizations": Organization.objects.count(),
         "total_locations": Location.objects.count(),
-        "pending_invitations": request.user.invites_received.filter(
-            status=InviteStatus.PENDING
-        ),
-        "total_pending_invitations": request.user.invites_received.filter(
-            status=InviteStatus.PENDING
-        ).count(),
+        "pending_invitations": pending_invitations,
+        "total_pending_invitations": total_pending_invitations,
     }

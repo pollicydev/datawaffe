@@ -180,6 +180,18 @@ class Dataset(models.Model):
     def __str__(self):
         return self.title
 
+    def is_request_only(self):
+        if self.privacy == 0:
+            return True
+
+    def is_private(self):
+        if self.privacy == 1:
+            return True
+
+    def is_public(self):
+        if self.privacy == 2:
+            return True
+
     def save(self, *args, **kwargs):
         self.tag_val = self.tag_val.replace(" ", "")
         # Default tags

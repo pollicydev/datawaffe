@@ -67,7 +67,7 @@
                   <td class="user-avatar cell-detail org-info">
                     {% if organization.status == 0 %}
                     <span style="display: inline-block;"
-                      class="badge badge-lg badge-warning">{{ organization.get_status_display }}</span>
+                      class="badge badge-lg badge-secondary">{{ organization.get_status_display }}</span>
                     {% elif organization.status == 1 %}
                     <span style="display: inline-block;"
                       class="badge badge-lg badge-success">{{ organization.get_status_display }}</span>

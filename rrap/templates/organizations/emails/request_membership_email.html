@@ -1,0 +1,19 @@
+{% autoescape off %}
+
+{{ requester.profile.name }} is requesting for membership within your organization {{ organization.title }} to
+collaborate on the Rapid Research for Agile Policymaking platform.
+
+Here are her details on RRAP:
+
+Username: {{ requester.username }}
+Email: {{ requester.email }}
+
+Use the above details to send her invitation once you have reviewed her request.
+
+To invite {{ requester.profile.name }}, visit the link below:
+
+{{ protocol }}://{{ domain }}{% url 'organizations:manage_access' organization.name %}
+
+{{ site_name }} team
+
+{% endautoescape %}

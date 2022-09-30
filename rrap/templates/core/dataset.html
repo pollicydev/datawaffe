@@ -32,9 +32,7 @@
       <p class="text-muted">Size: {{ dataset.file.size|filesizeformat }}</p>
     </div>
     <div class="col-md-3 logo">
-      <a href="{% url 'core:single_org' dataset.organization.name %}">
-        <img src="https://doodleipsum.com/185?shape=circle&bg=ceebff" alt="{{ dataset.organization.title }} logo" />
-      </a>
+      {{ dataset.file_mime }}
     </div>
   </div>
 

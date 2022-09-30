@@ -2,8 +2,14 @@
 
 {% block title %}Forbidden (403){% endblock %}
 
-{% block content %}
-<h1>Forbidden (403)</h1>
 
-<p>{% if exception %}{{ exception }}{% else %}You're not allowed to access this page.{% endif %}</p>
+{% block content %}
+<div class="main-content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Forbidden (403)</h1>
+            <p>{% if exception %}{{ exception }}{% else %}You're not allowed to access this page.{% endif %}</p>
+        </div>
+    </div>
+</div>
 {% endblock content %}

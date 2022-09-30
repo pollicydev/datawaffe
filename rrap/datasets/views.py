@@ -12,26 +12,6 @@ from django.views import View
 from rrap.organizations.models import Organization
 from rrap.organizations.decorators import member_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.conf import settings
-
-
-@login_required
-def datasets(request, org_name):
-    username = request.user.username
-    organization = get_object_or_404(
-        Organization, name=org_name, owner__username__iexact=username
-    )
-
-    try:
-        datasets = organization.get_projects()
-    except Dataset.DoesNotExist:
-        datasets = None
-
-    return render(
-        request,
-        "datasets/index.html",
-        {"datasets": datasets, "organization": organization},
-    )
 
 
 @login_required

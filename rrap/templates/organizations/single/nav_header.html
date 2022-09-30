@@ -2,6 +2,7 @@
 
 {% block javascript %}
 <script type="text/javascript" src="{% static 'lib/rrap/activities.js' %}"></script>
+<script type="text/javascript" src="{% static 'lib/rrap/member_request.js' %}"></script>
 {% endblock javascript %}
 
 
@@ -27,12 +28,16 @@
       <p class="text-muted"> {{ organization.about }} </p>
       <p class="text-muted">Member since {{ organization.create_date }}</p>
 
+      {% if request.user.is_authenticated and request.user == organization.owner  %}
       <a href="{% url 'organizations:edit' organization.name %}" class="btn btn-lg btn-secondary btn-space"
         role="button">Edit</a>
-      <a href="{% url 'data:add_data' organization.name %}" class="btn btn-lg btn-primary btn-space" role="button">Add
-        data</a>
       <a href="{% url 'organizations:manage_access' organization.name %}" class="btn btn-outline-dark btn-lg btn-space"
         role="button">Invite members</a>
+      {% endif %}
+      {% if request.user.is_authenticated and request.user == organization.owner or request.user in organization.members.all  %}
+      <a href="{% url 'data:add_data' organization.name %}" class="btn btn-lg btn-primary btn-space" role="button">Add
+        data</a>
+      {% endif %}
     </div>
     <div class="col-md-3 logo">
       {% if organization.logo %}
@@ -53,6 +58,7 @@
       {% endif %}
     </div>
     <div class="col-md-5">
+      {% if request.user.is_authenticated %}
       <p class="mt-2 mb-2">
         {% if is_following %}
         <span class="user-actions following update-count" data-organization-id="{{ organization.id }}">
@@ -63,15 +69,17 @@
           <button class="btn btn-space btn-success"><span class='icon mdi mdi-check-circle'></span> Follow</button>
         </span>
         {% endif %}
-        <button class="btn btn-space btn-secondary"><i class="icon icon-left mdi mdi-comment-text"></i>Request
-          Membership</button>
+        <span class="request-actions request_membership" data-organization-id="{{ organization.id }}">
+          <button class="btn btn-space btn-secondary"><span class='icon icon-left mdi mdi-comment-text'></span> Request
+            Membership</button>
+        </span>
         <button class="btn btn-space btn-secondary btn-social" type="button"><i
             class="icon mdi mdi-facebook"></i></button>
         <button class="btn btn-space btn-secondary btn-social" type="button"><i
             class="icon mdi mdi-twitter"></i></button>
         <button class="btn btn-space btn-secondary btn-social" type="button"><i class="icon mdi mdi-email"></i></button>
-
       </p>
+      {% endif %}
     </div>
   </div>
 
