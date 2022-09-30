@@ -3,14 +3,14 @@ MIME_TO_CATEGORY = {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "word",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.template": "word",
     "application/vnd.ms-word.document.macroEnabled.12": "word",
-    "application/vnd.ms-word.template.macroEnabled.12": "excel",
-    "application/vnd.ms-excel": "excel",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "excel",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.template": "excel",
-    "application/vnd.ms-excel.sheet.macroEnabled.12": "excel",
-    "application/vnd.ms-excel.template.macroEnabled.12": "excel",
-    "application/vnd.ms-excel.addin.macroEnabled.12": "excel",
-    "application/vnd.ms-excel.sheet.binary.macroEnabled.12": "excel",
+    "application/vnd.ms-word.template.macroEnabled.12": "table",
+    "application/vnd.ms-excel": "table",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "table",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.template": "table",
+    "application/vnd.ms-excel.sheet.macroEnabled.12": "table",
+    "application/vnd.ms-excel.template.macroEnabled.12": "table",
+    "application/vnd.ms-excel.addin.macroEnabled.12": "table",
+    "application/vnd.ms-excel.sheet.binary.macroEnabled.12": "table",
     "application/vnd.ms-powerpoint": "powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation": "powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.template": "powerpoint",
@@ -27,7 +27,7 @@ MIME_TO_CATEGORY = {
     "image/tiff": "image",
     "application/pdf": "pdf",
     "text/plain": "word",
-    "image/svg+xml": "vector graphic",
+    "image/svg+xml": "svg",
     "video/x-ms-wmv": "video",
     "video/quicktime": "video",
     "video/x-msvideo": "video",
@@ -37,21 +37,21 @@ MIME_TO_CATEGORY = {
 }
 
 CATEGORY_TO_FILE = {
-    "word": "microsoftword.png",
-    "excel": "microsoftexcel.png",
-    "powerpoint": "microsoftpowerpoint.png",
-    "zip": "rar.png",
-    "image": "image.png",
-    "pdf": "adobereader.png",
-    "vector graphic": "photoshop.png",
-    "video": "vlc.png",
-    "html": "chrome.png",
+    "word": "document.svg",
+    "excel": "table.svg",
+    "powerpoint": "powerpoint.svg",
+    "zip": "zip.svg",
+    "image": "document.svg",
+    "pdf": "pdf.svg",
+    "svg": "svg.svg",
+    "video": "video.svg",
+    "html": "html.svg",
 }
 
 
 def get_alt_for_mime(mime):
     try:
-        return MIME_TO_CATEGORY[mime] + " file"
+        return (MIME_TO_CATEGORY[mime]).upper() + " File"
     except KeyError:
         return "Unknown file"
 
@@ -83,6 +83,6 @@ def get_mimes_for_category(category):
 def get_icon_for_mime(mime):
     try:
         file = CATEGORY_TO_FILE[MIME_TO_CATEGORY[mime]]
-        return "images/icons/%s" % file
+        return "icons/%s" % file
     except KeyError:
-        return "images/icons/filemanager.png"
+        return "icons/file.svg"

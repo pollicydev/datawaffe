@@ -64,11 +64,12 @@
         <a href="{% url 'core:datasets' %}"><i class="breadcrumb-icon fa fa-angle-left"></i>Datasets</a>
       </li>
       <li class="breadcrumb-item active">
-        <a href=""><i class="breadcrumb-icon fa fa-angle-left"></i>Add dataset</a>
+        <a href="{% url 'core:single_dataset' dataset.uuid  %}"><i
+            class="breadcrumb-icon fa fa-angle-left"></i>{{ dataset.title }}</a>
       </li>
     </ol>
   </nav>
-  <h2 class="page-head-title">Add dataset</h2>
+  <h2 class="page-head-title">Update dataset</h2>
 </div>
 
 <div class="main-content container-fluid">

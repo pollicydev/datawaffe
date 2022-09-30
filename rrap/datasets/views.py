@@ -6,7 +6,7 @@ from django.urls import reverse as r
 from django.utils.text import slugify
 from django.utils.html import escape
 from .models import Dataset
-from .forms import NewDatasetForm, DatasetForm
+from .forms import NewDatasetForm, DatasetForm, EditDatasetForm
 from django.core.paginator import Paginator
 from django.views import View
 from rrap.organizations.models import Organization
@@ -78,6 +78,27 @@ def dataset(request, org_name, dataset_name):
     return render(
         request,
         "datasets/dataset.html",
+        {
+            "dataset": dataset,
+            "form": form,
+        },
+    )
+
+
+@login_required
+def edit_dataset(request, dataset_uuid):
+    dataset = Dataset.objects.get(uuid=dataset_uuid)
+    if request.method == "POST":
+        form = EditDatasetForm(request.POST, instance=dataset)
+        if form.is_valid():
+            dataset = form.save()
+            messages.success(request, "Dataset was saved successfully.")
+            return redirect(r("data:dataset", args=(dataset.uuid,)))
+    else:
+        form = EditDatasetForm(instance=dataset)
+    return render(
+        request,
+        "datasets/edit.html",
         {
             "dataset": dataset,
             "form": form,

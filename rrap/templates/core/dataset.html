@@ -25,14 +25,28 @@
   <!-- dataset information -->
   <div class="row">
     <div class="col-md-9">
-      <h2 class="page-head-title"> {{ dataset.title }}</h2>
+      <span class="d-flex">
+        <img src="{% static dataset.get_icon %}" alt="{{ dataset.get_alt }}" height="30" />
+        <h2 class="page-head-title mt-0 ml-1">
+          {{ dataset.title }}</h2>
+      </span>
       <p class="text-muted"> {{ dataset.summary }} </p>
-      <button class="btn btn-space btn-success btn-lg"><i class="icon icon-left mdi mdi-cloud-download"></i>Download
+      <button class="btn btn-space btn-dark btn-lg"><i class="icon icon-left mdi mdi-cloud-download"></i>Download
         this dataset (PDF)</button>
       <p class="text-muted">Size: {{ dataset.file.size|filesizeformat }}</p>
+
+      {% if request.user.is_authenticated and request.user == dataset.organization.owner or request.user in dataset.organization.members.all  %}
+      <a href="{% url 'core:edit_data' dataset.uuid %}" class="btn btn-outline-secondary btn-space" role="button">Edit
+        dataset</a>
+      {% endif %}
     </div>
     <div class="col-md-3 logo">
-      {{ dataset.file_mime }}
+      {% if dataset.organization.logo %}
+      <img src="{{ dataset.organization.logo.url }}" alt="{{ dataset.organization.title }} logo" height="80" />
+      {% else %}
+      <img src="https://doodleipsum.com/185?shape=circle&bg=ceebff" alt="{{ dataset.organization.title }} logo"
+        height="80" />
+      {% endif %}
     </div>
   </div>
 
@@ -45,7 +59,7 @@
         {{ dataset.get_update_frequency_display }}</h6>
     </div>
     <div class="col-md-5">
-      <p class="mt-2 mb-2">
+      <p class="mb-2">
         <button class="btn btn-space btn-secondary"><i class="icon icon-left mdi mdi-comment-text"></i>Contact the
           contributor</button>
         <button class="btn btn-space btn-secondary btn-social" type="button"><i
@@ -53,13 +67,10 @@
         <button class="btn btn-space btn-secondary btn-social" type="button"><i
             class="icon mdi mdi-twitter"></i></button>
         <button class="btn btn-space btn-secondary btn-social" type="button"><i class="icon mdi mdi-email"></i></button>
-
       </p>
     </div>
   </div>
-
 </div>
-
 
 <div class="main-content container-fluid bg-white border-top">
   <div class="row">

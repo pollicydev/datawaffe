@@ -1,6 +1,7 @@
 from django.urls import include, path
 
 from rrap.core import views
+from rrap.datasets import views as data_views
 
 app_name = "core"
 
@@ -14,6 +15,11 @@ urlpatterns = [
     # single public routes
     path("locations/<int:location_pk>/", views.location, name="single_location"),
     path("datasets/<uuid:dataset_uuid>", views.dataset, name="single_dataset"),
+    path(
+        "datasets/<uuid:dataset_uuid>/edit",
+        data_views.edit_dataset,
+        name="edit_data",
+    ),
     path("organizations/<str:org_name>/", views.organization, name="single_org"),
     path(
         "organizations/<str:org_name>/activity/",
