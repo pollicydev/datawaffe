@@ -78,6 +78,7 @@ class Dataset(models.Model):
     )
     file = models.FileField(null=True, max_length=255, upload_to="datasets/")
     file_mime = models.CharField(max_length=255, null=True)
+    file_url = models.URLField(null=True, blank=True)
     privacy = models.SmallIntegerField(
         "Privacy setting", blank=False, choices=DATA_PRIVACY, default=2
     )
@@ -158,6 +159,9 @@ class Dataset(models.Model):
     def delete(self, using=None, **kwargs):
         Dataset.objects.filter(dataset=self).delete()
         super(Dataset, self).delete(using)
+
+    def get_uuid(self):
+        return self.uuid
 
     def get_icon(self):
         return get_icon_for_mime(self.file_mime)

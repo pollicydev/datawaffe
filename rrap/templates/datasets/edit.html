@@ -24,6 +24,8 @@
 </script>
 {% endblock %}
 
+{% block title %}{{ dataset.title }} · Rapid Research for Agile Policymaking {% endblock %}
+
 {% block content %}
 
 <input type="hidden" id="dataset-id" value="{{ dataset.id }}">
@@ -51,9 +53,8 @@
   <div class="row">
     <div class="col-md-4">
       <div class="card">
-        <div class="card-header">Change data file</div>
         <div class="card-body">
-
+          <a href="{{ dataset.file_url }}" target="_blank" class="btn btn-lg btn-info btn-space my-5">Preview file</a>
         </div>
       </div>
     </div>

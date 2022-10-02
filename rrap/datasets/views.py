@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
@@ -17,28 +18,6 @@ from django.core.files.storage import FileSystemStorage
 logger = logging.getLogger(__name__)
 
 
-# def upload(request, org_name):
-#     try:
-#         organization = get_object_or_404(Organization, name=org_name)
-
-#         if request.FILES["file"]:
-#             dataset = Dataset.objects.create(
-#                 created_by=request.user,
-#                 organization=organization,
-#                 file=request.FILES["file"],
-#                 file_mime=request.FILES["file"].content_type,
-#             )
-#             return redirect(
-#                 r(
-#                     "core:edit_data",
-#                     args=(dataset.uuid,),
-#                 )
-#             )
-#     except Exception:
-#         logger.exception("An error occurred here")
-#         return HttpResponseBadRequest()
-
-
 def upload(request):
 
     if request.FILES["file"]:
@@ -55,6 +34,72 @@ def upload(request):
         data = {"is_valid": False}
 
     return JsonResponse(data)
+
+
+@login_required
+def ajax_create_dataset(request):
+    try:
+        organization_id = request.GET.get("organization-id")
+        organization = get_object_or_404(Organization, pk=organization_id)
+        title = request.GET.get("file-name")
+        title = Path(title).stem  # remove ext
+        file_url = request.GET.get("file-url")
+        file_mime = request.GET.get("file-mime")
+
+        dataset = Dataset.objects.create(
+            created_by=request.user,
+            organization=organization,
+            title=title,
+            file_url=file_url,
+            file_mime=file_mime,
+        )
+
+        uuid = dataset.get_uuid()
+
+        return HttpResponse(uuid)
+
+    except Exception:
+        logger.exception("An error occurred while trying to get organization.")
+        return HttpResponseBadRequest()
+
+
+@login_required
+def ajax_delete_file(request):
+    try:
+        organization_id = request.GET.get("organization-id")
+        organization = get_object_or_404(Organization, pk=organization_id)
+        title = request.GET.get("file-name")
+        title = Path(title).stem  # remove ext
+        file_url = (request.GET.get("file-url"),)
+        file_mime = (request.GET.get("file-mime"),)
+
+        dataset = Dataset.objects.create(
+            created_by=request.user,
+            organization=organization,
+            title=title,
+            file_url=file_url,
+            file_mime=file_mime,
+        )
+
+        uuid = dataset.get_uuid()
+
+        return HttpResponse(uuid)
+
+    except Exception:
+        logger.exception("An error occurred while trying to get organization.")
+        return HttpResponseBadRequest()
+
+
+@login_required
+@member_required
+def new(request, org_name):
+    organization = get_object_or_404(Organization, name=org_name)
+
+    return render(
+        request,
+        "datasets/new.html",
+        {"organization": organization},
+    )
 
 
 @login_required
@@ -82,7 +127,7 @@ def new_dataset(request, org_name):
         form = NewDatasetForm()
     return render(
         request,
-        "datasets/new.html",
+        "datasets/edit.html",
         {"form": form, "organization": organization},
     )
 

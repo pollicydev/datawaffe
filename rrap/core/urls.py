@@ -16,7 +16,7 @@ urlpatterns = [
     path("locations/<int:location_pk>/", views.location, name="single_location"),
     path("datasets/<uuid:dataset_uuid>", views.dataset, name="single_dataset"),
     path(
-        "datasets/<uuid:dataset_uuid>/edit",
+        "datasets/<uuid:dataset_uuid>/edit/",
         data_views.edit_dataset,
         name="edit_data",
     ),

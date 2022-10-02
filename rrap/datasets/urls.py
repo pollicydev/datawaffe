@@ -7,6 +7,8 @@ app_name = "data"
 
 urlpatterns = [
     path("", core_views.datasets, name="datasets"),
-    path("<str:org_name>/add/", views.new_dataset, name="add_data"),
+    path("<str:org_name>/new/", views.new, name="new"),
     path("upload/", views.upload, name="upload"),
+    path("create/", views.ajax_create_dataset, name="create"),
+    path("<str:org_name>/add/", views.new_dataset, name="add_data"),
 ]

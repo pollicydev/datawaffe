@@ -33,29 +33,16 @@
     <div class="col-auto">
       <div id="drag-drop-area"></div>
     </div>
-    <div class="col-4">
-      <div class="card mb-3"><img class="card-img-top" src="assets/img/342x239.png" height="200" alt="Placeholder">
-        <div class="card-body">
-          <ul class="list-group list-group-flush mb-3">
-            <li class="list-group-item"><b>Name:</b> </li>
-            <li class="list-group-item"><b>Type:</b> </li>
-            <li class="list-group-item"><b>Size:</b> </li>
-          </ul>
-          <a class="btn btn-secondary btn-sm btn-space" href="#"><i class="mdi mdi-eye"></i> Preview</a>
-          <a class="btn btn-danger btn-sm btn-space" href="#"><i class="mdi mdi-delete"></i> Delete</a>
-        </div>
-        <div class="card-footer card-footer-contrast text-right"><a class="card-link btn btn-success btn-lg"
-            href="#">Proceed to next step <i class="mdi mdi-arrow-right"></i></a></div>
-      </div>
+    <div class="col-4" id="uploadData">
+      <div style="display:none" id="upload_container" class="card"></div>
     </div>
   </div>
-</div>
 
-{% endblock content %}
+  {% endblock content %}
 
-{% block inline_javascript %}
-<script type="module">
-  import {Uppy, Dashboard, XHRUpload} from "https://releases.transloadit.com/uppy/v3.0.1/uppy.min.mjs"
+  {% block inline_javascript %}
+  <script type="module">
+    import {Uppy, Dashboard, XHRUpload, ThumbnailGenerator} from "https://releases.transloadit.com/uppy/v3.0.1/uppy.min.mjs"
   var uppy = new Uppy({
     id: 'uppy',
     autoProceed: true,
@@ -70,7 +57,7 @@
         organization_id: '{{ organization.id }}',
         organization: '{{ organization.title }}'
       }
-    }
+    },
   })
     .use(Dashboard, {
       inline: true,
@@ -84,8 +71,68 @@
 
   uppy.on('complete', (result) => {
     console.log('Upload complete! We’ve uploaded these files:', result.successful)
-    // render uploaded file in table
-    
   })
+
+  uppy.on('upload-success', (file, resp) => {
+    console.log('Upload complete', file, resp)
+    document.getElementById('upload_container').style.display = 'block'
+    document.getElementById('upload_container').innerHTML += `
+    <div class='card-body'>
+      <ul class='list-group list-group-flush mb-3'>
+        <li class='list-group-item'><b>Name:</b> ${file.data.name}</li>
+        <li class="list-group-item"><b>Size:</b> ${file.data.size} bytes</li>
+        <li class="list-group-item"><b>Type:</b> ${file.data.type}</li>
+      </ul>
+      <a class='btn btn-secondary btn-sm btn-space' href='${resp.body.file_url}' target='_blank'><i class="mdi mdi-eye"></i> Preview</a>
+      <a class='btn btn-danger btn-sm btn-space' href=''><i class='mdi mdi-delete'></i> Delete</a>
+    </div>
+    <div class='card-footer card-footer-contrast text-right'>
+      <span class="create-actions create-dataset"
+          data-organization-id="{{ organization.id }}" 
+          data-file-url="${resp.body.file_url}" 
+          data-file-name="${file.data.name}"
+          data-file-mime="${file.data.type}">
+        <button class="card-link btn btn-success btn-lg">Proceed to next step <i class='mdi mdi-arrow-right'></i></button>
+      </span>
+    </div>
+    `
+    console.log('resp', resp);
+
+    $(".create-actions button").click(function () {
+    var btn = $(this);
+    var create_actions = $(this).closest(".create-actions");
+    var organization_id = $(create_actions).attr("data-organization-id");
+    var file_name = $(create_actions).attr("data-file-name");
+    var file_mime = $(create_actions).attr("data-file-mime");
+    var file_url = $(create_actions).attr("data-file-url");
+    if ($(create_actions).hasClass("create-dataset")) {
+      $.ajax({
+        url: "/data/create/",
+        data: {
+          "organization-id": organization_id,
+          "file-name": file_name,
+          "file-mime": file_mime,
+          "file-url": file_url,
+        },
+        type: "get",
+        cache: false,
+        beforeSend: function () {
+          $(btn).attr("disabled", true);
+        },
+        success: function (data) {
+          $(btn).removeClass("btn-success");
+          $(btn).addClass("btn-secondary");
+          $(btn).html("Generating meta...");
+          // redirect to edit
+          window.location.href = '/datasets/'+ data + '/edit/'
+        },
+        error: function (jqXHR, textStatus, errorThrown) {},
+        complete: function () {
+          $(btn).attr("disabled", false);
+        },
+      });
+    }
+  });
+})
 </script>
-{% endblock %}
+  {% endblock %}
