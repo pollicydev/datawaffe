@@ -6,40 +6,18 @@ from django.contrib.auth.decorators import login_required
 from allauth.account.models import EmailAddress
 from django.contrib import messages
 from rrap.users.decorators import onboarding_required
+from rrap.organizations.decorators import member_required, main_owner_required
 from rrap.datasets.models import Dataset
 from rrap.organizations.models import Organization
 from .models import Location
 from rrap.datasets.filters import location_based_filter, dataset_filter
 
 
-@login_required
-@onboarding_required
+# @login_required
+# @onboarding_required
 def home(request):
-    profile = request.user.profile
 
-    # first check if user is not staff and has whether has finished registration via onboarding
-    if not request.user.is_staff and not request.user.profile.has_finished_registration:
-        return redirect("users:onboarding")
-
-    if request.user.is_staff:
-        return redirect("/admin")
-
-    # Check if user has verified email
-    verified = ""
-    if EmailAddress.objects.filter(user=request.user, verified=True).exists():
-        pass
-    else:
-        verified = False
-        messages.warning(
-            request,
-            "We sent a verification link to your email account. Please click the link to fully activate your account.",
-        )
-    context = {
-        "profile": profile,
-        "verified": verified,
-    }
-
-    return render(request, "core/home.html", context)
+    return render(request, "core/home.html")
 
 
 def datasets(request):
@@ -137,7 +115,7 @@ def dataset(request, dataset_uuid):
 
 def organization(request, org_name):
     organization = get_object_or_404(Organization, name=org_name)
-    datasets = organization.get_datasets()
+    datasets = organization.get_published_datasets()
     locations = Location.objects.all()
     followers = organization.get_followers()
     is_following = False
@@ -149,6 +127,32 @@ def organization(request, org_name):
     return render(
         request,
         "organizations/single/data.html",
+        {
+            "organization": organization,
+            "datasets": datasets,
+            "locations": locations,
+            "is_following": is_following,
+            "follower_count": followers_count,
+        },
+    )
+
+
+@member_required
+@login_required
+def draft_datasets(request, org_name):
+    organization = get_object_or_404(Organization, name=org_name)
+    datasets = organization.get_draft_datasets()
+    locations = Location.objects.all()
+    followers = organization.get_followers()
+    is_following = False
+    if request.user in followers:
+        is_following = True
+
+    followers_count = organization.get_followers_count()
+
+    return render(
+        request,
+        "organizations/single/draft_data.html",
         {
             "organization": organization,
             "datasets": datasets,
@@ -181,6 +185,8 @@ def organization_activity(request, org_name):
     )
 
 
+@member_required
+@login_required
 def organization_members(request, org_name):
     organization = get_object_or_404(Organization, name=org_name)
     members = {}

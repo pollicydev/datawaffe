@@ -22,6 +22,11 @@ urlpatterns = [
     ),
     path("organizations/<str:org_name>/", views.organization, name="single_org"),
     path(
+        "organizations/<str:org_name>/drafts/",
+        views.draft_datasets,
+        name="drafts",
+    ),
+    path(
         "organizations/<str:org_name>/activity/",
         views.organization_activity,
         name="org_activity",

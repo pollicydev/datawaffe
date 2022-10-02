@@ -13,7 +13,7 @@ urlpatterns = [
         name="organization",
     ),
     path(
-        "<str:org_name>/edit",
+        "<str:org_name>/edit/",
         views.edit_organization,
         name="edit",
     ),

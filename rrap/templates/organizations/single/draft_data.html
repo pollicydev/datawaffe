@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% load compress i18n static %}
+
+{% block title %}{{ organization.title }} · Rapid Research for Agile Policymaking {% endblock %}
+
+{% block content %}
+
+{% include "organizations/single/nav_header.html" with active_tab="drafts" %}
+
+
+<div class="main-content container-fluid">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row table-filters-container">
+        <div class="general-filters">
+          <div class="general-filters-left">
+            <h4 style="display:inline-flex" class="text-bold">All {{ datasets|length } unpublished datasets </h4>
+            <a href="{% url 'data:add_data' organization.name %}" class="btn btn-outline-primary btn-space ml-5"
+              role="button">Add
+              data</a>
+          </div>
+          <div class="general-filters-right">
+
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 border-right">
+          <h4 class="text-bold my-5">Filter datasets</h4>
+          <form method="GET" action=".">
+            <div class="card card-default card-contrast">
+              <div class="card-header">Filter by location</div>
+              <div class="card-body card-body-contrast" style="max-height:200px; overflow-y: scroll;">
+                <div class="form-group row">
+                  <div class="col-12">
+                    {% for location in locations %}
+                    <div class="custom-control custom-checkbox">
+                      <input class="custom-control-input" type="checkbox" id="{{ location.id }}" name="location"
+              value="{{ location.id }}">
+              <label class="custom-control-label" for="{{ location.id }}">{{ location.name }}</label>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card card-default card-contrast">
+    <div class="card-header">Filter by organization</div>
+    <div class="card-body card-body-contrast">
+      <div class="form-group row">
+        <div class="col-12">
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="{{ organization.name }}"
+              value="{{ organization.name }}" name="organization" checked>
+            <label class="custom-control-label" for="{{ organization.name }}">{{ organization.title }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card card-default card-contrast">
+    <div class="card-header">Filter by topic</div>
+    <div class="card-body card-body-contrast">
+      <div class="form-group row">
+        <div class="col-12">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card card-default card-contrast">
+    <div class="card-header">Filter by format</div>
+    <div class="card-body card-body-contrast">
+      <div class="form-group row">
+        <div class="col-12">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-block btn-lg btn-primary">Filter</button>
+  </form>
+</div>
+<div class="col-md-9">
+  <div class="card card-table">
+    <div class="card-body">
+      <div class="noSwipe">
+        <table class="table table-striped table-hover be-table-responsive" id="dataTable">
+          <thead>
+            <tr>
+              <th style="width:10%;padding:0px;"></th>
+              <th style="width:10%;padding:0px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for data in datasets %}
+            <tr>
+              <td class="user-avatar cell-detail data-info">
+                {% if data.status == 0 %}
+                <span style="display: inline-block;"
+                  class="badge badge-lg badge-dark">{{ data.get_status_display }}</span>
+                {% endif %}
+                <h4 class="text-bold mt-1"><a href="{% url 'core:single_dataset' data.uuid %}">{{ data.title }}</a>
+                </h4>
+                <h6><a
+                    href="{% url 'organizations:organization' data.organization.name %}">{{ data.organization.title }}</a>
+                </h6>
+                <span class="cell-detail-description">Updated {{ data.last_updated|date:"d F, Y" }} | Dataset
+                  date:
+                  {{ data.created|date:"d F, Y" }}</span>
+              </td>
+              <td class="cell-detail" data-set="{{ data.name }}">
+                <p>{{ data.summary|truncatechars:300 }}</p>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock content %}

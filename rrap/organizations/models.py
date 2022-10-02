@@ -119,6 +119,12 @@ class Organization(models.Model):
     def get_datasets(self):
         return Dataset.objects.filter(organization__id=self.id)
 
+    def get_published_datasets(self):
+        return Dataset.objects.filter(organization__id=self.id, status=1)
+
+    def get_draft_datasets(self):
+        return Dataset.objects.filter(organization__id=self.id, status=0)
+
     def get_followers(self):
         Activity = apps.get_model("activities", "Activity")
         activities = Activity.objects.select_related("from_user__profile").filter(

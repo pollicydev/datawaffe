@@ -19,8 +19,8 @@
 <div class="main-content container-fluid">
   <div class="row mb-5">
     <div class="col-md-12">
-      <button data-toggle="modal" data-target="#findOrganizationModal" type="button"
-        class="btn btn-space btn-dark btn-lg text-white">Find your organization</button>
+      <a class="btn btn-space btn-dark btn-lg text-white" href="{% url 'core:organizations' %}">Find your
+        organization</a>
       <a href="{% url 'organizations:new' %}" class="btn btn-space btn-primary btn-lg text-white">Request new
         organization</a>
     </div>
@@ -106,28 +106,3 @@
 </div>
 
 {% endblock content %}
-
-{% block modal %}
-<div class="modal fade colored-header colored-header-primary" id="findOrganizationModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header modal-header-colored">
-        <h3 class="modal-title">Find your organization</h3>
-        <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span
-            class="mdi mdi-close"></span></button>
-      </div>
-      <div class="modal-body">
-        <p>See if your organisation exists by scrolling through the list below:</p>
-        <p>Don't see your organization? Request a new organization.</p>
-        <hr />
-        <p>Confirm that you would like to become a member of the organisation chosen above. If the administrator of the
-          organisation agrees to your request, you will receive an email confirming your membership.</p>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary" type="button" data-dismiss="modal">Submit request</button>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock modal %}
