@@ -100,11 +100,6 @@ class Dataset(models.Model):
     )
     start_date = models.DateTimeField(verbose_name="Start date", blank=True, null=True)
     end_date = models.DateTimeField(verbose_name="End date", blank=True, null=True)
-    ongoing = models.BooleanField(
-        "Ongoing (?)",
-        default=False,
-        help_text="The end date will always advance to be the current date",
-    )
     created = models.DateTimeField("date created", auto_now_add=True, null=True)
     last_updated = models.DateTimeField("last updated", auto_now=True, null=True)
     archived = models.BooleanField("Archived?", default=False)

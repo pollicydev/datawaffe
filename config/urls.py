@@ -16,7 +16,6 @@ urlpatterns = [
     # User management
     path("users/", include("rrap.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    path("select2/", include("django_select2.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

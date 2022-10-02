@@ -2,26 +2,13 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML
 from .models import Dataset
-from django_select2 import forms as s2forms
 from taggit.forms import TagWidget
 
 
 class NewDatasetForm(forms.ModelForm):
-    title = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Title of dataset",
-            }
-        ),
-        max_length=255,
-        help_text="Add a descriptive title",
-    )
-
     class Meta:
         model = Dataset
         fields = [
-            "title",
             "file",
         ]
         labels = {"file": "Click below to choose dataset file"}
@@ -30,12 +17,8 @@ class NewDatasetForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
-            "title",
             "file",
-            ButtonHolder(
-                Submit("submit", "Create Dataset", css_class="btn btn-lg btn-success"),
-                HTML('<a href="" class="btn btn-lg btn-default">Cancel</a>'),
-            ),
+            Submit("submit", "Upload Dataset", css_class="btn btn-lg btn-success"),
         )
 
 
@@ -93,7 +76,6 @@ class DatasetForm(forms.ModelForm):
             "methodology",
             "start_date",
             "end_date",
-            "ongoing",
             "locations",
             "topics",
             "caveats",
@@ -105,23 +87,11 @@ class DatasetForm(forms.ModelForm):
             "tags",
         ]
         widgets = {
-            "locations": s2forms.Select2MultipleWidget(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Select district(s)",
-                    "data-toggle": "select2",
-                    "data-placeholder": "Select district(s)",
-                    "data-select2-id": "id_locations",
-                }
+            "locations": forms.Select(
+                attrs={"class": "form-control selector", "multiple": ""}
             ),
-            "topics": s2forms.Select2MultipleWidget(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Select topic(s)",
-                    "data-toggle": "select2",
-                    "data-placeholder": "Select topic(s)",
-                    "data-select2-id": "id_topics",
-                }
+            "topics": forms.Select(
+                attrs={"class": "form-control selector", "multiple": ""}
             ),
             "privacy": forms.RadioSelect(
                 choices=Dataset.DATA_PRIVACY,
@@ -132,13 +102,13 @@ class DatasetForm(forms.ModelForm):
             "update_frequency": forms.Select(
                 choices=Dataset.UPDATE_FREQUENCY,
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control selector",
                 },
             ),
             "methodology": forms.Select(
                 choices=Dataset.DATA_METHODOLOGY,
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control selector",
                 },
             ),
             "tags": TagWidget(
@@ -174,7 +144,6 @@ class DatasetForm(forms.ModelForm):
             Row(
                 Column("start_date", css_class="col-md-4"),
                 Column("end_date", css_class="col-md-4"),
-                Column("ongoing", css_class="col-md-4"),
                 css_class="form-group",
             ),
             HTML(
@@ -190,10 +159,7 @@ class DatasetForm(forms.ModelForm):
             "topics",
             "tags",
             "caveats",
-            ButtonHolder(
-                Submit("submit", "Save dataset", css_class="btn btn-lg btn-success"),
-                HTML('<a href="" class="btn btn-lg btn-secondary">Cancel</a>'),
-            ),
+            Submit("submit", "Save dataset", css_class="btn btn-lg btn-success"),
         )
 
 
@@ -244,7 +210,6 @@ class EditDatasetForm(forms.ModelForm):
     class Meta:
         model = Dataset
         fields = [
-            "file",
             "title",
             "summary",
             "privacy",
@@ -252,7 +217,6 @@ class EditDatasetForm(forms.ModelForm):
             "methodology",
             "start_date",
             "end_date",
-            "ongoing",
             "locations",
             "topics",
             "caveats",
@@ -264,23 +228,11 @@ class EditDatasetForm(forms.ModelForm):
             "tags",
         ]
         widgets = {
-            "locations": s2forms.Select2MultipleWidget(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Select district(s)",
-                    "data-toggle": "select2",
-                    "data-placeholder": "Select district(s)",
-                    "data-select2-id": "id_locations",
-                }
+            "locations": forms.Select(
+                attrs={"class": "form-control selector", "multiple": ""}
             ),
-            "topics": s2forms.Select2MultipleWidget(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Select topic(s)",
-                    "data-toggle": "select2",
-                    "data-placeholder": "Select topic(s)",
-                    "data-select2-id": "id_topics",
-                }
+            "topics": forms.Select(
+                attrs={"class": "form-control selector", "multiple": ""}
             ),
             "privacy": forms.RadioSelect(
                 choices=Dataset.DATA_PRIVACY,
@@ -291,13 +243,13 @@ class EditDatasetForm(forms.ModelForm):
             "update_frequency": forms.Select(
                 choices=Dataset.UPDATE_FREQUENCY,
                 attrs={
-                    "class": "form-control select2",
+                    "class": "form-control selector",
                 },
             ),
             "methodology": forms.Select(
                 choices=Dataset.DATA_METHODOLOGY,
                 attrs={
-                    "class": "form-control select2",
+                    "class": "form-control selector",
                 },
             ),
             "tags": TagWidget(
@@ -314,7 +266,6 @@ class EditDatasetForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
-            "file",
             "title",
             "summary",
             "has_pii",
@@ -334,7 +285,6 @@ class EditDatasetForm(forms.ModelForm):
             Row(
                 Column("start_date", css_class="col-md-4"),
                 Column("end_date", css_class="col-md-4"),
-                Column("ongoing", css_class="col-md-4"),
                 css_class="form-group",
             ),
             HTML(
@@ -350,7 +300,5 @@ class EditDatasetForm(forms.ModelForm):
             "topics",
             "tags",
             "caveats",
-            ButtonHolder(
-                Submit("submit", "Update dataset", css_class="btn btn-lg btn-success")
-            ),
+            Submit("submit", "Update dataset", css_class="btn btn-lg btn-success"),
         )

@@ -9,7 +9,7 @@ def is_valid_queryparam(param):
 
 
 def dataset_filter(request):
-    qs = Dataset.objects.all()
+    qs = Dataset.objects.filter(status=1)
     title_contains_query = request.GET.get("title_contains")
     mime_exact_query = request.GET.get("mime_exact")
     organization_query = request.GET.get("organization")

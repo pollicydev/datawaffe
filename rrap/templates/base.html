@@ -188,12 +188,6 @@
       <div class="container">
       {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-success alert-icon alert-icon-border alert-dismissible" role="alert">
-          <div class="icon"><span class="mdi mdi-check"></span></div>
-          <div class="message">
-            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="mdi mdi-close" aria-hidden="true"></span></button><strong>Good!</strong> Better check yourself, you're not looking too good.
-          </div>
-        </div>
           <div class="alert alert-icon alert-dismissible alert-icon-border {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="mdi mdi-close-circle-o" aria-hidden="true"></span></button>
             {% if message.tags == 'success' %}
@@ -225,10 +219,9 @@
         <div class="row">
           <div class="col-sm-12 col-md-8">
             <ul class="nav">
-              <li class="nav-item"><a class="nav-link text-secondary" href="/">v{{rrap_version}}</a></li>
+              <li class="nav-item"><a class="nav-link text-secondary" href="/">v{{rrap_version}} ({{ rrap_environment }})</a></li>
               <li class="nav-item"><a class="nav-link text-secondary" href="#">Terms of service</a></li>
               <li class="nav-item"><a class="nav-link text-secondary" href="#">Privacy policy</a></li>
-              <li class="nav-item"><a class="nav-link text-secondary" href="#">Open Source &amp; QA</a></li>
               <li class="nav-item"><a class="nav-link text-secondary" href="#">Help &amp; FAQs</a></li>
               <li class="nav-item"><a class="nav-link text-secondary" href="#">Contact us</a></li>
             </ul>

@@ -76,7 +76,6 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "taggit",
     "multiselectfield",
-    "django_select2",
     "django_filters_facet",
 ]
 
@@ -313,7 +312,7 @@ GRAVATAR_ICON = ""
 RECENTLY_JOINED_DAYS = 10
 
 # APP SETTINGS & CONTEXT
-RRAP_VERSION = "0.1.0"
+RRAP_VERSION = env("RRAP_VERSION", default="0.0.0")
 RRAP_ENVIRONMENT = env("RRAP_ENVIRONMENT", default=Environments.LOCAL)
 GOOGLE_RECAPTCHA_ENABLED = env.bool("GOOGLE_RECAPTCHA_ENABLED", default=False)
 GOOGLE_RECAPTCHA_SITE_KEY = env("GOOGLE_RECAPTCHA_SITE_KEY", default="")
@@ -324,18 +323,8 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     },
-    "select2": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    },
 }
-# DJANGO-SELECT2
-SELECT2_CACHE_BACKEND = "default"
-SELECT2_CSS = "lib/select2/css/select2.min.css"
-SELECT2_JS = "lib/select2/js/select2.full.min.js"
+
 
 TAGGIT_CASE_INSENSITIVE = True
 
