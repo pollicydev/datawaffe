@@ -1,6 +1,5 @@
 from django import forms
 from .models import Organization, generate_logo
-from django_select2 import forms as s2forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML
 
@@ -44,19 +43,13 @@ class CreateOrganizationForm(forms.ModelForm):
             "website",
         ]
         widgets = {
-            "locations": s2forms.Select2MultipleWidget(
-                attrs={
-                    "class": "form-control form-control-lg",
-                    "placeholder": "Select a district",
-                    "data-toggle": "select2",
-                    "data-placeholder": "Select a district",
-                    "data-select2-id": "id_locations",
-                }
+            "locations": forms.Select(
+                attrs={"class": "form-control selector", "multiple": ""}
             ),
             "org_type": forms.Select(
                 choices=Organization.ORGANIZATION_TYPE,
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control selector",
                 },
             ),
             "website": forms.TextInput(attrs={"class": "form-control"}),
@@ -114,19 +107,13 @@ class OrganizationForm(forms.ModelForm):
             "website",
         ]
         widgets = {
-            "locations": s2forms.Select2MultipleWidget(
-                attrs={
-                    "class": "form-control form-control-lg",
-                    "placeholder": "Select a district",
-                    "data-toggle": "select2",
-                    "data-placeholder": "Select a district",
-                    "data-select2-id": "id_locations",
-                }
+            "locations": forms.Select(
+                attrs={"class": "form-control selector", "multiple": ""}
             ),
             "org_type": forms.Select(
                 choices=Organization.ORGANIZATION_TYPE,
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control selector",
                 },
             ),
             "website": forms.TextInput(attrs={"class": "form-control"}),
@@ -184,19 +171,13 @@ class EditOrganizationForm(forms.ModelForm):
             "website",
         ]
         widgets = {
-            "locations": s2forms.Select2MultipleWidget(
-                attrs={
-                    "class": "form-control",
-                    "placeholder": "Select a district",
-                    "data-toggle": "select2",
-                    "data-placeholder": "Select a district",
-                    "data-select2-id": "id_locations",
-                }
+            "locations": forms.Select(
+                attrs={"class": "form-control selector", "multiple": ""}
             ),
             "org_type": forms.Select(
                 choices=Organization.ORGANIZATION_TYPE,
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control selector",
                 },
             ),
             "website": forms.TextInput(attrs={"class": "form-control"}),

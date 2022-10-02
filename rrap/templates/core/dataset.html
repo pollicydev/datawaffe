@@ -31,9 +31,10 @@
           {{ dataset.title }}</h2>
       </span>
       <p class="text-muted"> {{ dataset.summary }} </p>
-      <button class="btn btn-space btn-dark btn-lg"><i class="icon icon-left mdi mdi-cloud-download"></i>Download
-        this dataset (PDF)</button>
-      <p class="text-muted">Size: {{ dataset.file.size|filesizeformat }}</p>
+      <a class="btn btn-space btn-dark btn-lg" href="{{ dataset.file_url }}" download><i
+          class="icon icon-left mdi mdi-cloud-download"></i>Download
+        this dataset (PDF)</a>
+      <p class="text-muted">Size: {{ dataset.file_url.size|filesizeformat }}</p>
 
       {% if request.user.is_authenticated and request.user == dataset.organization.owner or request.user in dataset.organization.members.all  %}
       <a href="{% url 'core:edit_data' dataset.uuid %}" class="btn btn-outline-secondary btn-space" role="button">Edit

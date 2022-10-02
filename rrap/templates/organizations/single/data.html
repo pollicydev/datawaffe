@@ -98,6 +98,10 @@
                     {% for data in datasets %}
                     <tr>
                       <td class="user-avatar cell-detail data-info">
+                        {% if data.status == 0 %}
+                        <span style="display: inline-block;"
+                          class="badge badge-lg badge-dark">{{ data.get_status_display }}</span>
+                        {% endif %}
                         <h4 class="text-bold mt-1"><a
                             href="{% url 'core:single_dataset' data.uuid %}">{{ data.title }}</a>
                         </h4>

@@ -1,6 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML
+from crispy_forms.bootstrap import InlineRadios
 from .models import Dataset
 from taggit.forms import TagWidget
 
@@ -226,6 +227,7 @@ class EditDatasetForm(forms.ModelForm):
             "quality_confirmed",
             "caveats",
             "tags",
+            "status",
         ]
         widgets = {
             "locations": forms.Select(
@@ -256,6 +258,12 @@ class EditDatasetForm(forms.ModelForm):
                 attrs={
                     "class": "form-control",
                 }
+            ),
+            "status": forms.RadioSelect(
+                choices=Dataset.STATUS,
+                attrs={
+                    "class": "form-control",
+                },
             ),
         }
         labels = {
@@ -300,5 +308,6 @@ class EditDatasetForm(forms.ModelForm):
             "topics",
             "tags",
             "caveats",
+            InlineRadios("status"),
             Submit("submit", "Update dataset", css_class="btn btn-lg btn-success"),
         )
