@@ -11,7 +11,7 @@ FROM python as python-build-stage
 ARG BUILD_ENVIRONMENT=production
 
 # install GDAL stuff for postgis
-RUN apt-get update && apt-get install -y libproj-dev gdal-bin
+RUN apt-get update && apt-get install -y libproj-dev gdal-bin libgdal-dev
 
 #UPDATE GDAL ENVS
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
