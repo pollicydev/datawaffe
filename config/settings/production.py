@@ -208,3 +208,5 @@ sentry_sdk.init(
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH", default="")
