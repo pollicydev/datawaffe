@@ -10,6 +10,9 @@ FROM python as python-build-stage
 
 ARG BUILD_ENVIRONMENT=production
 
+# install git to take care of stuff like django-faucet-filter
+RUN apt-get update && apt-get install -y git
+
 # Install apt packages
 RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
@@ -38,7 +41,7 @@ ENV BUILD_ENV ${BUILD_ENVIRONMENT}
 WORKDIR ${APP_HOME}
 
 RUN addgroup --system django \
-    && adduser --system --ingroup django django
+  && adduser --system --ingroup django django
 
 
 # Install required system dependencies

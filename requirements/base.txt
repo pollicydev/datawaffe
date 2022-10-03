@@ -21,4 +21,4 @@ django-taggit==3.0.0 # https://github.com/jazzband/django-taggit
 django-multiselectfield==0.1.12 
 django-filter==22.1
 # django-filters-facet-0.1.0
-#-e  git+https://github.com/caktus/django-filters-facet.git@main#egg=django-filters-facet
+-e  git+https://github.com/caktus/django-filters-facet.git@main#egg=django-filters-facet
