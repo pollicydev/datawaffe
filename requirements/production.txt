@@ -14,4 +14,4 @@ django-anymail[sendgrid]==8.6  # https://github.com/anymail/django-anymail
 
 # GDAL
 # ------------------------------------------------------------------------------
-pygdal==3.4.1
+pygdal==3.4.1.10
