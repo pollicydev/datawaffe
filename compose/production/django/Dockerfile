@@ -13,6 +13,10 @@ ARG BUILD_ENVIRONMENT=production
 # install GDAL stuff for postgis
 RUN apt-get update && apt-get install -y lbinutils libproj-dev gdal-bin
 
+#UPDATE GDAL ENVS
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
+ENV C_INCLUDE_PATH=/usr/include/gdal
+
 # install git to take care of stuff like django-faucet-filter
 RUN apt-get update && apt-get install -y git
 
