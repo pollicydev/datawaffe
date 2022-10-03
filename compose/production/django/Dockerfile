@@ -11,7 +11,7 @@ FROM python as python-build-stage
 ARG BUILD_ENVIRONMENT=production
 
 # install GDAL stuff for postgis
-RUN apt-get update && apt-get install -y libpq-dev gdal-bin libgdal-dev
+RUN apt-get update && apt-get install -y lbinutils libproj-dev gdal-bin
 
 # install git to take care of stuff like django-faucet-filter
 RUN apt-get update && apt-get install -y git
