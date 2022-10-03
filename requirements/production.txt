@@ -11,7 +11,3 @@ sentry-sdk==1.9.8  # https://github.com/getsentry/sentry-python
 # ------------------------------------------------------------------------------
 django-storages[boto3]==1.13.1  # https://github.com/jschneier/django-storages
 django-anymail[sendgrid]==8.6  # https://github.com/anymail/django-anymail
-
-# GDAL
-# ------------------------------------------------------------------------------
-GDAL==3.2.2

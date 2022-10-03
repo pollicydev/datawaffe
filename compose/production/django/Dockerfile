@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.8-slim-buster
+ARG PYTHON_VERSION=3.9-slim-bullseye
 
 
 
@@ -11,7 +11,7 @@ FROM python as python-build-stage
 ARG BUILD_ENVIRONMENT=production
 
 # install GDAL stuff for postgis
-RUN apt-get update && apt-get install -y libproj-dev gdal-bin libgdal-dev
+# RUN apt-get update && apt-get install -y libproj-dev gdal-bin libgdal-dev
 
 #UPDATE GDAL ENVS
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
