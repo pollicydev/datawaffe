@@ -10,6 +10,9 @@ FROM python as python-build-stage
 
 ARG BUILD_ENVIRONMENT=production
 
+# downgrade setuptools
+RUN pip install setuptools==58.0.0
+
 # install GDAL stuff for postgis
 RUN apt-get update && apt-get install -y libproj-dev gdal-bin libgdal-dev
 
@@ -64,9 +67,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # All absolute dir copies ignore workdir instruction. All relative dir copies are wrt to the workdir instruction
 # copy python dependency wheels from python-build-stage
 COPY --from=python-build-stage /usr/src/app/wheels  /wheels/
-
-# downgrade setuptools
-RUN pip install setuptools==58.0.0
 
 # use wheels to install python dependencies
 RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
