@@ -146,6 +146,7 @@ COMPRESS_FILTERS = {
     ],
     "js": ["compressor.filters.jsmin.JSMinFilter"],
 }
+COMPRESS_ROOT = STATIC_ROOT
 # Collectfast
 # ------------------------------------------------------------------------------
 # https://github.com/antonagestam/collectfast#installation
