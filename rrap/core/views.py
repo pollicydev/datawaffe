@@ -17,7 +17,36 @@ from rrap.datasets.filters import location_based_filter, dataset_filter
 # @onboarding_required
 def home(request):
 
-    return render(request, "core/home.html")
+    verified = False
+
+    if request.user.is_authenticated:
+
+        # first check if user is not staff and has whether has finished registration via onboarding
+        if (
+            not request.user.is_staff
+            and not request.user.profile.has_finished_registration
+        ):
+            return redirect("users:onboarding")
+
+        if request.user.is_staff:
+            return redirect("/admin")
+
+        # Check if user has verified email
+        verified = ""
+        if EmailAddress.objects.filter(user=request.user, verified=True).exists():
+            pass
+        else:
+            verified = False
+            messages.warning(
+                request,
+                "We sent a verification link to your email account. Please click the link to fully activate your account.",
+            )
+
+    context = {
+        "verified": verified,
+    }
+
+    return render(request, "core/home.html", context)
 
 
 def datasets(request):
