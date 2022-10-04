@@ -38,14 +38,6 @@ CACHES = {
             "IGNORE_EXCEPTIONS": True,
         },
     },
-    "collectfast": {
-        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": "/var/tmp/collectfast_cache",
-        "TIMEOUT": None,
-        "OPTIONS": {
-            "MAX_ENTRIES": 1000,
-        },
-    },
 }
 
 # SECURITY
@@ -225,5 +217,3 @@ sentry_sdk.init(
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-
-GDAL_LIBRARY_PATH = env("GDAL_LIBRARY_PATH", default="")

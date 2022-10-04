@@ -62,15 +62,18 @@ def locations(request):
             )
             # load the json for modification
             locations_json = json.loads(all_locations)
-            # add id field to features
-            i = 0
-            for p in locations_json["features"]:
-                i += 1
-                p["id"] = i
-            # remove crs element. It confuses mapbox
-            locations_json.pop("crs", None)
-            # restore the clean json
-            locations_json = json.dumps(locations_json)
+            if locations_json:
+                # add id field to features
+                i = 0
+                for p in locations_json["features"]:
+                    i += 1
+                    p["id"] = i
+                # remove crs element. It confuses mapbox
+                locations_json.pop("crs", None)
+                # restore the clean json
+                locations_json = json.dumps(locations_json)
+            else:
+                locations_json = ""
     except Dataset.DoesNotExist:
         raise NotImplementedError
 
