@@ -34,7 +34,15 @@ CACHES = {
             # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
             "IGNORE_EXCEPTIONS": True,
         },
-    }
+    },
+    "collectfast": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/var/tmp/collectfast_cache",
+        "TIMEOUT": None,
+        "OPTIONS": {
+            "MAX_ENTRIES": 1000,
+        },
+    },
 }
 
 # SECURITY
@@ -89,6 +97,10 @@ aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws
 # ------------------------
 STATICFILES_STORAGE = "rrap.utils.storages.StaticRootS3Boto3Storage"
 COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
+AWS_PRELOAD_METADATA = True
+COLLECTFAST_THREADS = 20
+COLLECTFAST_DEBUG = True
+COLLECTFAST_CACHE = "collectfast"
 STATIC_URL = f"https://{aws_s3_domain}/static/"
 # MEDIA
 # ------------------------------------------------------------------------------
