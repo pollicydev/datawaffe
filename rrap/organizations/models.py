@@ -60,12 +60,11 @@ class Organization(models.Model):
     )
 
     ORGANIZATION_TYPE = (
-        ("academic", "Academic/Research"),
+        ("individual", "Individual"),
         ("donor", "Donor"),
         ("government", "Government"),
         ("int_ngo", "International NGO"),
-        ("int_org", "International organization"),
-        ("national_org", "National organization"),
+        ("cso", "Civil Society Organization"),
         ("private_sector", "Private sector"),
         ("religious", "Religious"),
         ("other", "Other"),

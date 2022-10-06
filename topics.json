@@ -14,18 +14,30 @@
   "model": "core.topic",
   "pk": 3,
   "fields": {
-    "name": "Laws"
+    "name": "Legal"
   }
 }, {
   "model": "core.topic",
   "pk": 4,
   "fields": {
-    "name": "Employment"
+    "name": "Population"
   }
 }, {
   "model": "core.topic",
   "pk": 5,
   "fields": {
-    "name": "Safety"
+    "name": "Technology"
+  }
+}, {
+  "model": "core.topic",
+  "pk": 6,
+  "fields": {
+    "name": "Human Rights"
+  }
+}, {
+  "model": "core.topic",
+  "pk": 7,
+  "fields": {
+    "name": "Gender"
   }
 }]

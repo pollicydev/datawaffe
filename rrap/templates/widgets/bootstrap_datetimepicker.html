@@ -1,0 +1,23 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'lib/datetimepicker/css/bootstrap-datetimepicker.min.css' %}" />
+<script src="{% static 'lib/datetimepicker/js/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
+
+<div class="input-group date datetimepicker" data-date-format="dd-mm-yyyy" data-start-view="3" data-min-view="2">
+  {% include "django/forms/widgets/input.html" %}
+  <div class="input-group-append">
+    <button class="btn btn-primary"><i class="icon-th mdi mdi-calendar"></i></button>
+  </div>
+</div>
+
+<script>
+  $(".datetimepicker").datetimepicker({
+    autoclose: true,
+    componentIcon: '.mdi.mdi-calendar',
+    navIcons: {
+      rightIcon: 'mdi mdi-chevron-right',
+      leftIcon: 'mdi mdi-chevron-left'
+    }
+  });
+
+</script>

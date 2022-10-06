@@ -17,8 +17,6 @@
     $(".selector").select2({
       width: '100%',
     });
-
-    $("[data-mask='date']").mask("99/99/9999");
   });
 
 </script>
@@ -61,6 +59,9 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-body">
+          {% if form.errors %}
+          {{ form.errors }}
+          {% endif %}
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {% crispy form %}

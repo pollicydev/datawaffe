@@ -1,3 +1,5 @@
+import urllib.request, urllib.error
+from django.contrib.sites.models import Site
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
@@ -17,6 +19,32 @@ class Dataset(models.Model):
     DRAFT = 0
     PUBLISHED = 1
     STATUS = ((DRAFT, "Draft"), (PUBLISHED, "Published"))
+
+    # Document Types
+    REPORT = 0
+    TOOLKIT = 1
+    ARTICLE = 2
+    LAWS = 3
+    SPEECH = 4
+    VIDEO = 5
+    AUDIO = 6
+    BOOK = 7
+    MAGAZINE = 8
+    ARTWORK = 9
+    GUIDE = 10
+    DOCUMENT_TYPE = (
+        (REPORT, "Report"),
+        (TOOLKIT, "Toolkit"),
+        (ARTICLE, "Article"),
+        (LAWS, "Laws"),
+        (SPEECH, "Speech"),
+        (VIDEO, "Video"),
+        (AUDIO, "Audio"),
+        (BOOK, "Book"),
+        (MAGAZINE, "Magazine"),
+        (ARTWORK, "Artwork"),
+        (GUIDE, "Manua/Guide/Framework"),
+    )
 
     # Methodology
     CENSUS = 0
@@ -76,14 +104,19 @@ class Dataset(models.Model):
         blank=False,
         help_text="Please provide a summary of this dataset.",
     )
-    file = models.FileField(null=True, max_length=255, upload_to="datasets/")
     file_mime = models.CharField(max_length=255, null=True)
     file_url = models.URLField(null=True, blank=True)
+
     privacy = models.SmallIntegerField(
         "Privacy setting", blank=False, choices=DATA_PRIVACY, default=2
     )
     organization = models.ForeignKey(
         "organizations.Organization", on_delete=models.CASCADE, related_name="datasets"
+    )
+    doc_type = models.SmallIntegerField(
+        "Document type",
+        choices=DOCUMENT_TYPE,
+        default=0,
     )
     created_by = models.ForeignKey(
         User,
@@ -99,8 +132,8 @@ class Dataset(models.Model):
         related_name="datasets_updated",
         on_delete=models.SET_NULL,
     )
-    start_date = models.DateTimeField(verbose_name="Start date", blank=True, null=True)
-    end_date = models.DateTimeField(verbose_name="End date", blank=True, null=True)
+    start_date = models.DateField(verbose_name="Start date", blank=True, null=True)
+    end_date = models.DateField(verbose_name="End date", blank=True, null=True)
     created = models.DateTimeField("date created", auto_now_add=True, null=True)
     last_updated = models.DateTimeField("last updated", auto_now=True, null=True)
     archived = models.BooleanField("Archived?", default=False)
@@ -190,6 +223,20 @@ class Dataset(models.Model):
     def is_public(self):
         if self.privacy == 2:
             return True
+
+    def get_file_size(self):
+        # domain = Site.objects.get_current().domain
+        # path = self.file_url
+        # file_path = "http://{domain}{path}".format(domain=domain, path=path)
+        # try:
+        #     file = urllib.request.urlopen(file_path)
+        #     size = file.length
+        #     return size
+        # except urllib.error.HTTPError as e:
+        #     print("failed:", e)
+        return 10
+
+        return None
 
     def save(self, *args, **kwargs):
         self.tag_val = self.tag_val.replace(" ", "")

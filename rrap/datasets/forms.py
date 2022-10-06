@@ -1,26 +1,11 @@
 from django import forms
+from datetime import date
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML
 from crispy_forms.bootstrap import InlineRadios
+from ..utils.widgets import BootstrapDateTimePickerInput
 from .models import Dataset
 from taggit.forms import TagWidget
-
-
-class NewDatasetForm(forms.ModelForm):
-    class Meta:
-        model = Dataset
-        fields = [
-            "file",
-        ]
-        labels = {"file": "Click below to choose dataset file"}
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.layout = Layout(
-            "file",
-            Submit("submit", "Upload Dataset", css_class="btn btn-lg btn-success"),
-        )
 
 
 class DatasetForm(forms.ModelForm):
@@ -44,27 +29,29 @@ class DatasetForm(forms.ModelForm):
         required=False,
         help_text="Add some private caveats/notes/comments about this dataset",
     )
-    start_date = forms.CharField(
-        widget=forms.TextInput(
+    start_date = forms.DateField(
+        input_formats=["%Y-%m-%d"],
+        initial=date.today,
+        widget=BootstrapDateTimePickerInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "DD/MM/YYYY",
-                "data-mask": "date",
-            }
+                "placeholder": "Start date",
+            },
         ),
-        max_length=255,
-        label="Start date for this dataset",
+        label="Start date",
+        required=False,
     )
-    end_date = forms.CharField(
-        widget=forms.TextInput(
+    end_date = forms.DateField(
+        input_formats=["%Y-%m-%d"],
+        initial=date.today,
+        widget=BootstrapDateTimePickerInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "DD/MM/YYYY",
-                "data-mask": "date",
-            }
+                "placeholder": "End date",
+            },
         ),
-        max_length=255,
-        label="End date for this dataset",
+        label="End date",
+        required=False,
     )
 
     class Meta:
@@ -86,18 +73,26 @@ class DatasetForm(forms.ModelForm):
             "quality_confirmed",
             "caveats",
             "tags",
+            "status",
+            "doc_type",
         ]
         widgets = {
-            "locations": forms.Select(
+            "locations": forms.SelectMultiple(
                 attrs={"class": "form-control selector", "multiple": ""}
             ),
-            "topics": forms.Select(
+            "topics": forms.SelectMultiple(
                 attrs={"class": "form-control selector", "multiple": ""}
             ),
             "privacy": forms.RadioSelect(
                 choices=Dataset.DATA_PRIVACY,
                 attrs={
                     "class": "form-control",
+                },
+            ),
+            "doc_type": forms.Select(
+                choices=Dataset.DOCUMENT_TYPE,
+                attrs={
+                    "class": "form-control selector",
                 },
             ),
             "update_frequency": forms.Select(
@@ -145,6 +140,7 @@ class DatasetForm(forms.ModelForm):
             Row(
                 Column("start_date", css_class="col-md-4"),
                 Column("end_date", css_class="col-md-4"),
+                Column("update_frequency", css_class="col-md-4"),
                 css_class="form-group",
             ),
             HTML(
@@ -153,13 +149,14 @@ class DatasetForm(forms.ModelForm):
                 """
             ),
             Row(
+                Column("doc_type", css_class="col-md-6"),
                 Column("methodology", css_class="col-md-6"),
-                Column("update_frequency", css_class="col-md-6"),
             ),
             "locations",
             "topics",
             "tags",
             "caveats",
+            InlineRadios("status"),
             Submit("submit", "Save dataset", css_class="btn btn-lg btn-success"),
         )
 
@@ -185,27 +182,31 @@ class EditDatasetForm(forms.ModelForm):
         required=False,
         help_text="Add some private caveats/notes/comments about this dataset",
     )
-    start_date = forms.CharField(
-        widget=forms.TextInput(
+    start_date = forms.DateField(
+        input_formats=["%d-%m-%Y"],
+        initial=date.today,
+        widget=BootstrapDateTimePickerInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "DD/MM/YYYY",
-                "data-mask": "date",
-            }
+                "placeholder": "Start date",
+            },
+            format=["%d-%m-%Y"],
         ),
-        max_length=255,
-        label="Start date for this dataset",
+        label="Start date",
+        required=False,
     )
-    end_date = forms.CharField(
-        widget=forms.TextInput(
+    end_date = forms.DateField(
+        input_formats=["%d-%m-%Y"],
+        initial=date.today,
+        widget=BootstrapDateTimePickerInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "DD/MM/YYYY",
-                "data-mask": "date",
-            }
+                "placeholder": "End date",
+            },
+            format=["%d-%m-%Y"],
         ),
-        max_length=255,
-        label="End date for this dataset",
+        label="End date",
+        required=False,
     )
 
     class Meta:
@@ -228,13 +229,20 @@ class EditDatasetForm(forms.ModelForm):
             "caveats",
             "tags",
             "status",
+            "doc_type",
         ]
         widgets = {
-            "locations": forms.Select(
+            "locations": forms.SelectMultiple(
                 attrs={"class": "form-control selector", "multiple": ""}
             ),
-            "topics": forms.Select(
+            "topics": forms.SelectMultiple(
                 attrs={"class": "form-control selector", "multiple": ""}
+            ),
+            "doc_type": forms.Select(
+                choices=Dataset.DOCUMENT_TYPE,
+                attrs={
+                    "class": "form-control selector",
+                },
             ),
             "privacy": forms.RadioSelect(
                 choices=Dataset.DATA_PRIVACY,
@@ -293,6 +301,7 @@ class EditDatasetForm(forms.ModelForm):
             Row(
                 Column("start_date", css_class="col-md-4"),
                 Column("end_date", css_class="col-md-4"),
+                Column("update_frequency", css_class="col-md-4"),
                 css_class="form-group",
             ),
             HTML(
@@ -301,8 +310,8 @@ class EditDatasetForm(forms.ModelForm):
                 """
             ),
             Row(
+                Column("doc_type", css_class="col-md-6"),
                 Column("methodology", css_class="col-md-6"),
-                Column("update_frequency", css_class="col-md-6"),
             ),
             "locations",
             "topics",

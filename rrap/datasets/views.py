@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from pathlib import Path
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,7 @@ from django.urls import reverse as r
 from django.utils.text import slugify
 from django.utils.html import escape
 from .models import Dataset
-from .forms import NewDatasetForm, DatasetForm, EditDatasetForm
+from .forms import DatasetForm, EditDatasetForm
 from django.core.paginator import Paginator
 from django.views import View
 from rrap.organizations.models import Organization
@@ -108,7 +109,7 @@ def new_dataset(request, org_name):
     organization = get_object_or_404(Organization, name=org_name)
 
     if request.method == "POST":
-        form = NewDatasetForm(request.POST, request.FILES)
+        form = DatasetForm(request.POST, request.FILES)
         if form.is_valid():
             form.instance.created_by = request.user
             form.instance.organization = organization
@@ -124,7 +125,7 @@ def new_dataset(request, org_name):
                 )
             )
     else:
-        form = NewDatasetForm()
+        form = DatasetForm()
     return render(
         request,
         "datasets/edit.html",
@@ -177,9 +178,15 @@ def edit_dataset(request, dataset_uuid):
     if request.method == "POST":
         form = EditDatasetForm(request.POST, instance=dataset)
         if form.is_valid():
+            # dataset = form.save(commit=False)
+            # dataset.start_date = datetime.strptime(
+            #     request.POST["start_date"], "%d-%m-%Y"
+            # )
+            # dataset.end_date = datetime.strptime(request.POST["end_date"], "%d-%m-%Y")
+            # dataset.save()
             dataset = form.save()
             messages.success(request, "Dataset was saved successfully.")
-            return redirect(r("data:dataset", args=(dataset.uuid,)))
+            return redirect(r("core:single_dataset", args=(dataset.uuid,)))
     else:
         form = EditDatasetForm(instance=dataset)
     return render(
