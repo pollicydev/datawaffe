@@ -46,34 +46,40 @@
         </div>
       </div>
       <div class="col-12 col-lg-6 col-xl-3">
-        <div class="widget widget-tile">
-          <div class="data-info">
-            <div class="desc">Datasets</div>
-            <div class="value"><span class="number" data-toggle="counter"
-                data-end="{{ total_datasets }}">{{ total_datasets }}</span>
+        <a href="{% url 'core:datasets' %}">
+          <div class="widget widget-tile">
+            <div class="data-info">
+              <div class="desc">Datasets</div>
+              <div class="value"><span class="number" data-toggle="counter"
+                  data-end="{{ total_datasets }}">{{ total_datasets }}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
       <div class="col-12 col-lg-6 col-xl-3">
-        <div class="widget widget-tile">
-          <div class="data-info">
-            <div class="desc">Organizations</div>
-            <div class="value"><span class="number" data-toggle="counter"
-                data-end="{{ total_organizations }}">{{ total_organizations }}</span>
+        <a href="{% url 'core:organizations' %}">
+          <div class="widget widget-tile">
+            <div class="data-info">
+              <div class="desc">Organizations</div>
+              <div class="value"><span class="number" data-toggle="counter"
+                  data-end="{{ total_organizations }}">{{ total_organizations }}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
       <div class="col-12 col-lg-6 col-xl-3">
-        <div class="widget widget-tile">
-          <div class="data-info">
-            <div class="desc">Districts</div>
-            <div class="value"><span class="number" data-toggle="counter"
-                data-end="{{ total_locations }}">{{ total_locations }}</span>
+        <a href="{% url 'core:locations' %}">
+          <div class="widget widget-tile">
+            <div class="data-info">
+              <div class="desc">Districts</div>
+              <div class="value"><span class="number" data-toggle="counter"
+                  data-end="{{ total_locations }}">{{ total_locations }}</span>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>

@@ -174,7 +174,7 @@
             </ul>
             {% else %}
             <ul class="nav navbar-nav float-right be-icons-nav">
-              <li class="nav-item"><a href="{% url 'core:home' %}" class="nav-link">Rapid Research for Agile Policymaking</a></li>
+              <li class="nav-item d-block d-md-none"><a href="{% url 'core:home' %}" class="nav-link">Rapid Research for Agile Policymaking</a></li>
               {% if ACCOUNT_ALLOW_REGISTRATION %}
               <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}" role="button">Sign up</a></li>
               {% endif %}
