@@ -14,6 +14,7 @@ def dataset_filter(request):
     mime_exact_query = request.GET.get("mime_exact")
     organization_query = request.GET.get("organization")
     location = request.GET.get("location")
+    topic = request.GET.get("topic")
 
     if is_valid_queryparam(title_contains_query):
         qs = qs.filter(title__icontains=title_contains_query)
@@ -26,6 +27,9 @@ def dataset_filter(request):
 
     if is_valid_queryparam(location) and location != "Choose...":
         qs = qs.filter(locations__pk=location)
+
+    if is_valid_queryparam(topic) and topic != "Choose...":
+        qs = qs.filter(topics__pk=topic)
 
     return qs
 
@@ -37,6 +41,7 @@ def location_based_filter(request, location_pk):
     mime_exact_query = request.GET.get("mime_exact")
     organization_query = request.GET.get("organization")
     location = request.GET.get("location")
+    topic = request.GET.get("topic")
 
     if is_valid_queryparam(title_contains_query):
         qs = qs.filter(title__icontains=title_contains_query)
@@ -49,5 +54,8 @@ def location_based_filter(request, location_pk):
 
     if is_valid_queryparam(location) and location != "Choose...":
         qs = qs.filter(locations__pk=location)
+
+    if is_valid_queryparam(topic) and topic != "Choose...":
+        qs = qs.filter(topics__pk=topic)
 
     return qs

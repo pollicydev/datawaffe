@@ -80,7 +80,13 @@
           <div class="card-body card-body-contrast" style="max-height:200px; overflow-y: scroll;">
             <div class="form-group row">
               <div class="col-12">
-
+                {% for topic in topics %}
+                <div class="custom-control custom-checkbox">
+                  <input class="custom-control-input" type="checkbox" id="{{ topic.id }}" name="topic"
+                    value="{{ topic.id }}">
+                  <label class="custom-control-label" for="{{ topic.id }}">{{ topic.name }}</label>
+                </div>
+                {% endfor %}
               </div>
             </div>
           </div>

@@ -9,7 +9,7 @@ from rrap.users.decorators import onboarding_required
 from rrap.organizations.decorators import member_required, main_owner_required
 from rrap.datasets.models import Dataset
 from rrap.organizations.models import Organization
-from .models import Location
+from .models import Location, Topic
 from rrap.datasets.filters import location_based_filter, dataset_filter
 from hitcount.utils import get_hitcount_model
 from hitcount.views import _update_hit_count
@@ -55,11 +55,13 @@ def datasets(request):
     datasets = dataset_filter(request)
     organizations = Organization.objects.all().order_by("title")
     locations = Location.objects.all().order_by("name")
+    topics = Topic.objects.all().order_by("name")
 
     context = {
         "datasets": datasets,
         "organizations": organizations,
         "locations": locations,
+        "topics": topics,
     }
 
     return render(request, "core/datasets.html", context)
