@@ -57,7 +57,8 @@
             {{ form.errors }}
             {% endif %}
             <form method="post" enctype="multipart/form-data">
-              <img class="rounded mr-2 mb-2" src="" alt="Logo">
+              <img style="height:100px" class="rounded mr-2 mb-2 img-thumbnail" src="{{ organization.logo.url }}"
+                alt="Logo">
               {% csrf_token %}
               {% crispy form %}
             </form>

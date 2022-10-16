@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load compress i18n static search_tags %}
+{% load compress i18n static search_tags social_share %}
 
 {% block title %}{{ location.name }} · Rapid Research for Agile Policymaking {% endblock %}
 
@@ -36,11 +36,10 @@
     </div>
     <div class="col-md-5">
       <p class="mt-2 mb-2">
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i
-            class="icon mdi mdi-facebook"></i></button>
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i
-            class="icon mdi mdi-twitter"></i></button>
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i class="icon mdi mdi-email"></i></button>
+        {% post_to_facebook object_or_url "Facebook" %}
+        {% post_to_twitter "{{dataset.title}}" object_or_url "Twitter" %}
+        {% send_email object.title "{{self.title}}" object_or_url "Email" %}
+        {% copy_to_clipboard object_or_url "Copy link" %}
 
       </p>
     </div>
@@ -182,6 +181,8 @@
     </div>
   </div>
 </div>
+
+{% add_copy_script %}
 
 {% endblock content %}
 

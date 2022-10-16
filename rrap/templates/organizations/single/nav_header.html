@@ -1,4 +1,4 @@
-{% load static %}
+{% load static social_share %}
 
 {% block javascript %}
 <script type="text/javascript" src="{% static 'lib/rrap/activities.js' %}"></script>
@@ -73,11 +73,10 @@
           <button class="btn btn-space btn-secondary"><span class='icon icon-left mdi mdi-comment-text'></span> Request
             Membership</button>
         </span>
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i
-            class="icon mdi mdi-facebook"></i></button>
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i
-            class="icon mdi mdi-twitter"></i></button>
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i class="icon mdi mdi-email"></i></button>
+        {% post_to_facebook object_or_url "Facebook" %}
+        {% post_to_twitter "{{dataset.title}}" object_or_url "Twitter" %}
+        {% send_email object.title "{{self.title}}" object_or_url "Email" %}
+        {% copy_to_clipboard object_or_url "Copy" %}
       </p>
       {% endif %}
     </div>
@@ -102,3 +101,5 @@
   </ul>
 
 </div>
+
+{% add_copy_script %}
