@@ -53,6 +53,9 @@
         {% include "organizations/edit_menu.html" with menu="edit" %}
         <div class="tab-content">
           <div class="tab-pane active" id="edit" role="tabpanel">
+            {% if form.errors %}
+            {{ form.errors }}
+            {% endif %}
             <form method="post" enctype="multipart/form-data">
               <img class="rounded mr-2 mb-2" src="" alt="Logo">
               {% csrf_token %}
