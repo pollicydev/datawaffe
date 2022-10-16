@@ -1,4 +1,4 @@
-{% load static i18n compress user_extras %}
+{% load static i18n compress user_extras social_share %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
@@ -252,5 +252,6 @@
     </script>
     {% endcomment %}
     {% endblock inline_javascript %}
+    {% add_copy_script %}
   </body>
 </html>
