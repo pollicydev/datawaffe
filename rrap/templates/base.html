@@ -173,19 +173,16 @@
               </li>
             </ul>
             {% else %}
-            <ul class="nav navbar-nav float-right be-user-nav">
-            {% if ACCOUNT_ALLOW_REGISTRATION %}
-            <li class="nav-item">
-              {# URL provided by django-allauth/account/urls.py #}
-              <a id="sign-up-link" class="nav-link btn btn-secondary" href="{% url 'account_signup' %}" role="button" aria-expanded="false">{% translate "Sign Up" %}</a>
-            </li>
-            {% endif %}
+            <ul class="nav navbar-nav float-right be-icons-nav">
+              <li class="nav-item"><a href="{% url 'core:home' %}" class="nav-link">Rapid Research for Agile Policymaking</a></li>
+              {% if ACCOUNT_ALLOW_REGISTRATION %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}" role="button">Sign up</a></li>
+              {% endif %}
               <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                  <a class="nav-link" href="{% url 'account_login' %}">Log in</a>
               </li>
-            {% endif %}
             </ul>
+            {% endif %}
           </div>
         </div>
       </nav>
