@@ -43,7 +43,7 @@ class CreateOrganizationForm(forms.ModelForm):
             "website",
         ]
         widgets = {
-            "locations": forms.Select(
+            "locations": forms.SelectMultiple(
                 attrs={"class": "form-control selector", "multiple": ""}
             ),
             "org_type": forms.Select(
@@ -107,7 +107,7 @@ class OrganizationForm(forms.ModelForm):
             "website",
         ]
         widgets = {
-            "locations": forms.Select(
+            "locations": forms.SelectMultiple(
                 attrs={"class": "form-control selector", "multiple": ""}
             ),
             "org_type": forms.Select(
@@ -171,7 +171,7 @@ class EditOrganizationForm(forms.ModelForm):
             "website",
         ]
         widgets = {
-            "locations": forms.Select(
+            "locations": forms.SelectMultiple(
                 attrs={"class": "form-control selector", "multiple": ""}
             ),
             "org_type": forms.Select(
