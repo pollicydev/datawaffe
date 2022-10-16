@@ -90,7 +90,8 @@
         href="{% url 'core:org_activity' organization.name %}" role="tab">Activity stream</a></li>
     {% if request.user.is_authenticated and request.user == organization.owner or request.user in organization.members.all %}
     <li class="nav-item"><a class="nav-link {% if active_tab == 'drafts' %}active{% endif %}"
-        href="{% url 'core:drafts' organization.name %}" role="tab">Drafts</a></li>
+        href="{% url 'core:drafts' organization.name %}" role="tab">Drafts
+        ({{ organization.get_draft_datasets|length }})</a></li>
     <li class="nav-item"><a class="nav-link {% if active_tab == 'members' %}active{% endif %}"
         href="{% url 'core:org_members' organization.name %}" role="tab">Members</a></li>
     {% endif %}

@@ -32,6 +32,13 @@
         //initialize the javascript
         App.init();
       });
+
+      // dissappears alerts after 3s
+      setTimeout(function(){
+        $('.alert').fadeTo("slow", 0.1, function(){
+            $('.alert').alert('close')
+        });     
+        }, 3000)
     </script>
     {% endcompress %}
 
