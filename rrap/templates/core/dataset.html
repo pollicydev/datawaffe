@@ -51,7 +51,9 @@
     </div>
     <div class="col-md-3 logo">
       {% if dataset.organization.logo %}
-      <img src="{{ dataset.organization.logo.url }}" alt="{{ dataset.organization.title }} logo" height="80" />
+      <a href="{% url 'core:single_org' dataset.organization.name %}">
+        <img src="{{ dataset.organization.logo.url }}" alt="{{ dataset.organization.title }} logo" height="80" />
+      </a>
       {% endif %}
     </div>
   </div>
