@@ -11,6 +11,8 @@ from rrap.datasets.models import Dataset
 from rrap.organizations.models import Organization
 from .models import Location
 from rrap.datasets.filters import location_based_filter, dataset_filter
+from hitcount.utils import get_hitcount_model
+from hitcount.views import _update_hit_count
 
 
 # @login_required
@@ -135,13 +137,23 @@ def location(request, location_pk):
 
 def dataset(request, dataset_uuid):
     dataset = get_object_or_404(Dataset, uuid=dataset_uuid)
+    context = {}
+    # hit count
+    # hitcount logic
+    hit_count = get_hitcount_model().objects.get_for_object(dataset)
+    hits = hit_count.hits
+    hitcontext = context["hitcount"] = {"pk": hit_count.pk}
+    hit_count_response = _update_hit_count(request, hit_count)
+    if hit_count_response.hit_counted:
+        hits = hits + 1
+        hitcontext["hit_counted"] = hit_count_response.hit_counted
+        hitcontext["hit_message"] = hit_count_response.hit_message
+        hitcontext["total_hits"] = hits
 
     return render(
         request,
         "core/dataset.html",
-        {
-            "dataset": dataset,
-        },
+        {"dataset": dataset},
     )
 
 

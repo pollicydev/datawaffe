@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load compress i18n static crispy_forms_tags %}
+{% load compress i18n static crispy_forms_tags hitcount_tags social_share %}
 
 {% block title %}{{ dataset.title }} · Rapid Research for Agile Policymaking {% endblock %}
 
@@ -31,10 +31,14 @@
           {{ dataset.title }}</h2>
       </span>
       <p class="text-muted"> {{ dataset.summary }} </p>
-      <a class="btn btn-space btn-dark btn-lg" href="{{ dataset.file_url }}" download><i
+      {% if dataset.file_url %}
+      <a class="btn btn-space btn-dark btn-md" href="{{ dataset.file_url }}" download><i
           class="icon icon-left mdi mdi-cloud-download"></i>Download
         this dataset (PDF)</a>
       <p class="text-muted">Size: {{ dataset.get_file_size|filesizeformat }}</p>
+      {% else %}
+      <p class="text-muted">No file added</p>
+      {% endif %}
 
       {% if request.user.is_authenticated and request.user == dataset.organization.owner or request.user in dataset.organization.members.all  %}
       <a href="{% url 'core:edit_data' dataset.uuid %}" class="btn btn-outline-secondary btn-space" role="button">Edit
@@ -44,9 +48,6 @@
     <div class="col-md-3 logo">
       {% if dataset.organization.logo %}
       <img src="{{ dataset.organization.logo.url }}" alt="{{ dataset.organization.title }} logo" height="80" />
-      {% else %}
-      <img src="https://doodleipsum.com/185?shape=circle&bg=ceebff" alt="{{ dataset.organization.title }} logo"
-        height="80" />
       {% endif %}
     </div>
   </div>
@@ -54,20 +55,29 @@
   <!-- dataset toolbar -->
   <div class="row mt-4 mb-3">
     <div class="col-md-7 d-flex">
-      <h6 class="mr-2 text-muted"><i class="icon icon-left mdi mdi-gps-dot"></i> Includes sub-national data</h6>
-      <h6 class="mr-2 text-muted"><i class="icon icon-left mdi mdi-cloud-download"></i> # downloads</h6>
-      <h6 class="text-muted"><i class="icon icon-left mdi mdi-refresh"></i> This dataset updates:
-        {{ dataset.get_update_frequency_display }}</h6>
+      {% if dataset.quality_confirmed %}
+      <h5 class="mr-2 text-success"><i class="icon icon-left mdi mdi-badge-check"></i> Quality
+        confirmed
+      </h5>
+      {% endif %}
+      {% if dataset.has_microdata %}
+      <h5 class="mr-2 text-info"><i class="icon icon-left mdi mdi-chart"></i> Contains microdata</h5>
+      {% endif %}
+      <h5 class="mr-2"><i class="icon icon-left mdi mdi-eye"></i> {% get_hit_count for dataset %}
+        views</h5>
+      <h5 class="mr-2"><i class="icon icon-left mdi mdi-cloud-download"></i> {{ dataset.download_count }}
+        download{{ dataset.download_count|pluralize }}</h5>
+      <h5 class="text-muted"><i class="icon icon-left mdi mdi-refresh"></i> Updates:
+        {{ dataset.get_update_frequency_display }}</h5>
     </div>
     <div class="col-md-5">
       <p class="mb-2">
         <button class="btn btn-space btn-secondary"><i class="icon icon-left mdi mdi-comment-text"></i>Contact the
           contributor</button>
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i
-            class="icon mdi mdi-facebook"></i></button>
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i
-            class="icon mdi mdi-twitter"></i></button>
-        <button class="btn btn-space btn-secondary btn-social" type="button"><i class="icon mdi mdi-email"></i></button>
+        {% post_to_facebook object_or_url "Facebook" %}
+        {% post_to_twitter "{{dataset.title}}" object_or_url "Twitter" %}
+        {% send_email object.title "{{self.title}}" object_or_url "Email" %}
+        {% copy_to_clipboard object_or_url "Copy link" %}
       </p>
     </div>
   </div>
@@ -117,21 +127,28 @@
               </tr>
               <tr>
                 <td><b>Locations</b></td>
-                <td></td>
+                <td>
+                  {% for location in dataset.locations.all %}
+                  <a href="{% url 'core:single_location' location.pk %}"
+                    class="btn btn-rounded btn-space btn-secondary">{{ location }}</a>
+                  {% endfor %}
+                </td>
               </tr>
               <tr>
                 <td><b>Topics</b></td>
-                <td></td>
+                <td>
+                  {{dataset.topics.all|join:", "}}
+                </td>
               </tr>
               <tr>
-                <td><b>Caveats / comments</b></td>
+                <td><b>Comments</b></td>
                 <td>
                   <p>{{ dataset.caveats }}</p>
                 </td>
               </tr>
               <tr>
                 <td><b>Tags</b></td>
-                <td></td>
+                <td>{{dataset.tags.all|join:", "}}</td>
               </tr>
             </tbody>
           </table>

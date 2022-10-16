@@ -8,7 +8,11 @@ from taggit.managers import TaggableManager
 from rrap.core.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
 from django.utils import timezone
+import os
+from django.contrib.contenttypes.fields import GenericRelation
 
+from hitcount.models import HitCountMixin
+from hitcount.settings import MODEL_HITCOUNT
 
 User = get_user_model()
 
@@ -180,8 +184,12 @@ class Dataset(models.Model):
     # The number of views for the dataset.
     download_count = models.IntegerField(default=0, blank=True, db_index=True)
     # The number of views for the dataset.
-    view_count = models.IntegerField(default=0, blank=True, db_index=True)
-    # The numner of people following the dataset
+    hit_count_generic = GenericRelation(
+        MODEL_HITCOUNT,
+        object_id_field="object_pk",
+        related_query_name="hit_count_generic_relation",
+    )
+    # The number of people following the dataset
     follow_count = models.IntegerField(default=0)
 
     objects = ActiveManager()
@@ -225,18 +233,14 @@ class Dataset(models.Model):
             return True
 
     def get_file_size(self):
-        # domain = Site.objects.get_current().domain
-        # path = self.file_url
-        # file_path = "http://{domain}{path}".format(domain=domain, path=path)
-        # try:
-        #     file = urllib.request.urlopen(file_path)
-        #     size = file.length
-        #     return size
-        # except urllib.error.HTTPError as e:
-        #     print("failed:", e)
-        return 10
-
-        return None
+        try:
+            domain = Site.objects.get_current().domain
+            path = self.file_url
+            file_path = "http://{domain}{path}".format(domain=domain, path=path)
+            file_stats = os.stat(file_path)
+            print(file_stats)
+        except Exception as e:
+            print("failed:", e)
 
     def save(self, *args, **kwargs):
         self.tag_val = self.tag_val.replace(" ", "")

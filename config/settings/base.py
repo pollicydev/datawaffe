@@ -77,6 +77,8 @@ THIRD_PARTY_APPS = [
     "taggit",
     "multiselectfield",
     "django_filters_facet",
+    "hitcount",
+    "django_social_share",
 ]
 
 LOCAL_APPS = [
@@ -332,3 +334,8 @@ MAPBOX_ACCESS_TOKEN = env("MAPBOX_ACCESS_TOKEN", default="")
 
 mimetypes.add_type("image/svg+xml", ".svg", True)
 mimetypes.add_type("image/svg+xml", ".svgz", True)
+
+HITCOUNT_KEEP_HIT_ACTIVE = {"minutes": 60}
+HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
+HITCOUNT_EXCLUDE_USER_GROUP = ()  # not used
+HITCOUNT_KEEP_HIT_IN_DATABASE = {"seconds": 10}
