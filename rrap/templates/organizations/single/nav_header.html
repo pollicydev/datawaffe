@@ -35,7 +35,7 @@
         role="button">Invite members</a>
       {% endif %}
       {% if request.user.is_authenticated and request.user == organization.owner or request.user in organization.members.all  %}
-      <a href="{% url 'data:add_data' organization.name %}" class="btn btn-lg btn-primary btn-space" role="button">Add
+      <a href="{% url 'data:new' organization.name %}" class="btn btn-lg btn-primary btn-space" role="button">Add
         data</a>
       {% endif %}
     </div>
