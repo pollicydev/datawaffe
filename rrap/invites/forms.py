@@ -132,7 +132,7 @@ class SendInviteForm(forms.ModelForm):
         site_name = current_site.name
         domain = current_site.domain
         invited_by_name = self.instance.invited_by.profile.name
-        from_email = f"{invited_by_name} via Rapid Research for Agile Policymaking <noreply@rrap.org>"
+        from_email = f"{invited_by_name} via Rapid Research for Agile Policymaking <support@matchstick.ug>"
         to_email = self.instance.get_invitee_email()
         body = render_to_string(
             "invites/invite_email.html",

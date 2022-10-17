@@ -308,7 +308,7 @@ def request_membership(request):
         # Organization admin email
         requester_name = request.user.profile.name
         requester = request.user
-        requester_email = f"{requester_name} via Rapid Research for Agile Policymaking <noreply@rrap.org>"
+        requester_email = f"{requester_name} via Rapid Research for Agile Policymaking <support@matchstick.ug>"
         admin_email = organization.owner.email
         admin_email_body = render_to_string(
             "organizations/emails/request_membership_email.html",
@@ -328,7 +328,7 @@ def request_membership(request):
 
         # Requester email
         requester_subject = "Your membership request has been delivered"
-        from_email = "noreply@rrap.org"
+        from_email = "support@matchstick.ug"
         email_body = render_to_string(
             "organizations/emails/request_sent.html",
             {
