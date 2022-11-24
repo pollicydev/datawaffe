@@ -57,6 +57,27 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # APPS
 # ------------------------------------------------------------------------------
+
+WAGTAIL = [
+    "wagtail.contrib.forms",
+    "wagtail.contrib.redirects",
+    "wagtail.contrib.settings",
+    "wagtail.contrib.modeladmin",
+    "wagtail.embeds",
+    "wagtail.sites",
+    "wagtail.users",
+    "wagtail.snippets",
+    "wagtail.documents",
+    "wagtail.images",
+    "wagtail.search",
+    "wagtail.admin",
+    "wagtail.core",
+    "modelcluster",
+    "captcha",
+    "wagtailcaptcha",
+    "wagtail.api.v2",
+]
+
 DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -90,7 +111,7 @@ LOCAL_APPS = [
     "rrap.activities",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + WAGTAIL
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -144,6 +165,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
 # STATIC
@@ -342,3 +364,13 @@ HITCOUNT_KEEP_HIT_IN_DATABASE = {"seconds": 10}
 
 GDAL_LIBRARY_PATH = "/usr/local/Cellar/gdal/3.5.1_2/lib/libgdal.dylib"
 GEOS_LIBRARY_PATH = "/usr/local/Cellar/geos/3.11.0/lib/libgeos_c.dylib"
+
+WAGTAIL_SITE_NAME = "Data Waffe"
+WAGTAILADMIN_BASE_URL = "https://datawaffe.org"
+BASE_URL = "https://datawaffe.org"
+
+
+# Recaptcha
+# https://github.com/springload/wagtail-django-recaptcha
+RECAPTCHA_PUBLIC_KEY = "6LcQotYaAAAAAFPDa0rR8bDiAAF7Fn2f25p5DgiG"
+RECAPTCHA_PRIVATE_KEY = "6LcQotYaAAAAAM3nXQev9ehAK9fAm_M_IAJmxPZ3"
