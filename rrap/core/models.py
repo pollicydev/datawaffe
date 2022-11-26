@@ -14,7 +14,7 @@ from wagtail_color_panel.edit_handlers import NativeColorPanel
 
 
 class HomePage(Page):
-    template = "home/home_page.html"
+    template = "core/home.html"
     max_count = 1
 
     hero_heading = models.CharField(max_length=100, null=True, blank=True)

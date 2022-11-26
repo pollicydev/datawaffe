@@ -10,12 +10,11 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
 urlpatterns = [
-    path("", include("rrap.core.urls")),
+    # path("", include("rrap.core.urls")),
     # Wagtail URLs
     path("cms/autocomplete/", include(autocomplete_admin_urls)),
-    path("cms/", include(wagtailadmin_urls)),
+    path(settings.WAGTAIL_ADMIN_URL, include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    path("pages", include(wagtail_urls)),
     path("organizations/", include("rrap.organizations.urls")),
     path("data/", include("rrap.datasets.urls")),
     path("activity/", include("rrap.activities.urls", namespace="activities")),
@@ -25,6 +24,7 @@ urlpatterns = [
     # User management
     path("users/", include("rrap.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path("", include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

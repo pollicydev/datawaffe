@@ -257,7 +257,7 @@ EMAIL_TIMEOUT = 5
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = "admin/"
+ADMIN_URL = "superadmin/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [("""Matchstick Studio""", "support@matchstick.ug")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -370,6 +370,7 @@ WAGTAIL_SITE_NAME = "Data Waffe"
 WAGTAILADMIN_BASE_URL = "https://datawaffe.org"
 BASE_URL = "https://datawaffe.org"
 WAGTAIL_ENABLE_UPDATE_CHECK = False
+WAGTAIL_ADMIN_URL = "cms/"
 
 # Recaptcha
 # https://github.com/springload/wagtail-django-recaptcha
