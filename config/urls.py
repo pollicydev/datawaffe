@@ -5,7 +5,7 @@ from django.urls import include, path
 from django.views import defaults as default_views
 
 from wagtail.admin import urls as wagtailadmin_urls
-from wagtail import urls as wagtail_urls
+from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 urlpatterns = [
@@ -13,7 +13,7 @@ urlpatterns = [
     # Wagtail URLs
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    path("pages/", include(wagtail_urls)),
+    path("pages", include(wagtail_urls)),
     path("organizations/", include("rrap.organizations.urls")),
     path("data/", include("rrap.datasets.urls")),
     path("activity/", include("rrap.activities.urls", namespace="activities")),

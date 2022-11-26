@@ -97,7 +97,6 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "taggit",
     "multiselectfield",
-    "django_filters_facet",
     "hitcount",
     "django_social_share",
 ]

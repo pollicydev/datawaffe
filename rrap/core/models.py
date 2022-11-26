@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.gis.db.models import PolygonField
 
+
 # used Location as identifier but initially represents districts. Could scale to have counties and subcounties
 class Location(models.Model):
     name = models.CharField(max_length=100)

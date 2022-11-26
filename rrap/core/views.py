@@ -30,8 +30,8 @@ def home(request):
         ):
             return redirect("users:onboarding")
 
-        if request.user.is_staff:
-            return redirect("/admin")
+        # if request.user.is_staff:
+        #     return redirect("/cms")
 
         # Check if user has verified email
         verified = ""

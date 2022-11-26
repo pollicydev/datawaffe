@@ -270,22 +270,23 @@
       <div class="py-5 mt-4">
         {% if messages %}
           {% for message in messages %}
-          <div class="alert alert-icon alert-dismissible alert-icon-border {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
-              <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span class="mdi mdi-close-circle-o" aria-hidden="true"></span></button>
+          <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+            <div class="toast-header {% if message.tags %}bg-{{ message.tags }}{% else %}bg-primary{% endif %} text-white">
               {% if message.tags == 'success' %}
-              <div class="icon"><span class="mdi mdi-check"></span></div>
-              {% elif message.tags == 'info' %}
-              <div class="icon"><span class="mdi mdi-info-outline"></span></div>
-              {% elif message.tags == 'error' or message.tags == 'danger' %}
-              <div class="icon"><span class="mdi mdi-close-circle-o"></span></div>
-              {% elif message.tags == 'warning' %}
-              <div class="icon"><span class="mdi mdi-alert-triangle"></span></div>
-              {% else %}
-              <div class="icon"><span class="mdi mdi-notifications"></span></div>
-              {% endif %}
-              <div class="message">
-              {{ message }}
-              </div>
+                  <i class="ai-circle-check fs-lg me-2"></i>
+                  {% elif message.tags == 'info' %}
+                  <i class="ai-circle-info fs-lg me-2"></i>
+                  {% elif message.tags == 'error' or message.tags == 'danger' %}
+                  <i class="ai-circle-slash fs-lg me-2"></i>
+                  {% elif message.tags == 'warning' %}
+                  <i class="ai-triangle-alert fs-lg me-2"></i>
+                  {% else %}
+                  <i class="ai-bell fs-lg me-2"></i>
+                  {% endif %}
+              <span class="me-auto">notification</span>
+              <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body text-success">{{ message }}</div>
           </div>
           {% endfor %}
       {% endif %}
