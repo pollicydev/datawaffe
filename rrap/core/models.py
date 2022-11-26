@@ -1,17 +1,16 @@
 from django.db import models
 from django.contrib.gis.db.models import PolygonField
 from wagtail.core.models import Page
-
+from django import forms
 from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import (
     FieldPanel,
     MultiFieldPanel,
 )
 from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.snippets.models import register_snippet
-from modelcluster.fields import ParentalManyToManyField, ParentalKey
 from modelcluster.models import ClusterableModel
-from .edit_handlers import ReadOnlyPanel
+from wagtail_color_panel.fields import ColorField
+from wagtail_color_panel.edit_handlers import NativeColorPanel
 
 
 class HomePage(Page):
@@ -97,9 +96,10 @@ class Location(ClusterableModel):
     autocomplete_search_field = "name"
 
     panels = [
-        FieldPanel("name", classname="full"),
-        ReadOnlyPanel("geom"),
-        FieldPanel("population"),
+        FieldPanel(
+            "name", classname="full", widget=forms.TextInput(attrs={"disabled": True})
+        ),
+        FieldPanel("population", widget=forms.TextInput(attrs={"disabled": True})),
     ]
 
     def __str__(self):
@@ -131,3 +131,59 @@ class Topic(ClusterableModel):
     class Meta:
         verbose_name = "Topic"
         verbose_name_plural = "Topics"
+
+
+class KeyPopulation(ClusterableModel):
+    title = models.CharField(max_length=100)
+    color = ColorField(default="#000000")
+
+    panels = [
+        FieldPanel("title", classname="full"),
+        NativeColorPanel("color"),
+    ]
+
+    def __str__(self):
+        return self.title
+
+    def autocomplete_label(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Key Population"
+        verbose_name_plural = "Key Populations"
+
+
+class Service(ClusterableModel):
+    title = models.CharField(max_length=100)
+
+    panels = [
+        FieldPanel("title", classname="full"),
+    ]
+
+    def __str__(self):
+        return self.title
+
+    def autocomplete_label(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Service"
+        verbose_name_plural = "Services"
+
+
+class Issue(ClusterableModel):
+    title = models.CharField(max_length=100)
+
+    panels = [
+        FieldPanel("title", classname="full"),
+    ]
+
+    def __str__(self):
+        return self.title
+
+    def autocomplete_label(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Issue"
+        verbose_name_plural = "Issues"

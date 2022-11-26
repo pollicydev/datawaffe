@@ -77,6 +77,7 @@ WAGTAIL = [
     "wagtailcaptcha",
     "wagtail.api.v2",
     "wagtailautocomplete",
+    "wagtail_color_panel",
 ]
 
 DJANGO_APPS = [
@@ -368,7 +369,7 @@ GEOS_LIBRARY_PATH = "/usr/local/Cellar/geos/3.11.0/lib/libgeos_c.dylib"
 WAGTAIL_SITE_NAME = "Data Waffe"
 WAGTAILADMIN_BASE_URL = "https://datawaffe.org"
 BASE_URL = "https://datawaffe.org"
-
+WAGTAIL_ENABLE_UPDATE_CHECK = False
 
 # Recaptcha
 # https://github.com/springload/wagtail-django-recaptcha

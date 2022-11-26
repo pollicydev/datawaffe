@@ -6,16 +6,18 @@ from django.core.files.base import ContentFile
 from django.urls import reverse
 from django.conf import settings
 from django.db import models
+from django import forms
 from uuid import uuid4
 from rrap.core.managers import ActiveManager
 from rrap.datasets.models import Dataset
 from rrap.activities.constants import ActivityTypes
-from rrap.core.models import Location, Topic
+from rrap.core.models import Location, Topic, KeyPopulation, Service, Issue
 from wagtail.core.models import Page
 from modelcluster.fields import ParentalManyToManyField
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, TabbedInterface, ObjectList
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtailautocomplete.edit_handlers import AutocompletePanel
+from wagtail.core.fields import RichTextField
 
 User = get_user_model()
 
@@ -184,8 +186,17 @@ class OrganisationPage(Page):
         related_name="+",
     )
     website = models.URLField(null=True, blank=True)
-    locations = ParentalManyToManyField(Location, related_name="organisations")
-    topics = ParentalManyToManyField(Topic, related_name="organisations")
+    locations = ParentalManyToManyField(
+        Location, related_name="organisations", blank=True
+    )
+    topics = ParentalManyToManyField(Topic, related_name="organisations", blank=True)
+    communities = ParentalManyToManyField(
+        KeyPopulation, related_name="organisations", blank=True
+    )
+    services = ParentalManyToManyField(
+        Service, related_name="organisations", blank=True
+    )
+    issues = ParentalManyToManyField(Issue, related_name="organisations", blank=True)
     org_type = models.CharField(
         "Type of organization",
         blank=True,
@@ -193,17 +204,66 @@ class OrganisationPage(Page):
         choices=ORGANIZATION_TYPE,
     )
     status = models.SmallIntegerField(choices=ORG_STATUSES, default=0)
+    email = models.EmailField("Contact Email", blank=True, null=True)
+    facebook = models.URLField(
+        blank=True, null=True, help_text="Your Facebook page URL"
+    )
+    twitter = models.URLField(
+        blank=True, null=True, max_length=255, help_text="Your twitter URL"
+    )
+    youtube = models.URLField(
+        blank=True, null=True, help_text="Your YouTube channel or user account URL"
+    )
+    instagram = models.URLField(
+        blank=True, null=True, max_length=255, help_text="Your instagram URL"
+    )
+    medium = models.URLField(
+        blank=True, null=True, max_length=255, help_text="Your medium page URL"
+    )
+    phone = models.CharField(
+        blank=True, null=True, max_length=15, help_text="Telephone number"
+    )
+    address = RichTextField(
+        blank=True, null=True, max_length=200, help_text="Office address"
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("about", classname="full"),
         FieldPanel("acronym"),
         FieldPanel("org_type"),
         ImageChooserPanel("logo"),
-        FieldPanel("website"),
-        AutocompletePanel("locations", target_model=Location),
-        AutocompletePanel("topics", target_model=Topic),
-        FieldPanel("status"),
     ]
+
+    tagging_panels = [
+        AutocompletePanel("locations", target_model=Location),
+        FieldPanel("topics", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("communities", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("services", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("issues", widget=forms.CheckboxSelectMultiple),
+    ]
+
+    contact_panels = [
+        FieldPanel("phone"),
+        FieldPanel("website"),
+        FieldPanel("email"),
+        FieldPanel("facebook"),
+        FieldPanel("twitter"),
+        FieldPanel("youtube"),
+        FieldPanel("instagram"),
+        FieldPanel("address"),
+    ]
+
+    settings_panels = [FieldPanel("status")] + Page.settings_panels
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Details"),
+            ObjectList(tagging_panels, heading="Tagging"),
+            ObjectList(contact_panels, heading="Contacts"),
+            ObjectList(Page.promote_panels, heading="Meta"),
+            ObjectList(settings_panels, heading="Visibility"),
+        ]
+    )
 
     class Meta:
         verbose_name = "Organisation"
