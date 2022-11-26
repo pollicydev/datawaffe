@@ -10,6 +10,12 @@ from uuid import uuid4
 from rrap.core.managers import ActiveManager
 from rrap.datasets.models import Dataset
 from rrap.activities.constants import ActivityTypes
+from rrap.core.models import Location, Topic
+from wagtail.core.models import Page
+from modelcluster.fields import ParentalManyToManyField
+from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 User = get_user_model()
 
@@ -140,3 +146,68 @@ class Organization(models.Model):
             organization=self, activity_type=ActivityTypes.FOLLOW
         ).count()
         return followers_count
+
+
+class OrganisationPage(Page):
+
+    UNVERIFIED = 0
+    ACTIVE = 1
+    INACTIVE = 2
+    DISABLED = 3
+    SUSPENDED = 4
+    ORG_STATUSES = (
+        (ACTIVE, "Active"),
+        (INACTIVE, "Inactive"),
+        (UNVERIFIED, "Not verified"),
+        (DISABLED, "Disabled"),
+        (SUSPENDED, "Suspended"),
+    )
+
+    ORGANIZATION_TYPE = (
+        ("individual", "Individual"),
+        ("donor", "Donor"),
+        ("government", "Government"),
+        ("int_ngo", "International NGO"),
+        ("cso", "Civil Society Organization"),
+        ("private_sector", "Private sector"),
+        ("religious", "Religious"),
+        ("other", "Other"),
+    )
+
+    acronym = models.CharField(max_length=10, null=True, blank=True)
+    about = models.TextField(max_length=400, null=True, blank=True)
+    logo = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    website = models.URLField(null=True, blank=True)
+    locations = ParentalManyToManyField(Location, related_name="organisations")
+    topics = ParentalManyToManyField(Topic, related_name="organisations")
+    org_type = models.CharField(
+        "Type of organization",
+        blank=True,
+        max_length=20,
+        choices=ORGANIZATION_TYPE,
+    )
+    status = models.SmallIntegerField(choices=ORG_STATUSES, default=0)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("about", classname="full"),
+        FieldPanel("acronym"),
+        FieldPanel("org_type"),
+        ImageChooserPanel("logo"),
+        FieldPanel("website"),
+        AutocompletePanel("locations", target_model=Location),
+        AutocompletePanel("topics", target_model=Topic),
+        FieldPanel("status"),
+    ]
+
+    class Meta:
+        verbose_name = "Organisation"
+        verbose_name_plural = "Organisations"
+
+    def __str__(self):
+        return self.title

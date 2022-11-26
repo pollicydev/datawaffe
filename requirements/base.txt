@@ -28,3 +28,4 @@ wagtail-condensedinlinepanel>=0.5.3 # https://github.com/wagtail/wagtail-condens
 wagtail-metadata
 wagtailmenus
 wagtail-django-recaptcha==1.0
+wagtail-autocomplete

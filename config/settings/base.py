@@ -76,6 +76,7 @@ WAGTAIL = [
     "captcha",
     "wagtailcaptcha",
     "wagtail.api.v2",
+    "wagtailautocomplete",
 ]
 
 DJANGO_APPS = [
