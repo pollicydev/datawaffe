@@ -48,11 +48,14 @@ class HomePage(Page):
     ]
 
     def get_context(self, request, *args, **kwargs):
+
+        from rrap.organizations.models import OrganisationPage
+
         context = super().get_context(request, *args, **kwargs)
-        # students = User.objects.exclude(is_staff=True).count()
-        # # round off students to next 100 because semantics
-        # students = students + 100 - students % 100
-        # context["students"] = students
+        organisations = OrganisationPage.objects.all()
+        total_organisations = organisations.count()
+        context["organisations"] = organisations
+        context["total_organisations"] = total_organisations
 
         return context
 
@@ -135,10 +138,13 @@ class Topic(ClusterableModel):
 
 class KeyPopulation(ClusterableModel):
     title = models.CharField(max_length=100)
+    acronym = models.CharField(max_length=10, blank=True, null=True)
     color = ColorField(default="#000000")
 
     panels = [
-        FieldPanel("title", classname="full"),
+        FieldPanel(
+            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
+        ),
         NativeColorPanel("color"),
     ]
 
@@ -154,10 +160,20 @@ class KeyPopulation(ClusterableModel):
 
 
 class Service(ClusterableModel):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, help_text="Name/title of service")
+    icon = models.CharField(
+        max_length=20, blank=True, null=True, help_text="Enter name of icon"
+    )
+    summary = models.CharField(
+        max_length=240, blank=True, null=True, help_text="Describe the service"
+    )
 
     panels = [
-        FieldPanel("title", classname="full"),
+        FieldPanel(
+            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
+        ),
+        FieldPanel("summary"),
+        FieldPanel("icon"),
     ]
 
     def __str__(self):
@@ -172,10 +188,20 @@ class Service(ClusterableModel):
 
 
 class Issue(ClusterableModel):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, help_text="Name/title of issue")
+    icon = models.CharField(
+        max_length=20, blank=True, null=True, help_text="Enter name of icon"
+    )
+    summary = models.CharField(
+        max_length=240, blank=True, null=True, help_text="Describe the issue"
+    )
 
     panels = [
-        FieldPanel("title", classname="full"),
+        FieldPanel(
+            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
+        ),
+        FieldPanel("summary"),
+        FieldPanel("icon"),
     ]
 
     def __str__(self):

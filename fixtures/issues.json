@@ -1,0 +1,57 @@
+[{
+  "model": "core.issue",
+  "pk": 1,
+  "fields": {
+    "title": "Access to justice",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.issue",
+  "pk": 2,
+  "fields": {
+    "title": "Advocacy",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.issue",
+  "pk": 3,
+  "fields": {
+    "title": "Community empowerment",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.issue",
+  "pk": 4,
+  "fields": {
+    "title": "Digital rights",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.issue",
+  "pk": 5,
+  "fields": {
+    "title": "Health service delivery",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.issue",
+  "pk": 6,
+  "fields": {
+    "title": "Legal services",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.issue",
+  "pk": 7,
+  "fields": {
+    "title": "Pyschosocial support",
+    "icon": "",
+    "summary": ""
+  }
+}]

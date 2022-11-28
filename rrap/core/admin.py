@@ -4,6 +4,35 @@ from wagtail.contrib.modeladmin.options import (
     modeladmin_register,
 )
 from .models import Location, Topic, KeyPopulation, Service, Issue
+from wagtail.contrib.modeladmin.helpers import PermissionHelper
+
+
+class LocationsValidationPermissionHelper(PermissionHelper):
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        return False
+
+    def user_can_edit_obj(self, user, obj):
+        return False
+
+    def user_can_delete_obj(self, user, obj):
+        return False
+
+
+class GenericValidationPermissionHelper(PermissionHelper):
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        return False
+
+    def user_can_edit_obj(self, user, obj):
+        return True
+
+    def user_can_delete_obj(self, user, obj):
+        return False
 
 
 class LocationsAdmin(ModelAdmin):
@@ -17,6 +46,8 @@ class LocationsAdmin(ModelAdmin):
     exclude_from_explorer = False
     list_display = ("name",)
     search_fields = ("name",)
+    permission_helper_class = LocationsValidationPermissionHelper
+    inspect_view_enabled = True
 
 
 class TopicsAdmin(ModelAdmin):
@@ -43,6 +74,8 @@ class KeyPopAdmin(ModelAdmin):
     exclude_from_explorer = False
     list_display = ("title",)
     search_fields = ("title",)
+    permission_helper_class = GenericValidationPermissionHelper
+    inspect_view_enabled = True
 
 
 class ServicesAdmin(ModelAdmin):
@@ -56,6 +89,8 @@ class ServicesAdmin(ModelAdmin):
     exclude_from_explorer = False
     list_display = ("title",)
     search_fields = ("title",)
+    permission_helper_class = GenericValidationPermissionHelper
+    inspect_view_enabled = True
 
 
 class IssuesAdmin(ModelAdmin):
@@ -69,6 +104,8 @@ class IssuesAdmin(ModelAdmin):
     exclude_from_explorer = False
     list_display = ("title",)
     search_fields = ("title",)
+    permission_helper_class = GenericValidationPermissionHelper
+    inspect_view_enabled = True
 
 
 modeladmin_register(LocationsAdmin)

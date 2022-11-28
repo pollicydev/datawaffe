@@ -1,0 +1,129 @@
+[{
+  "model": "core.service",
+  "pk": 1,
+  "fields": {
+    "title": "Access to contraception",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 2,
+  "fields": {
+    "title": "Access to justice",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 3,
+  "fields": {
+    "title": "Advocacy",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 4,
+  "fields": {
+    "title": "Community empowerment",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 5,
+  "fields": {
+    "title": "Counselling",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 6,
+  "fields": {
+    "title": "Digital rights",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Digital security",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Drop-in centre",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Emergency response",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Harm reduction",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Health service delivery",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "HIV testing & treatment",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Legal services",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Pyschosocial support",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Referrals for counselling and mental health",
+    "icon": "",
+    "summary": ""
+  }
+}, {
+  "model": "core.service",
+  "pk": 7,
+  "fields": {
+    "title": "Screening & treatment of STIs",
+    "icon": "",
+    "summary": ""
+  }
+}]
