@@ -52,9 +52,19 @@ class HomePage(Page):
         from rrap.organizations.models import OrganisationPage
 
         context = super().get_context(request, *args, **kwargs)
-        organisations = OrganisationPage.objects.all()
+
+        organisations = (
+            OrganisationPage.objects.live().public().order_by("-first_published_at")
+        )
+        keypopulations = KeyPopulation.objects.all()
+        services = Service.objects.all()
+        issues = Issue.objects.all()
         total_organisations = organisations.count()
         context["organisations"] = organisations
+        context["keypopulations"] = keypopulations
+        context["services"] = services
+        context["issues"] = issues
+
         context["total_organisations"] = total_organisations
 
         return context

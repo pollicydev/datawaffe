@@ -10,7 +10,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
 urlpatterns = [
-    # path("", include("rrap.core.urls")),
+    path("core/", include("rrap.core.urls", namespace="core")),
     # Wagtail URLs
     path("cms/autocomplete/", include(autocomplete_admin_urls)),
     path(settings.WAGTAIL_ADMIN_URL, include(wagtailadmin_urls)),

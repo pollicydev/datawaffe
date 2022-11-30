@@ -1,4 +1,4 @@
-{% load static i18n compress user_extras %}
+{% load static i18n compress django_htmx user_extras %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
@@ -177,7 +177,7 @@
   {% endif %}
   </head>
   <!-- Body-->
-  <body>
+  <body  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <!-- Page loading spinner-->
     <div class="page-loading active">
       <div class="page-loading-inner">
@@ -316,6 +316,9 @@
     <!-- Vendor scripts: js libraries and plugins-->
     <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js' %}"></script>
+    <script src="{% static 'js/alpine.min.js' %}" defer></script>
+    <script src="{% static 'js/htmx.min.js' %}" defer></script>
+    {% django_htmx_script %}
     <!-- Main theme script-->
     <script src="{% static 'js/theme.min.js' %}"></script>
     {% block javascript %}{% endblock javascript %}

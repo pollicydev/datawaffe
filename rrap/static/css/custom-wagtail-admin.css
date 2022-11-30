@@ -1,0 +1,16 @@
+.nav-wrapper,
+.nav-wrapper .inner {
+  background: #333;
+}
+
+.nav-main ul > li.menu-item a {
+  color: #ffffff;
+}
+
+header {
+  background-color: #732982;
+}
+
+.page-explorer .listing .index {
+  background-color: #732982;
+}

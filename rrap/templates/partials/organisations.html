@@ -1,0 +1,13 @@
+{% for organisation in organisations %}
+<div class="accordion-item">
+  <h3 class="accordion-header" id="{{ organisation.slug }}">
+    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+      data-bs-target="#collapse-{{ organisation.id }}" aria-expanded="true"
+      aria-controls="collapse-{{ organisation.id }}">{{ organisation.title }}</button>
+  </h3>
+  <div class="accordion-collapse collapse" id="collapse-{{ organisation.id }}" aria-labelledby="{{ organisation.slug }}"
+    data-bs-parent="#filter-results">
+    <div class="accordion-body fs-sm">{{ organisation.summary }}</div>
+  </div>
+</div>
+{% endfor %}

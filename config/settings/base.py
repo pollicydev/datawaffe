@@ -63,6 +63,7 @@ WAGTAIL = [
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
     "wagtail.contrib.modeladmin",
+    "wagtail.contrib.postgres_search",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -101,6 +102,7 @@ THIRD_PARTY_APPS = [
     "multiselectfield",
     "hitcount",
     "django_social_share",
+    "django_htmx",
 ]
 
 LOCAL_APPS = [
@@ -167,6 +169,7 @@ MIDDLEWARE = [
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 # STATIC
@@ -376,3 +379,14 @@ WAGTAIL_ADMIN_URL = "cms/"
 # https://github.com/springload/wagtail-django-recaptcha
 RECAPTCHA_PUBLIC_KEY = "6LcQotYaAAAAAFPDa0rR8bDiAAF7Fn2f25p5DgiG"
 RECAPTCHA_PRIVATE_KEY = "6LcQotYaAAAAAM3nXQev9ehAK9fAm_M_IAJmxPZ3"
+
+# MEILISEARCH
+MEILISEARCH_URL = "http://127.0.0.1:7700"
+MEILISEARCH_API_TOKEN = "DW_LOCAL"
+
+WAGTAILSEARCH_BACKENDS = {
+    "default": {
+        "BACKEND": "wagtail.contrib.postgres_search.backend",
+        "SEARCH_CONFIG": "english",
+    },
+}

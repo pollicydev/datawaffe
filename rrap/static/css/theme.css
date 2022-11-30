@@ -2164,6 +2164,7 @@ textarea.form-control-lg {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  max-width: 250px;
 }
 @media (prefers-reduced-motion: reduce) {
   .form-select {

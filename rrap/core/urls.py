@@ -9,6 +9,7 @@ app_name = "core"
 urlpatterns = [
     # public routes
     path("", views.home, name="home"),
+    path("search", views.search, name="search"),
     path("datasets/", views.datasets, name="datasets"),
     path("locations/", views.locations, name="locations"),
     path("organizations/", views.organizations, name="organizations"),

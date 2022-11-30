@@ -12,12 +12,13 @@ from rrap.core.managers import ActiveManager
 from rrap.datasets.models import Dataset
 from rrap.activities.constants import ActivityTypes
 from rrap.core.models import Location, Topic, KeyPopulation, Service, Issue
-from wagtail.core.models import Page
+from wagtail.core.models import Page, PageManager
 from modelcluster.fields import ParentalManyToManyField
 from wagtail.admin.edit_handlers import FieldPanel, TabbedInterface, ObjectList
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 from wagtail.core.fields import RichTextField
+from wagtail.search import index
 
 User = get_user_model()
 
@@ -150,6 +151,22 @@ class Organization(models.Model):
         return followers_count
 
 
+class OrganisationManager(PageManager):
+    """custom manager to handle indexing organisations"""
+
+    def get_index_objects(self):
+        """Objects formatted for indexing"""
+        return [h.dict() for h in self.get_queryset()]
+
+    def get_filter_attributes(self):
+        """A dict of filterable attributes"""
+        qs = self.get_queryset()
+        return {
+            "services": list(set(qs.values_list("services", flat=True))),
+            "issues": list(set(qs.values_list("issues", flat=True))),
+        }
+
+
 class OrganisationPage(Page):
 
     UNVERIFIED = 0
@@ -177,6 +194,12 @@ class OrganisationPage(Page):
     )
 
     acronym = models.CharField(max_length=10, null=True, blank=True)
+    summary = models.TextField(
+        max_length=240,
+        null=True,
+        blank=True,
+        help_text="Describe organisation in one sentence.",
+    )
     about = models.TextField(max_length=400, null=True, blank=True)
     logo = models.ForeignKey(
         "wagtailimages.Image",
@@ -223,12 +246,31 @@ class OrganisationPage(Page):
     phone = models.CharField(
         blank=True, null=True, max_length=15, help_text="Telephone number"
     )
+    toll_free = models.CharField(
+        blank=True, null=True, max_length=20, help_text="Toll-free number"
+    )
     address = RichTextField(
         blank=True, null=True, max_length=200, help_text="Office address"
     )
 
+    objects = OrganisationManager()
+
+    search_fields = Page.search_fields + [
+        index.SearchField("title"),
+        index.SearchField("summary"),
+        index.SearchField("about"),
+        index.SearchField("acronym"),
+        index.SearchField("get_org_type_display"),
+        index.FilterField("org_type"),
+        index.RelatedFields("locations", [index.SearchField("name")]),
+        index.RelatedFields("communities", [index.SearchField("title")]),
+        index.RelatedFields("services", [index.SearchField("title")]),
+        index.RelatedFields("issues", [index.SearchField("title")]),
+    ]
+
     content_panels = Page.content_panels + [
-        FieldPanel("about", classname="full"),
+        FieldPanel("about"),
+        FieldPanel("summary"),
         FieldPanel("acronym"),
         FieldPanel("org_type"),
         ImageChooserPanel("logo"),
@@ -243,6 +285,7 @@ class OrganisationPage(Page):
     ]
 
     contact_panels = [
+        FieldPanel("toll_free"),
         FieldPanel("phone"),
         FieldPanel("website"),
         FieldPanel("email"),
@@ -271,3 +314,27 @@ class OrganisationPage(Page):
 
     def __str__(self):
         return self.title
+
+    def dict(self):
+        return {
+            "id": str(self.id),
+            "slug": str(self.slug),
+            "title": str(self.title),
+            "summary": self.summary,
+            "toll_free": self.toll_free,
+            "email": str(self.email),
+            "website": self.website,
+            "phone": self.phone,
+            "services": {
+                service["id"]: service["title"]
+                for service in self.services.values("id", "title")
+            },
+            "issues": {
+                issue["id"]: issue["title"]
+                for issue in self.issues.values("id", "title")
+            },
+            "communities": {
+                community["id"]: community["title"]
+                for community in self.communities.values("id", "title")
+            },
+        }

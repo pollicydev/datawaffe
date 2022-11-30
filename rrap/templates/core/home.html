@@ -9,35 +9,44 @@
 {% block content %}
 <div class="bg-primary p-4 mt-2">
   <div class="container">
-    <form class="row row-cols-sm-auto g-3 align-items-center">
+    <form class="row row-cols-sm-auto g-3 align-items-center" hx-post="{% url 'core:search' %}"
+      hx-target="#filter-results">
       <div class="col-12">
         <h6 class="my-0 text-white"><i class="ai-filter ms-n1 me-2"></i> Filter:</h6>
       </div>
       <div class="col-12">
-        <input class="form-control" type="text" placeholder="Search by name..." id="inline-form-input">
+        <div class="position-relative"><i
+            class="ai-search position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+          <input type="search" name="query" class="form-control ps-5" placeholder="Search by name..."
+            id="inline-form-input" @search="$event.prevent" hx-post="{% url 'core:search' %}"
+            hx-trigger="keyup changed delay:500ms, search" hx-target="#filter-results" />
+        </div>
       </div>
       <div class="col-12">
-        <select class="form-select" id="inline-form-select">
+        <select class="form-select" id="keypops">
           <option value="">All key populations</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          {% for community in keypopulations %}
+          <option id=" id_{{ community.title|slugify }}" name="keypop" value="{{ community.title|slugify }}">
+            {{ community.title }}</option>
+          {% endfor %}
         </select>
       </div>
       <div class="col-12">
-        <select class="form-select" id="inline-form-select">
+        <select class="form-select" id="services">
           <option value="">All services offered</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          {% for service in services %}
+          <option id="id_{{ service.title|slugify }}" name="service" value="{{ service.title|slugify }}">
+            {{ service.title }}</option>
+          {% endfor %}
         </select>
       </div>
       <div class="col-12">
-        <select class="form-select" id="inline-form-select">
+        <select class="form-select" id="issues">
           <option value="">All broad issues</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          {% for issue in issues %}
+          <option id="id_{{ issue.title|slugify }}" name="issue" value="{{ issue.title|slugify }}">
+            {{ issue.title }}</option>
+          {% endfor %}
         </select>
       </div>
       <div class="col-12">
@@ -47,10 +56,10 @@
   </div>
 </div>
 <div class="row h-100">
-  <div class="col-lg-4 d-flex flex-column pb-3 pe-0" style="height: 100vh; overflow: hidden scroll;">
+  <div class="col-lg-3 d-flex flex-column pb-3 pe-0" style="height: 100vh; overflow: hidden scroll;">
     <div class="h-100 px-3 pt-4" data-simplebar>
       {% if organisations %}
-      <div class="accordion" id="accordionDefault">
+      <div class="accordion" id="filter-results">
         {% for organisation in organisations %}
         <div class="accordion-item">
           <h3 class="accordion-header" id="headingOne">
@@ -58,7 +67,7 @@
               aria-expanded="true" aria-controls="collapseOne">{{ organisation.title }}</button>
           </h3>
           <div class="accordion-collapse collapse" id="collapseOne" aria-labelledby="headingOne"
-            data-bs-parent="#accordionDefault">
+            data-bs-parent="#filter-results">
             <div class="accordion-body fs-sm">This is the first item's accordion body. It is hidden by default, until
               the collapse plugin adds the appropriate classes that we use to style each element.</div>
           </div>
@@ -70,7 +79,7 @@
       {% endif %}
     </div>
   </div>
-  <div class="col-lg-8 ps-2">
+  <div class="col-lg-9 ps-2">
     <div style="height:100vh!important;" class="map" id="map"></div>
   </div>
 </div>

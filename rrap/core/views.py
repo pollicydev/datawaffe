@@ -8,12 +8,15 @@ from django.contrib import messages
 from rrap.users.decorators import onboarding_required
 from rrap.organizations.decorators import member_required, main_owner_required
 from rrap.datasets.models import Dataset
-from rrap.organizations.models import Organization
+from rrap.organizations.models import Organization, OrganisationPage
 from .models import Location, Topic
 from rrap.datasets.filters import location_based_filter, dataset_filter
 from hitcount.utils import get_hitcount_model
 from hitcount.views import _update_hit_count
-
+from django.views.decorators.http import require_http_methods
+from .search_logic import get_opt_params
+from .search_index import search_index
+from wagtail.search.backends import get_search_backend
 
 # @login_required
 # @onboarding_required
@@ -274,3 +277,33 @@ def organization_followers(request, org_name):
             "follower_count": followers_count,
         },
     )
+
+
+@require_http_methods(["POST", "GET"])
+def search(request):
+
+    context, query_dict = {}, {}
+    # use template partial for htmx requests
+    template_name = "core/home.html"
+    if request.htmx:
+        template_name = "partials/organisations.html"
+    else:
+        context.update(OrganisationPage.objects.get_filter_attributes())
+
+    # fetch and format search query parameters
+    query_dict = request.GET if request.method == "GET" else request.POST
+    opt_params = get_opt_params(query_dict)
+    query = query_dict.get("query", None)
+
+    # fetch results from the index and add them to the context
+    results = search_index.search(query=query, opt_params=opt_params)
+    next_offset = opt_params.get("offset", 0) + 20  # similar to pagination,
+    context.update(
+        {
+            "organisations": results["hits"],
+            # "total": results["nbHits"],
+            "processing_time": results["processingTimeMs"],
+            "next_offset": next_offset,
+        }
+    )
+    return render(request, template_name, context)
