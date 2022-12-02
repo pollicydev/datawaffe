@@ -9,7 +9,7 @@
 {% block content %}
 <div class="bg-primary p-4 mt-2">
   <div class="container">
-    <form class="row row-cols-sm-auto g-3 align-items-center" hx-post="{% url 'core:search' %}"
+    <form id="searchForm" class="row row-cols-sm-auto g-3 align-items-center" hx-post="{% url 'core:search' %}"
       hx-target="#filter-results">
       <div class="col-12">
         <h6 class="my-0 text-white"><i class="ai-filter ms-n1 me-2"></i> Filter:</h6>
@@ -23,31 +23,46 @@
         </div>
       </div>
       <div class="col-12">
-        <select class="form-select" id="keypops">
-          <option value="">All key populations</option>
-          {% for community in keypopulations %}
-          <option id=" id_{{ community.title|slugify }}" name="keypop" value="{{ community.title|slugify }}">
-            {{ community.title }}</option>
-          {% endfor %}
-        </select>
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true" @click="open = !open">All key populations</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {% for community in communities %}
+            {% include "partials/_filter_checkbox.html" with prefix='community' name=community %}
+            {% endfor %}
+            <div class="dropdown-divider"></div>
+            <button type="submit" class="dropdown-item btn btn-outline-primary btn-sm"
+              @click="open = false">Apply</button>
+          </div>
+        </div>
       </div>
       <div class="col-12">
-        <select class="form-select" id="services">
-          <option value="">All services offered</option>
-          {% for service in services %}
-          <option id="id_{{ service.title|slugify }}" name="service" value="{{ service.title|slugify }}">
-            {{ service.title }}</option>
-          {% endfor %}
-        </select>
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true" @click="open = !open">All services offered</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {% for service in services %}
+            {% include "partials/_filter_checkbox.html" with prefix='service' name=service %}
+            {% endfor %}
+            <div class="dropdown-divider"></div>
+            <button type="submit" class="dropdown-item btn btn-outline-primary btn-sm"
+              @click="open = false">Apply</button>
+          </div>
+        </div>
       </div>
       <div class="col-12">
-        <select class="form-select" id="issues">
-          <option value="">All broad issues</option>
-          {% for issue in issues %}
-          <option id="id_{{ issue.title|slugify }}" name="issue" value="{{ issue.title|slugify }}">
-            {{ issue.title }}</option>
-          {% endfor %}
-        </select>
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true" @click="open = !open">All broad issues</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {% for issue in issues %}
+            {% include "partials/_filter_checkbox.html" with prefix='issue' name=issue %}
+            {% endfor %}
+            <div class="dropdown-divider"></div>
+            <button type="submit" class="dropdown-item btn btn-outline-primary btn-sm"
+              @click="open = false">Apply</button>
+          </div>
+        </div>
       </div>
       <div class="col-12">
         <button class="btn btn-outline-danger ms-auto" type="button"><i class="ai-refresh ms-n1 me-2"></i>reset</button>
@@ -62,17 +77,18 @@
       <div class="accordion" id="filter-results">
         {% for organisation in organisations %}
         <div class="accordion-item">
-          <h3 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-              aria-expanded="true" aria-controls="collapseOne">{{ organisation.title }}</button>
+          <h3 class="accordion-header" id="{{ organisation.slug }}">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapse-{{ organisation.id }}" aria-expanded="false"
+              aria-controls="collapse-{{ organisation.id }}">{{ organisation.title }}</button>
           </h3>
-          <div class="accordion-collapse collapse" id="collapseOne" aria-labelledby="headingOne"
-            data-bs-parent="#filter-results">
-            <div class="accordion-body fs-sm">This is the first item's accordion body. It is hidden by default, until
-              the collapse plugin adds the appropriate classes that we use to style each element.</div>
+          <div class="accordion-collapse collapse" id="collapse-{{ organisation.id }}"
+            aria-labelledby="{{ organisation.slug }}" data-bs-parent="#filter-results">
+            <div class="accordion-body fs-sm">{{ organisation.summary }}</div>
           </div>
         </div>
         {% endfor %}
+
       </div>
       {% else %}
       <p>No organisations at this time. </p>
@@ -135,6 +151,37 @@
     map.resize();
 
   });
+
+</script>
+
+<script>
+  /**
+   * Fetches
+   * :) The only js you have to write
+   * **/
+  function infiniteScroll() {
+    const form = document.getElementById("searchForm")
+    const formData = new FormData(form)
+    // add form values to object
+    formData.append('apply_offset', true);
+    let data = {}
+    formData.forEach(function (value, key) {
+      data[key] = value;
+    });
+    // handle multiselect values
+    const headers = {
+      "X-CSRFToken": "{{ csrf_token }}"
+    }
+    data.communities = formData.getAll('communities')
+    const context = {
+      target: '#filter-results',
+      headers: headers,
+      swap: 'beforeend',
+      values: data
+    }
+
+    htmx.ajax('POST', "{% url 'core:search' %}", context)
+  }
 
 </script>
 {% endblock %}

@@ -16,7 +16,6 @@ from hitcount.views import _update_hit_count
 from django.views.decorators.http import require_http_methods
 from .search_logic import get_opt_params
 from .search_index import search_index
-from wagtail.search.backends import get_search_backend
 
 # @login_required
 # @onboarding_required
@@ -288,7 +287,9 @@ def search(request):
     if request.htmx:
         template_name = "partials/organisations.html"
     else:
-        context.update(OrganisationPage.objects.get_filter_attributes())
+        context.update(
+            OrganisationPage.objects.live().public().order_by("-first_published_at")
+        )
 
     # fetch and format search query parameters
     query_dict = request.GET if request.method == "GET" else request.POST

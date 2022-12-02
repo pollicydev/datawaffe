@@ -162,6 +162,7 @@ class OrganisationManager(PageManager):
         """A dict of filterable attributes"""
         qs = self.get_queryset()
         return {
+            "communities": list(set(qs.values_list("services", flat=True))),
             "services": list(set(qs.values_list("services", flat=True))),
             "issues": list(set(qs.values_list("issues", flat=True))),
         }
@@ -209,6 +210,7 @@ class OrganisationPage(Page):
         related_name="+",
     )
     website = models.URLField(null=True, blank=True)
+    # filterables
     locations = ParentalManyToManyField(
         Location, related_name="organisations", blank=True
     )
@@ -227,6 +229,7 @@ class OrganisationPage(Page):
         choices=ORGANIZATION_TYPE,
     )
     status = models.SmallIntegerField(choices=ORG_STATUSES, default=0)
+    # contact information
     email = models.EmailField("Contact Email", blank=True, null=True)
     facebook = models.URLField(
         blank=True, null=True, help_text="Your Facebook page URL"
@@ -321,20 +324,16 @@ class OrganisationPage(Page):
             "slug": str(self.slug),
             "title": str(self.title),
             "summary": self.summary,
+            # "logo": self.logo.file.url,
             "toll_free": self.toll_free,
             "email": str(self.email),
             "website": self.website,
             "phone": self.phone,
-            "services": {
-                service["id"]: service["title"]
-                for service in self.services.values("id", "title")
-            },
-            "issues": {
-                issue["id"]: issue["title"]
-                for issue in self.issues.values("id", "title")
-            },
-            "communities": {
-                community["id"]: community["title"]
-                for community in self.communities.values("id", "title")
-            },
+            "communities": list(self.communities.values_list("title", flat=True)),
+            "services": list(self.services.values_list("title", flat=True)),
+            "issues": list(self.issues.values_list("title", flat=True)),
+            # "services": {
+            #     service["id"]: service["title"]
+            #     for service in self.services.values("id", "title")
+            # },
         }

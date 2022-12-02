@@ -6,8 +6,8 @@ from .search_index import search_index
 logger = logging.getLogger(__name__)
 
 DEFAULT_FILTER_ATTRS = ["communities", "services", "issues"]
-DEFAULT_SORT_ATTRS = ["title"]
-DEFAULT_SEARCH_ATTRS = ["title", "about", "summary"]
+# DEFAULT_SORT_ATTRS = ["title"]
+DEFAULT_SEARCH_ATTRS = ["title"]
 
 
 def format_search_str(param):
@@ -15,14 +15,14 @@ def format_search_str(param):
     return f'"{param}"' if " " in param else param
 
 
-def format_sort_params(query_dict, sort_attrs):
-    """Format sort attrs for meilisearch"""
-    formatted_sort = []
-    for sort_attr in sort_attrs:
-        s = query_dict.getlist(sort_attr, None)
-        if len(s) > 0:
-            formatted_sort.extend(s)
-    return formatted_sort
+# def format_sort_params(query_dict, sort_attrs):
+#     """Format sort attrs for meilisearch"""
+#     formatted_sort = []
+#     for sort_attr in sort_attrs:
+#         s = query_dict.getlist(sort_attr, None)
+#         if len(s) > 0:
+#             formatted_sort.extend(s)
+#     return formatted_sort
 
 
 def format_filter_params(query_dict, filter_attrs):
@@ -50,11 +50,11 @@ def get_opt_params(query_dict, filter_attrs=None, sort_attrs=None):
     Returns dictionary of formatted search options for meili
     """
     filter_attrs = filter_attrs or DEFAULT_FILTER_ATTRS
-    sort_attrs = sort_attrs or DEFAULT_SORT_ATTRS
+    # sort_attrs = sort_attrs or DEFAULT_SORT_ATTRS
 
     opt_params = {}
     opt_params.update({"filter": format_filter_params(query_dict, filter_attrs)})
-    opt_params.update({"sort": format_sort_params(query_dict, sort_attrs)})
+    # opt_params.update({"sort": format_sort_params(query_dict, sort_attrs)})
 
     # offset
     apply_offset = query_dict.get("apply_offset", False)
@@ -72,7 +72,7 @@ def setup_attributes():
     """Setup index attrs"""
     search_index.update_filterable_attributes(DEFAULT_FILTER_ATTRS)
     search_index.update_searchable_attributes(DEFAULT_SEARCH_ATTRS)
-    search_index.update_sortable_attributes(DEFAULT_SORT_ATTRS)
+    # search_index.update_sortable_attributes(DEFAULT_SORT_ATTRS)
 
 
 def index_organisations(docs=None):

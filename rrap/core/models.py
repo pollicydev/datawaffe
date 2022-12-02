@@ -16,6 +16,7 @@ from wagtail_color_panel.edit_handlers import NativeColorPanel
 class HomePage(Page):
     template = "core/home.html"
     max_count = 1
+    subpage_types = ["organizations.OrganisationPage"]
 
     hero_heading = models.CharField(max_length=100, null=True, blank=True)
     hero_desc = models.CharField(max_length=255, null=True, blank=True)
@@ -61,7 +62,7 @@ class HomePage(Page):
         issues = Issue.objects.all()
         total_organisations = organisations.count()
         context["organisations"] = organisations
-        context["keypopulations"] = keypopulations
+        context["communities"] = keypopulations
         context["services"] = services
         context["issues"] = issues
 
