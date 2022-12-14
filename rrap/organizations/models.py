@@ -1,5 +1,6 @@
 import pyavagen
 import io
+import json
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
@@ -12,13 +13,21 @@ from rrap.core.managers import ActiveManager
 from rrap.datasets.models import Dataset
 from rrap.activities.constants import ActivityTypes
 from rrap.core.models import Location, Topic, KeyPopulation, Service, Issue
-from wagtail.core.models import Page, PageManager
-from modelcluster.fields import ParentalManyToManyField
-from wagtail.admin.edit_handlers import FieldPanel, TabbedInterface, ObjectList
+from wagtail.core.models import Page, PageManager, Orderable
+from modelcluster.fields import ParentalManyToManyField, ParentalKey
+from wagtail.admin.edit_handlers import (
+    FieldPanel,
+    TabbedInterface,
+    ObjectList,
+    MultiFieldPanel,
+    FieldRowPanel,
+    InlinePanel,
+)
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 from wagtail.core.fields import RichTextField
 from wagtail.search import index
+from partial_date import PartialDateField
 
 User = get_user_model()
 
@@ -168,6 +177,44 @@ class OrganisationManager(PageManager):
         }
 
 
+class ViolenceEntry(Orderable):
+    page = ParentalKey("organizations.OrganisationPage", related_name="violations")
+    violation = models.ForeignKey("core.Violation", on_delete=models.CASCADE)
+    occurences = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
+    start_date = models.DateField(blank=False, null=True)
+    end_date = models.DateField(blank=True, null=True)
+
+    panels = [
+        FieldPanel("violation"),
+        FieldPanel("occurences"),
+        FieldRowPanel(
+            [
+                FieldPanel("start_date"),
+                FieldPanel("end_date"),
+            ]
+        ),
+    ]
+
+
+class CommunityReach(Orderable):
+    page = ParentalKey("organizations.OrganisationPage", related_name="reach")
+    community = models.ForeignKey("core.KeyPopulation", on_delete=models.CASCADE)
+    reach = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
+    start_date = models.DateField(blank=False, null=True)
+    end_date = models.DateField(blank=True, null=True)
+
+    panels = [
+        FieldPanel("community"),
+        FieldPanel("reach"),
+        FieldRowPanel(
+            [
+                FieldPanel("start_date"),
+                FieldPanel("end_date"),
+            ]
+        ),
+    ]
+
+
 class OrganisationPage(Page):
 
     UNVERIFIED = 0
@@ -228,7 +275,9 @@ class OrganisationPage(Page):
         max_length=20,
         choices=ORGANIZATION_TYPE,
     )
-    status = models.SmallIntegerField(choices=ORG_STATUSES, default=0)
+    status = models.SmallIntegerField(
+        choices=ORG_STATUSES, default=1
+    )  # set to active by default
     # contact information
     email = models.EmailField("Contact Email", blank=True, null=True)
     facebook = models.URLField(
@@ -256,6 +305,17 @@ class OrganisationPage(Page):
         blank=True, null=True, max_length=200, help_text="Office address"
     )
 
+    # DATA AREA
+
+    # PERSONNEL
+    paralegals = models.PositiveSmallIntegerField(null=True, blank=True, default=0)
+    educators = models.PositiveSmallIntegerField(
+        null=True, blank=True, default=0, verbose_name="Peer Educators"
+    )
+    village_teams = models.PositiveSmallIntegerField(
+        null=True, blank=True, default=0, verbose_name="Village health teams"
+    )
+
     objects = OrganisationManager()
 
     search_fields = Page.search_fields + [
@@ -277,6 +337,14 @@ class OrganisationPage(Page):
         FieldPanel("acronym"),
         FieldPanel("org_type"),
         ImageChooserPanel("logo"),
+        MultiFieldPanel(
+            [
+                FieldPanel("paralegals"),
+                FieldPanel("educators"),
+                FieldPanel("village_teams"),
+            ],
+            heading="Resource Personnel",
+        ),
     ]
 
     tagging_panels = [
@@ -301,6 +369,20 @@ class OrganisationPage(Page):
 
     settings_panels = [FieldPanel("status")] + Page.settings_panels
 
+    reach_panels = [
+        MultiFieldPanel(
+            [InlinePanel("reach", max_num=30, min_num=0, label="Reach")],
+            heading="Reach within key populations",
+        ),
+    ]
+
+    violations_panels = [
+        MultiFieldPanel(
+            [InlinePanel("violations", max_num=30, min_num=0, label="Violation")],
+            heading="Record Human Rights Violations",
+        ),
+    ]
+
     edit_handler = TabbedInterface(
         [
             ObjectList(content_panels, heading="Details"),
@@ -308,6 +390,8 @@ class OrganisationPage(Page):
             ObjectList(contact_panels, heading="Contacts"),
             ObjectList(Page.promote_panels, heading="Meta"),
             ObjectList(settings_panels, heading="Visibility"),
+            ObjectList(reach_panels, heading="Reach & Impact"),
+            ObjectList(violations_panels, heading="Violations"),
         ]
     )
 
@@ -329,11 +413,18 @@ class OrganisationPage(Page):
             "email": str(self.email),
             "website": self.website,
             "phone": self.phone,
-            "communities": list(self.communities.values_list("title", flat=True)),
-            "services": list(self.services.values_list("title", flat=True)),
-            "issues": list(self.issues.values_list("title", flat=True)),
-            # "services": {
-            #     service["id"]: service["title"]
-            #     for service in self.services.values("id", "title")
-            # },
+            "communities": list(set(self.communities.values_list("title", flat=True))),
+            "services": list(set(self.services.values_list("title", flat=True))),
+            "issues": list(set(self.issues.values_list("title", flat=True))),
         }
+
+    def list_districts(self):
+        districts = self.locations.values_list("name", flat=True)
+        district_list = list(districts)
+        return json.dumps(district_list)
+
+    def get_reach(self):
+        return self.reach.values("community", "reach", "start_date", "end_date")
+
+    def total_reach(self):
+        return self.reach.values("community", "reach", "start_date", "end_date")
