@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="bg-primary p-4 mt-2">
+<div class="bg-primary p-3">
   <div class="container">
     <form id="searchForm" class="row row-cols-sm-auto g-3 align-items-center" hx-post="{% url 'core:search' %}"
       hx-target="#filter-results">
@@ -17,15 +17,15 @@
       <div class="col-12">
         <div class="position-relative"><i
             class="ai-search position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-          <input type="search" name="query" class="form-control ps-5" placeholder="Search by name..."
+          <input type="search" name="query" class="form-control form-control-sm ps-5" placeholder="Search by name..."
             id="inline-form-input" @search="$event.prevent" hx-post="{% url 'core:search' %}"
             hx-trigger="keyup changed delay:500ms, search" hx-target="#filter-results" />
         </div>
       </div>
       <div class="col-12">
         <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
-          <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="true" @click="open = !open">All key populations</button>
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">All key populations</button>
           <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
             {% for community in communities %}
             {% include "partials/_filter_checkbox.html" with prefix='community' name=community %}
@@ -38,8 +38,8 @@
       </div>
       <div class="col-12">
         <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
-          <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="true" @click="open = !open">All services offered</button>
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">All services offered</button>
           <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
             {% for service in services %}
             {% include "partials/_filter_checkbox.html" with prefix='service' name=service %}
@@ -52,8 +52,8 @@
       </div>
       <div class="col-12">
         <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
-          <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="true" @click="open = !open">All broad issues</button>
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">All broad issues</button>
           <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
             {% for issue in issues %}
             {% include "partials/_filter_checkbox.html" with prefix='issue' name=issue %}
@@ -65,7 +65,8 @@
         </div>
       </div>
       <div class="col-12">
-        <button class="btn btn-outline-danger ms-auto" type="button"><i class="ai-refresh ms-n1 me-2"></i>reset</button>
+        <button class="btn btn-sm btn-outline-danger ms-auto" type="button"><i
+            class="ai-refresh ms-n1 me-2"></i>reset</button>
       </div>
     </form>
   </div>
@@ -77,14 +78,55 @@
       <div class="accordion" id="filter-results">
         {% for organisation in organisations %}
         <div class="accordion-item">
-          <h3 class="accordion-header" id="{{ organisation.slug }}">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+          <h6 class="accordion-header" id="{{ organisation.id }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapse-{{ organisation.id }}" aria-expanded="false"
               aria-controls="collapse-{{ organisation.id }}">{{ organisation.title }}</button>
-          </h3>
+          </h6>
           <div class="accordion-collapse collapse" id="collapse-{{ organisation.id }}"
-            aria-labelledby="{{ organisation.slug }}" data-bs-parent="#filter-results">
-            <div class="accordion-body fs-sm">{{ organisation.summary }}</div>
+            aria-labelledby="{{ organisation.id }}" data-bs-parent="#filter-results">
+            <div class="accordion-body fs-sm pt-3">
+              <dl>
+                {% if organisation.summary %}
+                <dd>
+                  <p>{{ organisation.summary }}{% else %}No summary yet</p>
+                </dd>
+                {% endif %}
+                {% if organisation.communities.all %}
+                <dt>We support</dt>
+                <dd>
+                  <div class="d-flex pt-2">
+                    {% for community in organisation.communities.all %}
+                    <div class="me-2 mb-2">
+                      <style>
+                        .community-icon {
+                          background-color: {{ community.color }};
+                        }
+
+                      </style>
+                      <span class="d-inline-block rounded-circle community-icon"
+                        style="width: .625rem; height: .625rem;"></span>&nbsp;{{ community.acronym }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                </dd>
+                {% endif %}
+                {% if organisation.toll_free is not None %}
+                <dt>Toll-free number</dt>
+                <dd>{{ organisation.toll_free }}</dd>
+                {% endif %}
+                {% if organisation.email is not None %}
+                <dt>Email address</dt>
+                <dd>{{ organisation.email }}</dd>
+                {% endif %}
+                {% if organisation.website is not None %}
+                <dt>Website</dt>
+                <dd>{{ organisation.website }}</dd>
+                {% endif %}
+              </dl>
+              <a class="btn btn-link p-0" href="{{ organisation.full_url }}">Learn more<i
+                  class="ai-arrow-right ms-2"></i></a>
+            </div>
           </div>
         </div>
         {% endfor %}
@@ -179,9 +221,7 @@
       swap: 'beforeend',
       values: data
     }
-
     htmx.ajax('POST', "{% url 'core:search' %}", context)
   }
 
-</script>
-{% endblock %}
+</script> {% endblock %}

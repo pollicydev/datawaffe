@@ -224,3 +224,27 @@ class Issue(ClusterableModel):
     class Meta:
         verbose_name = "Issue"
         verbose_name_plural = "Issues"
+
+
+class Violation(ClusterableModel):
+    title = models.CharField(max_length=100, help_text="Name of violation")
+    description = models.CharField(
+        max_length=240, blank=True, null=True, help_text="Brief description"
+    )
+
+    panels = [
+        FieldPanel(
+            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
+        ),
+        FieldPanel("description"),
+    ]
+
+    def __str__(self):
+        return self.title
+
+    def autocomplete_label(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Violation"
+        verbose_name_plural = "Violations"

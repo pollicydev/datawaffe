@@ -73,7 +73,7 @@
       }
       .page-loading-inner > span {
         display: block;
-        font-family: 'Ubuntu', sans-serif;
+        font-family: 'Kumbh Sans', sans-serif;
         font-size: 1rem;
         font-weight: normal;
         color: #6f788b;
@@ -137,7 +137,7 @@
     <!-- Import Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&amp;display=swap" rel="stylesheet" id="google-font">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     {% compress css %}
     <!-- Vendor & 3rd party lib styles-->
     {% block stylesheet %}{% endblock %}
@@ -187,7 +187,7 @@
     <!-- Page wrapper-->
     <main class="page-wrapper">
       <!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page-->
-      <header class="navbar navbar-expand-lg fixed-top">
+      <header style="border-bottom: 5px solid #24408e" class="navbar navbar-expand-lg fixed-top">
         <div class="container">
           <a class="navbar-brand pe-sm-3" href="/">
             <span class="text-primary flex-shrink-0 me-2">
@@ -228,13 +228,16 @@
           <nav class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
               <li class="nav-item">
-                <a class="nav-link" href="">Datasets</a>
+                <a class="nav-link" href="">Overview</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Locations</a>
+                <a class="nav-link" href="">Map the impact</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Organisations</a>
+                <a class="nav-link" href="">Resources</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="">Stories</a>
               </li>
               {% if request.user.is_authenticated %}
               <li class="nav-item dropdown d-sm-none border-top mt-2 pt-2">
@@ -298,13 +301,14 @@
     </main>
     <footer class="footer py-4">
       <div class="container text-center">
-        <ul class="nav">
+        <ul class="nav fs-sm">
           <li class="nav-item"><a class="nav-link text-muted" href="/">v{{rrap_version}} ({{ rrap_environment }})</a></li>
+          <li class="nav-item"><a class="nav-link text-muted" href="#">Data methodology</a></li>
           <li class="nav-item"><a class="nav-link text-muted" href="#">Terms of service</a></li>
           <li class="nav-item"><a class="nav-link text-muted" href="#">Privacy policy</a></li>
           <li class="nav-item"><a class="nav-link text-muted" href="#">Help &amp; FAQs</a></li>
           <li class="nav-item"><a class="nav-link text-muted" href="#">Contact us</a></li>
-          <li class="nav-item"><a class="nav-link text-muted" href="#">&copy; 2022 Data Waffe</a></li>
+          <li class="nav-item"><a class="nav-link text-muted" href="#">&copy;2022 Data Waffe. All rights reserved</a></li>
         </ul>
       </div>
     </footer>

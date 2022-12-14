@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags %}
+
+{% block title %}{{ self.title }} · Data Waffe{% endblock %}
+
+{% block stylesheet %}
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+{% endblock %}
+
+{% block content %}
+
+<section class="container py-5">
+  <div class="row">
+    <!-- Post title + post meta-->
+    <div class="col-lg-9 pb-2 pb-lg-0 mb-4 mb-lg-0">
+      {% if self.status != 1 %}
+      <span class="badge bg-faded-danger text-danger fs-sm">{{ self.get_status_display }}</span>
+      {% endif %}
+      <h1 class="display-4">
+        <span
+          style="background: linear-gradient(to right, rgb(237, 34, 36), rgb(243, 91, 34), rgb(249, 150, 33), rgb(245, 193, 30), rgb(241, 235, 27) 27%, rgb(241, 235, 27), rgb(241, 235, 27) 33%, rgb(99, 199, 32), rgb(12, 155, 73), rgb(33, 135, 141), rgb(57, 84, 165), rgb(97, 55, 155), rgb(147, 40, 142)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+          {{ self.title }}
+        </span>
+      </h1>
+      <p>{{ self.summary }}</p>
+      {{ self.get_reach }}
+      {% if self.toll_free is not None %}
+      <p class="text-success fw-bold fs-lg">
+        <i class="ai-phone-in me-2"></i>Toll-free: &nbsp; <a class="p-0 me-2" href="tel:{{ self.toll_free }}">
+          {{ self.toll_free }}
+        </a></p>
+      {% endif %}
+      <div class="d-flex flex-wrap align-items-center justify-content-between">
+        <div class="d-flex align-items-center mb-4 me-4">
+          {% if self.email is not None %}
+          <i class="ai-mail me-2"></i>
+          <a class="p-0 me-2" href="mailto:{{ self.email }}">
+            Send email
+          </a>
+          {% endif %}
+          {% if self.website is not None %}
+          <i class="ai-globe me-2"></i>
+          <a class="p-0 me-2" href="{{ self.website }}" target="_blank">
+            Visit website
+          </a>
+          {% endif %}
+        </div>
+        <div class="d-flex align-items-center mb-4">
+          <span class="me-2">Follow:</span>
+          <div class="d-flex">
+            {% if self.facebook is not None %}
+            <a class="btn btn-secondary btn-icon btn-sm btn-facebook me-2" target="_blank" href="{{ self.facebook }}"
+              aria-label="Facebook"><i class="ai-facebook"></i></a>
+            {% endif %}
+            {% if self.twitter is not None %}
+            <a class="btn btn-secondary btn-icon btn-sm btn-twitter me-2" target="_blank" href="{{ self.twitter }}"
+              aria-label="Twitter"><i class="ai-twitter"></i></a>
+            {% endif %}
+            {% if self.youtube is not None %}
+            <a class="btn btn-secondary btn-icon btn-sm btn-youtube me-2" target="_blank" href="{{ self.youtube }}"
+              aria-label="YouTube"><i class="ai-youtube"></i></a>
+            {% endif %}
+            {% if self.instagram is not None %}
+            <a class="btn btn-secondary btn-icon btn-sm btn-instagram me-2" target="_blank" href="{{ self.instagram }}"
+              aria-label="Instagram"><i class="ai-instagram"></i></a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Author widget-->
+    <div class="col-lg-3 col-xl-2 offset-xl-1">
+      <div class="card border-0 bg-light">
+        <div class="card-body text-center">
+          {% image self.logo width-200 as logo %}
+          <img class="d-block mx-auto mb-3"
+            src="{% if logo %}{{ logo.full_url }}{% else %}https://datawaffe.org/wp-content/uploads/2021/06/cropped-dw-favicon-2-64x64.png{% endif %}"
+            width="150" alt="Organisation logo">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-secondary py-5">
+  <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">At a glance</h2>
+  <p class="text-center mx-auto p-0 m-0">Highlights from across the data</p>
+  <div class="container mt-4">
+    <div class="row row-cols-2 row-cols-md-4 g-0">
+      <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
+        <div class="position-absolute top-50 end-0 translate-middle-y border-end" style="height: 60px;"></div>
+        <div class="p-3 px-sm-0 py-sm-4">
+          <div class="h2 display-5 text-primary text-center mb-0">{{ self.locations.count }}</div><span>Total districts
+            served</span>
+        </div>
+      </div>
+      <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
+        <div class="position-absolute top-50 end-0 translate-middle-y border-end d-none d-md-block"
+          style="height: 60px;"></div>
+        <div class="p-3 px-sm-0 py-sm-4">
+          <div class="h2 display-5 text-primary text-center mb-0">{{ self.reach.count }}</div><span>Total peers
+            reached</span>
+        </div>
+      </div>
+      <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
+        <div class="position-absolute top-50 end-0 translate-middle-y border-end" style="height: 60px;"></div>
+        <div class="p-3 px-sm-0 py-sm-4">
+          <div class="h2 display-5 text-primary text-center mb-0">30+</div><span>Total personnel employed</span>
+        </div>
+      </div>
+      <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
+        <div class="p-3 px-sm-0 py-sm-4">
+          <div class="h2 display-5 text-primary text-center mb-0">15</div><span>Recorded rights violations</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="bg-light py-5">
+  <h2 class="h1 text-center pt-1 pb-4 pt-sm-4 mb-1">Where we work</h2>
+
+  <div style="display:none;" id="districtList">{{ self.list_districts }}</div>
+  <div style="height:660px!important;" class="map" id="map">
+
+</section>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
+<script src="{% static 'geojson/districts.js' %}"></script>
+{% endblock javascript %}
+
+{% block inline_javascript %}
+<script>
+  mapboxgl.accessToken =
+    "pk.eyJ1Ijoia29sbGluc2F5eiIsImEiOiJjaWVoNzJxcTcwMDlvc3JtMXBtNmg4aWl6In0.T8YV7TzgBTTWQT19_pjceQ";
+  // Set bounds to Uganda
+  var uganda = [
+    [29.57, -1.48],
+    [35.0, 4.23],
+  ];
+  if (window.innerWidth >= 575) { // only load map where it can be seen
+    var map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/kollinsayz/clbml6myu000014ph5pdsns4x?optimize=true&fresh=true",
+      center: [32.225, 1.052],
+      zoom: 6.3,
+      scrollZoom: false,
+      attributionControl: false,
+      //maxBounds: uganda // Sets bounds as max
+    });
+  }
+
+  // Disable default box zooming.
+  map.boxZoom.disable();
+  map.scrollZoom.disable();
+
+
+  let hoveredDistrictId = null;
+  let clickedDistrictId = null;
+
+  let locations = document.getElementById('districtList').innerText;
+  console.log("Locations: ", JSON.parse(locations));
+
+  map.on("load", function () {
+    // load district polygon data from enqueued geojson
+    map.addSource("districts", {
+      type: "geojson",
+      data: districts_geojson,
+    });
+
+    map.addLayer({
+      id: "district-fills",
+      type: "fill",
+      source: "districts",
+      layout: {},
+      paint: {
+        "fill-color": "#1A2F80",
+        "fill-opacity": [
+          "case",
+          ["boolean", ["feature-state", "hover"], false],
+          1,
+          0.6,
+        ],
+      },
+    });
+    map.on("mousemove", "district-fills", (e) => {
+      if (e.features.length > 0) {
+        if (hoveredDistrictId !== null) {
+          map.setFeatureState({
+            source: "districts",
+            id: hoveredDistrictId,
+          }, {
+            hover: false,
+          });
+        }
+        hoveredDistrictId = e.features[0].id;
+
+        map.setFeatureState({
+          source: "districts",
+          id: hoveredDistrictId,
+        }, {
+          hover: true,
+        });
+      }
+    });
+
+    // Create a popup, but don't add it to the map yet.
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
+
+    map.on("mousemove", "district-fills", (e) => {
+      map.getCanvas().style.cursor = "pointer";
+      let name = e.features[0].properties.name;
+      let popn = (e.features[0].properties.population).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+      popup
+        .setLngLat(e.lngLat)
+        .setHTML("<h5 class='no-margin-top no-margin-bottom'>" + name +
+          "</h5><p class='no-margin-bottom'>Population: " + popn +
+          "</p><small>Uganda Bureau of Statistics (2020)</small>")
+        .addTo(map);
+    });
+
+    // When the mouse leaves the state-fill layer, update the feature state of the
+    // previously hovered feature.
+    map.on("mouseleave", "district-fills", () => {
+      if (hoveredDistrictId !== null) {
+        map.setFeatureState({
+          source: "districts",
+          id: hoveredDistrictId,
+        }, {
+          hover: false,
+        });
+      }
+      hoveredDistrictId = null;
+      // change cursor back to normal when leave districts
+      map.getCanvas().style.cursor = "";
+      popup.remove();
+    });
+    // initialize mapbox' expression filter on layer
+    let filter = ["in", "name"];
+    map.setFilter('district-fills', filter.concat(JSON.parse(locations)));
+    map.resize();
+
+  });
+
+</script>
+{% endblock %}

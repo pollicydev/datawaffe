@@ -3,7 +3,7 @@ from wagtail.contrib.modeladmin.options import (
     ModelAdminGroup,
     modeladmin_register,
 )
-from .models import Location, Topic, KeyPopulation, Service, Issue
+from .models import Location, Topic, KeyPopulation, Service, Issue, Violation
 from wagtail.contrib.modeladmin.helpers import PermissionHelper
 
 
@@ -108,8 +108,24 @@ class IssuesAdmin(ModelAdmin):
     inspect_view_enabled = True
 
 
+class ViolationsAdmin(ModelAdmin):
+    """Violations admin."""
+
+    model = Violation
+    menu_label = "Violations"
+    menu_icon = "snippet"
+    menu_order = 290
+    add_to_settings_menu = False
+    exclude_from_explorer = False
+    list_display = ("title",)
+    search_fields = ("title",)
+    permission_helper_class = GenericValidationPermissionHelper
+    inspect_view_enabled = True
+
+
 modeladmin_register(LocationsAdmin)
 modeladmin_register(TopicsAdmin)
 modeladmin_register(KeyPopAdmin)
 modeladmin_register(ServicesAdmin)
 modeladmin_register(IssuesAdmin)
+modeladmin_register(ViolationsAdmin)

@@ -1,0 +1,162 @@
+[{
+  "model": "core.violation",
+  "pk": 1,
+  "fields": {
+    "title": "Arbitrary Detention",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 2,
+  "fields": {
+    "title": "Arrest for violating COVID-19 movement restrictions",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 3,
+  "fields": {
+    "title": "Blackmail",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 4,
+  "fields": {
+    "title": "Defamation",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 5,
+  "fields": {
+    "title": "Denial of an investigation by the police",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 6,
+  "fields": {
+    "title": "Discrimination because of HIV status",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 7,
+  "fields": {
+    "title": "Discrimination due to SOGIE",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 8,
+  "fields": {
+    "title": "Employment termination",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 9,
+  "fields": {
+    "title": "Eviction due to failure to pay rent",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 10,
+  "fields": {
+    "title": "Excessive use of force by law enforcement",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 11,
+  "fields": {
+    "title": "Extortion",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 12,
+  "fields": {
+    "title": "Gender-based/intimate partner violence while staying with a partner",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 13,
+  "fields": {
+    "title": "Harassment",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 14,
+  "fields": {
+    "title": "Intimidation",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 15,
+  "fields": {
+    "title": "Public Outing",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 16,
+  "fields": {
+    "title": "Torture or cruel, inhumane, degrading treatment in a public health facility",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 17,
+  "fields": {
+    "title": "Torture or cruel, inhumane, degrading treatment in police/prison custody",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 18,
+  "fields": {
+    "title": "Unable to access health services due to movement restrictions",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 19,
+  "fields": {
+    "title": "Unable to access legal services",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 20,
+  "fields": {
+    "title": "Unable to adhere to ART due to lack of nutritional support",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 21,
+  "fields": {
+    "title": "Denial of health services",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 22,
+  "fields": {
+    "title": "Denial of legal services",
+    "description": ""
+  }
+}, {
+  "model": "core.violation",
+  "pk": 23,
+  "fields": {
+    "title": "Denial of protection by police",
+    "description": ""
+  }
+}]

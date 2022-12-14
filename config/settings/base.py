@@ -370,8 +370,10 @@ GDAL_LIBRARY_PATH = "/usr/local/Cellar/gdal/3.5.1_2/lib/libgdal.dylib"
 GEOS_LIBRARY_PATH = "/usr/local/Cellar/geos/3.11.0/lib/libgeos_c.dylib"
 
 WAGTAIL_SITE_NAME = "Data Waffe"
-WAGTAILADMIN_BASE_URL = "https://datawaffe.org"
-BASE_URL = "https://datawaffe.org"
+# WAGTAILADMIN_BASE_URL = "https://datawaffe.org"
+# BASE_URL = "https://datawaffe.org"
+WAGTAILADMIN_BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = "http://127.0.0.1:8000"
 WAGTAIL_ENABLE_UPDATE_CHECK = False
 WAGTAIL_ADMIN_URL = "cms/"
 
