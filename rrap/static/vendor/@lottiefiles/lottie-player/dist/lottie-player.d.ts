@@ -68,6 +68,10 @@ export declare class LottiePlayer extends LitElement {
      */
     direction: number;
     /**
+     * Disable checking if the Lottie is valid before loading
+     */
+    disableCheck?: boolean;
+    /**
      * Whether to play on mouse hover
      */
     hover: boolean;
@@ -182,7 +186,7 @@ export declare class LottiePlayer extends LitElement {
     /**
      * Returns the styles for the component.
      */
-    static get styles(): import("lit").CSSResult;
+    static get styles(): any;
     /**
      * Cleanup on component destroy.
      */

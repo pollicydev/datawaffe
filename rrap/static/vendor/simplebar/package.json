@@ -1,5 +1,5 @@
 {
-  "version": "5.3.8",
+  "version": "5.3.9",
   "name": "simplebar",
   "title": "SimpleBar.js",
   "description": "Scrollbars, simpler.",
@@ -53,5 +53,6 @@
       "prettier-eslint --write",
       "git add"
     ]
-  }
+  },
+  "gitHead": "160dc756fad6340b667d283b48d3683486392703"
 }

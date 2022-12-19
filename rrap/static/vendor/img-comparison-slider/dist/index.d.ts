@@ -1,6 +1,7 @@
 export declare class HTMLImgComparisonSliderElement extends HTMLElement {
     private firstElement;
     private secondElement;
+    private handleElement;
     private imageWidth;
     private imageHeight;
     private exposure;
@@ -11,6 +12,7 @@ export declare class HTMLImgComparisonSliderElement extends HTMLElement {
     private animationDirection;
     private transitionTimer;
     private isFocused;
+    handle: boolean;
     get value(): any;
     set value(newValue: any);
     get hover(): any;

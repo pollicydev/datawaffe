@@ -21,7 +21,7 @@ export declare class TGSPlayer extends LottiePlayer {
     /**
      * Returns the styles for the component.
      */
-    static get styles(): import("lit").CSSResult;
+    static get styles(): any;
     protected formatCheck(data: any): string[];
     private checkLayer;
     private checkItems;

@@ -8312,23 +8312,23 @@ var lightgallery_LightGallery = /*#__PURE__*/function () {
 
           var $item = _this17.getSlideItem(_this17.index);
 
-          if (($LG(e.target).hasClass('lg-item') || $item.get().contains(e.target)) && !_this17.outer.hasClass('lg-zoomed') && !_this17.lgBusy && e.targetTouches.length === 1) {
+          if (($LG(e.target).hasClass('lg-item') || $item.get().contains(e.target)) && !_this17.outer.hasClass('lg-zoomed') && !_this17.lgBusy && e.touches.length === 1) {
             isSwiping = true;
             _this17.touchAction = 'swipe';
 
             _this17.manageSwipeClass();
 
             startCoords = {
-              pageX: e.targetTouches[0].pageX,
-              pageY: e.targetTouches[0].pageY
+              pageX: e.touches[0].pageX,
+              pageY: e.touches[0].pageY
             };
           }
         });
         this.$inner.on('touchmove.lg', function (e) {
-          if (isSwiping && _this17.touchAction === 'swipe' && e.targetTouches.length === 1) {
+          if (isSwiping && _this17.touchAction === 'swipe' && e.touches.length === 1) {
             endCoords = {
-              pageX: e.targetTouches[0].pageX,
-              pageY: e.targetTouches[0].pageY
+              pageX: e.touches[0].pageX,
+              pageY: e.touches[0].pageY
             };
 
             _this17.touchMove(startCoords, endCoords, e);
@@ -8931,6 +8931,19 @@ var lightgallery_LightGallery = /*#__PURE__*/function () {
       this.updateCounterTotal();
       this.manageSingleSlideClassName();
     }
+  }, {
+    key: "destroyGallery",
+    value: function destroyGallery() {
+      this.destroyModules(true);
+
+      if (!this.settings.dynamic) {
+        this.invalidateItems();
+      }
+
+      $LG(window).off(".lg.global".concat(this.lgId));
+      this.LGel.off('.lg');
+      this.$container.remove();
+    }
     /**
      * Destroy lightGallery.
      * Destroy lightGallery and its plugin instances completely
@@ -8948,22 +8961,14 @@ var lightgallery_LightGallery = /*#__PURE__*/function () {
   }, {
     key: "destroy",
     value: function destroy() {
-      var _this29 = this;
-
       var closeTimeout = this.closeGallery(true);
-      setTimeout(function () {
-        _this29.destroyModules(true);
 
-        if (!_this29.settings.dynamic) {
-          _this29.invalidateItems();
-        }
+      if (closeTimeout) {
+        setTimeout(this.destroyGallery.bind(this), closeTimeout);
+      } else {
+        this.destroyGallery();
+      }
 
-        $LG(window).off(".lg.global".concat(_this29.lgId));
-
-        _this29.LGel.off('.lg');
-
-        _this29.$container.remove();
-      }, closeTimeout);
       return closeTimeout;
     }
   }]);

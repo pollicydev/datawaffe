@@ -469,8 +469,8 @@ class OrganisationPage(Page):
         # getData for chart on reach
         reachData = (
             CommunityReach.objects.filter(page=self)
-            .values("community__acronym", "period", "reach")
-            .order_by("period", "community")
+            .values("community", "period", "reach")
+            .order_by("period")
             .reverse()
         )
         years = list(
@@ -478,6 +478,7 @@ class OrganisationPage(Page):
             .order_by("period")
             .values_list("period", flat=True)
             .distinct()
+            .reverse()
         )
 
         communities = list(
@@ -495,12 +496,13 @@ class OrganisationPage(Page):
                 data[comm][year] = 0
 
         for dataset in reachData:
-            comm = dataset["community__acronym"]
+            comm = dataset["community"]
             year = dataset["period"]
-            count = dataset["reach"]
-            data[comm][year] = count
+            reach = dataset["reach"]
+            data[comm][year] = reach
 
-        context["reachData"] = reachData
+        series = [{"name": d, "data": list(data[d].values())} for d in data]
+
         context["years"] = years
-        context["communities"] = communities
+        context["series"] = series
         return context

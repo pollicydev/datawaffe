@@ -238,6 +238,7 @@ export interface LightGalleryCoreSettings {
     slideEndAnimation: boolean;
     /**
      * If true, prev/next button will be hidden on first/last image.
+     * @description Note - this option will be ignored if <code>loop</code> or <code>slideEndAnimation</code> is set to true
      */
     hideControlOnEnd: boolean;
     /**

@@ -10,7 +10,7 @@ interface DragAllowedAxises {
 }
 interface ZoomTouchEvent {
     pageX: number;
-    targetTouches: {
+    touches: {
         pageY: number;
         pageX: number;
     }[];
@@ -26,17 +26,13 @@ export default class Zoom {
     private core;
     private settings;
     private $LG;
+    private imageReset;
     zoomableTimeout: any;
     positionChanged: boolean;
     pageX: number;
     pageY: number;
     scale: number;
-    imageYSize: number;
-    imageXSize: number;
     containerRect: ClientRect;
-    rotateValue: number;
-    modifierX: number;
-    modifierY: number;
     dragAllowedAxises: DragAllowedAxises;
     top: number;
     left: number;
@@ -51,19 +47,9 @@ export default class Zoom {
      */
     enableZoom(event: CustomEvent): void;
     enableZoomOnSlideItemLoad(): void;
-    getModifier(rotateValue: number, axis: string, el: HTMLElement): number;
-    getImageSize($image: HTMLImageElement, rotateValue: number, axis: string): number;
-    getDragCords(e: MouseEvent, rotateValue: number): Coords;
-    getSwipeCords(e: TouchEvent, rotateValue: number): Coords;
-    getDragAllowedAxises(rotateValue: number, scale?: number): DragAllowedAxises;
-    /**
-     *
-     * @param {Element} el
-     * @return matrix(cos(X), sin(X), -sin(X), cos(X), 0, 0);
-     * Get the current transform value
-     */
-    getCurrentTransform(el: HTMLElement): string[] | undefined;
-    getCurrentRotation(el: HTMLElement): number;
+    getDragCords(e: MouseEvent): Coords;
+    getSwipeCords(e: TouchEvent): Coords;
+    getDragAllowedAxises(scale: number, scaleDiff?: number): DragAllowedAxises;
     setZoomEssentials(): void;
     /**
      * @desc Image zoom
@@ -71,7 +57,9 @@ export default class Zoom {
      *
      * @param {String} scale - Zoom decrement/increment value
      */
-    zoomImage(scale: number): void;
+    zoomImage(scale: number, scaleDiff: number, reposition: boolean, resetToMax: boolean): void;
+    resetImageTranslate(index: number): void;
+    setZoomImageSize(): void;
     /**
      * @desc apply scale3d to image and translate to image wrap
      * @param {style} X,Y and scale
@@ -91,21 +79,22 @@ export default class Zoom {
     getCurrentImageActualSizeScale(): number;
     getPageCords(event?: ZoomTouchEvent): Coords;
     setPageCords(event?: ZoomTouchEvent): void;
+    manageActualPixelClassNames(): void;
     beginZoom(scale: number): boolean;
     getScale(scale: number): number;
     init(): void;
-    zoomIn(scale?: number): void;
+    zoomIn(): void;
     resetZoom(index?: number): void;
     getTouchDistance(e: TouchEvent): number;
     pinchZoom(): void;
-    touchendZoom(startCoords: Coords, endCoords: Coords, allowX: boolean, allowY: boolean, touchDuration: number, rotateValue: number): void;
+    touchendZoom(startCoords: Coords, endCoords: Coords, allowX: boolean, allowY: boolean, touchDuration: number): void;
     getZoomSwipeCords(startCoords: Coords, endCoords: Coords, allowX: boolean, allowY: boolean, possibleSwipeCords: PossibleCords): Coords;
     private isBeyondPossibleLeft;
     private isBeyondPossibleRight;
     private isBeyondPossibleTop;
     private isBeyondPossibleBottom;
-    isImageSlide(): boolean;
-    getPossibleSwipeDragCords(rotateValue: number, scale?: number): PossibleCords;
+    isImageSlide(index: number): boolean;
+    getPossibleSwipeDragCords(scale?: number): PossibleCords;
     setZoomSwipeStyles(LGel: lgQuery, distance: {
         x: number;
         y: number;

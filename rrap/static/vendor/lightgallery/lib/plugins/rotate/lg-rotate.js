@@ -48,17 +48,24 @@ var Rotate = /** @class */ (function () {
         // even after navigating to diferent slides
         this.rotateValuesList = {};
         // event triggered after appending slide content
-        this.core.LGel.on(lg_events_1.lGEvents.afterAppendSlide + ".rotate", function (event) {
+        this.core.LGel.on(lg_events_1.lGEvents.slideItemLoad + ".rotate", function (event) {
             var index = event.detail.index;
-            var imageWrap = _this.core
+            var rotateEl = _this.core
                 .getSlideItem(index)
-                .find('.lg-img-wrap')
-                .first();
-            imageWrap.wrap('lg-img-rotate');
-            _this.core
-                .getSlideItem(_this.core.index)
                 .find('.lg-img-rotate')
-                .css('transition-duration', _this.settings.rotateSpeed + 'ms');
+                .get();
+            if (!rotateEl) {
+                var imageWrap = _this.core
+                    .getSlideItem(index)
+                    .find('.lg-object')
+                    .first();
+                imageWrap.wrap('lg-img-rotate');
+                //this.rotateValuesList[this.core.index]
+                _this.core
+                    .getSlideItem(_this.core.index)
+                    .find('.lg-img-rotate')
+                    .css('transition-duration', _this.settings.rotateSpeed + 'ms');
+            }
         });
         this.core.outer
             .find('#lg-rotate-left')

@@ -287,6 +287,7 @@ export declare class LightGallery {
      */
     refresh(galleryItems?: GalleryItem[]): void;
     updateControls(): void;
+    private destroyGallery;
     /**
      * Destroy lightGallery.
      * Destroy lightGallery and its plugin instances completely

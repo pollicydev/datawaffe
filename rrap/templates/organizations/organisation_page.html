@@ -23,7 +23,7 @@
         </span>
       </h1>
       <p>{{ self.summary }}</p>
-      {{ self.get_reach }}
+
       {% if self.toll_free is not None %}
       <p class="text-success fw-bold fs-lg">
         <i class="ai-phone-in me-2"></i>Toll-free: &nbsp; <a class="p-0 me-2" href="tel:{{ self.toll_free }}">
@@ -90,7 +90,7 @@
       <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
         <div class="position-absolute top-50 end-0 translate-middle-y border-end" style="height: 60px;"></div>
         <div class="p-3 px-sm-0 py-sm-4">
-          <div class="h2 display-5 text-primary text-center mb-0">{{ self.locations.count }}</div><span>Total districts
+          <div class="h2 display-5 text-primary text-center mb-0">{{ self.locations.count }}</div><span>Districts
             served</span>
         </div>
       </div>
@@ -98,23 +98,47 @@
         <div class="position-absolute top-50 end-0 translate-middle-y border-end d-none d-md-block"
           style="height: 60px;"></div>
         <div class="p-3 px-sm-0 py-sm-4">
-          <div class="h2 display-5 text-primary text-center mb-0">{{ self.reach.count }}</div><span>Total peers
+          <div class="h2 display-5 text-primary text-center mb-0">{{ self.total_reach }}</div><span>Peers
             reached</span>
         </div>
       </div>
       <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
         <div class="position-absolute top-50 end-0 translate-middle-y border-end" style="height: 60px;"></div>
         <div class="p-3 px-sm-0 py-sm-4">
-          <div class="h2 display-5 text-primary text-center mb-0">30+</div><span>Total personnel employed</span>
+          <div class="h2 display-5 text-primary text-center mb-0">{{ self.total_personnel }}</div><span>Personnel
+            employed {% if self.get_teams > 0 %}<br>and <span class="badge bg-warning">{{ self.get_teams }}</span>
+            village teams{% endif %}</span>
         </div>
       </div>
       <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
         <div class="p-3 px-sm-0 py-sm-4">
-          <div class="h2 display-5 text-primary text-center mb-0">15</div><span>Recorded rights violations</span>
+          <div class="h2 display-5 text-primary text-center mb-0">{{ self.total_violations }}</div><span>Recorded rights
+            violations</span>
         </div>
       </div>
     </div>
   </div>
+
+</section>
+
+<section class="bg-light py-5">
+
+  <div class="container">
+    <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Reach & impact</h2>
+    <p class="text-center mx-auto pb-5 m-0">Highlights from across the data</p>
+
+    {{ series }}
+    {% for dataset in series %}{{dataset.data}},{% endfor %}
+    <div style="width: 700px" id="reachBarChartCanvas">
+      <canvas id="reachBarChart"></canvas>
+    </div>
+  </div>
+</section>
+
+<section class="bg-secondary py-5">
+  <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Human rights violations</h2>
+  <p class="text-center mx-auto p-0 m-0">Highlights from across the data</p>
+
 
 </section>
 
@@ -129,11 +153,58 @@
 {% endblock content %}
 
 {% block javascript %}
+<script src="{% static 'vendor/chart.js/dist/chart.umd.js' %}"></script>
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
 <script src="{% static 'geojson/districts.js' %}"></script>
 {% endblock javascript %}
 
 {% block inline_javascript %}
+<script>
+  const ctx = document.getElementById('reachBarChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    "data": {
+      "labels": {{ years }},
+      "datasets": [
+      {% for dataset in series %}{
+          "label": "{{ dataset.name }}",
+          "data": {{ dataset.data }},
+          "borderWidth": 2,
+          "borderColor": "#448c74",
+          "backgroundColor": "rgba(68,140,116,.35)",
+          "hoverBackgroundColor": "rgba(68,140,116,.75)"
+        },
+        {% endfor %}
+      ]
+    },
+    "options": {
+      "scales": {
+        "y": {
+          "beginAtZero": true,
+          "border": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "grid": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "stacked": true,
+        },
+        "x": {
+          "border": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "grid": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "stacked": true,
+        }
+      }
+    }
+  });
+
+</script>
+
 <script>
   mapboxgl.accessToken =
     "pk.eyJ1Ijoia29sbGluc2F5eiIsImEiOiJjaWVoNzJxcTcwMDlvc3JtMXBtNmg4aWl6In0.T8YV7TzgBTTWQT19_pjceQ";
@@ -253,4 +324,6 @@
   });
 
 </script>
+
+
 {% endblock %}
