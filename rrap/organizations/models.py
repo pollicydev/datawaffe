@@ -27,7 +27,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 from wagtail.core.fields import RichTextField
 from wagtail.search import index
-from partial_date import PartialDateField
+import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 User = get_user_model()
 
@@ -177,41 +178,59 @@ class OrganisationManager(PageManager):
         }
 
 
+def current_year():
+    return datetime.date.today().year
+
+
+def max_value_current_year(value):
+    return MaxValueValidator(current_year())(value)
+
+
 class ViolenceEntry(Orderable):
     page = ParentalKey("organizations.OrganisationPage", related_name="violations")
     violation = models.ForeignKey("core.Violation", on_delete=models.CASCADE)
-    occurences = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
-    start_date = models.DateField(blank=False, null=True)
-    end_date = models.DateField(blank=True, null=True)
+    occurences = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+        help_text="How many violations of this nature did you deal with?",
+    )
+    period = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        default=current_year(),
+        validators=[MinValueValidator(2000), max_value_current_year],
+        help_text="Enter year of record",
+    )
 
     panels = [
         FieldPanel("violation"),
         FieldPanel("occurences"),
-        FieldRowPanel(
-            [
-                FieldPanel("start_date"),
-                FieldPanel("end_date"),
-            ]
-        ),
+        FieldPanel("period"),
     ]
 
 
 class CommunityReach(Orderable):
     page = ParentalKey("organizations.OrganisationPage", related_name="reach")
     community = models.ForeignKey("core.KeyPopulation", on_delete=models.CASCADE)
-    reach = models.PositiveSmallIntegerField(blank=True, null=True, default=0)
-    start_date = models.DateField(blank=False, null=True)
-    end_date = models.DateField(blank=True, null=True)
+    reach = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+        help_text="How many people in this community did you reach?",
+    )
+    period = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        default=current_year(),
+        validators=[MinValueValidator(2000), max_value_current_year],
+        help_text="Enter year of record",
+    )
 
     panels = [
         FieldPanel("community"),
         FieldPanel("reach"),
-        FieldRowPanel(
-            [
-                FieldPanel("start_date"),
-                FieldPanel("end_date"),
-            ]
-        ),
+        FieldPanel("period"),
     ]
 
 
@@ -400,7 +419,8 @@ class OrganisationPage(Page):
         verbose_name_plural = "Organisations"
 
     def __str__(self):
-        return self.title
+        # e.g Uganda Key Populations Consortium-UKPC
+        return "{}-{}".format(self.title, self.acronym)
 
     def dict(self):
         return {
@@ -423,8 +443,64 @@ class OrganisationPage(Page):
         district_list = list(districts)
         return json.dumps(district_list)
 
-    def get_reach(self):
-        return self.reach.values("community", "reach", "start_date", "end_date")
-
     def total_reach(self):
-        return self.reach.values("community", "reach", "start_date", "end_date")
+        if self.reach.all:
+            all_reach = list(self.reach.values_list("reach", flat=True))
+        else:
+            all_reach = 0
+        return sum(all_reach)
+
+    def total_personnel(self):
+        total = self.paralegals + self.educators
+        return total
+
+    def get_teams(self):
+        return self.village_teams
+
+    def total_violations(self):
+        if self.violations.all:
+            all_violations = list(self.violations.values_list("occurences", flat=True))
+        else:
+            all_violations = 0
+        return sum(all_violations)
+
+    def get_context(self, request):
+        context = super(OrganisationPage, self).get_context(request)
+        # getData for chart on reach
+        reachData = (
+            CommunityReach.objects.filter(page=self)
+            .values("community__acronym", "period", "reach")
+            .order_by("period", "community")
+            .reverse()
+        )
+        years = list(
+            CommunityReach.objects.filter(page=self)
+            .order_by("period")
+            .values_list("period", flat=True)
+            .distinct()
+        )
+
+        communities = list(
+            CommunityReach.objects.filter(page=self)
+            .order_by("community")
+            .values_list("community", flat=True)
+            .distinct()
+        )
+        data = {}
+
+        for comm in communities:
+            if not comm in data:
+                data[comm] = {}
+            for year in years:
+                data[comm][year] = 0
+
+        for dataset in reachData:
+            comm = dataset["community__acronym"]
+            year = dataset["period"]
+            count = dataset["reach"]
+            data[comm][year] = count
+
+        context["reachData"] = reachData
+        context["years"] = years
+        context["communities"] = communities
+        return context
