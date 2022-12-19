@@ -154,7 +154,8 @@ class KeyPopulation(ClusterableModel):
 
     panels = [
         FieldPanel(
-            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
+            "title",
+            classname="full",
         ),
         NativeColorPanel("color"),
     ]

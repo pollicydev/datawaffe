@@ -466,43 +466,83 @@ class OrganisationPage(Page):
 
     def get_context(self, request):
         context = super(OrganisationPage, self).get_context(request)
-        # getData for chart on reach
-        reachData = (
-            CommunityReach.objects.filter(page=self)
-            .values("community", "period", "reach")
-            .order_by("period")
-            .reverse()
+
+        # getData for chart on reach for this organisation
+        reachData = CommunityReach.objects.filter(page=self).values(
+            "community", "period", "reach"
         )
-        years = list(
-            CommunityReach.objects.filter(page=self)
-            .order_by("period")
+
+        violationsData = ViolenceEntry.objects.filter(page=self).values(
+            "violation", "period", "occurences"
+        )
+
+        # list of years from this dataset
+        reach_years = list(
+            reachData.order_by("period")
             .values_list("period", flat=True)
             .distinct()
             .reverse()
         )
-
+        # list of key populations from this dataset
         communities = list(
-            CommunityReach.objects.filter(page=self)
-            .order_by("community")
+            reachData.order_by("community")
             .values_list("community", flat=True)
             .distinct()
         )
-        data = {}
+        reach_data_series = {}
 
         for comm in communities:
-            if not comm in data:
-                data[comm] = {}
-            for year in years:
-                data[comm][year] = 0
+            if not comm in reach_data_series:
+                reach_data_series[comm] = {}
+            for year in reach_years:
+                reach_data_series[comm][year] = 0
 
         for dataset in reachData:
             comm = dataset["community"]
             year = dataset["period"]
             reach = dataset["reach"]
-            data[comm][year] = reach
+            reach_data_series[comm][year] = reach
 
-        series = [{"name": d, "data": list(data[d].values())} for d in data]
+        reachChartSeries = [
+            {"community_id": d, "data": list(reach_data_series[d].values())}
+            for d in reach_data_series
+        ]
 
-        context["years"] = years
-        context["series"] = series
+        # list of years from this dataset
+        violations_years = list(
+            violationsData.order_by("period")
+            .values_list("period", flat=True)
+            .distinct()
+            .reverse()
+        )
+        # list of key populations from this dataset
+        violations = list(
+            violationsData.order_by("violation")
+            .values_list("violation", flat=True)
+            .distinct()
+        )
+        violations_data_series = {}
+
+        for violation in violations:
+            if not violation in violations_data_series:
+                violations_data_series[violation] = {}
+            for year in violations_years:
+                violations_data_series[violation][year] = 0
+
+        for dataset in violationsData:
+            violation = dataset["violation"]
+            year = dataset["period"]
+            occurences = dataset["occurences"]
+            violations_data_series[violation][year] = occurences
+
+        violationsChartSeries = [
+            {"violation_id": d, "data": list(violations_data_series[d].values())}
+            for d in violations_data_series
+        ]
+
+        context["reach_years"] = reach_years
+        context["reachChartSeries"] = reachChartSeries
+
+        context["violations_years"] = violations_years
+        context["violationsChartSeries"] = violationsChartSeries
         return context

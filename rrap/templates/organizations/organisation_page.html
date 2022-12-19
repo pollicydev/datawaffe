@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailimages_tags %}
+{% load static wagtailimages_tags core_tags %}
 
 {% block title %}{{ self.title }} · Data Waffe{% endblock %}
 
@@ -124,12 +124,10 @@
 <section class="bg-light py-5">
 
   <div class="container">
-    <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Reach & impact</h2>
-    <p class="text-center mx-auto pb-5 m-0">Highlights from across the data</p>
+    <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Reach and impact</h2>
+    <p class="text-center mx-auto pb-5 m-0">Key populations impacted over the years</p>
 
-    {{ series }}
-    {% for dataset in series %}{{dataset.data}},{% endfor %}
-    <div style="width: 700px" id="reachBarChartCanvas">
+    <div style="max-width: 45rem;margin: 0 auto;" id="reachBarChartCanvas">
       <canvas id="reachBarChart"></canvas>
     </div>
   </div>
@@ -137,9 +135,11 @@
 
 <section class="bg-secondary py-5">
   <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Human rights violations</h2>
-  <p class="text-center mx-auto p-0 m-0">Highlights from across the data</p>
+  <p class="text-center mx-auto pb-5 m-0">Highlights from across the data</p>
 
-
+  <div style="max-width: 45rem;margin: 0 auto;" id="violationsBarChartCanvas">
+    <canvas id="violationsBarChart"></canvas>
+  </div>
 </section>
 
 <section class="bg-light py-5">
@@ -160,15 +160,57 @@
 
 {% block inline_javascript %}
 <script>
-  const ctx = document.getElementById('reachBarChart');
+  const reachCtx = document.getElementById('reachBarChart');
+  const violationsCtx = document.getElementById('violationsBarChart');
 
-  new Chart(ctx, {
+  new Chart(reachCtx, {
     type: 'bar',
     "data": {
-      "labels": {{ years }},
+      "labels": {{ reach_years }},
       "datasets": [
-      {% for dataset in series %}{
-          "label": "{{ dataset.name }}",
+      {% for dataset in reachChartSeries %}{
+          "label": "{% get_community_name dataset.community_id %}",
+          "data": {{ dataset.data }},
+          "borderWidth": 2,
+          "borderColor": "{% get_community_color dataset.community_id %}",
+          "backgroundColor": "{% get_community_color dataset.community_id %}59", // adding 59 to hexcode = alpha 35%
+          "hoverBackgroundColor": "{% get_community_color dataset.community_id %}BF" // adding BF to hexcode = alpha 75%
+        },
+        {% endfor %}
+      ]
+    },
+    "options": {
+      "scales": {
+        "y": {
+          "beginAtZero": true,
+          "border": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "grid": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "stacked": true,
+        },
+        "x": {
+          "border": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "grid": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "stacked": true,
+        }
+      }
+    }
+  });
+
+  new Chart(violationsCtx, {
+    type: 'bar',
+    "data": {
+      "labels": {{ violations_years }},
+      "datasets": [
+      {% for dataset in violationsChartSeries %}{
+          "label": "{% get_violation dataset.violation_id %}",
           "data": {{ dataset.data }},
           "borderWidth": 2,
           "borderColor": "#448c74",
