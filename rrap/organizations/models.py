@@ -508,6 +508,11 @@ class OrganisationPage(Page):
             for d in reach_data_series
         ]
 
+        reachPieChartSeries = [
+            {"community_id": d, "data": sum(list(reach_data_series[d].values()))}
+            for d in reach_data_series
+        ]
+
         # list of years from this dataset
         violations_years = list(
             violationsData.order_by("period")
@@ -541,7 +546,9 @@ class OrganisationPage(Page):
         ]
 
         context["reach_years"] = reach_years
+        context["reach_communities"] = communities
         context["reachChartSeries"] = reachChartSeries
+        context["reachPieChartSeries"] = reachPieChartSeries
 
         context["violations_years"] = violations_years
         context["violationsChartSeries"] = violationsChartSeries

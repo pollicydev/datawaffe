@@ -127,9 +127,20 @@
     <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Reach and impact</h2>
     <p class="text-center mx-auto pb-5 m-0">Key populations impacted over the years</p>
 
-    <div style="max-width: 45rem;margin: 0 auto;" id="reachBarChartCanvas">
-      <canvas id="reachBarChart"></canvas>
+    <div class="row">
+        <div class="col-md-4">
+            <div style="max-width: 45rem;margin: 0 auto;" id="reachPieChartCanvas">
+                <canvas id="reachPieChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div style="max-width: 45rem;margin: 0 auto;" id="reachBarChartCanvas">
+                <canvas id="reachBarChart"></canvas>
+              </div>
+        </div>
     </div>
+
   </div>
 </section>
 
@@ -161,7 +172,42 @@
 {% block inline_javascript %}
 <script>
   const reachCtx = document.getElementById('reachBarChart');
+  const reachPieCtx = document.getElementById('reachPieChart');
   const violationsCtx = document.getElementById('violationsBarChart');
+
+  new Chart(reachPieCtx, {
+    type: 'doughnut',
+    "data": {
+      "labels": [{% for dataset in reachPieChartSeries %}"{% get_community_acronym dataset.community_id %}",{% endfor %}],
+      datasets: [{
+        label: 'Total reach',
+        data: [{% for dataset in reachPieChartSeries %}{{ dataset.data }},{% endfor %}],
+        backgroundColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}59',{% endfor %}],
+        borderColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}',{% endfor %}],
+        borderWidth: 1
+    }]
+    },
+    "options": {
+        "plugins": {
+          "legend": {
+            "position": "right",
+            "labels": {
+              "usePointStyle": true,
+              "boxWidth": 12,
+              "boxHeight": 12,
+              "useBorderRadius": true,
+              "borderRadius": 8,
+              "padding": 20,
+              "font": {
+                "family": "'Inter', sans-serif",
+                "size": 15
+              }
+            }
+          }
+        }
+      }
+  });
+
 
   new Chart(reachCtx, {
     type: 'bar',
@@ -203,6 +249,8 @@
       }
     }
   });
+
+  
 
   new Chart(violationsCtx, {
     type: 'bar',

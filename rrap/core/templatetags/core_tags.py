@@ -12,6 +12,12 @@ def get_community_name(community_id):
 
 
 @register.simple_tag
+def get_community_acronym(community_id):
+    community = KeyPopulation.objects.get(id=community_id)
+    return community.acronym
+
+
+@register.simple_tag
 def get_community_color(community_id):
     community = KeyPopulation.objects.get(id=community_id)
     return community.color
