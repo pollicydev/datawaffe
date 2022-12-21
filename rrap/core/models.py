@@ -232,12 +232,12 @@ class Violation(ClusterableModel):
     description = models.CharField(
         max_length=240, blank=True, null=True, help_text="Brief description"
     )
+    color = ColorField(default="#000000", null=True)
 
     panels = [
-        FieldPanel(
-            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
-        ),
+        FieldPanel("title", classname="full"),
         FieldPanel("description"),
+        NativeColorPanel("color"),
     ]
 
     def __str__(self):

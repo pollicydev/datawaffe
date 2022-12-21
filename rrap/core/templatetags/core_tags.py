@@ -1,4 +1,4 @@
-import re
+import random
 from django import template
 from rrap.core.models import KeyPopulation, Violation
 
@@ -40,3 +40,9 @@ def hex_to_rgb(hexcode):
 def get_violation(violation_id):
     violation = Violation.objects.get(id=violation_id)
     return violation.title
+
+
+@register.simple_tag
+def generate_violation_hex(violation_id):
+    violation = Violation.objects.get(id=violation_id)
+    return violation.color

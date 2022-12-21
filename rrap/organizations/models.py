@@ -545,11 +545,19 @@ class OrganisationPage(Page):
             for d in violations_data_series
         ]
 
+        violationsPieChartSeries = [
+            {"violation_id": d, "data": sum(list(violations_data_series[d].values()))}
+            for d in violations_data_series
+        ]
+
+        context["reachData"] = reachData.order_by("period").reverse()
         context["reach_years"] = reach_years
         context["reach_communities"] = communities
         context["reachChartSeries"] = reachChartSeries
         context["reachPieChartSeries"] = reachPieChartSeries
 
+        context["violationsData"] = violationsData.order_by("period").reverse()
         context["violations_years"] = violations_years
         context["violationsChartSeries"] = violationsChartSeries
+        context["violationsPieChartSeries"] = violationsPieChartSeries
         return context

@@ -130,10 +130,10 @@
     {% if self.total_reach != 0 %}
     <div class="row">
         <div class="col-md-4">
+            <small>{{ self.title }} has been able to impact an estimated {{ self.total_reach|intcomma }} people across multiple key populations since {{ reach_years|last }}</small>
             <div style="max-width: 45rem;margin: 0 auto;" id="reachPieChartCanvas">
                 <canvas id="reachPieChart"></canvas>
             </div>
-            <small>{{ self.title }} has been able to impact an estimated {{ self.total_reach|intcomma }} people across multiple key populations since {{ reach_years|last }}</small>
         </div>
 
         <div class="col-md-8">
@@ -141,18 +141,85 @@
                 <canvas id="reachBarChart"></canvas>
               </div>
         </div>
+
+        <div style="max-width: 50rem;margin: 0 auto;" class="table-responsive collapse" id="collapsedReachTable">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="bg-faded-primary">
+                    <th>Key population</th>
+                    <th>Period</th>
+                    <th>Estimated reach</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in reachData %}
+                    <tr>
+                        <td>{% get_community_name row.community %}</td>
+                        <td>{{ row.period }}</td>
+                        <td class="text-center">{{ row.reach }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="#collapsedReachTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsedReachTable">
+            Show/hide reach data
+        </a>
     </div>
     {% endif %}
   </div>
 </section>
 
 <section class="bg-secondary py-5">
-  <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Human rights violations</h2>
-  <p class="text-center mx-auto pb-5 m-0">Highlights from across the data</p>
+    <div class="container">
+        <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Human rights violations</h2>
+        <p class="text-center mx-auto pb-2 m-0">Data recorded over the years</p>
 
-  <div style="max-width: 45rem;margin: 0 auto;" id="violationsBarChartCanvas">
-    <canvas id="violationsBarChart"></canvas>
-  </div>
+        <div class="row">
+            <div style="max-width: 45rem;margin: 0 auto;" id="violationsPieChartCanvas">
+                <canvas id="violationsPieChart"></canvas>
+            </div>
+        </div>
+        {% comment %} <div class="row">
+            <div class="col-md-8">
+                <div style="max-width: 45rem;margin: 0 auto;" id="violationsBarChartCanvas">
+                    <canvas id="violationsBarChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div> {% endcomment %}
+
+        <div style="max-width: 50rem;margin: 0 auto;" class="table-responsive collapse" id="collapsedViolationsTable">
+            <table class="table table-striped">
+                <thead>
+                    <tr class="bg-faded-primary">
+                    <th>Recorded violation</th>
+                    <th>Period</th>
+                    <th>Occurences</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in violationsData %}
+                    <tr>
+                        <td>{% get_violation row.violation %}</td>
+                        <td>{{ row.period }}</td>
+                        <td class="text-center">{{ row.occurences }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center">
+            <a href="#collapsedViolationsTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsedViolationsTable">
+                Show/hide violations data
+            </a>
+        </div>
+    </div>
 </section>
 
 <section class="bg-light py-5">
@@ -176,6 +243,7 @@
   const reachCtx = document.getElementById('reachBarChart');
   const reachPieCtx = document.getElementById('reachPieChart');
   const violationsCtx = document.getElementById('violationsBarChart');
+  const violationsPieCtx = document.getElementById('violationsPieChart');
 
   new Chart(reachPieCtx, {
     type: 'doughnut',
@@ -263,36 +331,74 @@
           "label": "{% get_violation dataset.violation_id %}",
           "data": {{ dataset.data }},
           "borderWidth": 2,
-          "borderColor": "#448c74",
-          "backgroundColor": "rgba(68,140,116,.35)",
-          "hoverBackgroundColor": "rgba(68,140,116,.75)"
+          "borderColor": "{% generate_violation_hex dataset.violation_id %}",
+          "backgroundColor": "{% generate_violation_hex dataset.violation_id %}59",
+          "hoverBackgroundColor": "{% generate_violation_hex dataset.violation_id %}BF"
         },
         {% endfor %}
       ]
     },
     "options": {
-      "scales": {
-        "y": {
-          "beginAtZero": true,
-          "border": {
-            "color": "rgba(133,140,151,.18)"
-          },
-          "grid": {
-            "color": "rgba(133,140,151,.18)"
-          },
-          "stacked": true,
+        "scales": {
+            "y": {
+              "beginAtZero": true,
+              "border": {
+                "color": "rgba(133,140,151,.18)"
+              },
+              "grid": {
+                "color": "rgba(133,140,151,.18)"
+              },
+              "stacked": true,
+            },
+            "x": {
+              "border": {
+                "color": "rgba(133,140,151,.18)"
+              },
+              "grid": {
+                "color": "rgba(133,140,151,.18)"
+              },
+              "stacked": true,
+            }
         },
-        "x": {
-          "border": {
-            "color": "rgba(133,140,151,.18)"
-          },
-          "grid": {
-            "color": "rgba(133,140,151,.18)"
-          },
-          "stacked": true,
+        "plugins": {
+            "legend": {
+                "display": false
+            }
+        }
+    }
+  });
+
+  new Chart(violationsPieCtx, {
+    type: 'doughnut',
+    "data": {
+      "labels": [{% for dataset in violationsPieChartSeries %}"{% get_violation dataset.violation_id %}",{% endfor %}],
+      datasets: [{
+        label: 'Occurrences',
+        data: [{% for dataset in violationsPieChartSeries %}{{ dataset.data }},{% endfor %}],
+        backgroundColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}BF',{% endfor %}],
+        borderColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}',{% endfor %}],
+        borderWidth: 1
+    }]
+    },
+    "options": {
+        "plugins": {
+          "legend": {
+            "position": "right",
+            "labels": {
+              "usePointStyle": true,
+              "boxWidth": 12,
+              "boxHeight": 12,
+              "useBorderRadius": true,
+              "borderRadius": 8,
+              "padding": 20,
+              "font": {
+                "family": "'Inter', sans-serif",
+                "size": 15
+              }
+            }
+          }
         }
       }
-    }
   });
 
 </script>
