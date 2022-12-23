@@ -1,49 +1,54 @@
-{% for organisation in organisations %}
-<div class="accordion-item">
-  <h6 class="accordion-header" id="{{ organisation.id }}">
-    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-      data-bs-target="#collapse-{{ organisation.id }}" aria-expanded="false"
-      aria-controls="collapse-{{ organisation.id }}">{{ organisation.title }}</button>
-  </h6>
-  <div class="accordion-collapse collapse" id="collapse-{{ organisation.id }}" aria-labelledby="{{ organisation.id }}"
-    data-bs-parent="#filter-results">
-    <div class="accordion-body fs-sm pt-3">
-      <dl>
-        {% if organisation.summary %}
-        <dd>
-          <p>{{ organisation.summary }}{% else %}No summary yet</p>
-        </dd>
-        {% endif %}
-        {% if organisation.communities.all %}
-        <dt>We support</dt>
-        <dd>
-          <div class="d-flex">
-            {% for community in organisation.communities.all %}
-            <div class="me-2 mb-2">
-              <span class="btn btn-icon btn-xs btn-outline-secondary rounded-circle" for="{{ community.color }}"><span
-                  class="d-block rounded-circle"
-                  style="width: 1.5rem; height: 1.5rem; background-color: #{{ community.color }};"></span></span>
-              &nbsp;{{ community.acronym }}
+{% if organisations %}
+<div class="accordion" id="filter-results">
+  {% for organisation in organisations %}
+  <div class="accordion-item">
+    <h6 class="accordion-header" id="{{ organisation.id }}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+        data-bs-target="#collapse-{{ organisation.id }}" aria-expanded="false"
+        aria-controls="collapse-{{ organisation.id }}">{{ organisation.title }}</button>
+    </h6>
+    <div class="accordion-collapse collapse" id="collapse-{{ organisation.id }}" aria-labelledby="{{ organisation.id }}"
+      data-bs-parent="#filter-results">
+      <div class="accordion-body fs-sm pt-3">
+        <dl>
+          {% if organisation.summary %}
+          <dd>
+            <p>{{ organisation.summary }}{% else %}No summary yet</p>
+          </dd>
+          {% endif %}
+          {% if organisation.communities.all %}
+          <dt>We support</dt>
+          <dd>
+            <div class="d-flex pt-2">
+              {% for community in organisation.communities.all %}
+              <div class="me-2 mb-2">
+                <span class="d-inline-block rounded-circle community-icon"
+                  style="width: .625rem; height: .625rem; background-color: {{community.color }};"></span>&nbsp;{{ community.acronym }}
+              </div>
+              {% endfor %}
             </div>
-            {% endfor %}
-          </div>
-        </dd>
-        {% endif %}
-        {% if organisation.toll_free is not None %}
-        <dt>Toll-free number</dt>
-        <dd>{{ organisation.toll_free }}</dd>
-        {% endif %}
-        {% if organisation.email is not None %}
-        <dt>Email address</dt>
-        <dd>{{ organisation.email }}</dd>
-        {% endif %}
-        {% if organisation.website is not None %}
-        <dt>Website</dt>
-        <dd>{{ organisation.website }}</dd>
-        {% endif %}
-      </dl>
-      <a class="btn btn-link p-0" href="{{ organisation.full_url }}">Learn more<i class="ai-arrow-right ms-2"></i></a>
+          </dd>
+          {% endif %}
+          {% if organisation.toll_free is not None %}
+          <dt>Toll-free number</dt>
+          <dd>{{ organisation.toll_free }}</dd>
+          {% endif %}
+          {% if organisation.email is not None %}
+          <dt>Email address</dt>
+          <dd><a href="mailto:{{ organisation.email }}">Send email</a></dd>
+          {% endif %}
+          {% if organisation.website is not None %}
+          <dt>Website</dt>
+          <dd><a href="{{ organisation.website }}" target="_blank">Visit website</a></dd>
+          {% endif %}
+        </dl>
+        <a class="btn btn-link p-0" href="{{ organisation.full_url }}">Learn more<i class="ai-arrow-right ms-2"></i></a>
+      </div>
     </div>
   </div>
+  {% endfor %}
+
 </div>
-{% endfor %}
+{% else %}
+<p>No organisations matching this filter. </p>
+{% endif %}

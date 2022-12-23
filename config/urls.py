@@ -8,6 +8,8 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
+from django.views.generic import TemplateView
+from rrap.core import views as core_views
 
 urlpatterns = [
     path("core/", include("rrap.core.urls", namespace="core")),
@@ -21,9 +23,11 @@ urlpatterns = [
     path("invitations/", include("rrap.invites.urls", namespace="invitations")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
+    path("select2/", include("django_select2.urls")),
     # User management
     path("users/", include("rrap.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    path("map/", core_views.map, name="map"),
     path("", include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

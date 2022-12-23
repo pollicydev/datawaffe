@@ -103,6 +103,8 @@ THIRD_PARTY_APPS = [
     "hitcount",
     "django_social_share",
     "django_htmx",
+    "django_filters",
+    "django_select2",
 ]
 
 LOCAL_APPS = [
@@ -228,8 +230,8 @@ TEMPLATES = [
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bamby_forms"
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bamby_forms"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 # FIXTURES
 # ------------------------------------------------------------------------------
@@ -382,13 +384,13 @@ WAGTAIL_ADMIN_URL = "cms/"
 RECAPTCHA_PUBLIC_KEY = "6LcQotYaAAAAAFPDa0rR8bDiAAF7Fn2f25p5DgiG"
 RECAPTCHA_PRIVATE_KEY = "6LcQotYaAAAAAM3nXQev9ehAK9fAm_M_IAJmxPZ3"
 
-# MEILISEARCH
-MEILISEARCH_URL = "http://127.0.0.1:7700"
-MEILISEARCH_API_TOKEN = "DW_LOCAL"
-
 WAGTAILSEARCH_BACKENDS = {
     "default": {
         "BACKEND": "wagtail.contrib.postgres_search.backend",
         "SEARCH_CONFIG": "english",
     },
 }
+
+# DJANGO-SELECT2
+SELECT2_CSS = "vendor/select2/css/select2.min.css"
+SELECT2_JS = "vendor/select2/js/select2.min.js"

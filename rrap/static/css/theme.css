@@ -2232,7 +2232,7 @@ textarea.form-control-lg {
 .form-check-input {
   width: 1.125rem;
   height: 1.125rem;
-  margin-top: 0.1875rem;
+  margin-top: 0;
   vertical-align: top;
   background-color: transparent;
   background-repeat: no-repeat;
@@ -2285,6 +2285,7 @@ textarea.form-control-lg {
 }
 
 .form-check-label {
+  vertical-align: text-bottom;
   color: var(--ar-body-color);
 }
 
@@ -3306,8 +3307,8 @@ fieldset:disabled .btn {
 
 .dropdown-menu {
   --ar-dropdown-zindex: 1000;
-  --ar-dropdown-min-width: 12rem;
-  --ar-dropdown-padding-x: 0;
+  --ar-dropdown-min-width: 15rem;
+  --ar-dropdown-padding-x: 0.75rem;
   --ar-dropdown-padding-y: 0.75rem;
   --ar-dropdown-spacer: 0.25rem;
   --ar-dropdown-font-size: calc(var(--ar-body-font-size) * 0.875);

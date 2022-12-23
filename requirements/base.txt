@@ -6,7 +6,6 @@ argon2-cffi==21.3.0  # https://github.com/hynek/argon2_cffi
 redis==4.3.4  # https://github.com/redis/redis-py
 hiredis==2.0.0  # https://github.com/redis/hiredis-py
 pyavagen==0.3.3 # https://github.com/lxbrvr/pyavagen
-meilisearch==0.23.0 # https://github.com/meilisearch/meilisearch-python
 
 # Django
 # ------------------------------------------------------------------------------
@@ -19,10 +18,11 @@ crispy-bootstrap5==0.6  # https://github.com/django-crispy-forms/crispy-bootstra
 django-compressor==4.1  # https://github.com/django-compressor/django-compressor
 django-redis==5.2.0  # https://github.com/jazzband/django-redis
 django-multiselectfield==0.1.12 
-django-hitcount==1.3.5 #https://github.com/thornomad/django-hitcount
+django-hitcount==1.3.5 # https://github.com/thornomad/django-hitcount
 django-social-share # https://github.com/fcurella/django-social-share
 django-htmx==1.9.0
-django_partial_date # https://github.com/ktowen/django_partial_date
+django-filter==21.1 # https://github.com/carltongibson/django-filter
+django-select2
 
 # Wagtail
 # ------------------------------------------------------------------------------

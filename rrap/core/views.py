@@ -14,8 +14,16 @@ from rrap.datasets.filters import location_based_filter, dataset_filter
 from hitcount.utils import get_hitcount_model
 from hitcount.views import _update_hit_count
 from django.views.decorators.http import require_http_methods
-from .search_logic import get_opt_params
-from .search_index import search_index
+from .filters import MapFilter
+from django.views.decorators.http import require_GET
+from django.http import HttpResponse, HttpRequest
+from django_htmx.middleware import HtmxDetails
+
+# Typing pattern recommended by django-stubs:
+# https://github.com/typeddjango/django-stubs#how-can-i-create-a-httprequest-thats-guaranteed-to-have-an-authenticated-user
+class HtmxHttpRequest(HttpRequest):
+    htmx: HtmxDetails
+
 
 # @login_required
 # @onboarding_required
@@ -51,6 +59,23 @@ def home(request):
     }
 
     return render(request, "core/home.html", context)
+
+
+@require_GET
+def map(request: HtmxHttpRequest) -> HttpResponse:
+    organisations = OrganisationPage.objects.live().public().order_by("title")
+    org_filter = MapFilter(request.GET, queryset=organisations)
+
+    if request.htmx:
+        base_template = "partials/organisations.html"
+    else:
+        base_template = "core/map.html"
+
+    context = {
+        "organisations": org_filter.qs,
+        "map_filter_form": org_filter.form,
+    }
+    return render(request, base_template, context)
 
 
 def datasets(request):
