@@ -1,4 +1,5 @@
 {% if organisations %}
+<div id="districtList" hx-swap-oob="innerHTML:#districtListOob">{{ districts }}</div>
 <div class="accordion" id="filter-results">
   {% for organisation in organisations %}
   <div class="accordion-item">

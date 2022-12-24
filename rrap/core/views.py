@@ -9,6 +9,7 @@ from rrap.users.decorators import onboarding_required
 from rrap.organizations.decorators import member_required, main_owner_required
 from rrap.datasets.models import Dataset
 from rrap.organizations.models import Organization, OrganisationPage
+from rrap.core.models import Location
 from .models import Location, Topic
 from rrap.datasets.filters import location_based_filter, dataset_filter
 from hitcount.utils import get_hitcount_model
@@ -65,7 +66,13 @@ def home(request):
 def map(request: HtmxHttpRequest) -> HttpResponse:
     organisations = OrganisationPage.objects.live().public().order_by("title")
     org_filter = MapFilter(request.GET, queryset=organisations)
+    filtered_districts = org_filter.qs.values_list("locations", flat=True)
+    list_districts = Location.objects.filter(id__in=filtered_districts).values_list(
+        "name", flat=True
+    )
+    districts = json.dumps(list(list_districts))
 
+    # wait for filter get request for map organisations
     if request.htmx:
         base_template = "partials/organisations.html"
     else:
@@ -74,6 +81,7 @@ def map(request: HtmxHttpRequest) -> HttpResponse:
     context = {
         "organisations": org_filter.qs,
         "map_filter_form": org_filter.form,
+        "districts": districts,
     }
     return render(request, base_template, context)
 

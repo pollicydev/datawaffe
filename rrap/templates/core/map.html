@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="bg-primary p-3">
   <div class="container">
     <form id="mapFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get="{% url 'map' %}"
@@ -115,6 +116,7 @@
     </div>
   </div>
   <div class="col-lg-9 ps-2">
+    <div id="districtListOob">{{ districts }}</div>
     <div style="height:100vh!important;" class="map" id="map"></div>
   </div>
 </div>
@@ -125,6 +127,7 @@
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{% static 'vendor/simplebar/dist/simplebar.min.js' %}"></script>
+<script src="{% static 'geojson/districts.js' %}"></script>
 {% endblock javascript %}
 
 {% block inline_javascript %}
@@ -152,9 +155,9 @@
   if (window.innerWidth >= 575) { // only load map where it can be seen
     var map = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/kollinsayz/cl90d5fa9005q14nu0n8es2kj?optimize=true&fresh=true",
+      style: "mapbox://styles/kollinsayz/clbml6myu000014ph5pdsns4x?optimize=true&fresh=true",
       center: [32.225, 1.052],
-      zoom: 6.5,
+      zoom: 6.3,
       scrollZoom: false,
       attributionControl: false,
       //maxBounds: uganda // Sets bounds as max
@@ -166,40 +169,98 @@
   map.scrollZoom.disable();
 
 
-  map.on("load", function () {
+  let hoveredDistrictId = null;
+  let clickedDistrictId = null;
 
+  let locations = document.getElementById('districtListOob').innerText;
+  console.log("Locations: ", JSON.parse(locations));
+
+  map.on("load", function () {
+    // load district polygon data from enqueued geojson
+    map.addSource("districts", {
+      type: "geojson",
+      data: districts_geojson,
+    });
+
+    map.addLayer({
+      id: "district-fills",
+      type: "fill",
+      source: "districts",
+      layout: {},
+      paint: {
+        "fill-color": "#1A2F80",
+        "fill-opacity": [
+          "case",
+          ["boolean", ["feature-state", "hover"], false],
+          1,
+          0.6,
+        ],
+      },
+    });
+    map.on("mousemove", "district-fills", (e) => {
+      if (e.features.length > 0) {
+        if (hoveredDistrictId !== null) {
+          map.setFeatureState({
+            source: "districts",
+            id: hoveredDistrictId,
+          }, {
+            hover: false,
+          });
+        }
+        hoveredDistrictId = e.features[0].id;
+
+        map.setFeatureState({
+          source: "districts",
+          id: hoveredDistrictId,
+        }, {
+          hover: true,
+        });
+      }
+    });
+
+    // Create a popup, but don't add it to the map yet.
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
+
+    map.on("mousemove", "district-fills", (e) => {
+      map.getCanvas().style.cursor = "pointer";
+      let name = e.features[0].properties.name;
+      let popn = (e.features[0].properties.population).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+
+      // Populate the popup and set its coordinates
+      // based on the feature found.
+      popup
+        .setLngLat(e.lngLat)
+        .setHTML("<h5 class='no-margin-top no-margin-bottom'>" + name +
+          "</h5><p class='no-margin-bottom'>Population: " + popn +
+          "</p><small>Uganda Bureau of Statistics (2020)</small>")
+        .addTo(map);
+    });
+
+    // When the mouse leaves the state-fill layer, update the feature state of the
+    // previously hovered feature.
+    map.on("mouseleave", "district-fills", () => {
+      if (hoveredDistrictId !== null) {
+        map.setFeatureState({
+          source: "districts",
+          id: hoveredDistrictId,
+        }, {
+          hover: false,
+        });
+      }
+      hoveredDistrictId = null;
+      // change cursor back to normal when leave districts
+      map.getCanvas().style.cursor = "";
+      popup.remove();
+    });
+    // initialize mapbox' expression filter on layer
+    let filter = ["in", "name"];
+    map.setFilter('district-fills', filter.concat(JSON.parse(locations)));
     map.resize();
 
   });
 
 </script>
-
-<script>
-  /**
-   * Fetches
-   * :) The only js you have to write
-   * **/
-  function infiniteScroll() {
-    const form = document.getElementById("searchForm")
-    const formData = new FormData(form)
-    // add form values to object
-    formData.append('apply_offset', true);
-    let data = {}
-    formData.forEach(function (value, key) {
-      data[key] = value;
-    });
-    // handle multiselect values
-    const headers = {
-      "X-CSRFToken": "{{ csrf_token }}"
-    }
-    data.communities = formData.getAll('communities')
-    const context = {
-      target: '#filter-results',
-      headers: headers,
-      swap: 'beforeend',
-      values: data
-    }
-    htmx.ajax('POST', "{% url 'core:search' %}", context)
-  }
-
-</script> {% endblock %}
+{% endblock %}
