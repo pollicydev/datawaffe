@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+
+{% load compress i18n static crispy_forms_tags wagtailimages_tags %}
+
+{% block title %}Publications · Data Waffe{% endblock %}
+
+{% block stylesheet %}
+{% endblock %}
+
+{% block content %}
+
+<div class="bg-primary p-3">
+  <div class="container">
+    <form id="mapFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get="{% url 'publications' %}"
+      hx-target="#filter-results" hx-trigger="keyup delay:2s, change delay:2s">
+      <div class="col-12">
+        <h6 class="my-0 text-white"><i class="ai-filter me-2"></i> Filter publications:</h6>
+      </div>
+      <div class="col-12">
+        <div class="position-relative">
+          <i class="ai-search position-absolute top-50 start-0 translate-middle-y ms-3 text-white"></i>
+          {{ pub_filter_form.title|as_crispy_field }}
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by type</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {{ pub_filter_form.pub_types|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by organisation</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {{ pub_filter_form.organisation|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <a class="btn btn-sm btn-secondary ms-auto text-danger" role="button" href="{% url 'publications' %}"><i
+            class="ai-refresh ms-n1 me-2"></i>Clear filter</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<section class="py-2 py-sm-3 py-md-4 py-lg-5">
+  <div class="container position-relative zindex-2 py-5 mt-xl-2 mb-lg-2 mb-xl-3 mb-xxl-5 mt-xxl-4">
+    {% if publications %}
+    <div class="row g-3 align-items-center" id="filter-results">
+      <div class="col-md-6 offset-xl-1">
+        {% for publication in publications %}
+        <div class="card overflow-hidden mb-4 border-0">
+          <div class="row g-0">
+            {% image publication.thumbnail width-300 as thumb %}
+            <div class="col-sm-6 bg-repeat-0 bg-size-cover"
+              style="background-image: url({{ thumb.full_url }}); min-height: 14rem;"></div>
+            <div class="col-sm-6">
+              <div class="card-body">
+                <h4 class="card-title">{{ publication.title }}</h4>
+                <p class="card-text">{{ publication.summary }}</p><a class="btn btn-primary" href="#">Go somewhere</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <p>no publications at this time.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock content %}
+
+{% block javascript %}
+
+{% endblock javascript %}

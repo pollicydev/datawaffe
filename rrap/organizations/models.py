@@ -12,7 +12,14 @@ from uuid import uuid4
 from rrap.core.managers import ActiveManager
 from rrap.datasets.models import Dataset
 from rrap.activities.constants import ActivityTypes
-from rrap.core.models import Location, Topic, KeyPopulation, Service, Issue
+from rrap.core.models import (
+    Location,
+    Topic,
+    KeyPopulation,
+    Service,
+    Issue,
+    PublicationType,
+)
 from wagtail.core.models import Page, PageManager, Orderable
 from modelcluster.fields import ParentalManyToManyField, ParentalKey
 from wagtail.admin.edit_handlers import (
@@ -24,6 +31,7 @@ from wagtail.admin.edit_handlers import (
     InlinePanel,
 )
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.documents.edit_handlers import DocumentChooserPanel
 from wagtailautocomplete.edit_handlers import AutocompletePanel
 from wagtail.core.fields import RichTextField
 from wagtail.search import index
@@ -234,6 +242,64 @@ class CommunityReach(Orderable):
     ]
 
 
+class OrganisationPublication(Orderable):
+    page = ParentalKey(
+        "organizations.OrganisationPage", related_name="org_publications"
+    )
+    title = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        help_text="Title of publication (max 200 chars)",
+    )
+    summary = models.TextField(
+        max_length=300,
+        null=True,
+        blank=True,
+        help_text="Summarize publication in one paragraph (max 300 chars)",
+    )
+    thumbnail = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    pub_types = ParentalManyToManyField(
+        PublicationType,
+        blank=True,
+        verbose_name="Publication type",
+        related_name="org_publications",
+    )
+    publication = models.ForeignKey(
+        "wagtaildocs.Document",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    year = models.PositiveSmallIntegerField(
+        verbose_name="Year published",
+        null=True,
+        blank=True,
+        default=current_year(),
+        validators=[MinValueValidator(1980), max_value_current_year],
+    )
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("summary"),
+        ImageChooserPanel("thumbnail"),
+        DocumentChooserPanel("publication"),
+        FieldRowPanel(
+            [
+                FieldPanel("year"),
+                FieldPanel("pub_types", widget=forms.CheckboxSelectMultiple),
+            ]
+        ),
+    ]
+
+
 class OrganisationPage(Page):
 
     UNVERIFIED = 0
@@ -402,15 +468,27 @@ class OrganisationPage(Page):
         ),
     ]
 
+    publications_panels = [
+        MultiFieldPanel(
+            [
+                InlinePanel(
+                    "org_publications", max_num=30, min_num=0, label="Publication"
+                )
+            ],
+            heading="Organisation's public resources",
+        ),
+    ]
+
     edit_handler = TabbedInterface(
         [
-            ObjectList(content_panels, heading="Details"),
+            ObjectList(content_panels, heading="Info"),
             ObjectList(tagging_panels, heading="Tagging"),
             ObjectList(contact_panels, heading="Contacts"),
             ObjectList(Page.promote_panels, heading="Meta"),
             ObjectList(settings_panels, heading="Visibility"),
             ObjectList(reach_panels, heading="Reach & Impact"),
             ObjectList(violations_panels, heading="Violations"),
+            ObjectList(publications_panels, heading="Publications"),
         ]
     )
 
@@ -419,24 +497,10 @@ class OrganisationPage(Page):
         verbose_name_plural = "Organisations"
 
     def __str__(self):
-        # e.g Uganda Key Populations Consortium-UKPC
-        return "{}-{}".format(self.title, self.acronym)
-
-    def dict(self):
-        return {
-            "id": str(self.id),
-            "slug": str(self.slug),
-            "title": str(self.title),
-            "summary": self.summary,
-            # "logo": self.logo.file.url,
-            "toll_free": self.toll_free,
-            "email": str(self.email),
-            "website": self.website,
-            "phone": self.phone,
-            "communities": list(set(self.communities.values_list("title", flat=True))),
-            "services": list(set(self.services.values_list("title", flat=True))),
-            "issues": list(set(self.issues.values_list("title", flat=True))),
-        }
+        if self.acronym:
+            # e.g Uganda Key Populations Consortium-UKPC
+            return "{}-{}".format(self.title, self.acronym)
+        return self.title
 
     def list_districts(self):
         districts = self.locations.values_list("name", flat=True)

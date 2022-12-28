@@ -227,13 +227,13 @@
                 <a class="nav-link" href="/">Overview</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/map">Map the impact</a>
+                <a class="nav-link" href="{% url 'map' %}">Map the impact</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Resources</a>
+                <a class="nav-link" href="{% url 'publications' %}">Publications</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Stories</a>
+                <a class="nav-link" href="">News &amp; stories</a>
               </li>
               {% if request.user.is_authenticated %}
               <li class="nav-item dropdown d-sm-none border-top mt-2 pt-2">
@@ -265,7 +265,6 @@
           </nav>
         </div>
       </header>
-      <!-- Page content-->
       <div class="py-5 mt-4">
         {% if messages %}
           {% for message in messages %}
@@ -316,7 +315,6 @@
     <!-- Vendor scripts: js libraries and plugins-->
     <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js' %}"></script>
-    <script src="{% static 'js/alpine.min.js' %}" defer></script>
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
 
     

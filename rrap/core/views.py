@@ -8,14 +8,18 @@ from django.contrib import messages
 from rrap.users.decorators import onboarding_required
 from rrap.organizations.decorators import member_required, main_owner_required
 from rrap.datasets.models import Dataset
-from rrap.organizations.models import Organization, OrganisationPage
+from rrap.organizations.models import (
+    Organization,
+    OrganisationPage,
+    OrganisationPublication,
+)
 from rrap.core.models import Location
 from .models import Location, Topic
 from rrap.datasets.filters import location_based_filter, dataset_filter
 from hitcount.utils import get_hitcount_model
 from hitcount.views import _update_hit_count
 from django.views.decorators.http import require_http_methods
-from .filters import MapFilter
+from .filters import MapFilter, PublicationsFilter
 from django.views.decorators.http import require_GET
 from django.http import HttpResponse, HttpRequest
 from django_htmx.middleware import HtmxDetails
@@ -82,6 +86,24 @@ def map(request: HtmxHttpRequest) -> HttpResponse:
         "organisations": org_filter.qs,
         "map_filter_form": org_filter.form,
         "districts": districts,
+    }
+    return render(request, base_template, context)
+
+
+@require_GET
+def publications_index(request: HtmxHttpRequest) -> HttpResponse:
+    publications = OrganisationPublication.objects.all().order_by("title")
+    pub_filter = PublicationsFilter(request.GET, queryset=publications)
+
+    # wait for filter get request for map organisations
+    if request.htmx:
+        base_template = "partials/publications.html"
+    else:
+        base_template = "core/publications.html"
+
+    context = {
+        "publications": pub_filter.qs,
+        "pub_filter_form": pub_filter.form,
     }
     return render(request, base_template, context)
 

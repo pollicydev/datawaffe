@@ -276,3 +276,18 @@ class Violation(ClusterableModel):
     class Meta:
         verbose_name = "Violation"
         verbose_name_plural = "Violations"
+
+
+class PublicationType(ClusterableModel):
+    name = models.CharField(max_length=100)
+
+    panels = [
+        FieldPanel("name", classname="full"),
+    ]
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Publication type"
+        verbose_name_plural = "Publication types"

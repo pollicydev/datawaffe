@@ -1,9 +1,6 @@
 from django import forms
-from rrap.core.models import KeyPopulation, Service, Issue
-from rrap.organizations.models import OrganisationPage
+from rrap.organizations.models import OrganisationPage, OrganisationPublication
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML, Div
-from django_select2 import forms as s2forms
 
 
 class MapFilterForm(forms.Form):
@@ -11,7 +8,6 @@ class MapFilterForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields["title"].label = ""
-        self.fields["title"].wrapper_class = "extra-class"
         self.fields["communities"].label = ""
         self.fields["services"].label = ""
         self.fields["issues"].label = ""
@@ -19,3 +15,19 @@ class MapFilterForm(forms.Form):
     class Meta:
         model = OrganisationPage
         fields = ["title", "communities", "services", "issues"]
+
+
+class PubFilterForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["title"].label = ""
+        self.fields["pub_types"].label = ""
+        self.fields["organisation"].label = ""
+
+    class Meta:
+        model = OrganisationPublication
+        fields = [
+            "title",
+            "pub_types",
+        ]

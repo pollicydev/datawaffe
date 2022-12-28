@@ -3,7 +3,15 @@ from wagtail.contrib.modeladmin.options import (
     ModelAdminGroup,
     modeladmin_register,
 )
-from .models import Location, Topic, KeyPopulation, Service, Issue, Violation
+from .models import (
+    Location,
+    Topic,
+    KeyPopulation,
+    Service,
+    Issue,
+    Violation,
+    PublicationType,
+)
 from wagtail.contrib.modeladmin.helpers import PermissionHelper
 
 
@@ -123,9 +131,25 @@ class ViolationsAdmin(ModelAdmin):
     inspect_view_enabled = True
 
 
+class PubTypesAdmin(ModelAdmin):
+    """Publication types admin."""
+
+    model = PublicationType
+    menu_label = "Publication Types"
+    menu_icon = "snippet"
+    menu_order = 290
+    add_to_settings_menu = False
+    exclude_from_explorer = False
+    list_display = ("name",)
+    search_fields = ("name",)
+    # permission_helper_class = GenericValidationPermissionHelper
+    inspect_view_enabled = True
+
+
 modeladmin_register(LocationsAdmin)
 modeladmin_register(TopicsAdmin)
 modeladmin_register(KeyPopAdmin)
 modeladmin_register(ServicesAdmin)
 modeladmin_register(IssuesAdmin)
 modeladmin_register(ViolationsAdmin)
+modeladmin_register(PubTypesAdmin)

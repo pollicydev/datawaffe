@@ -72,10 +72,12 @@
     <div class="col-lg-3 col-xl-2 offset-xl-1">
       <div class="card border-0 bg-light">
         <div class="card-body text-center">
+          {% if self.logo %}
           {% image self.logo width-200 as logo %}
-          <img class="d-block mx-auto mb-3"
-            src="{% if logo %}{{ logo.full_url }}{% else %}https://datawaffe.org/wp-content/uploads/2021/06/cropped-dw-favicon-2-64x64.png{% endif %}"
-            width="150" alt="Organisation logo">
+          <img class="d-block mx-auto mb-3" src="{{ logo.full_url }}" width="150" alt="Organisation logo">
+          {% else %}
+          <img class="d-block mx-auto mb-3" src="{% static 'images/dw_logo.png' %}" />
+          {% endif %}
         </div>
       </div>
     </div>
