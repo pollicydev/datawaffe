@@ -23,11 +23,8 @@ class PubFilterForm(forms.Form):
         self.helper = FormHelper()
         self.fields["title"].label = ""
         self.fields["pub_types"].label = ""
-        self.fields["organisation"].label = ""
+        self.fields["page"].label = ""
 
     class Meta:
         model = OrganisationPublication
-        fields = [
-            "title",
-            "pub_types",
-        ]
+        fields = ["title", "pub_types", "page"]

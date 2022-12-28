@@ -65,7 +65,7 @@ class PublicationsFilter(django_filters.FilterSet):
             }
         ),
     )
-    organisation = django_filters.ModelMultipleChoiceFilter(
+    page = django_filters.ModelMultipleChoiceFilter(
         queryset=OrganisationPage.objects.all().order_by("title"),
         widget=forms.CheckboxSelectMultiple(
             attrs={
