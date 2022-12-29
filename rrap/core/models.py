@@ -71,33 +71,6 @@ class HomePage(Page):
         return context
 
 
-class MapPage(Page):
-    template = "core/map.html"
-    max_count = 1
-
-    def get_context(self, request, *args, **kwargs):
-
-        from rrap.organizations.models import OrganisationPage
-
-        context = super().get_context(request, *args, **kwargs)
-
-        organisations = (
-            OrganisationPage.objects.live().public().order_by("-first_published_at")
-        )
-        keypopulations = KeyPopulation.objects.all()
-        services = Service.objects.all()
-        issues = Issue.objects.all()
-        total_organisations = organisations.count()
-        context["organisations"] = organisations
-        context["communities"] = keypopulations
-        context["services"] = services
-        context["issues"] = issues
-
-        context["total_organisations"] = total_organisations
-
-        return context
-
-
 class StandardPage(Page):
 
     introduction = models.TextField(help_text="Text to describe the page", blank=True)

@@ -94,6 +94,7 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
+    "active_link",
     "crispy_forms",
     "crispy_bootstrap5",
     "allauth",
@@ -390,7 +391,3 @@ WAGTAILSEARCH_BACKENDS = {
         "SEARCH_CONFIG": "english",
     },
 }
-
-# DJANGO-SELECT2
-SELECT2_CSS = "vendor/select2/css/select2.min.css"
-SELECT2_JS = "vendor/select2/js/select2.min.js"

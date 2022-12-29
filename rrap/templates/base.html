@@ -1,4 +1,4 @@
-{% load static i18n compress django_htmx user_extras %}
+{% load static i18n compress django_htmx user_extras active_link_tags %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
@@ -224,13 +224,13 @@
           <nav class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
               <li class="nav-item">
-                <a class="nav-link" href="/">Overview</a>
+                <a class="nav-link {% active_link '' %}" href="/">Overview</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'map' %}">Map the impact</a>
+                <a class="nav-link {% active_link 'map' %}" href="{% url 'map' %}">Map the impact</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'publications' %}">Publications</a>
+                <a class="nav-link {% active_link 'publications' %}" href="{% url 'publications' %}">Publications</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="">News &amp; stories</a>

@@ -3,7 +3,7 @@ from wagtail.contrib.modeladmin.options import (
     ModelAdminGroup,
     modeladmin_register,
 )
-from .models import (
+from rrap.core.models import (
     Location,
     Topic,
     KeyPopulation,
@@ -12,7 +12,9 @@ from .models import (
     Violation,
     PublicationType,
 )
+from rrap.organizations.models import OrganisationPage
 from wagtail.contrib.modeladmin.helpers import PermissionHelper
+from wagtail.contrib.modeladmin.mixins import ThumbnailMixin
 
 
 class LocationsValidationPermissionHelper(PermissionHelper):
@@ -43,12 +45,34 @@ class GenericValidationPermissionHelper(PermissionHelper):
         return False
 
 
+class OrganisationsAdmin(ThumbnailMixin, ModelAdmin):
+    """Locations admin."""
+
+    model = OrganisationPage
+    menu_label = "Organisations"
+    menu_icon = "group"
+    menu_order = 290
+    add_to_settings_menu = False
+    exclude_from_explorer = False
+    thumb_image_field_name = "logo"
+    list_display = (
+        "admin_thumb",
+        "title",
+    )
+
+    thumb_image_filter_spec = "fill-300x150"
+    thumb_image_width = 100
+    thumb_col_header_text = "Logo"
+    list_filter = ("status", "communities", "services", "issues")
+    search_fields = ("title",)
+
+
 class LocationsAdmin(ModelAdmin):
     """Locations admin."""
 
     model = Location
     menu_label = "Locations"
-    menu_icon = "search"
+    menu_icon = "list-ol"
     menu_order = 290
     add_to_settings_menu = False
     exclude_from_explorer = False
@@ -76,7 +100,7 @@ class KeyPopAdmin(ModelAdmin):
 
     model = KeyPopulation
     menu_label = "Key Populations"
-    menu_icon = "group"
+    menu_icon = "list-ul"
     menu_order = 290
     add_to_settings_menu = False
     exclude_from_explorer = False
@@ -143,9 +167,9 @@ class PubTypesAdmin(ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
     # permission_helper_class = GenericValidationPermissionHelper
-    inspect_view_enabled = True
 
 
+modeladmin_register(OrganisationsAdmin)
 modeladmin_register(LocationsAdmin)
 modeladmin_register(TopicsAdmin)
 modeladmin_register(KeyPopAdmin)

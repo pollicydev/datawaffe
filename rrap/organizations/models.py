@@ -302,6 +302,8 @@ class OrganisationPublication(Orderable):
 
 class OrganisationPage(Page):
 
+    subpage_types = []
+
     UNVERIFIED = 0
     ACTIVE = 1
     INACTIVE = 2
