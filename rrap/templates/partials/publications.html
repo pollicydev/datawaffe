@@ -1,24 +1,28 @@
-{% load wagtailimages_tags %}
+{% load static wagtailimages_tags %}
 
 {% if publications %}
-<div class="row g-3 align-items-center" id="filter-results">
+<div class="row g-3 align-items-center">
+  {% for publication in publications %}
   <div class="col-md-6 offset-xl-1">
-    {% for publication in publications %}
-    <div class="card overflow-hidden mb-4 border-0">
-      <div class="row g-0">
-        {% image publication.thumbnail width-300 as thumb %}
-        <div class="col-sm-6 bg-repeat-0 bg-size-cover"
-          style="background-image: url({{ thumb.full_url }}); min-height: 14rem;"></div>
-        <div class="col-sm-6">
-          <div class="card-body">
-            <h4 class="card-title">{{ publication.title }}</h4>
-            <p class="card-text">{{ publication.summary }}</p><a class="btn btn-primary" href="#">Go somewhere</a>
-          </div>
-        </div>
+    <div class="d-flex align-items-center">
+      <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3" href="shop-single.html">
+        {% if publication.thumbnail %}
+        {% image publication.thumbnail height-200 as thumb %}
+        <img style="height:200px!important;" src="{{ thumb.full_url }}" width="160"
+          alt="{{ publication.title }} thumbnail">
+        {% else %}
+        <img style="height:200px!important;" src="{% static 'images/dw_logo.png' %}" width="160"
+          alt="{{ publication.title }} thumbnail">
+        {% endif %}
+      </a>
+      <div class="ps-3 ps-sm-4">
+        <h4 class="mb-2"><a href="shop-single.html">{{ publication.title }}</a></h4>
+        <p class="fs-sm">{{ publication.summary }}</p>
+        <h6 class="text-muted">{{ publication.year }}</h6>
       </div>
     </div>
-    {% endfor %}
   </div>
+  {% endfor %}
 </div>
 {% else %}
 <p>There are no publications matching this query.</p>

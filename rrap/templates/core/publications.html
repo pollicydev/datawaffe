@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 
 
-{% load compress i18n static crispy_forms_tags wagtailimages_tags %}
+{% load compress static crispy_forms_tags wagtailimages_tags %}
 
 {% block title %}Publications · Data Waffe{% endblock %}
-
-{% block stylesheet %}
-{% endblock %}
 
 {% block content %}
 
@@ -36,8 +33,19 @@
         <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
           <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by organisation</button>
-          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+          <div style="max-height:350px;overflow: hidden scroll!important;" class="dropdown-menu my-3"
+            data-popper-placement="bottom-start">
+            <p class="mb-3 text-center text-success">Scroll for more <i class="ai-chevrons-down"></i></p>
             {{ pub_filter_form.page|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by year</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {{ pub_filter_form.year|as_crispy_field }}
           </div>
         </div>
       </div>
@@ -49,27 +57,31 @@
   </div>
 </div>
 
-<section class="py-2 py-sm-3 py-md-4 py-lg-5">
-  <div class="container position-relative zindex-2 py-5 mt-xl-2 mb-lg-2 mb-xl-3 mb-xxl-5 mt-xxl-4">
+<section class="py-2 py-sm-3 py-md-4 py-lg-5 mt-4 mt-sm-2">
+  <div class="container position-relative zindex-2" id="filter-results">
     {% if publications %}
-    <div class="row g-3 align-items-center" id="filter-results">
+    <div class="row g-3 align-items-center">
+      {% for publication in publications %}
       <div class="col-md-6 offset-xl-1">
-        {% for publication in publications %}
-        <div class="card overflow-hidden mb-4 border-0">
-          <div class="row g-0">
-            {% image publication.thumbnail width-300 as thumb %}
-            <div class="col-sm-6 bg-repeat-0 bg-size-cover"
-              style="background-image: url({{ thumb.full_url }}); min-height: 14rem;"></div>
-            <div class="col-sm-6">
-              <div class="card-body">
-                <h4 class="card-title">{{ publication.title }}</h4>
-                <p class="card-text">{{ publication.summary }}</p><a class="btn btn-primary" href="#">Go somewhere</a>
-              </div>
-            </div>
+        <div class="d-flex align-items-center">
+          <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3" href="shop-single.html">
+            {% if publication.thumbnail %}
+            {% image publication.thumbnail height-200 as thumb %}
+            <img style="height:200px!important;" src="{{ thumb.full_url }}" width="160"
+              alt="{{ publication.title }} thumbnail">
+            {% else %}
+            <img style="height:200px!important;" src="{% static 'images/dw_logo.png' %}" width="160"
+              alt="{{ publication.title }} thumbnail">
+            {% endif %}
+          </a>
+          <div class="ps-3 ps-sm-4">
+            <h4 class="mb-2"><a href="shop-single.html">{{ publication.title }}</a></h4>
+            <p class="fs-sm">{{ publication.summary }}</p>
+            <h6 class="text-muted">{{ publication.year }}</h6>
           </div>
         </div>
-        {% endfor %}
       </div>
+      {% endfor %}
     </div>
     {% else %}
     <p>no publications at this time.</p>
@@ -77,7 +89,3 @@
   </div>
 </section>
 {% endblock content %}
-
-{% block javascript %}
-
-{% endblock javascript %}

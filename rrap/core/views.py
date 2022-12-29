@@ -95,6 +95,8 @@ def publications_index(request: HtmxHttpRequest) -> HttpResponse:
     publications = OrganisationPublication.objects.all().order_by("title")
     pub_filter = PublicationsFilter(request.GET, queryset=publications)
 
+    total_publications = publications.count()
+
     # wait for filter get request for map organisations
     if request.htmx:
         base_template = "partials/publications.html"
@@ -103,6 +105,7 @@ def publications_index(request: HtmxHttpRequest) -> HttpResponse:
 
     context = {
         "publications": pub_filter.qs,
+        "total_publications": total_publications,
         "pub_filter_form": pub_filter.form,
     }
     return render(request, base_template, context)
