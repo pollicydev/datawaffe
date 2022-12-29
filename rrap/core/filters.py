@@ -104,7 +104,9 @@ class PublicationsFilter(django_filters.FilterSet):
         ),
     )
     year = django_filters.MultipleChoiceFilter(
-        choices=OrganisationPublication.objects.values_list("year", "year").distinct(),
+        choices=OrganisationPublication.objects.values_list("year", "year")
+        .distinct()
+        .order_by(),
         widget=forms.CheckboxSelectMultiple(
             attrs={"class": "form-control form-control-sm"}
         ),

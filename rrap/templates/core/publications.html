@@ -62,7 +62,7 @@
     {% if publications %}
     <div class="row g-3 align-items-center">
       {% for publication in publications %}
-      <div class="col-md-6 offset-xl-1">
+      <div class="col-md-6">
         <div class="d-flex align-items-center">
           <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3" href="shop-single.html">
             {% if publication.thumbnail %}
@@ -75,9 +75,13 @@
             {% endif %}
           </a>
           <div class="ps-3 ps-sm-4">
-            <h4 class="mb-2"><a href="shop-single.html">{{ publication.title }}</a></h4>
+            <span class="text-primary me-4 fw-bold fs-sm">Type A</span>
+            {% for type in publication.pub_types.all %}
+            <span class="text-primary me-4 fw-bold fs-sm">{{ type.name }}</span>
+            {% endfor %}
+            <h4 class="mb-2 fw-bold"><a href="shop-single.html">{{ publication.title }}</a></h4>
             <p class="fs-sm">{{ publication.summary }}</p>
-            <h6 class="text-muted">{{ publication.year }}</h6>
+            <h6 class="text-muted fs-sm">{{ publication.year }}</h6>
           </div>
         </div>
       </div>
