@@ -37,6 +37,7 @@ from wagtail.core.fields import RichTextField
 from wagtail.search import index
 import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
+from wagtail.contrib.routable_page.models import RoutablePageMixin
 
 User = get_user_model()
 
@@ -298,6 +299,18 @@ class OrganisationPublication(Orderable):
             ]
         ),
     ]
+
+
+class OrganisationIndexPage(RoutablePageMixin, Page):
+    max_count = 1
+
+    introduction = models.TextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction", classname="full"),
+    ]
+
+    subpage_types = ["organizations.OrganisationPage"]
 
 
 class OrganisationPage(Page):

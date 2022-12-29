@@ -11,12 +11,17 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from modelcluster.models import ClusterableModel
 from wagtail_color_panel.fields import ColorField
 from wagtail_color_panel.edit_handlers import NativeColorPanel
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 
 class HomePage(Page):
     template = "core/home.html"
     max_count = 1
-    subpage_types = ["organizations.OrganisationPage"]
+    subpage_types = [
+        "blog.BlogIndexPage",
+        "organizations.OrganisationIndexPage",
+        "core.PublicationsIndexPage",
+    ]
 
     hero_heading = models.CharField(max_length=100, null=True, blank=True)
     hero_desc = models.CharField(max_length=255, null=True, blank=True)
@@ -69,6 +74,17 @@ class HomePage(Page):
         context["total_organisations"] = total_organisations
 
         return context
+
+
+class PublicationsIndexPage(RoutablePageMixin, Page):
+    template = "core/publications.html"
+    max_count = 1
+
+    introduction = models.TextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction", classname="full"),
+    ]
 
 
 class StandardPage(Page):

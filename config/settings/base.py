@@ -110,6 +110,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "rrap.users",
+    "rrap.blog",
     "rrap.core",
     "rrap.organizations",
     "rrap.datasets",
