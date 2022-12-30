@@ -11,7 +11,9 @@ from rrap.core.models import (
     Issue,
     Violation,
     PublicationType,
+    PublicationPage,
 )
+from rrap.blog.models import BlogPageType, BlogPage
 from rrap.organizations.models import OrganisationPage
 from wagtail.contrib.modeladmin.helpers import PermissionHelper
 from wagtail.contrib.modeladmin.mixins import ThumbnailMixin
@@ -45,13 +47,40 @@ class GenericValidationPermissionHelper(PermissionHelper):
         return False
 
 
+class BlogAdmin(ThumbnailMixin, ModelAdmin):
+    """Blogs admin."""
+
+    model = BlogPage
+    menu_label = "Blog Posts"
+    menu_icon = "list-ul"
+    menu_order = 100
+    add_to_settings_menu = False
+    exclude_from_explorer = False
+    thumb_image_field_name = "image"
+    list_display = (
+        "admin_thumb",
+        "title",
+        "date",
+    )
+
+    thumb_image_filter_spec = "fill-300x150"
+    thumb_image_width = 100
+    thumb_col_header_text = "Featured image"
+    list_filter = (
+        "blog_page_type",
+        "topics",
+        "organisations",
+    )
+    search_fields = ("title", "introduction")
+
+
 class OrganisationsAdmin(ThumbnailMixin, ModelAdmin):
-    """Locations admin."""
+    """Organisations admin."""
 
     model = OrganisationPage
     menu_label = "Organisations"
     menu_icon = "group"
-    menu_order = 290
+    menu_order = 100
     add_to_settings_menu = False
     exclude_from_explorer = False
     thumb_image_field_name = "logo"
@@ -65,6 +94,35 @@ class OrganisationsAdmin(ThumbnailMixin, ModelAdmin):
     thumb_col_header_text = "Logo"
     list_filter = ("status", "communities", "services", "issues")
     search_fields = ("title",)
+
+
+class PublicationsAdmin(ThumbnailMixin, ModelAdmin):
+    """Publications admin."""
+
+    model = PublicationPage
+    menu_label = "Publications"
+    menu_icon = "group"
+    menu_order = 100
+    add_to_settings_menu = False
+    exclude_from_explorer = False
+    thumb_image_field_name = "thumbnail"
+    list_display = (
+        "admin_thumb",
+        "title",
+    )
+
+    thumb_image_filter_spec = "fill-150x250"
+    thumb_image_width = 100
+    thumb_col_header_text = "Thumbnail"
+    list_filter = (
+        "topics",
+        "pub_types",
+        "organisations",
+    )
+    search_fields = (
+        "title",
+        "summary",
+    )
 
 
 class LocationsAdmin(ModelAdmin):
@@ -169,11 +227,37 @@ class PubTypesAdmin(ModelAdmin):
     # permission_helper_class = GenericValidationPermissionHelper
 
 
+class BlogTypesAdmin(ModelAdmin):
+    """Blog post types admin."""
+
+    model = BlogPageType
+    menu_label = "Blog Post Types"
+    menu_icon = "snippet"
+    menu_order = 290
+    add_to_settings_menu = False
+    exclude_from_explorer = False
+    list_display = ("name",)
+    search_fields = ("name",)
+    # permission_helper_class = GenericValidationPermissionHelper
+
+
+class MetaSettingsGroup(ModelAdminGroup):
+    menu_label = "Metadata"
+    menu_icon = "list-ol"
+    menu_order = 300
+    items = (
+        LocationsAdmin,
+        TopicsAdmin,
+        KeyPopAdmin,
+        ServicesAdmin,
+        IssuesAdmin,
+        ViolationsAdmin,
+        BlogTypesAdmin,
+        PubTypesAdmin,
+    )
+
+
+modeladmin_register(BlogAdmin)
 modeladmin_register(OrganisationsAdmin)
-modeladmin_register(LocationsAdmin)
-modeladmin_register(TopicsAdmin)
-modeladmin_register(KeyPopAdmin)
-modeladmin_register(ServicesAdmin)
-modeladmin_register(IssuesAdmin)
-modeladmin_register(ViolationsAdmin)
-modeladmin_register(PubTypesAdmin)
+modeladmin_register(PublicationsAdmin)
+modeladmin_register(MetaSettingsGroup)

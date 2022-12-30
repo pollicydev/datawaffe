@@ -1,17 +1,27 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.gis.db.models import PolygonField
 from wagtail.core.models import Page
 from django import forms
 from wagtail.core.fields import RichTextField
+from django.utils.translation import ugettext_lazy as _
 from wagtail.admin.edit_handlers import (
     FieldPanel,
     MultiFieldPanel,
+    RichTextFieldPanel,
+    TabbedInterface,
+    ObjectList,
 )
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.documents.edit_handlers import DocumentChooserPanel
 from modelcluster.models import ClusterableModel
+from modelcluster.fields import ParentalManyToManyField, ParentalKey
 from wagtail_color_panel.fields import ColorField
 from wagtail_color_panel.edit_handlers import NativeColorPanel
-from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.contrib.routable_page.models import RoutablePageMixin
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase
+from wagtail.search import index
 
 
 class HomePage(Page):
@@ -74,17 +84,6 @@ class HomePage(Page):
         context["total_organisations"] = total_organisations
 
         return context
-
-
-class PublicationsIndexPage(RoutablePageMixin, Page):
-    template = "core/publications.html"
-    max_count = 1
-
-    introduction = models.TextField(blank=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel("introduction", classname="full"),
-    ]
 
 
 class StandardPage(Page):
@@ -280,3 +279,144 @@ class PublicationType(ClusterableModel):
     class Meta:
         verbose_name = "Publication type"
         verbose_name_plural = "Publication types"
+
+
+class PublicationsIndexPage(RoutablePageMixin, Page):
+    template = "core/publications.html"
+    max_count = 1
+
+    introduction = models.TextField(blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction", classname="full"),
+    ]
+
+    subpage_types = ["PublicationPage"]
+
+    # def get_context(self, request, *args, **kwargs):
+    #     context = super().get_context(request, *args, **kwargs)
+
+    #     publications = OrganisationPublication.objects.all().order_by("title")
+    #     pub_filter = PublicationsFilter(request.GET, queryset=publications)
+
+    #     # wait for filter get request for map organisations
+    #     if request.htmx:
+    #         base_template = "partials/publications.html"
+    #     else:
+    #         base_template = "core/publications.html"
+
+
+class PublicationTag(TaggedItemBase):
+    content_object = ParentalKey(
+        "PublicationPage", related_name="tagged_items", on_delete=models.CASCADE
+    )
+
+
+class PublicationPage(Page):
+    summary = models.TextField(help_text="Text to describe the publication", blank=True)
+
+    thumbnail = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Portrait mode only",
+    )
+
+    body = RichTextField(blank=True)
+
+    date_published = models.DateTimeField(
+        "Date of publishing",
+        default=timezone.now,
+        help_text=_(
+            "This is the date shown publicly as the date of publishing. Only month and year will be shown though"
+        ),
+    )
+    organisations = ParentalManyToManyField(
+        "organizations.OrganisationPage", blank=True
+    )
+    topics = ParentalManyToManyField(Topic, blank=True)
+    pub_types = ParentalManyToManyField(
+        PublicationType,
+        blank=True,
+        verbose_name="Publication type",
+        related_name="publications",
+    )
+    file = models.ForeignKey(
+        "wagtaildocs.Document",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    tags = ClusterTaggableManager(through=PublicationTag, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("summary", classname="full"),
+        ImageChooserPanel("thumbnail"),
+        DocumentChooserPanel("file"),
+        RichTextFieldPanel("body"),
+        FieldPanel("tags"),
+        FieldPanel("date_published"),
+    ]
+
+    tagging_panels = [
+        FieldPanel("pub_types", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("topics", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("organisations", widget=forms.CheckboxSelectMultiple),
+    ]
+    settings_panels = Page.settings_panels
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Publication"),
+            ObjectList(tagging_panels, heading="Topics & Community"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(settings_panels, heading="Settings", classname="settings"),
+        ]
+    )
+
+    search_fields = Page.search_fields + [
+        index.SearchField("summary"),
+        index.SearchField("body"),
+        index.FilterField("topics"),
+        index.FilterField("organisations"),
+    ]
+
+    parent_page_types = ["PublicationsIndexPage"]
+
+    subpage_types = []
+
+    def __str__(self):
+        return self.title
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        # TODO: Maybe actually find related posts?
+        context["related_publications"] = (
+            PublicationPage.objects.live()
+            .public()
+            .order_by("-date")
+            .exclude(id=self.id)[:3]
+        )
+
+        return context
+
+    def save_revision(self, *args, **kwargs):
+        if not self.author:
+            self.author = self.owner
+        return super().save_revision(*args, **kwargs)
+
+    # Specify featured image for meta tag
+
+    def get_meta_image(self):
+        """A relevant Wagtail Image to show. Optional."""
+        return self.image
+
+    class Meta:
+        verbose_name = "Publication"
+        verbose_name_plural = "Publications"
+        ordering = ["title", "date_published"]

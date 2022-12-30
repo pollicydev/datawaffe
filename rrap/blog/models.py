@@ -147,9 +147,6 @@ class BlogPageType(models.Model):
         return self.name
 
 
-register_snippet(BlogPageType)
-
-
 def limit_author_choices():
     """Limit choices in blog author field based on config settings"""
     LIMIT_AUTHOR_CHOICES = getattr(settings, "BLOG_LIMIT_AUTHOR_CHOICES_GROUP", None)
@@ -190,16 +187,6 @@ class BlogPage(Page):
         ),
     )
 
-    author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        blank=True,
-        null=True,
-        limit_choices_to=limit_author_choices,
-        verbose_name=_("Author"),
-        on_delete=models.SET_NULL,
-        related_name="author_pages",
-    )
-
     topics = ParentalManyToManyField(Topic, blank=True)
     organisations = ParentalManyToManyField(OrganisationPage, blank=True)
 
@@ -211,23 +198,16 @@ class BlogPage(Page):
         FieldPanel("introduction", classname="full"),
         ImageChooserPanel("image"),
         StreamFieldPanel("body"),
-        MultiFieldPanel(
-            [
-                FieldPanel("tags"),
-                FieldPanel("blog_page_type", widget=forms.CheckboxSelectMultiple),
-            ],
-            heading="Blog tags and type",
-        ),
+        FieldPanel("tags"),
+        FieldPanel("date"),
     ]
 
     tagging_panels = [
+        FieldPanel("blog_page_type", widget=forms.CheckboxSelectMultiple),
         FieldPanel("topics", widget=forms.CheckboxSelectMultiple),
         FieldPanel("organisations", widget=forms.CheckboxSelectMultiple),
     ]
-    settings_panels = Page.settings_panels + [
-        FieldPanel("date"),
-        FieldPanel("author"),
-    ]
+    settings_panels = Page.settings_panels
 
     edit_handler = TabbedInterface(
         [
@@ -243,9 +223,6 @@ class BlogPage(Page):
         index.SearchField("body"),
         index.FilterField("topics"),
         index.FilterField("organisations"),
-        index.RelatedFields(
-            "author", [index.SearchField("first_name"), index.SearchField("last_name")]
-        ),
     ]
 
     # Specifies parent to BlogPage as being BlogIndexPages
@@ -275,3 +252,8 @@ class BlogPage(Page):
     def get_meta_image(self):
         """A relevant Wagtail Image to show. Optional."""
         return self.image
+
+    class Meta:
+        verbose_name = "Blog"
+        verbose_name_plural = "Blogs"
+        ordering = ["date", "title"]
