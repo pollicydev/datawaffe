@@ -130,7 +130,7 @@ class LocationsAdmin(ModelAdmin):
 
     model = Location
     menu_label = "Locations"
-    menu_icon = "list-ol"
+    menu_icon = "snippet"
     menu_order = 290
     add_to_settings_menu = False
     exclude_from_explorer = False
@@ -145,7 +145,7 @@ class TopicsAdmin(ModelAdmin):
 
     model = Topic
     menu_label = "Topics"
-    menu_icon = "tag"
+    menu_icon = "snippet"
     menu_order = 290
     add_to_settings_menu = False
     exclude_from_explorer = False
@@ -158,7 +158,7 @@ class KeyPopAdmin(ModelAdmin):
 
     model = KeyPopulation
     menu_label = "Key Populations"
-    menu_icon = "list-ul"
+    menu_icon = "snippet"
     menu_order = 290
     add_to_settings_menu = False
     exclude_from_explorer = False
@@ -173,7 +173,7 @@ class ServicesAdmin(ModelAdmin):
 
     model = Service
     menu_label = "Services"
-    menu_icon = "grip"
+    menu_icon = "snippet"
     menu_order = 290
     add_to_settings_menu = False
     exclude_from_explorer = False
@@ -243,7 +243,7 @@ class BlogTypesAdmin(ModelAdmin):
 
 class MetaSettingsGroup(ModelAdminGroup):
     menu_label = "Metadata"
-    menu_icon = "list-ol"
+    menu_icon = "cog"
     menu_order = 300
     items = (
         LocationsAdmin,

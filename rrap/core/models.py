@@ -282,8 +282,8 @@ class PublicationType(ClusterableModel):
 
 
 class PublicationsIndexPage(RoutablePageMixin, Page):
-    template = "core/publications.html"
     max_count = 1
+    template = "core/publications.html"
 
     introduction = models.TextField(blank=True)
 
@@ -293,17 +293,26 @@ class PublicationsIndexPage(RoutablePageMixin, Page):
 
     subpage_types = ["PublicationPage"]
 
-    # def get_context(self, request, *args, **kwargs):
-    #     context = super().get_context(request, *args, **kwargs)
+    # wait for filter get request for map organisations
+    def get_template(self, request, *args, **kwargs):
+        if request.htmx:
+            return "partials/publications.html"
+        return "core/publications.html"
 
-    #     publications = OrganisationPublication.objects.all().order_by("title")
-    #     pub_filter = PublicationsFilter(request.GET, queryset=publications)
+    def get_context(self, request, *args, **kwargs):
+        # get the filter to prevent cyclic import
+        from rrap.core.filters import PublicationsFilter
 
-    #     # wait for filter get request for map organisations
-    #     if request.htmx:
-    #         base_template = "partials/publications.html"
-    #     else:
-    #         base_template = "core/publications.html"
+        context = super().get_context(request, *args, **kwargs)
+        publications = (
+            PublicationPage.objects.live().descendant_of(self).order_by("title")
+        )
+        pub_filter = PublicationsFilter(request.GET, queryset=publications)
+
+        context["publications"] = (pub_filter.qs,)
+        context["pub_filter_form"] = (pub_filter.form,)
+
+        return context
 
 
 class PublicationTag(TaggedItemBase):

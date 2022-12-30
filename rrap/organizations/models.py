@@ -315,6 +315,8 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
 
 class OrganisationPage(Page):
 
+    parent_page_types = ["OrganisationIndexPage"]
+
     subpage_types = []
 
     UNVERIFIED = 0
@@ -483,17 +485,6 @@ class OrganisationPage(Page):
         ),
     ]
 
-    publications_panels = [
-        MultiFieldPanel(
-            [
-                InlinePanel(
-                    "org_publications", max_num=30, min_num=0, label="Publication"
-                )
-            ],
-            heading="Organisation's public resources",
-        ),
-    ]
-
     edit_handler = TabbedInterface(
         [
             ObjectList(content_panels, heading="Info"),
@@ -503,7 +494,6 @@ class OrganisationPage(Page):
             ObjectList(settings_panels, heading="Visibility"),
             ObjectList(reach_panels, heading="Reach & Impact"),
             ObjectList(violations_panels, heading="Violations"),
-            ObjectList(publications_panels, heading="Publications"),
         ]
     )
 

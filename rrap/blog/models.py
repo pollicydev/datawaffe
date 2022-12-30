@@ -67,11 +67,10 @@ class BlogIndexPage(RoutablePageMixin, Page):
 
         context["posts"] = posts
         context["topics"] = (
-            Topic.objects.live()
-            .exclude(is_project=True)
+            Topic.objects.all()
             .annotate(num_blogpages=Count("blogpage"))
             .filter(num_blogpages__gt=0)
-            .order_by("title")
+            .order_by("name")
         )
         context["blogtypes"] = BlogPageType.objects.all()
 

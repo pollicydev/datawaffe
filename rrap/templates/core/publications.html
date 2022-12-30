@@ -36,21 +36,13 @@
           <div style="max-height:350px;overflow: hidden scroll!important;" class="dropdown-menu my-3"
             data-popper-placement="bottom-start">
             <p class="mb-3 text-center text-success">Scroll for more <i class="ai-chevrons-down"></i></p>
-            {{ pub_filter_form.page|as_crispy_field }}
+            {{ pub_filter_form.organisations|as_crispy_field }}
           </div>
         </div>
       </div>
+
       <div class="col-12">
-        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
-          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by year</button>
-          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
-            {{ pub_filter_form.year|as_crispy_field }}
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <a class="btn btn-sm btn-secondary ms-auto text-danger" role="button" href="{% url 'publications' %}"><i
+        <a class="btn btn-sm btn-secondary ms-auto text-danger" role="button" href=""><i
             class="ai-refresh ms-n1 me-2"></i>Clear filter</a>
       </div>
     </form>

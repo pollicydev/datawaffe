@@ -79,6 +79,7 @@ WAGTAIL = [
     "wagtail.api.v2",
     "wagtailautocomplete",
     "wagtail_color_panel",
+    "wagtailmenus",
 ]
 
 DJANGO_APPS = [
@@ -223,6 +224,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "rrap.users.context_processors.allauth_settings",
                 "rrap.core.context_processors.settings",
+                "wagtailmenus.context_processors.wagtailmenus",
             ],
         },
     }

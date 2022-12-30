@@ -1,5 +1,6 @@
 from django import forms
-from rrap.organizations.models import OrganisationPage, OrganisationPublication
+from rrap.organizations.models import OrganisationPage
+from rrap.core.models import PublicationPage
 from crispy_forms.helper import FormHelper
 
 
@@ -23,9 +24,9 @@ class PubFilterForm(forms.Form):
         self.helper = FormHelper()
         self.fields["title"].label = ""
         self.fields["pub_types"].label = ""
-        self.fields["page"].label = ""
-        self.fields["year"].label = ""
+        self.fields["organisations"].label = ""
+        # self.fields["year"].label = ""
 
     class Meta:
-        model = OrganisationPublication
-        fields = ["title", "pub_types", "page", "year"]
+        model = PublicationPage
+        fields = ["title", "pub_types", "organisations", "date_published"]
