@@ -109,10 +109,12 @@ class PublicationsAdmin(ThumbnailMixin, ModelAdmin):
     list_display = (
         "admin_thumb",
         "title",
+        "privacy",
+        "date_published",
     )
 
-    thumb_image_filter_spec = "fill-150x250"
-    thumb_image_width = 100
+    thumb_image_filter_spec = "fill-80x100"
+    thumb_image_width = 72
     thumb_col_header_text = "Thumbnail"
     list_filter = (
         "topics",

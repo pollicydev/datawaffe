@@ -9,6 +9,7 @@ from wagtail.admin.edit_handlers import (
     FieldPanel,
     MultiFieldPanel,
     RichTextFieldPanel,
+    FieldRowPanel,
     TabbedInterface,
     ObjectList,
 )
@@ -322,6 +323,23 @@ class PublicationTag(TaggedItemBase):
 
 
 class PublicationPage(Page):
+
+    # PRIVACY SETTING
+    REQUEST = 0
+    PRIVATE = 1
+    PUBLIC = 2
+    DATA_PRIVACY = (
+        (
+            REQUEST,
+            "By request (Anyone can search and view the metadata of this dataset. Registered users can submit a request to obtain the data directly from you, by email, file transfer, etc.)",
+        ),
+        (
+            PRIVATE,
+            "Private (Only you and other members of your organisation can search, view/edit or download this dataset)",
+        ),
+        (PUBLIC, "Public (Anyone can search, view/edit or download this dataset)"),
+    )
+
     summary = models.TextField(help_text="Text to describe the publication", blank=True)
 
     thumbnail = models.ForeignKey(
@@ -362,6 +380,19 @@ class PublicationPage(Page):
 
     tags = ClusterTaggableManager(through=PublicationTag, blank=True)
 
+    privacy = models.SmallIntegerField(
+        "Privacy setting", blank=False, choices=DATA_PRIVACY, default=2
+    )
+
+    has_pii = models.BooleanField(
+        "Contains Personally Identifiable Information (PII) e.g names, phone numbers, Identification number, etc",
+        default=False,
+    )
+    has_microdata = models.BooleanField(
+        "Contains microdata e.g household survey results, disaggregated needs assessment data, etc",
+        default=False,
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel("summary", classname="full"),
         ImageChooserPanel("thumbnail"),
@@ -372,6 +403,9 @@ class PublicationPage(Page):
     ]
 
     tagging_panels = [
+        FieldPanel("privacy"),
+        FieldPanel("has_pii"),
+        FieldPanel("has_microdata"),
         FieldPanel("pub_types", widget=forms.CheckboxSelectMultiple),
         FieldPanel("topics", widget=forms.CheckboxSelectMultiple),
         FieldPanel("organisations", widget=forms.CheckboxSelectMultiple),
@@ -380,8 +414,8 @@ class PublicationPage(Page):
 
     edit_handler = TabbedInterface(
         [
-            ObjectList(content_panels, heading="Publication"),
-            ObjectList(tagging_panels, heading="Topics & Community"),
+            ObjectList(content_panels, heading="Info"),
+            ObjectList(tagging_panels, heading="Tagging"),
             ObjectList(Page.promote_panels, heading="Promote"),
             ObjectList(settings_panels, heading="Settings", classname="settings"),
         ]

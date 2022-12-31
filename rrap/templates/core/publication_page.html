@@ -10,9 +10,10 @@
 <section class="position-relative mb-5">
   <div class="bg-secondary position-absolute top-0 end-0 w-50 h-100 d-none d-lg-block"></div>
   <div class="bg-secondary position-absolute top-0 end-0 w-100 h-100 d-lg-none"></div>
-  <div class="container position-relative zindex-2 py-5 pb-lg-0">
+  <div class="container position-relative zindex-2 pt-3 pb-5 pb-lg-0">
     <!-- Breadcrumb-->
-    <a style="text-decoration:none" href=""><i class="ai-chevron-left"></i>Back to publications</a>
+    <a style="text-decoration:none" class="fw-bold" href="{{ self.get_parent.url }}"><i class="ai-chevron-left"></i>Back
+      to publications</a>
     <div class="d-lg-flex align-items-center pt-3 pb-xxl-5">
       {% if self.thumbnail %}
       {% image self.thumbnail width-480 as thumb %}
@@ -26,12 +27,23 @@
         {% for type in self.pub_types.all %}
         <span class="text-primary me-4 fw-bold">{{ type.name }}</span>
         {% endfor %}
-        <h1 class="display-4 pt-3 pb-3 pb-lg-4">{{ self.title }}</h1>
+        <h1 class="display-4 pt-3 ">{{ self.title }}</h1>
+        <div class="text-muted fw-medium flex-wrap flex-sm-nowrap align-items-center pb-3 pb-lg-4">
+          {% if self.has_microdata %}
+          <div class="text-info"><i class="ai-chart me-1"></i>Contains
+            microdata</div>
+          {% endif %}
+          {% if self.has_pii %}
+          <div class="text-info"><i class="ai-at me-1"></i>Contains
+            Personally
+            Identifiable Information</div>
+          {% endif %}
+        </div>
         <p class="fs-lg mx-auto mx-lg-0 mb-0" style="max-width: 530px;">{{ self.summary }}</p>
       </div>
     </div>
     <ul class="nav justify-content-center justify-content-lg-start mx-n2 pt-lg-5 mb-0">
-      <li class="me-3"><a class="btn btn-secondary p-2" href="{{ self.file.url }}" download>Download
+      <li class="me-3"><a class="btn btn-primary btn-lg p-2" href="{{ self.file.url }}" download>Download
           document</a></li>
       <li class="nav-item me-3"><a class="btn btn-lg btn-link p-2" href="{{ self.file.url }}">Read online</a></li>
     </ul>
