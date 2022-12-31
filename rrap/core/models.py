@@ -309,8 +309,8 @@ class PublicationsIndexPage(RoutablePageMixin, Page):
         )
         pub_filter = PublicationsFilter(request.GET, queryset=publications)
 
-        context["publications"] = (pub_filter.qs,)
-        context["pub_filter_form"] = (pub_filter.form,)
+        context["publications"] = pub_filter.qs
+        context["pub_filter_form"] = pub_filter.form
 
         return context
 
@@ -408,16 +408,11 @@ class PublicationPage(Page):
         context["related_publications"] = (
             PublicationPage.objects.live()
             .public()
-            .order_by("-date")
+            .order_by("-date_published")
             .exclude(id=self.id)[:3]
         )
 
         return context
-
-    def save_revision(self, *args, **kwargs):
-        if not self.author:
-            self.author = self.owner
-        return super().save_revision(*args, **kwargs)
 
     # Specify featured image for meta tag
 

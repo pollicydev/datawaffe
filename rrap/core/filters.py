@@ -1,5 +1,6 @@
 from django import forms
 import django_filters
+from django.db.models.functions import ExtractYear
 from rrap.organizations.models import OrganisationPage
 from rrap.core.models import (
     KeyPopulation,
@@ -9,7 +10,6 @@ from rrap.core.models import (
     PublicationPage,
 )
 from rrap.core.forms import MapFilterForm, PubFilterForm
-from django_select2 import forms as s2forms
 
 
 class MapFilter(django_filters.FilterSet):
@@ -79,14 +79,16 @@ class PublicationsFilter(django_filters.FilterSet):
             }
         ),
     )
-    # year = django_filters.MultipleChoiceFilter(
-    #     choices=OrganisationPublication.objects.values_list("year", "year")
-    #     .distinct()
-    #     .order_by(),
-    #     widget=forms.CheckboxSelectMultiple(
-    #         attrs={"class": "form-control form-control-sm"}
-    #     ),
-    # )
+    date_published = django_filters.DateFilter(
+        lookup_expr="year__gt",
+        choices=PublicationPage.objects.annotate(year=ExtractYear("date_published"))
+        .values_list("year", "year")
+        .distinct()
+        .order_by(),
+        widget=forms.CheckboxSelectMultiple(
+            attrs={"class": "form-control form-control-sm"}
+        ),
+    )
 
     class Meta:
         model = PublicationPage

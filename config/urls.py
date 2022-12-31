@@ -28,7 +28,7 @@ urlpatterns = [
     path("users/", include("rrap.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path("map/", core_views.map, name="map"),
-    path("publications/", core_views.publications_index, name="publications"),
+    # path("publications/", core_views.publications_index, name="publications"),
     path("", include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

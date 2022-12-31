@@ -9,7 +9,7 @@
 
 <div class="bg-primary p-3">
   <div class="container">
-    <form id="mapFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get="{% url 'publications' %}"
+    <form id="mapFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get=""
       hx-target="#filter-results" hx-trigger="keyup delay:2s, change delay:2s">
       <div class="col-12">
         <h6 class="my-0 text-white"><i class="ai-filter me-2"></i> Filter publications:</h6>
@@ -40,7 +40,15 @@
           </div>
         </div>
       </div>
-
+      <div class="col-12">
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by year</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {{ pub_filter_form.date_published|as_crispy_field }}
+          </div>
+        </div>
+      </div>
       <div class="col-12">
         <a class="btn btn-sm btn-secondary ms-auto text-danger" role="button" href=""><i
             class="ai-refresh ms-n1 me-2"></i>Clear filter</a>
@@ -56,7 +64,7 @@
       {% for publication in publications %}
       <div class="col-md-6">
         <div class="d-flex align-items-center">
-          <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3" href="shop-single.html">
+          <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3" href="{{ publication.url }}">
             {% if publication.thumbnail %}
             {% image publication.thumbnail height-200 as thumb %}
             <img style="height:200px!important;" src="{{ thumb.full_url }}" width="160"
@@ -67,13 +75,12 @@
             {% endif %}
           </a>
           <div class="ps-3 ps-sm-4">
-            <span class="text-primary me-4 fw-bold fs-sm">Type A</span>
             {% for type in publication.pub_types.all %}
             <span class="text-primary me-4 fw-bold fs-sm">{{ type.name }}</span>
             {% endfor %}
-            <h4 class="mb-2 fw-bold"><a href="shop-single.html">{{ publication.title }}</a></h4>
+            <h4 class="mb-2 fw-bold"><a href="{{ publication.url }}">{{ publication.title }}</a></h4>
             <p class="fs-sm">{{ publication.summary }}</p>
-            <h6 class="text-muted fs-sm">{{ publication.year }}</h6>
+            <h6 class="text-muted fs-sm">{{ publication.date_published|date:'F Y'}}</h6>
           </div>
         </div>
       </div>

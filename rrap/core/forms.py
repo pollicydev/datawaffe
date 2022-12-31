@@ -25,7 +25,7 @@ class PubFilterForm(forms.Form):
         self.fields["title"].label = ""
         self.fields["pub_types"].label = ""
         self.fields["organisations"].label = ""
-        # self.fields["year"].label = ""
+        self.fields["date_published"].label = ""
 
     class Meta:
         model = PublicationPage
