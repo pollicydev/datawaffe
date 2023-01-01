@@ -1,4 +1,5 @@
 {% load static humanize wagtailimages_tags %}
+{% if not related %}
 <article class="masonry-grid-item">
   <div class="card border-0 bg-secondary">
     <a href="{{ post.url }}">
@@ -20,3 +21,17 @@
     </div>
   </div>
 </article>
+{% else %}
+<article class="swiper-slide">
+  <div class="position-relative">
+    {% if post.image %}
+    {% image post.image width-395 as featimg %}
+    <img class="rounded-5" src="{{ featimg.url }}" alt="Featured image">
+    {% endif %}
+    <span class="fs-sm text-muted">{{ post.date|naturaltime }}</span>
+    <h3 class="h4 mt-4 mb-0">
+      <a class="stretched-link" href="{{ post.url }}">{{ post.title }}</a>
+    </h3>
+  </div>
+</article>
+{% endif %}

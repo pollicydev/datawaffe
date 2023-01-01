@@ -1,9 +1,144 @@
 {% extends "base.html" %}
 
-{% load static wagtailimages_tags humanize %}
+{% load static wagtailcore_tags wagtailimages_tags humanize %}
 
 {% block title %}{{ self.title }} · Data Waffe{% endblock %}
 
-{% block content %}
+{% block stylesheet %}
+<link rel="stylesheet" media="screen" href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" />
+{% endblock stylesheet %}
 
+{% block content %}
+<section class="container pt-5">
+  <!-- Breadcrumb-->
+  <nav aria-label="breadcrumb">
+    <ol class="pt-lg-3 pb-lg-4 pb-2 breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ self.get_parent.url }}">News & stories</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ self.title }}</li>
+    </ol>
+  </nav>
+  <div class="row">
+    <div class="col-lg-9 col-xl-8 pe-lg-4 pe-xl-0">
+      <!-- Post title + post meta-->
+      <h1 class="pb-2 pb-lg-3">{{ self.title }}</h1>
+      <p class="fs-lg">{{ self.introduction }}</p>
+      <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center mb-4 me-4"><span class="fs-sm me-2">By:</span><a
+            class="nav-link position-relative fw-semibold p-0" href="#author" data-scroll
+            data-scroll-offset="80">Darlene Robertson<span class="d-block position-absolute start-0 bottom-0 w-100"
+              style="background-color: currentColor; height: 1px;"></span></a></div>
+        <div class="d-flex align-items-center mb-4"><span class="fs-sm me-2">Share post:</span>
+          <div class="d-flex"><a class="nav-link p-2 me-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+              title="Instagram"><i class="ai-instagram"></i></a><a class="nav-link p-2 me-2" href="#"
+              data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook"><i class="ai-facebook"></i></a><a
+              class="nav-link p-2 me-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram"><i
+                class="ai-telegram fs-sm"></i></a><a class="nav-link p-2" href="#" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="Twitter"><i class="ai-twitter"></i></a></div>
+        </div>
+      </div>
+
+      {% if self.image %}
+      {% image self.image original as featimg %}
+      <img class="w-100" src="{{ featimg.url }}" alt="Featured image">
+      {% endif %}
+
+      <!-- Post content-->
+      <div class="mt-4">
+        {{ self.body|richtext }}
+      </div>
+      <!-- Tags-->
+      {% if self.tags.count %}
+      <div class="d-flex flex-wrap pt-3 pt-md-4 pt-xl-5 mt-xl-n2">
+        <h3 class="h6 py-1 mb-0 me-4">Relevant tags:</h3>
+        {% for tag in self.tags.all %}
+        <a class="nav-link fs-sm py-1 px-0 me-2" href="{{ self.get_parent.url }}?tag={{ tag.slug }}"><span
+            class="text-primary">#</span>{{ tag }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Topics-->
+      {% if self.topics.count %}
+      <div class="d-flex flex-wrap pb-5 pt-md-4 mt-xl-n2">
+        <h3 class="h6 mb-0 me-4">Relevant topics:</h3>
+        {% for topic in self.topics.all %}
+        <span class="btn btn-sm btn-outline-secondary rounded-pill ms-3" href="#">{{ topic.name }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <!-- Sidebar (offcanvas on sreens < 992px)-->
+    <aside class="col-lg-3 offset-xl-1">
+      <div class="offcanvas-lg offcanvas-end" id="sidebar">
+        <div class="offcanvas-header">
+          <h4 class="offcanvas-title">Sidebar</h4>
+          <button class="btn-close ms-auto" type="button" data-bs-dismiss="offcanvas"
+            data-bs-target="#sidebar"></button>
+        </div>
+        <div class="offcanvas-body">
+          <!-- Relevant organisations -->
+          {% if self.organisations.count %}
+          <h4 class="pt-3 pt-lg-1 mb-4">Relevant organisations:</h4>
+          {% for organisation in self.organisations.all %}
+          <div class="card border-0 bg-secondary mb-3">
+            <div class="card-body text-center">
+              {% if organisation.logo %}
+              {% image organisation.logo width-150 as org_logo %}
+              <img class="d-block rounded-circle mx-auto mb-3" src="{{ org_logo.url }}" width="80"
+                alt="{{ organisation.title }} logo">
+              {% else %}
+              <img class="d-block rounded-circle mx-auto mb-3" src="{% static 'images/dw_logo.png' %}" width="80"
+                alt="{{ organisation.title }} logo">
+              {% endif %}
+              <h3 class="h5 mb-2 pb-1">{{ organisation.title }}</h3>
+              <a class="btn btn-link" href="{{ organisation.url }}">Go to organisation</a>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- Related articles (carousel) -->
+<section class="container mt-sm-2 my-md-4 my-xl-5">
+  <div class="d-flex align-items-center pb-3 mb-3 mb-lg-4 mt-2 mt-xxl-3">
+    <h2 class="mb-0 me-4">Related articles</h2>
+    <div class="d-flex ms-auto">
+      <button class="btn btn-prev btn-icon btn-sm btn-outline-primary rounded-circle me-3" type="button"
+        id="prev-post"><i class="ai-arrow-left"></i></button>
+      <button class="btn btn-next btn-icon btn-sm btn-outline-primary rounded-circle" type="button" id="next-post"><i
+          class="ai-arrow-right"></i></button>
+    </div>
+  </div>
+  <div class="swiper pb-2 pb-sm-3 pb-md-4" data-swiper-options="
+  {
+    &quot;spaceBetween&quot;: 24,
+    &quot;loop&quot;: true,
+    &quot;autoHeight&quot;: true,
+    &quot;navigation&quot;: {
+      &quot;prevEl&quot;: &quot;#prev-post&quot;,
+      &quot;nextEl&quot;: &quot;#next-post&quot;
+    },
+    &quot;breakpoints&quot;: {
+      &quot;576&quot;: { &quot;slidesPerView&quot;: 2 },
+      &quot;1000&quot;: { &quot;slidesPerView&quot;: 3 }
+    }
+  }
+">
+    <div class="swiper-wrapper">
+      <!-- Post-->
+      {% for post in related_posts %}
+      {% include 'blog/blog_card.html' with post=post related=True %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
 {% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+{% endblock javascript %}
