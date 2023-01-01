@@ -106,7 +106,6 @@ THIRD_PARTY_APPS = [
     "django_social_share",
     "django_htmx",
     "django_filters",
-    "django_select2",
 ]
 
 LOCAL_APPS = [

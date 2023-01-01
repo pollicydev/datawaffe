@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static wagtailcore_tags wagtailimages_tags humanize %}
+{% load static wagtailcore_tags wagtailimages_tags humanize social_share %}
 
 {% block title %}{{ self.title }} · Data Waffe{% endblock %}
 
@@ -24,17 +24,15 @@
       <h1 class="pb-2 pb-lg-3">{{ self.title }}</h1>
       <p class="fs-lg">{{ self.introduction }}</p>
       <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
-        <div class="d-flex align-items-center mb-4 me-4"><span class="fs-sm me-2">By:</span><a
-            class="nav-link position-relative fw-semibold p-0" href="#author" data-scroll
-            data-scroll-offset="80">Darlene Robertson<span class="d-block position-absolute start-0 bottom-0 w-100"
-              style="background-color: currentColor; height: 1px;"></span></a></div>
-        <div class="d-flex align-items-center mb-4"><span class="fs-sm me-2">Share post:</span>
-          <div class="d-flex"><a class="nav-link p-2 me-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top"
-              title="Instagram"><i class="ai-instagram"></i></a><a class="nav-link p-2 me-2" href="#"
-              data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook"><i class="ai-facebook"></i></a><a
-              class="nav-link p-2 me-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram"><i
-                class="ai-telegram fs-sm"></i></a><a class="nav-link p-2" href="#" data-bs-toggle="tooltip"
-              data-bs-placement="top" title="Twitter"><i class="ai-twitter"></i></a></div>
+
+        <div class="d-flex align-items-center mb-4">
+          <span class="fs-lg fw-medium me-2">Share post:</span>
+          <div class="d-flex">
+            {% post_to_facebook object_or_url "Facebook" %}
+            {% post_to_twitter "{{ self.title }}" object_or_url "Twitter" %}
+            {% send_email object.title "{{ self.title }}" object_or_url "Email" %}
+            {% copy_to_clipboard object_or_url "Copy link" %}
+          </div>
         </div>
       </div>
 
@@ -138,6 +136,10 @@
   </div>
 </section>
 {% endblock content %}
+
+{% block inline_javascript %}
+{% add_copy_script %}
+{% endblock inline_javascript %}
 
 {% block javascript %}
 <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
