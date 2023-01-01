@@ -1,0 +1,22 @@
+{% load static humanize wagtailimages_tags %}
+<article class="masonry-grid-item">
+  <div class="card border-0 bg-secondary">
+    <a href="{{ post.url }}">
+      {% if post.image %}
+      {% image post.image width-395 as featimg %}
+      <img class="card-img-top" src="{{ featimg.url }}" alt="Featured image">
+      {% endif %}
+    </a>
+    <div class="card-body pb-4">
+      <div class="d-flex align-items-center mb-4 mt-n1">
+        <span class="fs-sm text-muted">{{ post.date|naturaltime }}</span>
+        <span class="fs-xs opacity-20 mx-3">|</span>
+        {% for type in post.blog_page_type.all %}
+        <a class="badge text-nav fs-xs border me-2" href="#">{{ type.name }}</a>
+        {% endfor %}
+      </div>
+      <h3 class="h4 card-title"><a href="{{ post.url }}">{{ post.title }}</a></h3>
+      <p class="card-text">{{ post.introduction }}</p>
+    </div>
+  </div>
+</article>

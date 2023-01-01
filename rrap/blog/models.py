@@ -30,7 +30,7 @@ from rrap.core.models import Topic
 # from rrap.blog.blocks import BlogBlocks
 
 
-class BlogIndexPage(RoutablePageMixin, Page):
+class BlogIndexPage(Page):
     max_count = 1
 
     introduction = models.TextField(blank=True)
@@ -41,83 +41,26 @@ class BlogIndexPage(RoutablePageMixin, Page):
 
     subpage_types = ["BlogPage"]
 
-    # Overrides the context to list all child items, that are live, by the
-    # date that they were published
+    # wait for filter get request for map organisations
+    def get_template(self, request, *args, **kwargs):
+        if request.htmx:
+            return "partials/blogs.html"
+        return "blog/blog_index_page.html"
+
     def get_context(self, request, *args, **kwargs):
+        # get the filter to prevent cyclic import
+        from rrap.blog.filters import BlogFilter
+
         context = super().get_context(request, *args, **kwargs)
         all_posts = BlogPage.objects.live().public().order_by("-date")
 
-        page = request.GET.get("page", 1)
-        try:
-            page = int(page)
-        except ValueError:
-            page = 1
+        blog_filter = BlogFilter(request.GET, queryset=all_posts)
 
-        if page == 1:
-            context["latest"] = all_posts.first()
-            all_posts = all_posts[1:]
-
-        # paginate all posts by 9 per page
-        paginator = Paginator(all_posts, 9)
-
-        try:
-            posts = paginator.page(page)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)  # return last page.
-
-        context["posts"] = posts
-        context["topics"] = (
-            Topic.objects.all()
-            .annotate(num_blogpages=Count("blogpage"))
-            .filter(num_blogpages__gt=0)
-            .order_by("name")
-        )
-        context["blogtypes"] = BlogPageType.objects.all()
+        context["posts"] = blog_filter.qs
+        context["blog_filter_form"] = blog_filter.form
+        context["index_url"] = self.get_url()
 
         return context
-
-    # Create new route on the index for the topic filter
-    @route(r"^topic/(?P<topic_slug>[-\w]*)/$", name="topic_view")
-    def topic_view(self, request, topic_slug):
-        context = self.get_context(request)
-
-        try:
-            topic = Topic.objects.get(slug=topic_slug)
-        except Topic.DoesNotExist:
-            return redirect(self.get_url())
-
-        context["topic"] = topic
-        posts = (
-            BlogPage.objects.live()
-            .public()
-            .order_by("-date")
-            .filter(topics__in=[topic])
-        )
-        context["latest"] = posts.first()
-        context["posts"] = posts[1:]
-
-        return render(request, "blog/blog_index_page.html", context)
-
-    @route(r"^type/(?P<blogtype_slug>[-\w]*)/$", name="blogtype_view")
-    def blogtype_view(self, request, blogtype_slug):
-        context = self.get_context(request)
-
-        try:
-            blogtype = BlogPageType.objects.get(slug=blogtype_slug)
-        except Topic.DoesNotExist:
-            return redirect(self.get_url())
-
-        context["blogtype"] = blogtype
-        posts = (
-            BlogPage.objects.live()
-            .public()
-            .order_by("-date")
-            .filter(blog_page_type=blogtype)
-        )
-        context["latest"] = posts.first()
-        context["posts"] = posts[1:]
-
-        return render(request, "blog/blog_index_page.html", context)
 
 
 class BlogPageTag(TaggedItemBase):
@@ -240,11 +183,6 @@ class BlogPage(Page):
         )
 
         return context
-
-    def save_revision(self, *args, **kwargs):
-        if not self.author:
-            self.author = self.owner
-        return super().save_revision(*args, **kwargs)
 
     # Specify featured image for meta tag
 

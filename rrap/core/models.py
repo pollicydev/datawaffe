@@ -312,6 +312,7 @@ class PublicationsIndexPage(RoutablePageMixin, Page):
 
         context["publications"] = pub_filter.qs
         context["pub_filter_form"] = pub_filter.form
+        context["index_url"] = self.get_url()
 
         return context
 

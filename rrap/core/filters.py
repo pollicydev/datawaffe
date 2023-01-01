@@ -79,8 +79,7 @@ class PublicationsFilter(django_filters.FilterSet):
             }
         ),
     )
-    date_published = django_filters.DateFilter(
-        lookup_expr="year__gt",
+    date_published = django_filters.MultipleChoiceFilter(
         choices=PublicationPage.objects.annotate(year=ExtractYear("date_published"))
         .values_list("year", "year")
         .distinct()

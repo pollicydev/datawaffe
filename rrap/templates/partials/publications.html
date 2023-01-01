@@ -5,7 +5,7 @@
   {% for publication in publications %}
   <div class="col-md-6">
     <div class="d-flex align-items-center">
-      <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3" href="shop-single.html">
+      <a class="d-inline-block flex-shrink-0 bg-secondary rounded-1 p-md-2 p-lg-3" href="{{ publication.url }}">
         {% if publication.thumbnail %}
         {% image publication.thumbnail height-200 as thumb %}
         <img style="height:200px!important;" src="{{ thumb.full_url }}" width="160"
@@ -16,13 +16,12 @@
         {% endif %}
       </a>
       <div class="ps-3 ps-sm-4">
-        <span class="text-primary me-4 fw-bold fs-sm">Type A</span>
         {% for type in publication.pub_types.all %}
         <span class="text-primary me-4 fw-bold fs-sm">{{ type.name }}</span>
         {% endfor %}
-        <h4 class="mb-2 fw-bold"><a href="shop-single.html">{{ publication.title }}</a></h4>
+        <h4 class="mb-2 fw-bold"><a href="{{ publication.url }}">{{ publication.title }}</a></h4>
         <p class="fs-sm">{{ publication.summary }}</p>
-        <h6 class="text-muted fs-sm">{{ publication.year }}</h6>
+        <h6 class="text-muted fs-sm">{{ publication.date_published|date:'F Y'}}</h6>
       </div>
     </div>
   </div>

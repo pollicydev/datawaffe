@@ -9,12 +9,12 @@
 
 <div class="bg-primary p-3">
   <div class="container">
-    <form id="mapFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get=""
+    <form id="pubFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get="{{ index_url }}"
       hx-target="#filter-results" hx-trigger="keyup delay:2s, change delay:2s">
       <div class="col-12">
-        <h6 class="my-0 text-white"><i class="ai-filter me-2"></i> Filter publications:</h6>
+        <h1 class="h2 mb-lg-0 text-white">{{ self.title }}</h1>
       </div>
-      <div class="col-12">
+      <div class="col-sm-3">
         <div class="position-relative">
           <i class="ai-search position-absolute top-50 start-0 translate-middle-y ms-3 text-white"></i>
           {{ pub_filter_form.title|as_crispy_field }}
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="col-12">
-        <a class="btn btn-sm btn-secondary ms-auto text-danger" role="button" href=""><i
+        <a class="btn btn-sm btn-secondary ms-auto text-danger" role="button" href="{{ index_url }}"><i
             class="ai-refresh ms-n1 me-2"></i>Clear filter</a>
       </div>
     </form>

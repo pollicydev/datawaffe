@@ -1,1 +1,103 @@
+{% extends "base.html" %}
 
+{% load static wagtailimages_tags humanize crispy_forms_tags %}
+
+{% block title %}News and stories · Data Waffe{% endblock %}
+
+{% block content %}
+
+<div class="bg-primary p-3">
+  <div class="container">
+    <form id="blogFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get="{{ index_url }}"
+      hx-target="#filter-results" hx-trigger="keyup delay:2s, change delay:2s">
+      <div class="col-12">
+        <h1 class="h2 mb-lg-0 text-white">{{ self.title }}</h1>
+      </div>
+      <div class="col-12">
+        <div class="position-relative"><i
+            class="ai-search position-absolute top-50 start-0 translate-middle-y ms-3 text-white"></i>
+          {{ blog_filter_form.title|as_crispy_field }}
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by type</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {{ blog_filter_form.blog_page_type|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by topic</button>
+          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
+            {{ blog_filter_form.topics|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
+          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by organisation</button>
+          <div style="max-height:350px;overflow: hidden scroll!important;" class="dropdown-menu my-3"
+            data-popper-placement="bottom-start">
+            <p class="mb-3 text-center text-success">Scroll for more <i class="ai-chevrons-down"></i></p>
+            {{ blog_filter_form.organisations|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <a class="btn btn-sm btn-secondary ms-auto text-danger" role="button" href="{{ index_url }}"><i
+            class="ai-refresh ms-n1 me-2"></i>Clear filter</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="container pt-5 pb-lg-5 pb-md-4 pb-2" id="filter-results">
+  {% if posts %}
+  <div class="masonry-grid mb-2 mb-md-4 pb-lg-3" data-columns="3">
+    {% for post in posts %}
+    {% include 'blog/blog_card.html' with post=post %}
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>There are no posts at this time.</p>
+  {% endif %}
+  <!-- Pagination-->
+  <div class="row gy-3 align-items-center mb-md-2 mb-xl-4">
+    <div class="col col-md-4 col-6 order-md-1 order-1">
+      <div class="d-flex align-items-center"><span class="text-muted fs-sm">Show</span>
+        <select class="form-select form-select-flush w-auto">
+          <option value="6">6</option>
+          <option value="9" selected>9</option>
+          <option value="12">12</option>
+          <option value="24">24</option>
+        </select>
+      </div>
+    </div>
+    <div class="col col-md-4 col-12 order-md-2 order-3 text-center">
+      <button class="btn btn-primary w-md-auto w-100" type="button">Load more posts</button>
+    </div>
+    <div class="col col-md-4 col-6 order-md-3 order-2">
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-sm justify-content-end">
+          <li class="page-item active" aria-current="page"><span class="page-link">1<span
+                class="visually-hidden">(current)</span></span></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">4</a></li>
+          <li class="page-item"><a class="page-link" href="#">5</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'vendor/shufflejs/dist/shuffle.min.js' %}"></script>
+{% endblock javascript %}

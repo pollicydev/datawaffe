@@ -1,0 +1,9 @@
+{% if posts %}
+<div class="masonry-grid mb-2 mb-md-4 pb-lg-3" data-columns="3">
+  {% for post in posts %}
+  {% include 'blog/blog_card.html' with post=post %}
+  {% endfor %}
+</div>
+{% else %}
+<p>There are no posts matching your query at this time.</p>
+{% endif %}
