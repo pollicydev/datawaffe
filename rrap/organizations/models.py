@@ -312,6 +312,27 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
 
     subpage_types = ["organizations.OrganisationPage"]
 
+    # wait for filter get request for map organisations
+    def get_template(self, request, *args, **kwargs):
+        if request.htmx:
+            return "partials/organisations_index.html"
+        return "organizations/organisation_index_page.html"
+
+    def get_context(self, request, *args, **kwargs):
+        # get the filter to prevent cyclic import
+        from rrap.organizations.filters import OrganisationsFilter
+
+        context = super().get_context(request, *args, **kwargs)
+        organisations = OrganisationPage.objects.live().public().order_by("title")
+
+        org_filter = OrganisationsFilter(request.GET, queryset=organisations)
+
+        context["organisations"] = org_filter.qs
+        context["org_filter_form"] = org_filter.form
+        context["index_url"] = self.get_url()
+
+        return context
+
 
 class OrganisationPage(Page):
 

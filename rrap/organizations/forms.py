@@ -2,6 +2,7 @@ from django import forms
 from .models import Organization, generate_logo
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, ButtonHolder, Submit, HTML
+from rrap.organizations.models import OrganisationPage
 
 
 class CreateOrganizationForm(forms.ModelForm):
@@ -249,3 +250,17 @@ class DeleteLogoForm(forms.ModelForm):
         # regenerate a new text-based avatar when profile is deleted.
         self.instance.logo = generate_logo(self.instance)
         return super().save(commit)
+
+
+class OrganisationsFilterForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["title"].label = ""
+        self.fields["communities"].label = ""
+        self.fields["services"].label = ""
+        self.fields["issues"].label = ""
+
+    class Meta:
+        model = OrganisationPage
+        fields = ["title", "communities", "services", "issues"]
