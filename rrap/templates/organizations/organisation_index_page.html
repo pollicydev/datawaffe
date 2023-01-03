@@ -100,12 +100,14 @@
                   {% endif %}
                 </div>
                 <div class="col-sm-4 text-md-end">
+                  {% if request.user.is_authenticated %}
                   {% if request.user in organisation.get_followers %}
                   <a id="followOrganisation" class="btn btn-sm btn-outline-danger w-100 w-md-auto" role="button"
                     hx-post="{% url 'activities:unfollow' organisation.slug %}" hx-swap-oob="true">Unfollow </a>
                   {% else %}
                   <a id="followOrganisation" class="btn btn-sm btn-info w-100 w-md-auto" role="button"
                     hx-post="{% url 'activities:follow' organisation.slug %}"><i class="ai-star me-2"></i>Follow </a>
+                  {% endif %}
                   {% endif %}
                   <a class="btn btn-link" href="{{ organisation.url }}" role="button">Visit organisation <i
                       class="ai-arrow-right ms-2"></i></a>
