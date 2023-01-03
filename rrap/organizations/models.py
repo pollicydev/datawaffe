@@ -323,6 +323,7 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
         from rrap.organizations.filters import OrganisationsFilter
 
         context = super().get_context(request, *args, **kwargs)
+        # @todo: exclude organisations where status=0,3,4
         organisations = OrganisationPage.objects.live().public().order_by("title")
 
         org_filter = OrganisationsFilter(request.GET, queryset=organisations)

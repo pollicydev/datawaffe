@@ -2,25 +2,70 @@
 
 {% load static i18n crispy_forms_tags %}
 
-{% block head_title %}{% translate "Sign Up" %}{% endblock %}
+{% block head_title %}Sign up{% endblock %}
 
 {% block inner %}
-<div class="card card-border-color card-border-color-primary">
-  <div class="card-header"><a href="/"><img class="logo-img" src="{% static 'images/logo/logo.png' %}" alt="logo"
-        width="150" /></a></div>
-  <div class="card-body">
-    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-      {% csrf_token %}
-      {{ form|crispy }}
-      {% if redirect_field_value %}
-      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-      {% endif %}
-      <div class="form-group pt-2">
-        <button class="btn btn-block btn-primary btn-xl" type="submit">Sign Up</button>
-      </div>
-    </form>
+<div class="d-lg-flex position-relative h-100">
+  <a class="text-nav btn btn-icon bg-light border rounded-circle position-absolute top-0 end-0 p-0 mt-3 me-3 mt-sm-4 me-sm-4"
+    href="/" data-bs-toggle="tooltip" data-bs-placement="left" title="Back to home"><i class="ai-home"></i></a>
+
+  <div class="d-flex flex-column align-items-center w-lg-50 h-100 px-3 px-lg-5 pt-5">
+    <div class="w-100 mt-auto" style="max-width: 526px;">
+      <h1>No account? Sign up</h1>
+      <p class="pb-3 mb-3 mb-lg-4">Have an account already?&nbsp;&nbsp;<a href="{{ login_url }}">Sign in here!</a>
+      </p>
+      <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        <div class="pb-3 mb-3">
+          <div class="position-relative"><i
+              class="ai-mail fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+            {{ form.email|as_crispy_field }}
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="position-relative"><i
+              class="ai-lock-closed fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+            <div class="password-toggle">
+              {{ form.password1|as_crispy_field }}
+              <label class="password-toggle-btn" aria-label="Show/hide password">
+                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <div class="position-relative"><i
+              class="ai-lock-closed fs-lg position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+            <div class="password-toggle">
+              {{ form.password2|as_crispy_field }}
+              <label class="password-toggle-btn" aria-label="Show/hide password">
+                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        {% if redirect_field_value %}
+        <div class="mb-4">
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        </div>
+        {% endif %}
+        <div class="pb-4">
+          <div class="form-check my-2">
+            <input class="form-check-input" type="checkbox" id="terms">
+            <label class="form-check-label ms-1" for="terms">I agree to <a href="#">Terms &amp; Conditions</a></label>
+          </div>
+        </div>
+        <button class="btn btn-lg btn-primary w-100 mb-4" type="submit">Sign up</button>
+      </form>
+    </div>
+    <p class="w-100 fs-sm pt-5 mt-auto mb-5" style="max-width: 526px;"><span class="text-muted">&copy; All rights
+        reserved.</span><a class="nav-link d-inline-block p-0 ms-1" href="https://datawaffe.org/" target="_blank"
+        rel="noopener">Data Waffe</a></p>
   </div>
+  <!-- Cover image-->
+  <div class="w-50 bg-size-cover bg-repeat-0 bg-position-center"
+    style="background-image: url(https://placekitten.com/1000/1000);"></div>
 </div>
-<div class="splash-footer"><span>Think you have an account? <a href="{{ login_url }}">Log in</a></span></div>
+
 
 {% endblock %}
