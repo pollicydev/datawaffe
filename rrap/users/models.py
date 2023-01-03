@@ -147,12 +147,12 @@ class Profile(models.Model):
 
     def get_following(self):
         Activity = apps.get_model("activities", "Activity")
-        activities = Activity.objects.select_related("organization").filter(
+        activities = Activity.objects.select_related("organisation").filter(
             from_user=self.user, activity_type=ActivityTypes.FOLLOW
         )
         following = []
         for activity in activities:
-            following.append(activity.organization)
+            following.append(activity.organisation)
         return following
 
     def get_following_count(self):

@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext
 
-from rrap.organizations.models import Organization
+from rrap.organizations.models import Organization, OrganisationPage
 
 from .constants import ActivityTypes
 from .models import Activity
@@ -17,56 +17,55 @@ User = get_user_model()
 
 
 @login_required
-def follow(request):
+def follow(request, org_slug):
     try:
-        organization_id = request.GET.get("organization-id")
-        organization = get_object_or_404(Organization, pk=organization_id)
+        organisation = get_object_or_404(OrganisationPage, slug=org_slug)
         from_user = request.user
 
         following = from_user.profile.get_following()
 
-        if organization not in following:
+        if organisation not in following:
             Activity.objects.create(
                 from_user=from_user,
-                organization=organization,
+                organisation=organisation,
                 activity_type=ActivityTypes.FOLLOW,
             )
-            return HttpResponse()
+            context = {"organisation": organisation}
+            return render(request, "partials/unfollow.html", context)
         else:
             return HttpResponseBadRequest()
     except Exception:
-        logger.exception("An error occurred while trying to follow organization.")
+        logger.exception("An error occurred while trying to follow the organisation.")
         return HttpResponseBadRequest()
 
 
 @login_required
-def unfollow(request):
+def unfollow(request, org_slug):
     try:
-        organization_id = request.GET["organization-id"]
-        organization = get_object_or_404(Organization, pk=organization_id)
+        organisation = get_object_or_404(OrganisationPage, slug=org_slug)
         from_user = request.user
 
         following = from_user.profile.get_following()
 
-        if organization in following:
+        if organisation in following:
             Activity.objects.filter(
                 from_user=from_user,
-                organization=organization,
+                organisation=organisation,
                 activity_type=ActivityTypes.FOLLOW,
             ).delete()
-            return HttpResponse()
+            context = {"organisation": organisation}
+            return render(request, "partials/follow.html", context)
         else:
             return HttpResponseBadRequest()
     except Exception:
-        logger.exception("An error occurred while trying to unfollow organization.")
+        logger.exception("An error occurred while trying to unfollow the organisation.")
         return HttpResponseBadRequest()
 
 
-def update_followers_count(request):
+def update_followers_count(request, org_slug):
     try:
-        organization_id = request.GET["organization-id"]
-        organization = get_object_or_404(Organization, pk=organization_id)
-        followers_count = organization.get_followers_count()
+        organisation = get_object_or_404(OrganisationPage, slug=org_slug)
+        followers_count = organisation.get_followers_count()
         return HttpResponse(followers_count)
     except Exception:
         return HttpResponseBadRequest()

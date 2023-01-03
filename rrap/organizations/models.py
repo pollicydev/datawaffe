@@ -328,6 +328,7 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
         org_filter = OrganisationsFilter(request.GET, queryset=organisations)
 
         context["organisations"] = org_filter.qs
+        context["total_organisations"] = org_filter.qs.count()
         context["org_filter_form"] = org_filter.form
         context["index_url"] = self.get_url()
 
@@ -553,6 +554,23 @@ class OrganisationPage(Page):
         else:
             all_violations = 0
         return sum(all_violations)
+
+    def get_followers(self):
+        Activity = apps.get_model("activities", "Activity")
+        activities = Activity.objects.select_related("from_user__profile").filter(
+            organisation=self, activity_type=ActivityTypes.FOLLOW
+        )
+        followers = []
+        for activity in activities:
+            followers.append(activity.from_user)
+        return followers
+
+    def get_followers_count(self):
+        Activity = apps.get_model("activities", "Activity")
+        followers_count = Activity.objects.filter(
+            organisation=self, activity_type=ActivityTypes.FOLLOW
+        ).count()
+        return followers_count
 
     def get_context(self, request):
         context = super(OrganisationPage, self).get_context(request)

@@ -17,7 +17,7 @@ from .forms import (
     OrganizationSettingsForm,
     DeleteLogoForm,
 )
-from .models import Organization, change_logo
+from .models import Organization, change_logo, OrganisationPage
 from rrap.invites.constants import InviteStatus
 from django.core.paginator import Paginator
 from rrap.organizations.mixins import MainOwnerRequiredMixin, OrganizationMixin

@@ -8,7 +8,9 @@
       aria-controls="{{ organisation.slug }}">
       <div class="d-flex justify-content-between w-100" style="max-width: 840px;">
         <div class="me-3 me-sm-4">
-          <div class="fs-lg fw-medium text-dark">{{ organisation.title }}</div>
+          <div class="fs-lg fw-medium text-dark">
+            {{ organisation.title }}{% if request.user in organisation.get_followers %}<span id="followingBadge"
+              class="badge bg-faded-primary text-primary fs-sm ms-2">Following</span>{% endif %}</div>
           <div class="d-none d-sm-block fs-sm text-muted mb-2">Joined
             {{ organisation.first_published_at|naturaltime }}</div>
         </div>
@@ -38,8 +40,13 @@
             {% endif %}
           </div>
           <div class="col-sm-4 text-md-end">
-            <a class="btn btn-sm btn-outline-danger w-100 w-md-auto" role="button"><i class="ai-star me-2"></i>Favorite
-            </a>
+            {% if request.user in organisation.get_followers %}
+            <a id="followOrganisation" class="btn btn-sm btn-outline-danger w-100 w-md-auto" role="button"
+              hx-post="{% url 'activities:unfollow' organisation.slug %}" hx-swap-oob="true">Unfollow </a>
+            {% else %}
+            <a id="followOrganisation" class="btn btn-sm btn-info w-100 w-md-auto" role="button"
+              hx-post="{% url 'activities:follow' organisation.slug %}"><i class="ai-star me-2"></i>Follow </a>
+            {% endif %}
             <a class="btn btn-link" href="{{ organisation.url }}" role="button">Visit organisation <i
                 class="ai-arrow-right ms-2"></i></a>
           </div>
@@ -49,8 +56,7 @@
             <div class="position-absolute top-50 end-0 translate-middle-y border-end" style="height: 60px;"></div>
             <div class="p-3 px-sm-0 py-sm-4">
               <div class="h2 display-5 text-primary text-center mb-0">{{ organisation.locations.count }}</div>
-              <span>Districts
-                served</span>
+              <span>Districts served</span>
             </div>
           </div>
           <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
@@ -59,16 +65,14 @@
             <div class="p-3 px-sm-0 py-sm-4">
               <div class="h2 display-5 text-primary text-center mb-0">{{ organisation.total_reach|intcomma }}
               </div>
-              <span>Peers
-                reached</span>
+              <span>Peers reached</span>
             </div>
           </div>
           <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
             <div class="position-absolute top-50 end-0 translate-middle-y border-end" style="height: 60px;"></div>
             <div class="p-3 px-sm-0 py-sm-4">
               <div class="h2 display-5 text-primary text-center mb-0">{{ organisation.total_personnel }}</div>
-              <span>Personnel
-                employed {% if organisation.get_teams > 0 %}<br>and <span
+              <span>Personnel employed {% if organisation.get_teams > 0 %}<br>and <span
                   class="badge bg-warning">{{ organisation.get_teams }}</span>
                 village teams{% endif %}</span>
             </div>
@@ -77,8 +81,7 @@
             <div class="p-3 px-sm-0 py-sm-4">
               <div class="h2 display-5 text-primary text-center mb-0">{{ organisation.total_violations|intcomma }}
               </div>
-              <span>Recorded rights
-                violations</span>
+              <span>Recorded rights violations</span>
             </div>
           </div>
         </div>

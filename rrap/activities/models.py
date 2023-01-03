@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .constants import ActivityTypes
-from rrap.organizations.models import Organization
+from rrap.organizations.models import OrganisationPage
 
 User = get_user_model()
 
@@ -23,11 +23,11 @@ class Activity(models.Model):
         _("type"), max_length=1, choices=ActivityTypes.CHOICES
     )
     content = models.CharField(_("content"), max_length=500, blank=True)
-    organization = models.ForeignKey(
-        Organization,
+    organisation = models.ForeignKey(
+        OrganisationPage,
         on_delete=models.CASCADE,
         null=True,
-        verbose_name=_("organization"),
+        verbose_name=_("organisation"),
     )
     date = models.DateTimeField(_("date"), auto_now_add=True)
 
