@@ -26,13 +26,16 @@ class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control"
+            field.widget.attrs["class"] = "form-control form-control-lg"
         self.helper = FormHelper()
         self.helper.layout = Layout(
             "name",
             "bio",
             Submit("submit", "Update profile"),
         )
+
+        self.fields["name"].label = ""
+        self.fields["bio"].label = ""
 
 
 class OnboardingForm(forms.ModelForm):

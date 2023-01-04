@@ -1,147 +1,93 @@
 {% extends "base.html" %}
 {% load static user_extras crispy_forms_tags %}
 
-{% block title %}Edit Profile{% endblock %}
+{% block title %}User:{% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}{% endblock %}
+
+{% block body_class %}bg-secondary{% endblock body_class %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="{% static 'lib/sweetalert2/sweetalert2.min.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.16/dist/sweetalert2.min.css">
 {% endblock %}
-
-{% block javascript %}
-<script src="{% static 'lib/sweetalert2/sweetalert2.min.js' %}"></script>
-{% endblock %}
-
 
 {% block content %}
-<div class="page-head">
-  <nav aria-label="breadcrumb" role="navigation">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="{% url 'core:home' %}">Home</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="#">Users</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{% url 'users:detail' user.username %}"><i
-            class="breadcrumb-icon fa fa-angle-left"></i>{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a href=""><i class="breadcrumb-icon fa fa-angle-left"></i>Edit profile</a>
-      </li>
-    </ol>
-  </nav>
-  <h2 class="page-head-title">
-    Edit profile and settings</h2>
-</div>
 
-<div class="main-content container-fluid">
-  <div class="user-profile mt-5">
-    <div class="row">
-      <div class="col-md-3 border-right">
-        {% include 'users/profile-card.html' %}
-      </div>
-      <div class="col-md-9">
-        <ul class="nav nav-tabs" role="tablist">
-          {% include 'users/menu.html' with active='update_profile' %}
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane active" id="profile" role="tabpanel">
-            <form class="form-horizontal" method="post" action="{% url 'users:update_profile' %}">
-              {% csrf_token %}
-              {% crispy form %}
-            </form>
+<div class="container mb-lg-4 my-xl-5">
+  <div class="row pt-sm-2 pt-lg-0">
+    <!-- Sidebar (offcanvas on sreens < 992px)-->
+    {% include 'users/menu.html' with active='update_profile' %}
+    <!-- Page content-->
+    <div class="col-lg-9 pt-4 pb-2 pb-sm-4">
+      <h1 class="h2 mb-4">Edit profile</h1>
+      <!-- Basic info-->
+      <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mt-sm-n1 pb-4 mb-0 mb-lg-1 mb-xl-3"><i
+              class="ai-user text-primary lead pe-1 me-2"></i>
+            <h2 class="h4 mb-0">Update your public profile</h2><a class="btn btn-sm btn-secondary ms-auto"
+              href="{% url 'users:detail' user.username  %}">Go to profile</a>
           </div>
-          <div class="tab-pane" id="avatar" role="tabpanel">
-            <div class="d-lg-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center mb-4 mb-lg-0">
-                {% if user.profile.avatar %}
-                <img width="250"
-                  src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% gravatar user=user %}{% endif %}"
-                  id="img-uploaded" class="rounded-circle img-thumbnail" alt="" />
-                {% else %}
-                <img src="{% gravatar user=user size=150 %}" id="img-uploaded" class="rounded-circle img-thumbnail"
-                  alt="" />
-                {% endif %}
-                <div class="ml-3">
-                  <h4 class="mb-0">Update your avatar?</h4>
-                  <p class="mb-0">
-                    PNG or JPG no bigger than 800px wide and tall.
-                  </p>
-                </div>
-              </div>
-              <div>
+          <div class="d-flex align-items-center">
+            <div class="dropdown">
+              <a class="d-flex flex-column justify-content-end position-relative overflow-hidden rounded-circle bg-size-cover bg-position-center flex-shrink-0"
+                href="#" data-bs-toggle="dropdown" aria-expanded="false"
+                style="width: 80px; height: 80px; background-image: url({% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% gravatar user=user %}{% endif %});"><span
+                  class="d-block text-light text-center lh-1 pb-1" style="background-color: rgba(0,0,0,.5)"><i
+                    class="ai-camera"></i></span></a>
+              <div class="dropdown-menu my-1">
                 <form style="display: inline;" action="" class="avatar-update-form" method="GET"
                   data-target="{% url 'users:update_avatar' %}" data-preview="#avatarPreview">
                   {% csrf_token %}
 
-                  <div class="input-group mb-3">
-                    <label class="input-group-text bg-primary text-white" for="upload_avatar">Update</label>
+                  <div class="input-group p-0 mb-3">
+                    <label style="cursor:pointer;" class="input-group-text fs-sm" for="upload_avatar">
+                      <i class="ai-camera fs-base opacity-70 me-2"></i>Upload new
+                      photo</a>
+                    </label>
                     <input style="display: none;" type="file" class="form-control" name="upload_avatar"
                       id="upload_avatar" accept="image/*">
                   </div>
                 </form>
-                <form style="display:inline" action="{% url 'users:delete_avatar' %}" method="POST">
-                  {% csrf_token %}
-                  <button class="btn btn-outline-danger btn-sm">Delete</button>
-                </form>
+                <a class="dropdown-item text-danger fw-normal" href="{% url 'users:delete_avatar' %}"><i
+                    class="ai-trash fs-base me-2"></i>Delete
+                  photo</a>
               </div>
             </div>
+            <div class="ps-3">
+              <h3 class="h6 mb-1">Profile picture</h3>
+              <p class="fs-sm text-muted mb-0">PNG or JPG no bigger than 500px wide and tall.</p>
+            </div>
           </div>
+          <form method="post" action="{% url 'users:update_profile' %}">
+            {% csrf_token %}
+            <div class="row g-3 g-sm-4 mt-0 mt-lg-2">
+              <div class="col-sm-12">
+                <label class="form-label" for="fn">Full name</label>
+                {{ form.name | as_crispy_field }}
+              </div>
 
-          <div class="tab-pane" id="account" role="tabpanel">
-            <div class="card">
-              <!-- Card header -->
-              <div class="card-header">
-                <h4 class="mb-0 text-bold">Delete your account permanently</h4>
+              <div class="col-12">
+                <label class="form-label" for="bio">Bio</label>
+                {{ form.bio | as_crispy_field }}
               </div>
-              <!-- Card body -->
-              <div class="card-body p-4">
-                <p class="text-danger lead">Warning</p>
-                <p class="text-danger">
-                  If you close your account, all your data will be deleted permanently.
-                </p>
-                <button type="button" class="btn btn-outline-danger btn-xl" data-toggle="modal"
-                  data-target="#deleteAccountModal">
-                  Delete My Account
-                </button>
+
+              <div class="col-12 d-flex justify-content-end pt-3">
+                <button class="btn btn-secondary" type="button">Cancel</button>
+                <button class="btn btn-primary ms-3" type="submit">Save changes</button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>
 
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.16/dist/sweetalert2.all.min.js"></script>
 {% endblock %}
-
-{% block modal %}
-<div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="deleteAccountModalLabel">Wait, are you sure?</h2>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <form method="post" action="{% url 'users:delete' %}">
-          {% csrf_token %}
-          {{ delete_user_form }}
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        {% comment %} <button type="submit" class="btn btn-primary">Delete my account</button> {% endcomment %}
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock modal %}
 
 {% block inline_javascript %}
 <script>
@@ -179,8 +125,8 @@
                 confirmButtonText: 'Yes',
                 customClass: {
                   image: 'img-thumbnail rounded-circle',
-                  confirmButton: 'btn btn-primary btn-space',
-                  cancelButton: 'btn btn-secondary btn-space',
+                  confirmButton: 'btn btn-primary me-3',
+                  cancelButton: 'btn btn-secondary',
                 },
                 buttonsStyling: false
               }).then(result => {

@@ -1,122 +1,69 @@
 {% extends "base.html" %}
 {% load static user_extras %}
 
-{% block title %}User:
-{% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}{% endblock %}
+{% block title %}User:{% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}{% endblock %}
+
+{% block body_class %}bg-secondary{% endblock body_class %}
 
 {% block content %}
 
-<div class="page-head">
-  <nav aria-label="breadcrumb" role="navigation">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="{% url 'core:home' %}">Home</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="#">Users</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a href=""><i class="breadcrumb-icon fa fa-angle-left"></i>{{ object.profile.name }}</a>
-      </li>
-    </ol>
-  </nav>
-  <h2 class="page-head-title">
-    {% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}</h2>
-</div>
-
-<div class="main-content container-fluid">
-  <div class="user-profile mt-5">
-    <div class="row">
-      <div class="col-md-3 border-right">
-        <div class="user-info-list card">
-          <div class="card-body">
-            <img class="rounded-circle img-thumbnail"
-              src="{% if object.profile.avatar %}{{ object.profile.avatar.url }}{% else %}{% gravatar user=object %}{% endif %}"
-              alt="Avatar">
-            <h3 class="text-center text-bold mb-3">
-              {% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}
-            </h3>
-            {% if object.profile.bio %}
-            <p class="text-center">{{ object.profile.bio }}</p>
-            {% else %}
-            <p class="text-center">This user has no biography yet</p>
-            {% endif %}
-            <table class="no-border no-strip skills">
-              <tbody class="no-border-x no-border-y">
-                <tr>
-                  <td class="icon"><span class="mdi mdi-email"></span></td>
-                  <td class="item">Email:</td>
-                  <td>{{ object.email }}</td>
-                </tr>
-                <tr>
-                  <td class="icon"><span class="mdi mdi-account"></span></td>
-                  <td class="item">Username:</td>
-                  <td>{{ object.username }}</td>
-                </tr>
-                <tr>
-                  <td class="icon"><span class="mdi mdi-time"></span></td>
-                  <td class="item">Joined:</td>
-                  <td>{{ object.date_joined|date:"d F, Y" }}</td>
-                </tr>
-                <tr>
-                  <td class="icon"><span class="mdi mdi-check-circle"></span></td>
-                  <td class="item">Following:</td>
-                  <td>{{ following_count }} organizations</td>
-                </tr>
-              </tbody>
-            </table>
+<div class="container mb-lg-4 my-xl-5">
+  <div class="row pt-sm-2 pt-lg-0">
+    <!-- Sidebar (offcanvas on sreens < 992px)-->
+    {% include 'users/menu.html' with active='overview' %}
+    <!-- Page content-->
+    <div class="col-lg-9 pt-4 pb-2 pb-sm-4">
+      <h1 class="h2 mb-4">Overview</h1>
+      <!-- Basic info-->
+      <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mt-sm-n1 pb-4 mb-0 mb-lg-1 mb-xl-3"><i
+              class="ai-user text-primary lead pe-1 me-2"></i>
+            <h2 class="h4 mb-0">Basic info</h2><a class="btn btn-sm btn-secondary ms-auto"
+              href="{% url 'users:update_profile' %}"><i class="ai-edit ms-n1 me-2"></i>Edit info</a>
           </div>
-          <div class="card-footer card-footer-contrast"><a class="btn btn-primary btn-lg btn-block"
-              href="{% url 'users:update_profile' %}">Edit profile</a></div>
-        </div>
-      </div>
-      <div class="col-md-9">
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item"><a class="nav-link active" href="#organizations" data-toggle="tab" role="tab">User's
-              organizations
-              ({{ user_organizations|length }})</a></li>
-          <li class="nav-item"><a class="nav-link" href="#activity" role="tab" data-toggle="tab">Activity stream</a>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane active" id="organizations" role="tabpanel">
-            <table class="table be-table-responsive" id="organizationsTable">
-              <tbody>
-                {% for organization in user_organizations %}
-                <tr>
-                  <td class="user-avatar cell-detail org-info">
-                    {% if organization.status == 0 %}
-                    <span style="display: inline-block;"
-                      class="badge badge-lg badge-warning">{{ organization.get_status_display }}</span>
-                    {% elif organization.status == 1 %}
-                    <span style="display: inline-block;"
-                      class="badge badge-lg badge-success">{{ organization.get_status_display }}</span>
-                    {% else %}
-                    <span style="display: inline-block;"
-                      class="badge badge-lg badge-danger">{{ organization.get_status_display }}</span>
-                    {% endif %}
-                    <h3 class="text-bold mt-1"><a
-                        href="{% url 'organizations:organization' organization.name %}">{{ organization.title }}</a>
-                    </h3><span class="cell-detail-description">{{ organization.get_datasets|length }}
-                      Datasets - {{ organization.members|length|add:1 }}
-                      <!-- plus 1 member for the owner-->
-                      Members - {{ organization.get_followers_count }} Followers</span><span
-                      class="cell-detail-description">Added:
-                      {{ organization.create_date|date:"F j, Y"}}
-                  </td>
-                  <td class="cell-detail" data-organization="{{ organization.name }}">
-                    <span class="cell-detail-description">{{ organization.about }}</span></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+          <div class="d-md-flex align-items-center">
+            <div class="d-sm-flex align-items-center">
+              <div class="rounded-circle bg-size-cover bg-position-center flex-shrink-0"
+                style="width: 80px; height: 80px; background-image: url({% if object.profile.avatar %}{{ object.profile.avatar.url }}{% else %}{% gravatar user=object %}{% endif %});">
+              </div>
+              <div class="pt-3 pt-sm-0 ps-sm-3">
+                <h3 class="h5 mb-2">
+                  {% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}<i
+                    class="ai-circle-check-filled fs-base text-success ms-2"></i>
+                </h3>
+                <div class="text-muted fw-medium d-flex flex-wrap flex-sm-nowrap align-iteems-center">
+                  <div class="d-flex align-items-center me-3"><i class="ai-mail me-1"></i>{{ object.email }}</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="tab-pane" id="activity" role="tabpanel">
-            <h4>Activity</h4>
+          <div class="row py-4 mb-2 mb-sm-3">
+            <div class="col-md-6 mb-4 mb-md-0">
+              <table class="table mb-0">
+                <tr>
+                  <td class="border-0 text-muted py-1 px-0">Username</td>
+                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.username }}</td>
+                </tr>
+                <tr>
+                  <td class="border-0 text-muted py-1 px-0">Date joined</td>
+                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.date_joined|date:"d F, Y" }}</td>
+                </tr>
+                <tr>
+                  <td class="border-0 text-muted py-1 px-0">Following</td>
+                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ following_count }} organizations</td>
+                </tr>
+                <tr>
+                  <td class="border-0 text-muted py-1 px-0">Bio</td>
+                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.profile.bio }}</td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>
+
 {% endblock content %}

@@ -177,7 +177,7 @@
   {% endif %}
   </head>
   <!-- Body-->
-  <body  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <body class="{% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <!-- Page loading spinner-->
     <div class="page-loading active">
       <div class="page-loading-inner">
