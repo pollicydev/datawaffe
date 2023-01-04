@@ -1,192 +1,97 @@
 {% extends "base.html" %}
-{% load i18n static user_extras crispy_forms_tags %}
+{% load static user_extras crispy_forms_tags %}
 
-{% block title %}Edit Profile{% endblock %}
+{% block title %}User:{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}{% endblock %}
+
+{% block body_class %}bg-secondary{% endblock body_class %}
 
 {% block content %}
-<div class="page-head">
-  <nav aria-label="breadcrumb" role="navigation">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="{% url 'core:home' %}">Home</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="#">Users</a>
-      </li>
-      <li class="breadcrumb-item active">
-        <a href=""><i
-            class="breadcrumb-icon fa fa-angle-left"></i>{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}</a>
-      </li>
-    </ol>
-  </nav>
-  <h2 class="page-head-title">
-    Edit profile and settings</h2>
-</div>
 
-<div class="main-content container-fluid">
-  <div class="user-profile mt-5">
-    <div class="row">
-      <div class="col-md-3 border-right">
-        {% include 'users/profile-card.html' %}
-      </div>
-      <div class="col-md-9">
-        <ul class="nav nav-tabs" role="tablist">
-          {% include 'users/menu.html' with active='account_email' %}
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane" id="avatar" role="tabpanel">
-            <div class="d-lg-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center mb-4 mb-lg-0">
-                {% if user.profile.avatar %}
-                <img width="250"
-                  src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% gravatar user=user %}{% endif %}"
-                  id="img-uploaded" class="rounded-circle img-thumbnail" alt="" />
-                {% else %}
-                <img src="{% gravatar user=user size=150 %}" id="img-uploaded" class="rounded-circle img-thumbnail"
-                  alt="" />
-                {% endif %}
-                <div class="ml-3">
-                  <h4 class="mb-0">Update your avatar</h4>
-                  <p class="mb-0">
-                    PNG or JPG no bigger than 800px wide and tall.
-                  </p>
-                </div>
-              </div>
-              <div>
-                <form style="display: inline;" action="" class="avatar-update-form" method="GET"
-                  data-target="{% url 'users:update_avatar' %}" data-preview="#avatarPreview">
-                  {% csrf_token %}
+<div class="container mb-lg-4 my-xl-5">
+  <div class="row pt-sm-2 pt-lg-0">
+    <!-- Sidebar (offcanvas on sreens < 992px)-->
+    {% include 'users/menu.html' with active='account_email' %}
+    <!-- Page content-->
+    <div class="col-lg-9 pt-4 pb-2 pb-sm-4">
+      <h1 class="h2 mb-4">Email settings</h1>
+      <!-- Basic info-->
+      <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mt-sm-n1 pb-4 mb-0 mb-lg-1 mb-xl-3"><i
+              class="ai-mail text-primary lead pe-1 me-2"></i>
+            <h2 class="h4 mb-0">Update your email addresses</h2><a class="btn btn-sm btn-secondary ms-auto"
+              href="{% url 'users:detail' user.username  %}">Go to profile</a>
+          </div>
 
-                  <div class="input-group mb-3">
-                    <label class="input-group-text bg-primary text-white" for="upload_avatar">Update</label>
-                    <input style="display: none;" type="file" class="form-control" name="upload_avatar"
-                      id="upload_avatar" accept="image/*">
-                  </div>
-                </form>
-                <form style="display:inline" action="{% url 'users:delete_avatar' %}" method="POST">
-                  {% csrf_token %}
-                  <button class="btn btn-outline-danger btn-sm">Delete</button>
-                </form>
+          {% if user.emailaddress_set.all %}
+          <p>The following e-mail addresses are associated with your account:</p>
+
+          <form action="{% url 'account_email' %}" class="email_list" method="post">
+            {% csrf_token %}
+            <fieldset class="blockLabels">
+
+              {% for emailaddress in user.emailaddress_set.all %}
+              <div class="radio">
+                <label for="email_radio_{{forloop.counter}}"
+                  class="{% if emailaddress.primary %}primary_email{%endif%} custom-control custom-radio">
+
+                  <input id="email_radio_{{forloop.counter}}" type="radio" name="email" class="custom-control-input"
+                    {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked" {%endif %}
+                    value="{{emailaddress.email}}" />
+
+                  <span class="custom-control-label">{{ emailaddress.email }}</span>
+                  {% if emailaddress.verified %}
+                  <span class="badge badge-success verified">Verified</span>
+                  {% else %}
+                  <span class="badge badge-danger unverified">Unverified</span>
+                  {% endif %}
+                  {% if emailaddress.primary %}<span class="badge badge-primary primary">Primary</span>{% endif %}
+                </label>
               </div>
+              {% endfor %}
+
+              <div class="form-group mt-2">
+                <button class="secondaryAction btn btn-sm btn-outline-primary" type="submit" name="action_primary">Make
+                  primary</button>
+                <button class="secondaryAction btn btn-sm btn-outline-success" type="submit" name="action_send">Re-send
+                  verification</button>
+                <button class="primaryAction btn btn-sm btn-outline-danger" type="submit" name="action_remove">Remove
+                  email</button>
+              </div>
+
+            </fieldset>
+          </form>
+          {% else %}
+
+          <div class="alert alert-danger" role="alert"><strong>Warning: </strong>You currently do not have any e-mail
+            address set up. You should really add an e-mail address so you can
+            receive notifications, reset your password, etc.</div>
+
+          {% endif %}
+
+
+          <h4 class="text-bold mt-4">Add more email addresses</h4>
+
+          <form method="post" action="{% url 'account_email' %}" class="add_email">
+            {% csrf_token %}
+            <div class="mb-3">
+              {{ form.email|as_crispy_field }}
             </div>
-          </div>
-          <div class="tab-pane active" id="email" role="tabpanel">
-            <h3 class="text-bold">E-mail Addresses</h3>
-
-            {% if user.emailaddress_set.all %}
-            <p>{% translate 'The following e-mail addresses are associated with your account:' %}</p>
-
-            <form action="{% url 'account_email' %}" class="email_list" method="post">
-              {% csrf_token %}
-              <fieldset class="blockLabels">
-
-                {% for emailaddress in user.emailaddress_set.all %}
-                <div class="radio">
-                  <label for="email_radio_{{forloop.counter}}"
-                    class="{% if emailaddress.primary %}primary_email{%endif%} custom-control custom-radio">
-
-                    <input id="email_radio_{{forloop.counter}}" type="radio" name="email" class="custom-control-input"
-                      {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked" {%endif %}
-                      value="{{emailaddress.email}}" />
-
-                    <span class="custom-control-label">{{ emailaddress.email }}</span>
-                    {% if emailaddress.verified %}
-                    <span class="badge badge-success verified">{% translate "Verified" %}</span>
-                    {% else %}
-                    <span class="badge badge-danger unverified">{% translate "Unverified" %}</span>
-                    {% endif %}
-                    {% if emailaddress.primary %}<span
-                      class="badge badge-primary primary">{% translate "Primary" %}</span>{% endif %}
-                  </label>
-                </div>
-                {% endfor %}
-
-                <div class="form-group">
-                  <button class="secondaryAction btn btn-outline-primary" type="submit"
-                    name="action_primary">{% translate 'Make primary' %}</button>
-                  <button class="secondaryAction btn btn-outline-success" type="submit"
-                    name="action_send">{% translate 'Re-send verification' %}</button>
-                  <button class="primaryAction btn btn-outline-danger" type="submit"
-                    name="action_remove">{% translate 'Remove email' %}</button>
-                </div>
-
-              </fieldset>
-            </form>
-            {% else %}
-            <p><strong>{% translate 'Warning:'%}</strong>
-              {% translate "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}
-            </p>
-
-            {% endif %}
-
-
-            <h3 class="text-bold">Add e-mail address</h3>
-
-            <form method="post" action="{% url 'account_email' %}" class="add_email">
-              {% csrf_token %}
-              {{ form|crispy }}
-              <button class="btn btn-primary" name="action_add" type="submit">{% translate "Add E-mail" %}</button>
-            </form>
-          </div>
-          <div class="tab-pane" id="account" role="tabpanel">
-            <div class="card">
-              <!-- Card header -->
-              <div class="card-header">
-                <h4 class="mb-0 text-bold">Delete your account permanently</h4>
-              </div>
-              <!-- Card body -->
-              <div class="card-body p-4">
-                <p class="text-danger lead">Warning</p>
-                <p class="text-danger">
-                  If you close your account, all your data will be deleted permanently.
-                </p>
-                <button type="button" class="btn btn-outline-danger btn-xl" data-toggle="modal"
-                  data-target="#deleteAccountModal">
-                  Delete My Account
-                </button>
-              </div>
-            </div>
-          </div>
+            <button class="btn btn-primary" name="action_add" type="submit">Add email</button>
+          </form>
         </div>
-      </div>
+      </section>
     </div>
   </div>
 </div>
 
-{% endblock %}
+{% endblock content %}
 
-{% block modal %}
-<div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="deleteAccountModalLabel">Wait, are you sure?</h2>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <form method="post" action="{% url 'users:delete' %}">
-          {% csrf_token %}
-          {{ delete_user_form }}
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        {% comment %} <button type="submit" class="btn btn-primary">Delete my account</button> {% endcomment %}
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock modal %}
 
 {% block inline_javascript %}
-
 <script type="text/javascript">
   window.addEventListener('DOMContentLoaded', function () {
-    const message = "{% translate 'Do you really want to remove the selected e-mail address?' %}";
+    const message = "Do you really want to remove the selected email address?";
     const actions = document.getElementsByName('action_remove');
     if (actions.length) {
       actions[0].addEventListener("click", function (e) {
@@ -197,84 +102,6 @@
     }
     Array.from(document.getElementsByClassName('form-group')).forEach(x => x.classList.remove('row'));
   });
-
-</script>
-
-<script>
-  (function ($) {
-
-    $.fn.avatarUpdateForm = function () {
-      var form = this; // `this` will point an `<input>` element below
-      form.find('input[type="file"]').change(function (event) {
-        // `this` is an <input type="file"> (not a jQuery object, plain DOM!)
-        var input = this;
-        if (input.files && input.files[0]) {
-          var sizeKb = (input.files[0].size / 1024).toFixed(4);
-          if (sizeKb > 1000) {
-            Swal.fire({
-              type: 'warning',
-              text: `Profile image size must be under 1000KB, your file is ${sizeKb}KB`,
-              customClass: {
-                confirmButton: 'btn btn-md btn-primary',
-              },
-              buttonsStyling: false
-            });
-          } else {
-            var data = new FormData(form.get(0));
-            var reader = new FileReader();
-            reader.onload = function (re) {
-              Swal.fire({
-                text: 'Use this as your avatar? Confirm that your face is front and center',
-                imageUrl: re.target.result,
-                imageWidth: 240,
-                imageHeight: 240,
-                imageAlt: 'new profile picture',
-                animation: false,
-                showCancelButton: true,
-                cancelButtonText: 'No',
-                confirmButtonText: 'Yes',
-                customClass: {
-                  image: 'avatar-xl rounded-circle',
-                  confirmButton: 'btn btn-md btn-primary mr-3',
-                  cancelButton: 'btn btn-md btn-secondary',
-                },
-                buttonsStyling: false
-              }).then(result => {
-                if (result.value) {
-                  var req = new XMLHttpRequest();
-                  req.open("POST", form.attr('data-target'), true);
-                  req.onload = function (xe) {
-                    location.reload();
-                  };
-                  data.append('avatar', re.target.result);
-                  data.append('csrfmiddlewaretoken', $('[name=csrfmiddlewaretoken]').val());
-                  req.send(data);
-
-                  // Display progress
-                  var preview = $(form.attr('data-preview'));
-                  preview.html(
-                    '<div style="width: 120px; height: 120px; padding: 30px; margin: 0;">' +
-                    '<div class="spinner-border dccn-loading-progress" ' +
-                    'style="margin: 0; padding: 0; width: 60px; height: 60px;" role="status">' +
-                    '<span class="sr-only">Loading...</span>' +
-                    '</div></div>'
-                  )
-                } else {
-                  $(input).val('');
-                }
-              });
-            };
-            reader.readAsDataURL(input.files[0]);
-          }
-        }
-        event.preventDefault();
-      });
-    };
-
-    //////////////////////////////
-    // Associating the plugins
-    $('.avatar-update-form').avatarUpdateForm();
-  }(jQuery));
 
 </script>
 {% endblock %}

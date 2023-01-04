@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.files.base import ContentFile
 from rrap.invites.constants import InviteStatus
+from allauth.account.views import PasswordChangeView
 
 User = get_user_model()
 
@@ -157,3 +158,12 @@ def user_organizations(request, username):
             "pending_invites": pending_invites,
         },
     )
+
+
+class CustomChangePasswordView(PasswordChangeView):
+    def get_context_data(self, **kwargs):
+        context = super(CustomChangePasswordView, self).get_context_data(**kwargs)
+
+        context["delete_user_form"] = DeleteUserForm(user=User)
+
+        return context

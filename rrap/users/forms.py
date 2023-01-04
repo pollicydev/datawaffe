@@ -3,7 +3,7 @@ from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, HTML, Div
+from crispy_forms.layout import Layout, Submit, HTML, Div, Row, Column
 from .utils import PasswordProtectedForm
 from allauth.account.forms import (
     LoginForm,
@@ -92,7 +92,7 @@ class CustomAddEmailForm(AddEmailForm):
     def __init__(self, *args, **kwargs):
         super(CustomAddEmailForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control"
+            field.widget.attrs["class"] = "form-control form-control-lg"
 
 
 class CustomChangePasswordForm(ChangePasswordForm):
@@ -100,3 +100,7 @@ class CustomChangePasswordForm(ChangePasswordForm):
         super(CustomChangePasswordForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs["class"] = "form-control"
+
+        self.fields["oldpassword"].label = ""
+        self.fields["password1"].label = ""
+        self.fields["password2"].label = ""

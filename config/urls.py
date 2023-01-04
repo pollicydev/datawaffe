@@ -10,6 +10,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 from django.views.generic import TemplateView
 from rrap.core import views as core_views
+from rrap.users.views import CustomChangePasswordView
 
 urlpatterns = [
     path("core/", include("rrap.core.urls", namespace="core")),
@@ -26,6 +27,11 @@ urlpatterns = [
     path("select2/", include("django_select2.urls")),
     # User management
     path("users/", include("rrap.users.urls", namespace="users")),
+    path(
+        "accounts/password/change/",
+        CustomChangePasswordView.as_view(),
+        name="account_change_password",
+    ),
     path("accounts/", include("allauth.urls")),
     path("map/", core_views.map, name="map"),
     # path("publications/", core_views.publications_index, name="publications"),

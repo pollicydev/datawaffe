@@ -67,12 +67,12 @@ class OnboardingForm(forms.ModelForm):
 class PasswordProtectedForm(forms.Form):
     password = forms.CharField(
         strip=False,
-        label=_("Enter your password and hit ENTER"),
+        label="",
         widget=forms.PasswordInput(
             attrs={
-                "placeholder": _("Password"),
-                "class": "form-control width-100% margin-top-xxs",
-            }
+                "placeholder": "Enter your password and hit ENTER",
+                "class": "form-control form-control-lg",
+            },
         ),
     )
 
