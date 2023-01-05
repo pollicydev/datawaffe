@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static user_extras %}
+{% load static user_extras wagtailimages_tags %}
 
 {% block title %}User:{% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}{% endblock %}
 
@@ -58,6 +58,45 @@
                   <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.profile.bio }}</td>
                 </tr>
               </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card border-0 py-1 p-md-2 p-xl-3 p-xxl-4 mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center mt-sm-n1 pb-4 mb-0 mb-lg-1 mb-xl-3"><i
+              class="ai-card text-primary lead pe-1 me-2"></i>
+            <h2 class="h4 mb-0">Following</h2>
+          </div>
+          <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for organisation in object.profile.get_following %}
+            <div class="col">
+              <div class="card h-100 rounded-3 p-3 p-sm-4">
+                <div class="d-flex align-items-center pb-2 mb-1">
+                  {% if organisation.logo %}
+                  {% image organisation.logo width-200 as logo %}
+                  <img src="{{ logo.url }}" width="48" alt="{{ organisation.title }} logo">
+                  {% else %}
+                  <img src="{% static 'images/dw_logo.png' %}" width="48" alt="{{ organisation.title }} logo">
+                  {% endif %}
+                  <h3 class="h6 mb-0 ms-3">{{ organisation.title }}</h3>
+                  <div class="d-flex ms-auto">
+                    <a class="nav-link fs-xl fw-normal py-1 pe-0 ps-1 ms-2" role="button" href="{{ organisation.url }}"
+                      data-bs-toggle="tooltip" aria-label="Visit organisation"
+                      data-bs-original-title="Visit organisation"><i class="ai-link"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            <!-- Add payment method-->
+            <div class="col">
+              <div
+                class="card h-100 justify-content-center align-items-center border-dashed rounded-3 py-5 px-3 px-sm-4">
+                <a class="stretched-link d-flex align-items-center fw-semibold text-decoration-none"
+                  href="/organisations"><i class="ai-circle-plus fs-xl me-2"></i>Add organisation</a>
+              </div>
             </div>
           </div>
         </div>

@@ -209,12 +209,9 @@
             </a>
             <div class="dropdown-menu dropdown-menu-end my-1">
               <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pb-1">Account</h6>
-              <a class="dropdown-item" href="{% url 'users:detail' user.username  %}"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Overview</a>
-              <a class="dropdown-item" href="{% url 'users:update_profile'  %}"><i class="ai-settings fs-lg opacity-70 me-2"></i>Settings</a>
-              <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pt-3 pb-1">Dashboard</h6>
-              <a class="dropdown-item" href="#"><i class="ai-list fs-lg opacity-70 me-2"></i>Organisations</a>
-              <a class="dropdown-item d-flex align-items-center" href="account-chat.html"><i class="ai-inbox fs-lg opacity-70 me-2"></i>Invitations<span class="badge bg-danger ms-3">{% if total_pending_invitations != 0 %}({{total_pending_invitations}}){% endif %}</span></a>
-              <div class="dropdown-divider"></div><a class="dropdown-item" href="{% url 'account_logout' %}"><i class="ai-logout fs-lg opacity-70 me-2"></i>Sign out</a>
+              <a class="dropdown-item" href="{% url 'users:detail' user.username  %}"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Profile</a>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'users:user_invites' user.username %}"><i class="ai-inbox fs-lg opacity-70 me-2"></i>Invitations<span class="badge bg-danger ms-3">{% if total_pending_invitations != 0 %}({{total_pending_invitations}}){% endif %}</span></a>
+              <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="{% url 'account_logout' %}"><i class="ai-logout fs-lg opacity-70 me-2"></i>Sign out</a>
             </div>
           </div>
             {% else %}
