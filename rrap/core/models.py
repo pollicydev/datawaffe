@@ -67,20 +67,27 @@ class HomePage(Page):
     def get_context(self, request, *args, **kwargs):
 
         from rrap.blog.models import BlogIndexPage, BlogPage
+        from rrap.organizations.models import OrganisationPage
 
         context = super().get_context(request, *args, **kwargs)
 
         blogs = BlogPage.objects.live().public().order_by("-date")[:5]
 
+        organisations = (
+            OrganisationPage.objects.live().public().order_by("-first_published_at")
+        )
+
+        context["first_orgs"] = organisations[10:]
+        context["last_orgs"] = organisations[:10]
+
         context["publications"] = (
             PublicationPage.objects.live().public().order_by("-date_published")
         )
 
+        # should return only four out of the initial 5
         context["latest_article"] = blogs.first()
 
-        context["other_articles"] = blogs[
-            1:
-        ]  # should return only four out of the initial 5
+        context["other_articles"] = blogs[1:]
 
         context["indexpages"] = {
             "blog": BlogIndexPage.objects.first().get_url(),
