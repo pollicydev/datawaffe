@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static humanize %}
 
 {% block stylesheet %}
 <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
@@ -44,7 +44,7 @@
             {% if request.user.is_authenticated %}
             <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="/map">Explore the impact</a>
             {% else %}
-            <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="{{ signup_url }}">Sign up</a>
+            <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="{% url 'account_signup' %}">Sign up</a>
             {% endif %}
           </div>
         </div>
@@ -498,115 +498,64 @@
       aria-label="Go to slide 4"></span></div>
 </section>
 
-<section class="container pt-2 pt-sm-4 pb-5 mb-lg-3 mb-xl-4 mb-xxl-5">
+<section class="container pt-2 pt-sm-4 pb-5">
   <h2 class="h1 text-center pb-3 pb-lg-4">Featured publications</h2>
   <div class="row row-cols-1 row-cols-md-3 g-3">
-    <!-- Item-->
-    <div class="col">
-      <div class="card bg-primary border-0 h-100 overflow-hidden pt-3 pt-xl-4 px-lg-3 px-xl-4">
-        <div class="card-body position-relative zindex-2 pb-0">
-          <h3 class="h4 card-title text-light">Robotics &amp; artificial intelligence</h3>
-          <p class="card-text text-light opacity-80 pb-sm3 pb-md-4 mb-2">Cursus volutpat pharetra vel in. Felis ut nulla
-            dui nec, vulputate viverra sit eget vel. Convallis diam nunc, vitae, orci, nibh quam tristique pulvinar. In
-            semper etiam aliquam molestie arcu. Nullam id sed tempor, volutpat blandit urna sagittis, commodo
-            vestibulum. Adipiscing dictumst nunc enim massa.</p><a class="btn btn-lg btn-link text-light px-0"
-            href="#">Read publication<i class="ai-arrow-right ms-2"></i></a>
-        </div>
-      </div>
-    </div>
-    <!-- Item-->
+    {% for publication in publications %}
     <div class="col">
       <div class="card bg-faded-primary border-0 h-100 overflow-hidden py-3 pt-xl-4 px-lg-3 px-xl-4">
         <div class="card-body position-relative zindex-2 pb-0">
-          <h3 class="h4 card-title text-primary">Toothbrush from natural eco materials</h3>
-          <p class="card-text text-primary pb-sm3 pb-md-4 mb-2">Cursus volutpat pharetra vel in. Felis ut nulla dui nec,
-            vulputate viverra sit eget vel. Convallis diam nunc, vitae, orci, nibh quam tristique pulvinar. In semper
-            etiam aliquam molestie arcu. Nullam id sed tempor, volutpat blandit urna sagittis, commodo vestibulum.
-            Adipiscing dictumst nunc enim massa.</p><a class="btn btn-lg btn-link px-0" href="#">Read publication<i
+          <h3 class="h4 card-title text-primary">{{ publication.title }}</h3>
+          <p class="card-text text-primary pb-sm3 pb-md-4 mb-2">{{ publication.summary }}</p><a
+            class="btn btn-lg btn-link px-0" href="{{ publication.url }}">Read publication<i
               class="ai-arrow-right ms-2"></i></a>
         </div>
       </div>
     </div>
-
-    <div class="col">
-      <div class="card bg-faded-primary border-0 h-100 overflow-hidden pt-3 pt-xl-4 px-lg-3 px-xl-4">
-        <div class="card-body position-relative zindex-2 pb-0">
-          <h3 class="h4 card-title text-primary">Toothbrush from natural eco materials</h3>
-          <p class="card-text text-primary pb-sm3 pb-md-4 mb-2">Cursus volutpat pharetra vel in. Felis ut nulla dui nec,
-            vulputate viverra sit eget vel. Convallis diam nunc, vitae, orci, nibh quam tristique pulvinar. In semper
-            etiam aliquam molestie arcu. Nullam id sed tempor, volutpat blandit urna sagittis, commodo vestibulum.
-            Adipiscing dictumst nunc enim massa.</p><a class="btn btn-lg btn-link px-0" href="#">Read publication<i
-              class="ai-arrow-right ms-2"></i></a>
-        </div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
   <!-- More button-->
   <div class="text-center my-2 mt-sm-3 mt-lg-0 pt-4 pb-1 pb-sm-3 pb-md-4 pt-lg-5"><a class="btn btn-outline-primary"
-      href="#">View all publications</a></div>
+      href="{{ indexpages.publications }}">View all publications</a></div>
 </section>
 
 <!-- Blog-->
-<section class="container py-5 mb-sm-2 mb-md-0 my-lg-3 my-xl-4 my-xxl-5">
+<section class="container mb-sm-2 mb-md-0 my-lg-3 my-xl-4 my-xxl-5">
   <h2 class="h1 text-center text-sm-start pb-3 pt-2 pt-sm-3 pt-md-4 pt-xl-5 mt-lg-2 mb-3 mb-lg-4">Our blog</h2>
   <div class="row">
     <div class="col-lg-6 pb-3 mb-2 mb-sm-3"><a
         class="card h-100 border-0 rounded-1 overflow-hidden text-decoration-none bg-size-cover bg-position-center"
-        href="#"
+        href="{{ latest_article.url }}"
         style="max-width: 600px; min-height: 300px; background-image: url(assets/img/landing/corporate/blog-img.jpg);">
         <div class="bg-dark position-absolute top-0 start-0 w-100 h-100 opacity-50"></div>
         <div
           class="card-body dark-mode d-flex flex-column justify-content-end dark-mode h-100 position-relative zindex-2">
-          <h3>New business strategies for 2022</h3>
-          <p class="mb-0">Leo vitae sem eget eget at in vivamus placerat sodales tristique risusiis senectusic quisque
-            faucibus est justo egetert lobortis ultrices eu dignissim. Dapibus est ac risus maximus...</p>
+          <h3>{{ latest_article.title }}</h3>
+          <p class="mb-0">{{ latest_article.introduction }}</p>
         </div>
       </a></div>
     <div class="col-lg-6">
       <div class="row row-cols-1 row-cols-sm-2 g-4">
+        {% for post in other_articles %}
         <article class="col">
           <div class="pb-4 pt-2 pt-xl-3 ms-md-3 border-bottom">
-            <h3 class="h4"><a href="#">Promotion from scratch to the first sales</a></h3>
-            <p class="mb-4">Suscipit consectetur nam hac in enim, adipiscing aenean tortor ac commodo eu nibh a tempus
-              sed...</p>
-            <div class="d-flex align-items-center"><span class="fs-sm text-muted">August 13, 2022</span><span
-                class="fs-xs opacity-20 mx-3">|</span><a class="badge text-nav fs-xs border" href="#">Strategy</a></div>
-          </div>
-        </article>
-        <article class="col">
-          <div class="pb-4 pt-2 pt-xl-3 ms-md-3 border-bottom">
-            <h3 class="h4"><a href="#">New business strategies for 2022</a></h3>
-            <p class="mb-4">Orci massa sapien varius odio et vel egestas ultricies commodo tristique ullamcorper sit
-              vitae cursus...</p>
-            <div class="d-flex align-items-center"><span class="fs-sm text-muted">August 2, 2022</span><span
-                class="fs-xs opacity-20 mx-3">|</span><a class="badge text-nav fs-xs border" href="#">Business</a></div>
-          </div>
-        </article>
-        <article class="col">
-          <div class="pb-4 pt-2 pt-xl-3 ms-md-3 border-bottom">
-            <h3 class="h4"><a href="#">Outgoing year results, the main news</a></h3>
-            <p class="mb-4">Mauris suscipit in tempor, platea lobortis mollis rutrum aliquam pulvinar ultricies orci
-              augue libero...</p>
-            <div class="d-flex align-items-center"><span class="fs-sm text-muted">July 27, 2022</span><span
-                class="fs-xs opacity-20 mx-3">|</span><a class="badge text-nav fs-xs border" href="#">Analytics</a>
+            <h3 class="h4"><a href="#">{{ post.title }}</a></h3>
+            <p class="mb-4">{{ post.introduction }}</p>
+            <div class="d-flex align-items-center"><span class="fs-sm text-muted">{{ post.date|naturaltime }}</span>
+              <span class="fs-xs opacity-20 mx-3">|</span>
+              {% for type in post.blog_page_type.all %}
+              <a class="badge text-nav fs-xs border me-2" href="#">{{ type.name }}</a>
+              {% endfor %}
             </div>
           </div>
         </article>
-        <article class="col">
-          <div class="pb-4 pt-2 pt-xl-3 ms-md-3 border-bottom">
-            <h3 class="h4"><a href="#">How to define goals and objectives</a></h3>
-            <p class="mb-4">Sed convallis integer egestas sapien sapien purus enim massa porttitor vulputate metus purus
-              in fringilla...</p>
-            <div class="d-flex align-items-center"><span class="fs-sm text-muted">July 19, 2022</span><span
-                class="fs-xs opacity-20 mx-3">|</span><a class="badge text-nav fs-xs border" href="#">Strategy</a></div>
-          </div>
-        </article>
+        {% endfor %}
       </div>
     </div>
   </div>
   <div class="text-end pb-md-4 pt-3 mt-2 mt-sm-3 mt-lg-4"><a
-      class="d-inline-flex align-items-center fw-semibold text-decoration-none" href="#">All articles<i
-        class="ai-arrow-right fs-4 ms-2"></i></a></div>
+      class="d-inline-flex align-items-center fw-semibold text-decoration-none" href="{{ indexpages.blog }}">All
+      articles<i class="ai-arrow-right fs-4 ms-2"></i></a></div>
 </section>
 
 {% endblock content %}

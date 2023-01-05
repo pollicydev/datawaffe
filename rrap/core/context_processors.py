@@ -1,5 +1,5 @@
 from django.conf import settings as django_settings
-from rrap.organizations.models import Organization
+from rrap.organizations.models import Organization, OrganisationPage
 from rrap.datasets.models import Dataset
 from rrap.core.models import Location, Topic
 from rrap.invites.constants import InviteStatus
@@ -25,7 +25,7 @@ def settings(request):
         "sentry_dsn": django_settings.SENTRY_DSN,
         "total_topics": Topic.objects.count(),
         "total_datasets": Dataset.objects.count(),
-        "total_organizations": Organization.objects.count(),
+        "total_organisations": OrganisationPage.objects.count(),
         "total_locations": Location.objects.count(),
         "pending_invitations": pending_invitations,
         "total_pending_invitations": total_pending_invitations,
