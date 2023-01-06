@@ -29,7 +29,7 @@
       </div>
       <div class="col-lg-5 order-lg-1 text-center text-lg-start me-xl-5"><span
           class="badge bg-faded-warning text-warning fs-sm">Leave No One Behind&nbsp; 🚀</span>
-        <h1 class="display-4 py-3 my-2 mb-xl-3">Explore data on {{ total_organisations }} LGBT and Sex Work
+        <h1 class="display-5 py-3 my-2 mb-xl-3">Explore data on {{ total_organisations }} LGBT and Sex Work
           organisations across Uganda </h1>
         <ul class="list-unstyled d-table text-start mx-auto mx-lg-0 mb-0">
           <li class="d-flex pb-2 mb-1"><i class="ai-check-alt text-primary lead me-2"></i>Open data to aid inclusive
@@ -229,7 +229,7 @@
   </div>
 </section>
 
-<section class="overflow-hidden py-5 mb-lg-3 mb-xl-4 mb-xxl-5">
+<section class="overflow-hidden my-5 py-5 mb-lg-3 mb-xl-4 mb-xxl-5">
   <div class="container py-5 mb-2 mb-lg-3">
     <!-- Parallax here -->
     <div class="position-relative mx-auto" style="max-width: 1198px;">
@@ -259,45 +259,46 @@
     </div>
 
     <h2 class="h1 text-center mt-5">Working together to go further</h2>
-    <p class="text-center mb-0">Join over {{ total_organisations }} LGBT and sex work organisations</p>
+    <p class="text-center mb-0">Join over {{ total_organisations }} LGBT and sex work organisations making impact in key
+      populations across Uganda</p>
   </div>
 
   <!-- org logos -->
-  <div class="swiper pb-4 swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode"
-    data-swiper-options="{
-&quot;spaceBetween&quot;: 24,
-&quot;loop&quot;: true,
-&quot;grabCursor&quot;: false,
-&quot;centeredSlides&quot;: true,
-&quot;autoplay&quot;: {
-  &quot;delay&quot;: 0,
-  &quot;disableOnInteraction&quot;: false
-},
-&quot;freeMode&quot;: true,
-&quot;speed&quot;: 10000,
-&quot;freeModeMomentum&quot;: false,
-&quot;breakpoints&quot;: {
-  &quot;0&quot;: { &quot;slidesPerView&quot;: 2 },
-  &quot;400&quot;: { &quot;slidesPerView&quot;: 3 },
-  &quot;600&quot;: { &quot;slidesPerView&quot;: 4 },
-  &quot;800&quot;: { &quot;slidesPerView&quot;: 5 },
-  &quot;1200&quot;: { &quot;slidesPerView&quot;: 6 },
-  &quot;1400&quot;: { &quot;slidesPerView&quot;: 7 },
-  &quot;1600&quot;: { &quot;slidesPerView&quot;: 8 }
-}
-}">
+  <div class="swiper pb-4" data-swiper-options="{
+    &quot;spaceBetween&quot;: 24,
+    &quot;loop&quot;: true,
+    &quot;grabCursor&quot;: false,
+    &quot;centeredSlides&quot;: true,
+    &quot;autoplay&quot;: {
+      &quot;delay&quot;: 0,
+      &quot;disableOnInteraction&quot;: false
+    },
+    &quot;freeMode&quot;: true,
+    &quot;speed&quot;: 10000,
+    &quot;freeModeMomentum&quot;: false,
+    &quot;breakpoints&quot;: {
+      &quot;0&quot;: { &quot;slidesPerView&quot;: 2 },
+      &quot;400&quot;: { &quot;slidesPerView&quot;: 3 },
+      &quot;600&quot;: { &quot;slidesPerView&quot;: 4 },
+      &quot;800&quot;: { &quot;slidesPerView&quot;: 5 },
+      &quot;1200&quot;: { &quot;slidesPerView&quot;: 6 },
+      &quot;1400&quot;: { &quot;slidesPerView&quot;: 7 },
+      &quot;1600&quot;: { &quot;slidesPerView&quot;: 8 }
+    }
+  }">
     <div class="swiper-wrapper" style="transition-timing-function: linear !important;">
       {% for item in first_orgs %}
       <div class="swiper-slide">
-        <div class="bg-gray rounded-4">
+        <div class="bg-gray rounded-4 py-3 d-flex aligns-items-center justify-content-center" data-bs-toggle="popover"
+          data-bs-placement="top" data-bs-trigger="hover" title="{{ item.title }}">
           {% if item.logo %}
           {% image item.logo width-200 as logo %}
-          <img class="d-block d-dark-mode-none mx-auto" src="{{ logo.url }}" width="196" alt="{{ item.title }} Logo">
-          <img class="d-none d-dark-mode-block mx-auto" src="{{ logo.url }}" width="196" alt="{{ item.title }} Logo">
+          <img class="d-block d-dark-mode-none mx-auto" src="{{ logo.url }}" width="100" alt="{{ item.title }} Logo">
+          <img class="d-none d-dark-mode-block mx-auto" src="{{ logo.url }}" width="100" alt="{{ item.title }} Logo">
           {% else %}
-          <img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/dw_logo.png' %}" width="196"
+          <img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/dw_logo.png' %}" width="100"
             alt="{{ item.title }} Logo">
-          <img class="d-none d-dark-mode-block mx-auto" src="{% static 'images/dw_logo.png' %}" width="196"
+          <img class="d-none d-dark-mode-block mx-auto" src="{% static 'images/dw_logo.png' %}" width="100"
             alt="{{ item.title }} Logo">
           {% endif %}
         </div>
@@ -306,42 +307,42 @@
     </div>
   </div>
   <!-- reverse org list -->
-  <div class="swiper swiper-initialized swiper-horizontal swiper-pointer-events swiper-free-mode swiper-rtl" dir="rtl"
-    data-swiper-options="{
-&quot;spaceBetween&quot;: 24,
-&quot;loop&quot;: true,
-&quot;grabCursor&quot;: false,
-&quot;centeredSlides&quot;: true,
-&quot;autoplay&quot;: {
-  &quot;delay&quot;: 0,
-  &quot;disableOnInteraction&quot;: false
-},
-&quot;freeMode&quot;: true,
-&quot;speed&quot;: 8500,
-&quot;freeModeMomentum&quot;: false,
-&quot;breakpoints&quot;: {
-  &quot;0&quot;: { &quot;slidesPerView&quot;: 2 },
-  &quot;400&quot;: { &quot;slidesPerView&quot;: 3 },
-  &quot;600&quot;: { &quot;slidesPerView&quot;: 4 },
-  &quot;800&quot;: { &quot;slidesPerView&quot;: 5 },
-  &quot;1200&quot;: { &quot;slidesPerView&quot;: 6 },
-  &quot;1400&quot;: { &quot;slidesPerView&quot;: 7 },
-  &quot;1600&quot;: { &quot;slidesPerView&quot;: 8 }
-}
-}">
+  <div class="swiper" dir="rtl" data-swiper-options="{
+    &quot;spaceBetween&quot;: 24,
+    &quot;loop&quot;: true,
+    &quot;grabCursor&quot;: false,
+    &quot;centeredSlides&quot;: true,
+    &quot;autoplay&quot;: {
+      &quot;delay&quot;: 0,
+      &quot;disableOnInteraction&quot;: false
+    },
+    &quot;freeMode&quot;: true,
+    &quot;speed&quot;: 8500,
+    &quot;freeModeMomentum&quot;: false,
+    &quot;breakpoints&quot;: {
+      &quot;0&quot;: { &quot;slidesPerView&quot;: 2 },
+      &quot;400&quot;: { &quot;slidesPerView&quot;: 3 },
+      &quot;600&quot;: { &quot;slidesPerView&quot;: 4 },
+      &quot;800&quot;: { &quot;slidesPerView&quot;: 5 },
+      &quot;1200&quot;: { &quot;slidesPerView&quot;: 6 },
+      &quot;1400&quot;: { &quot;slidesPerView&quot;: 7 },
+      &quot;1600&quot;: { &quot;slidesPerView&quot;: 8 }
+    }
+  }">
 
     <div class="swiper-wrapper" style="transition-timing-function: linear !important;">
       {% for item in last_orgs %}
       <div class="swiper-slide">
-        <div class="bg-gray rounded-4">
+        <div class="bg-gray rounded-4 py-3 d-flex aligns-items-center justify-content-center" data-bs-toggle="popover"
+          data-bs-placement="bottom" data-bs-trigger="hover" title="{{ item.title }}">
           {% if item.logo %}
           {% image item.logo width-200 as logo %}
-          <img class="d-block d-dark-mode-none mx-auto" src="{{ logo.url }}" width="196" alt="{{ item.title }} Logo">
-          <img class="d-none d-dark-mode-block mx-auto" src="{{ logo.url }}" width="196" alt="{{ item.title }} Logo">
+          <img class="d-block d-dark-mode-none mx-auto" src="{{ logo.url }}" width="100" alt="{{ item.title }} Logo">
+          <img class="d-none d-dark-mode-block mx-auto" src="{{ logo.url }}" width="100" alt="{{ item.title }} Logo">
           {% else %}
-          <img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/dw_logo.png' %}" width="196"
+          <img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/dw_logo.png' %}" width="100"
             alt="{{ item.title }} Logo">
-          <img class="d-none d-dark-mode-block mx-auto" src="{% static 'images/dw_logo.png' %}" width="196"
+          <img class="d-none d-dark-mode-block mx-auto" src="{% static 'images/dw_logo.png' %}" width="100"
             alt="{{ item.title }} Logo">
           {% endif %}
         </div>
@@ -415,15 +416,7 @@
 {% endblock content %}
 
 {% block javascript %}
+<script src="{% static 'vendor/parallax-js/dist/parallax.min.js' %}"></script>
 <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
 <script src="{% static 'vendor/aos/dist/aos.js' %}"></script>
 {% endblock javascript %}
-
-{% block inline_javascript %}
-<script type="text/javascript">
-  // initialize AOS
-  AOS.init();
-  // initialize Swiper
-  const swiper = new Swiper('.swiper');
-
-</script> {% endblock %}

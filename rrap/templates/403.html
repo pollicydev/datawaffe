@@ -2,14 +2,12 @@
 
 {% block title %}Forbidden (403){% endblock %}
 
-
 {% block content %}
-<div class="main-content container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Forbidden (403)</h1>
-            <p>{% if exception %}{{ exception }}{% else %}You're not allowed to access this page.{% endif %}</p>
-        </div>
-    </div>
+<div class="container d-flex flex-column justify-content-center min-vh-100 py-5">
+  <div class="text-center pt-4 mt-lg-2">
+    <h1 class="display-5">Forbidden</h1>
+    <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-5">{% if exception %}{{ exception }}{% else %}You are not allowed to access this page.{% endif %}</p>
+    <a class="btn btn-lg btn-primary" href="/">Return to a safe place</a>
+  </div>
 </div>
 {% endblock content %}
