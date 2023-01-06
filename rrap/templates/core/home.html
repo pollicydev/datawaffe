@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static humanize wagtailimages_tags %}
+{% load static humanize wagtailimages_tags core_tags %}
 
 {% block stylesheet %}
 <link media="screen" href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
@@ -44,7 +44,7 @@
             {% if request.user.is_authenticated %}
             <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="/map">Explore the impact</a>
             {% else %}
-            <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="{% url 'account_signup' %}">Sign up</a>
+            <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="{% url 'account_signup' %}">Get started</a>
             {% endif %}
           </div>
         </div>
@@ -55,21 +55,19 @@
 <!-- Features-->
 <section class="bg-secondary py-5">
   <div class="container mt-1 py-md-2 py-lg-4 py-xxl-5">
-    <h2 class="h1 text-center pt-1 pt-sm-4">A few important stats</h2>
+    <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">A few important stats</h2>
     <p class="text-center mx-auto pb-3 mb-3 mb-lg-4" style="max-width: 480px;">Here is what we can tell from the data so
       far</p>
     <div class="row g-4 pb-2 pb-sm-4 mb-sm-2">
       <!-- Item-->
       <div class="col-md-5">
         <div class="card border-0 h-100">
-          <div class="card-body"><a href="#"><img class="d-dark-mode-none"
-                src="{% static 'images/landing/saas-2/features/01-light.png' %}" alt="Image"><img
-                class="d-none d-dark-mode-block" src="{% static 'images/landing/saas-2/features/01-dark.png' %}"
-                alt="Image"></a>
+          <div class="card-body">
             <div class="pt-3 mt-2 mt-lg-3">
+              <h1 class="display-2 text-primary mb-0">{{ total_organisations }}</h1>
               <h3>Organisations</h3>
-              <p class="mb-0">Dashboard is to present analytical data in a compact form on one page for easy to
-                interpret.</p>
+              <p class="pb-3 mb-1 mb-xl-3">Total number of LGBT & Sex Work organisations on Data Waffe</p><a
+                class="btn btn-link p-0" href="/organisations">Learn more<i class="ai-arrow-right ms-2"></i></a>
             </div>
           </div>
         </div>
@@ -79,12 +77,14 @@
         <div class="card border-0 h-100">
           <div class="card-body overflow-hidden">
             <div class="d-sm-flex align-items-center"><a class="d-block order-sm-2 flex-shrink-0 mt-n4 mb-n2"
-                href="#"><img src="{% static 'images/landing/saas-2/features/02.png' %}" width="308" alt="Image"></a>
+                href="#"><img src="{% static 'images/uganda.png' %}" width="308" alt="Image"></a>
               <div class="order-sm-1 pe-sm-3 me-xl-4">
+                <!-- @todo: calculate this figure through annotating on organisations -->
+                <!-- @todo: also calculate percentage coverage given uganda has 128(sic) districts  -->
+                <h1 class="display-2 text-primary mb-0">54</h1>
                 <h3>Districts covered</h3>
-                <p class="pb-3 mb-1 mb-xl-3">Segmentation allows you to divide users according to a given criterion, and
-                  then for each of the groups to develop an advertisement and product.</p><a class="btn btn-link p-0"
-                  href="#">Learn more<i class="ai-arrow-right ms-2"></i></a>
+                <p class="pb-3 mb-1 mb-xl-3">Districts with available services for key populations</p><a
+                  class="btn btn-link p-0" href="/map">Learn more<i class="ai-arrow-right ms-2"></i></a>
               </div>
             </div>
           </div>
@@ -94,15 +94,20 @@
       <div class="col-md-7">
         <div class="card border-0 h-100">
           <div class="card-body overflow-hidden">
-            <div class="d-sm-flex align-items-center"><a class="d-block order-sm-2 flex-shrink-0 mt-n4 mb-n2"
-                href="#"><img class="d-dark-mode-none" src="{% static 'images/landing/saas-2/features/03-light.png' %}"
-                  width="308" alt="Image"><img class="d-none d-dark-mode-block"
-                  src="{% static 'images/landing/saas-2/features/03-dark.png' %}" width="308" alt="Image"></a>
+            <div class="d-sm-flex align-items-center">
+              <a class="d-block order-sm-2 flex-shrink-0 mt-n4 mb-n2" href="#"><img class="d-dark-mode-none"
+                  src="{% static 'images/landing/saas-2/features/03-light.png' %}" width="308" alt="Image"><img
+                  class="d-none d-dark-mode-block" src="{% static 'images/landing/saas-2/features/03-dark.png' %}"
+                  width="308" alt="Image"></a>
               <div class="order-sm-1 pe-sm-3 me-xl-4">
-                <h3>Key populations supported</h3>
-                <p class="pb-3 mb-1 mb-xl-3">You can easily identify interdependencies between different indicators,
-                  identify tendencies and prevent potential difficulties and problems.</p><a class="btn btn-link p-0"
-                  href="#">Learn more<i class="ai-arrow-right ms-2"></i></a>
+                <h1 class="display-2 text-primary mb-0">{{ communities|length }}</h1>
+                <h3>Key populations</h3>
+                {% for community in communities %}
+                <div class="me-2 mb-2">
+                  <span class="d-inline-block rounded-circle community-icon"
+                    style="width: .625rem; height: .625rem; background-color: {{community.color }};"></span>&nbsp;{{ community.title }}
+                </div>
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -111,14 +116,18 @@
       <!-- Item-->
       <div class="col-md-5">
         <div class="card border-0 h-100">
-          <div class="card-body"><a href="#"><img class="d-dark-mode-none"
-                src="{% static 'images/landing/saas-2/features/04-light.png' %}" alt="Image"><img
-                class="d-none d-dark-mode-block" src="{% static 'images/landing/saas-2/features/04-dark.png' %}"
-                alt="Image"></a>
+          <div class="card-body">
             <div class="pt-3 mt-2 mt-lg-3">
-              <h3>Toll-free numbers</h3>
-              <p class="mb-0">Before launching any marketing activity, you need to assess how successful and effective
-                it can be.</p>
+              <!-- @todo: calculate this figure through annotating on organisations -->
+              <h1 class="display-2 text-primary mb-0">4</h1>
+              <h3>Organisations with toll-free numbers</h3>
+              <ul class="list-unstyled">
+                <li class="d-flex pb-1 mb-2">
+                  <span class="badge bg-faded-warning text-primary fs-sm">
+                    <i class="ai-check-alt text-primary fs-4 mt-n1 me-2"></i>Organisation
+                  </span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -133,18 +142,17 @@
     <!-- Step-->
     <div class="row align-items-center position-relative pb-5 pb-lg-0 mb-1 mb-sm-2 mb-md-4 mb-lg-0">
       <div class="col-md-6 col-xl-5 offset-lg-1 order-md-2 pb-2 pb-md-0 mb-4 mb-md-0" data-aos="fade-left"
-        data-aos-duration="500" data-aos-offset="250" data-disable-parallax-down="md"><img class="d-dark-mode-none"
-          src="{% static 'images/landing/saas-2/steps/01-light.png' %}" width="525" alt="Image"><img
-          class="d-none d-dark-mode-block" src="{% static 'images/landing/saas-2/steps/01-dark.png' %}" width="525"
-          alt="Image">
+        data-aos-duration="500" data-aos-offset="250" data-disable-parallax-down="md">
+
+        <div style="max-width: 525px;margin: 0 auto;" id="keyPopReachCanvas">
+          <canvas id="keyPopReachChart"></canvas>
+        </div>
       </div>
       <div class="col-md-6 col-lg-5 col-xl-4 offset-xl-1 order-md-1" data-aos="fade-right" data-aos-duration="500"
         data-aos-offset="250" data-disable-parallax-down="md">
         <div class="pe-md-4 pe-lg-0">
           <h3 class="h2 mb-3 mb-lg-4">Key populations reached</h3>
-          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Nec id eget malesuada urna at sed est adipiscing auctor at massa id duis
-            fames ut condimentum velit est, donec mauris tortor massa et viverra.</p><a
-            class="btn btn-outline-primary rounded-pill" href="#">Learn more</a>
+          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Organisations have been able to offer services and support to (calculate figure) people in key populations across Uganda</p>
         </div>
       </div>
     </div>
@@ -169,23 +177,16 @@
     <!-- Step-->
     <div class="row align-items-center position-relative pb-5 pb-lg-0 mb-1 mb-sm-2 mb-md-4 mb-lg-0">
       <div class="col-md-6 col-xl-5 offset-xl-1 pb-2 pb-md-0 mb-4 mb-md-0" data-aos="fade-right" data-aos-duration="500"
-        data-aos-offset="250" data-disable-parallax-down="md"><img class="d-dark-mode-none"
-          src="{% static 'images/landing/saas-2/steps/02-light.png' %}" width="473" alt="Image"><img
-          class="d-none d-dark-mode-block" src="{% static 'images/landing/saas-2/steps/02-dark.png' %}" width="473"
-          alt="Image">
+        data-aos-offset="250" data-disable-parallax-down="md">
+        <div style="max-width: 525px;margin: 0 auto;" id="keyPopReachCanvas">
+          <canvas id="keyPopReachChart"></canvas>
+        </div>
       </div>
       <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1" data-aos="fade-left" data-aos-duration="500"
         data-aos-offset="250" data-disable-parallax-down="md">
         <div class="ps-md-4 ps-lg-0">
           <h3 class="h2 mb-3 mb-lg-4">Issues and services</h3>
-          <ul class="list-unstyled mb-0">
-            <li class="d-flex pt-1 mt-2"><i class="ai-check-alt text-primary fs-4 mt-n1 me-2"></i>Forecasting and
-              recommendations</li>
-            <li class="d-flex pt-1 mt-2"><i class="ai-check-alt text-primary fs-4 mt-n1 me-2"></i>Identification of
-              patterns, analysis</li>
-            <li class="d-flex pt-1 mt-2"><i class="ai-check-alt text-primary fs-4 mt-n1 me-2"></i>Segmentation by
-              various methods</li>
-          </ul>
+          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">The organisations are focused on a broad number of issues depending on their mandate. These issues inform their programmes and activities in the communities they support</p>
         </div>
       </div>
     </div>
@@ -209,23 +210,23 @@
       </svg>
     </div>
     <!-- Step-->
-    <div class="row align-items-center position-relative">
-      <div class="col-md-6 col-xl-5 offset-lg-1 order-md-2 d-md-flex justify-content-end pb-2 pb-md-0 mb-4 mb-md-0"
-        data-aos="fade-left" data-aos-duration="500" data-aos-offset="250" data-disable-parallax-down="md"><img
-          class="d-dark-mode-none" src="{% static 'images/landing/saas-2/steps/03-light.png' %}" width="473"
-          alt="Image"><img class="d-none d-dark-mode-block" src="{% static 'images/landing/saas-2/steps/03-dark.png' %}"
-          width="473" alt="Image">
+    <div class="row align-items-center position-relative pb-5 pb-lg-0 mb-1 mb-sm-2 mb-md-4 mb-lg-0">
+      <div class="col-md-6 col-xl-5 offset-lg-1 order-md-2 pb-2 pb-md-0 mb-4 mb-md-0" data-aos="fade-left"
+        data-aos-duration="500" data-aos-offset="250" data-disable-parallax-down="md">
+
+        <div style="max-width: 525px;margin: 0 auto;" id="violationsPieChartCanvas">
+          <canvas id="violationsPieChart"></canvas>
+      </div>
       </div>
       <div class="col-md-6 col-lg-5 col-xl-4 offset-xl-1 order-md-1" data-aos="fade-right" data-aos-duration="500"
         data-aos-offset="250" data-disable-parallax-down="md">
         <div class="pe-md-4 pe-lg-0">
           <h3 class="h2 mb-3 mb-lg-4">On human rights violations and abuses</h3>
-          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Bibendum velit mi, ac sed ac malesuada ultrices non lectus mi
-            pellentesque vel at tempus cras sed a eleifend augue amet mauris, leo ac amet erat.</p><a
-            class="btn btn-outline-primary rounded-pill" href="#">Get connected</a>
+          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Everyday, members of key populations endure various violations that significantly reduce the quality of their lives. This data includes some of the incidents recorded by several organisations</p>
         </div>
       </div>
     </div>
+    
   </div>
 </section>
 
@@ -419,4 +420,86 @@
 <script src="{% static 'vendor/parallax-js/dist/parallax.min.js' %}"></script>
 <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
 <script src="{% static 'vendor/aos/dist/aos.js' %}"></script>
+<script src="{% static 'vendor/chart.js/dist/chart.umd.js' %}"></script>
 {% endblock javascript %}
+
+
+{% block inline_javascript %}
+<script>
+  const keyPopPieCtx = document.getElementById('keyPopReachChart');
+  const violationsPieCtx = document.getElementById('violationsPieChart');
+
+  // Key populations doughnut
+  new Chart(keyPopPieCtx, {
+    type: 'doughnut',
+    "data": {
+      "labels": [{% for dataset in reachPieChartSeries %}"{% get_community_acronym dataset.community_id %}",{% endfor %}],
+      datasets: [{
+        label: 'People reached',
+        data: [{% for dataset in reachPieChartSeries %}{{ dataset.data }},{% endfor %}],
+        backgroundColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}59',{% endfor %}],
+        borderColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}',{% endfor %}],
+        borderWidth: 1
+    }]
+    },
+    "options": {
+      "responsive": true,
+      "aspectRatio": 1,
+      "plugins": {
+        "legend": {
+          "position": "right",
+          "labels": {
+            "usePointStyle": true,
+            "boxWidth": 12,
+            "boxHeight": 12,
+            "useBorderRadius": true,
+            "borderRadius": 8,
+            "padding": 20,
+            "font": {
+              "family": "'Kumbh Sans', sans-serif",
+              "size": 15
+            }
+          }
+        }
+      }
+      }
+  });
+
+  // Violations doughnut
+  new Chart(violationsPieCtx, {
+    type: 'doughnut',
+    "data": {
+      "labels": [{% for dataset in violationsPieChartSeries %}"{% get_violation dataset.violation_id %}",{% endfor %}],
+      datasets: [{
+        label: 'Occurrences',
+        data: [{% for dataset in violationsPieChartSeries %}{{ dataset.data }},{% endfor %}],
+        backgroundColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}BF',{% endfor %}],
+        borderColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}',{% endfor %}],
+        borderWidth: 1
+    }]
+    },
+    "options": {
+      "responsive": true,
+      "aspectRatio": 1,
+      "plugins": {
+        "legend": {
+          "display": false,
+          {% comment %} "position": "right",
+          "labels": {
+            "usePointStyle": true,
+            "boxWidth": 12,
+            "boxHeight": 12,
+            "useBorderRadius": true,
+            "borderRadius": 8,
+            "padding": 20,
+            "font": {
+              "family": "'Kumbh Sans', sans-serif",
+              "size": 15
+            }
+          } {% endcomment %}
+        }
+      }
+      }
+  });
+</script>
+{% endblock inline_javascript %}

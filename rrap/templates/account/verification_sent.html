@@ -5,14 +5,12 @@
 {% block head_title %}{% translate "Verify Your E-mail Address" %}{% endblock %}
 
 {% block inner %}
-<div class="card card-border-color card-border-color-primary">
-  <div class="card-header card-header-divider"><a href="/"><img class="logo-img"
-        src="{% static 'images/logo/logo.png' %}" alt="logo" width="150" /></a><span
-      class="splash-description text-bold">Verify your email address</span></div>
-  <div class="card-body">
-    <p>{% blocktranslate %}We have sent an e-mail to you for verification. Follow the link provided to finalize the
-      signup process. Please contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
-  </div>
+<div class="container d-flex flex-column text-center align-items-center justify-content-center min-vh-100 py-5">
+  <h1 class="display-5">Verify your email address</h1>
+  <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-5">{% blocktranslate %}We sent an e-mail to you to verify whether your
+    email address belongs to you. Follow
+    the link provided to finalize the
+    signup process. <br>Please <a href="/contact">contact us</a> if you do not receive it within a few
+    minutes.{% endblocktranslate %}</p>
 </div>
-<div class="splash-footer"><span><a href="/">Return home</a></span></div>
 {% endblock %}

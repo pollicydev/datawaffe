@@ -67,7 +67,12 @@ class HomePage(Page):
     def get_context(self, request, *args, **kwargs):
 
         from rrap.blog.models import BlogIndexPage, BlogPage
-        from rrap.organizations.models import OrganisationPage
+        from rrap.organizations.models import (
+            OrganisationPage,
+            CommunityReach,
+            ViolenceEntry,
+        )
+        from rrap.core.models import KeyPopulation
 
         context = super().get_context(request, *args, **kwargs)
 
@@ -84,6 +89,8 @@ class HomePage(Page):
             PublicationPage.objects.live().public().order_by("-date_published")
         )
 
+        context["communities"] = KeyPopulation.objects.all()
+
         # should return only four out of the initial 5
         context["latest_article"] = blogs.first()
 
@@ -93,6 +100,98 @@ class HomePage(Page):
             "blog": BlogIndexPage.objects.first().get_url(),
             "publications": PublicationsIndexPage.objects.first().get_url(),
         }
+
+        # getData for chart on reach for this organisation
+        reachData = CommunityReach.objects.values("community", "period", "reach")
+
+        violationsData = ViolenceEntry.objects.values(
+            "violation", "period", "occurences"
+        )
+
+        # list of years from this dataset
+        reach_years = list(
+            reachData.order_by("period")
+            .values_list("period", flat=True)
+            .distinct()
+            .reverse()
+        )
+        # list of key populations from this dataset
+        communities = list(
+            reachData.order_by("community")
+            .values_list("community", flat=True)
+            .distinct()
+        )
+        reach_data_series = {}
+
+        for comm in communities:
+            if not comm in reach_data_series:
+                reach_data_series[comm] = {}
+            for year in reach_years:
+                reach_data_series[comm][year] = 0
+
+        for dataset in reachData:
+            comm = dataset["community"]
+            year = dataset["period"]
+            reach = dataset["reach"]
+            reach_data_series[comm][year] = reach
+
+        reachChartSeries = [
+            {"community_id": d, "data": list(reach_data_series[d].values())}
+            for d in reach_data_series
+        ]
+
+        reachPieChartSeries = [
+            {"community_id": d, "data": sum(list(reach_data_series[d].values()))}
+            for d in reach_data_series
+        ]
+
+        # list of years from this dataset
+        violations_years = list(
+            violationsData.order_by("period")
+            .values_list("period", flat=True)
+            .distinct()
+            .reverse()
+        )
+        # list of key populations from this dataset
+        violations = list(
+            violationsData.order_by("violation")
+            .values_list("violation", flat=True)
+            .distinct()
+        )
+        violations_data_series = {}
+
+        for violation in violations:
+            if not violation in violations_data_series:
+                violations_data_series[violation] = {}
+            for year in violations_years:
+                violations_data_series[violation][year] = 0
+
+        for dataset in violationsData:
+            violation = dataset["violation"]
+            year = dataset["period"]
+            occurences = dataset["occurences"]
+            violations_data_series[violation][year] = occurences
+
+        violationsChartSeries = [
+            {"violation_id": d, "data": list(violations_data_series[d].values())}
+            for d in violations_data_series
+        ]
+
+        violationsPieChartSeries = [
+            {"violation_id": d, "data": sum(list(violations_data_series[d].values()))}
+            for d in violations_data_series
+        ]
+
+        context["reachData"] = reachData.order_by("period").reverse()
+        context["reach_years"] = reach_years
+        context["reach_communities"] = communities
+        context["reachChartSeries"] = reachChartSeries
+        context["reachPieChartSeries"] = reachPieChartSeries
+
+        context["violationsData"] = violationsData.order_by("period").reverse()
+        context["violations_years"] = violations_years
+        context["violationsChartSeries"] = violationsChartSeries
+        context["violationsPieChartSeries"] = violationsPieChartSeries
 
         return context
 
