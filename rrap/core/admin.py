@@ -88,7 +88,7 @@ class OrganisationsAdmin(ThumbnailMixin, ModelAdmin):
         "admin_thumb",
         "title",
     )
-
+    ordering = ("first_published_at",)
     thumb_image_filter_spec = "fill-300x150"
     thumb_image_width = 100
     thumb_col_header_text = "Logo"

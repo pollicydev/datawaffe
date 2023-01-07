@@ -373,7 +373,7 @@ class OrganisationPage(Page):
         blank=True,
         help_text="Describe organisation in one sentence.",
     )
-    about = models.TextField(max_length=400, null=True, blank=True)
+    about = models.TextField(max_length=1000, null=True, blank=True)
     logo = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -457,9 +457,9 @@ class OrganisationPage(Page):
     ]
 
     content_panels = Page.content_panels + [
-        FieldPanel("about"),
-        FieldPanel("summary"),
         FieldPanel("acronym"),
+        FieldPanel("summary"),
+        FieldPanel("about"),
         FieldPanel("org_type"),
         ImageChooserPanel("logo"),
         MultiFieldPanel(
