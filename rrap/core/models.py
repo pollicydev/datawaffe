@@ -72,7 +72,7 @@ class HomePage(Page):
             CommunityReach,
             ViolenceEntry,
         )
-        from rrap.core.models import KeyPopulation
+        from rrap.core.models import KeyPopulation, Location
 
         context = super().get_context(request, *args, **kwargs)
 
@@ -100,6 +100,22 @@ class HomePage(Page):
             "blog": BlogIndexPage.objects.first().get_url(),
             "publications": PublicationsIndexPage.objects.first().get_url(),
         }
+
+        context["orgs_w_tollfree"] = OrganisationPage.objects.exclude(
+            toll_free__isnull=True
+        )
+
+        used_locations = organisations.values_list("locations", flat=True).distinct()
+
+        districts = Location.objects.filter(id__in=used_locations)
+
+        total_districts_in_ug = Location.objects.all().count()
+
+        context["districts"] = districts
+
+        context["percent_districts"] = round(
+            (districts.count() / total_districts_in_ug) * 100
+        )
 
         # getData for chart on reach for this organisation
         reachData = CommunityReach.objects.values("community", "period", "reach")
