@@ -29,7 +29,7 @@ CACHES = {
 EMAIL_HOST = env("EMAIL_HOST", default="localhost")
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-port
 EMAIL_PORT = 1025
-DEFAULT_FROM_EMAIL = "Rapid Research for Agile Policymaking <support@matchstick.ug>"
+DEFAULT_FROM_EMAIL = "Data Waffe <support@matchstick.ug>"
 
 # django-debug-toolbar
 # ------------------------------------------------------------------------------

@@ -72,7 +72,7 @@ class HomePage(Page):
             CommunityReach,
             ViolenceEntry,
         )
-        from rrap.core.models import KeyPopulation, Location
+        from rrap.core.models import KeyPopulation, Location, Service
 
         context = super().get_context(request, *args, **kwargs)
 

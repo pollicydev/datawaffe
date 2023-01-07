@@ -101,7 +101,7 @@ class PublicationsAdmin(ThumbnailMixin, ModelAdmin):
 
     model = PublicationPage
     menu_label = "Publications"
-    menu_icon = "group"
+    menu_icon = "doc-empty-inverse"
     menu_order = 100
     add_to_settings_menu = False
     exclude_from_explorer = False
