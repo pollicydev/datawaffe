@@ -185,7 +185,7 @@
     <div class="d-none d-lg-flex justify-content-center" data-aos="fade-in" data-aos-duration="500"
       data-aos-offset="250">
       <svg class="d-block text-primary" width="339" height="365" viewBox="0 0 339 365" fill="none"
-        xmlns="http://www.w3.org/2000/svg" style="margin-left: -150px; margin-top: -140px; margin-bottom: -108px;">
+        xmlns="http://www.w3.org/2000/svg" style="margin-left: -80px; margin-top: -140px; margin-bottom: -108px;">
         <path d="M324 291.371C120.111 291.37 240.756 58.7225 1.00032 73.2606" stroke="url(#arrow1)" stroke-width="2"
           stroke-linecap="round" stroke-dasharray="6 6"></path>
         <path
@@ -206,13 +206,12 @@
           <canvas id="servicesPieChart"></canvas>
         </div> {% endcomment %}
         <!-- Table -->
-        {{ test }}
-        <table class="table table-striped fs-sm">
+        <table class="table table-striped">
           <thead>
               <tr class="bg-faded-primary">
-              <th>Issue</th>
+              <th>Services</th>
               <th>Organisations</th>
-              <th>Percent</th>
+              <th>Percentage</th>
               </tr>
           </thead>
           <tbody>
@@ -220,7 +219,7 @@
               <tr>
                   <td>{{ row.title }}</td>
                   <td class="text-center">{{ row.total_orgs }}</td>
-                  <td>({{ row.percentile }})</td>
+                  <td class="text-center">{{ row.percentile }}</td>
               </tr>
               {% endfor %}
           </tbody>
