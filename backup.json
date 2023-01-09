@@ -5267,6 +5267,171 @@
   }
 },
 {
+  "model": "organizations.violenceentry",
+  "pk": 213,
+  "fields": {
+    "sort_order": 0,
+    "page": 23,
+    "violation": 2,
+    "occurences": 20,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 214,
+  "fields": {
+    "sort_order": 1,
+    "page": 23,
+    "violation": 3,
+    "occurences": 30,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 215,
+  "fields": {
+    "sort_order": 2,
+    "page": 23,
+    "violation": 5,
+    "occurences": 20,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 216,
+  "fields": {
+    "sort_order": 3,
+    "page": 23,
+    "violation": 6,
+    "occurences": 30,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 217,
+  "fields": {
+    "sort_order": 4,
+    "page": 23,
+    "violation": 8,
+    "occurences": 15,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 218,
+  "fields": {
+    "sort_order": 5,
+    "page": 23,
+    "violation": 9,
+    "occurences": 30,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 219,
+  "fields": {
+    "sort_order": 6,
+    "page": 23,
+    "violation": 10,
+    "occurences": 30,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 220,
+  "fields": {
+    "sort_order": 7,
+    "page": 23,
+    "violation": 12,
+    "occurences": 20,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 221,
+  "fields": {
+    "sort_order": 8,
+    "page": 23,
+    "violation": 13,
+    "occurences": 40,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 222,
+  "fields": {
+    "sort_order": 9,
+    "page": 23,
+    "violation": 15,
+    "occurences": 50,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 223,
+  "fields": {
+    "sort_order": 10,
+    "page": 23,
+    "violation": 16,
+    "occurences": 10,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 224,
+  "fields": {
+    "sort_order": 11,
+    "page": 23,
+    "violation": 17,
+    "occurences": 30,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 225,
+  "fields": {
+    "sort_order": 12,
+    "page": 23,
+    "violation": 18,
+    "occurences": 50,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 226,
+  "fields": {
+    "sort_order": 13,
+    "page": 23,
+    "violation": 19,
+    "occurences": 20,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.violenceentry",
+  "pk": 227,
+  "fields": {
+    "sort_order": 14,
+    "page": 23,
+    "violation": 20,
+    "occurences": 30,
+    "period": 2021
+  }
+},
+{
   "model": "organizations.communityreach",
   "pk": 1,
   "fields": {
@@ -6136,6 +6301,50 @@
   }
 },
 {
+  "model": "organizations.communityreach",
+  "pk": 80,
+  "fields": {
+    "sort_order": 0,
+    "page": 23,
+    "community": 4,
+    "reach": 30,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.communityreach",
+  "pk": 81,
+  "fields": {
+    "sort_order": 1,
+    "page": 23,
+    "community": 7,
+    "reach": 47,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.communityreach",
+  "pk": 82,
+  "fields": {
+    "sort_order": 2,
+    "page": 23,
+    "community": 2,
+    "reach": 50,
+    "period": 2021
+  }
+},
+{
+  "model": "organizations.communityreach",
+  "pk": 83,
+  "fields": {
+    "sort_order": 3,
+    "page": 23,
+    "community": 3,
+    "reach": 30,
+    "period": 2021
+  }
+},
+{
   "model": "organizations.organisationpublication",
   "pk": 1,
   "fields": {
@@ -6548,20 +6757,20 @@
   "model": "organizations.organisationpage",
   "pk": 15,
   "fields": {
-    "acronym": null,
-    "summary": "",
+    "acronym": "ACIHEWE",
+    "summary": "ACIHEWE amplifies the voices of young women and girls who are at risk to be able to in lock their potential.",
     "about": "",
-    "logo": null,
+    "logo": 27,
     "website": null,
     "org_type": "",
     "status": 0,
     "email": null,
-    "facebook": null,
+    "facebook": "https://www.facebook.com/ACIHEW",
     "twitter": null,
     "youtube": null,
     "instagram": null,
     "medium": null,
-    "phone": null,
+    "phone": "+2560754507089",
     "toll_free": null,
     "address": "",
     "paralegals": 0,
@@ -6827,7 +7036,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "org_type": "cso",
     "status": 0,
     "email": "livedrealitiesug@gmail.com",
     "facebook": null,
@@ -6838,9 +7047,9 @@
     "phone": "+256700376547",
     "toll_free": null,
     "address": "",
-    "paralegals": 0,
-    "educators": 0,
-    "village_teams": 0,
+    "paralegals": 1,
+    "educators": 30,
+    "village_teams": 40,
     "locations": [
       56
     ],
@@ -9197,6 +9406,27 @@
   }
 },
 {
+  "model": "wagtailimages.image",
+  "pk": 27,
+  "fields": {
+    "collection": 11,
+    "title": "acihewe",
+    "file": "original_images/acihewe.jpg",
+    "width": 1284,
+    "height": 840,
+    "created_at": "2023-01-09T07:05:09.355Z",
+    "uploaded_by_user": [
+      "admin"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 61252,
+    "file_hash": "76d24f0cd7e11f992db0a84951a7b7f49fd12d19"
+  }
+},
+{
   "model": "wagtailcore.site",
   "pk": 1,
   "fields": {
@@ -11274,9 +11504,9 @@
     "locked_at": null,
     "locked_by": null,
     "first_published_at": "2022-12-01T18:40:53.759Z",
-    "last_published_at": "2022-12-01T18:40:53.759Z",
-    "latest_revision_created_at": "2022-12-01T18:40:53.674Z",
-    "live_revision": 19,
+    "last_published_at": "2023-01-09T07:05:12.926Z",
+    "latest_revision_created_at": "2023-01-09T07:05:12.796Z",
+    "live_revision": 159,
     "alias_of": null
   }
 },
@@ -11578,9 +11808,9 @@
     "locked_at": null,
     "locked_by": null,
     "first_published_at": "2022-12-01T18:49:05.697Z",
-    "last_published_at": "2022-12-01T18:49:05.697Z",
-    "latest_revision_created_at": "2022-12-01T18:49:05.621Z",
-    "live_revision": 28,
+    "last_published_at": "2023-01-09T07:14:13.870Z",
+    "latest_revision_created_at": "2023-01-09T07:14:13.593Z",
+    "live_revision": 160,
     "alias_of": null
   }
 },
@@ -20343,6 +20573,94 @@
     "deleted": false,
     "page": 67,
     "revision": 158
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 325,
+  "fields": {
+    "content_type": [
+      "organizations",
+      "organisationpage"
+    ],
+    "label": "Action for Improved Health and Wealth",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-01-09T07:05:12.886Z",
+    "uuid": "c0bf8bb1-6418-4c4c-92eb-3817b2e5c7f1",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 15,
+    "revision": 159
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 326,
+  "fields": {
+    "content_type": [
+      "organizations",
+      "organisationpage"
+    ],
+    "label": "Action for Improved Health and Wealth",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-01-09T07:05:13.012Z",
+    "uuid": "c0bf8bb1-6418-4c4c-92eb-3817b2e5c7f1",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 15,
+    "revision": 159
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 327,
+  "fields": {
+    "content_type": [
+      "organizations",
+      "organisationpage"
+    ],
+    "label": "Lived Realities Uganda",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-01-09T07:14:13.723Z",
+    "uuid": "ea71ad73-7920-4ed2-bdf6-a548f138b9d4",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 23,
+    "revision": 160
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 328,
+  "fields": {
+    "content_type": [
+      "organizations",
+      "organisationpage"
+    ],
+    "label": "Lived Realities Uganda",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-01-09T07:14:14.001Z",
+    "uuid": "ea71ad73-7920-4ed2-bdf6-a548f138b9d4",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 23,
+    "revision": 160
   }
 },
 {

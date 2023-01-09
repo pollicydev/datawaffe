@@ -118,96 +118,28 @@ class HomePage(Page):
         )
 
         # getData for chart on reach for this organisation
-        reachData = CommunityReach.objects.values("community", "period", "reach")
 
-        violationsData = ViolenceEntry.objects.values(
-            "violation", "period", "occurences"
+        reachData = (
+            CommunityReach.objects.values("community_id")
+            .annotate(total_reach=models.Sum("reach"))
+            .order_by("community_id")
         )
 
-        # list of years from this dataset
-        reach_years = list(
-            reachData.order_by("period")
-            .values_list("period", flat=True)
-            .distinct()
-            .reverse()
+        violationsData = (
+            ViolenceEntry.objects.values("violation_id")
+            .annotate(total_occurences=models.Sum("occurences"))
+            .order_by("violation_id")
         )
-        # list of key populations from this dataset
-        communities = list(
-            reachData.order_by("community")
-            .values_list("community", flat=True)
-            .distinct()
+
+        context["global_total_reach"] = CommunityReach.objects.aggregate(
+            global_total_reach=models.Sum("reach")
         )
-        reach_data_series = {}
-
-        for comm in communities:
-            if not comm in reach_data_series:
-                reach_data_series[comm] = {}
-            for year in reach_years:
-                reach_data_series[comm][year] = 0
-
-        for dataset in reachData:
-            comm = dataset["community"]
-            year = dataset["period"]
-            reach = dataset["reach"]
-            reach_data_series[comm][year] = reach
-
-        reachChartSeries = [
-            {"community_id": d, "data": list(reach_data_series[d].values())}
-            for d in reach_data_series
-        ]
-
-        reachPieChartSeries = [
-            {"community_id": d, "data": sum(list(reach_data_series[d].values()))}
-            for d in reach_data_series
-        ]
-
-        # list of years from this dataset
-        violations_years = list(
-            violationsData.order_by("period")
-            .values_list("period", flat=True)
-            .distinct()
-            .reverse()
+        context["global_total_violations"] = ViolenceEntry.objects.aggregate(
+            global_total_violations=models.Sum("occurences")
         )
-        # list of key populations from this dataset
-        violations = list(
-            violationsData.order_by("violation")
-            .values_list("violation", flat=True)
-            .distinct()
-        )
-        violations_data_series = {}
 
-        for violation in violations:
-            if not violation in violations_data_series:
-                violations_data_series[violation] = {}
-            for year in violations_years:
-                violations_data_series[violation][year] = 0
-
-        for dataset in violationsData:
-            violation = dataset["violation"]
-            year = dataset["period"]
-            occurences = dataset["occurences"]
-            violations_data_series[violation][year] = occurences
-
-        violationsChartSeries = [
-            {"violation_id": d, "data": list(violations_data_series[d].values())}
-            for d in violations_data_series
-        ]
-
-        violationsPieChartSeries = [
-            {"violation_id": d, "data": sum(list(violations_data_series[d].values()))}
-            for d in violations_data_series
-        ]
-
-        context["reachData"] = reachData.order_by("period").reverse()
-        context["reach_years"] = reach_years
-        context["reach_communities"] = communities
-        context["reachChartSeries"] = reachChartSeries
-        context["reachPieChartSeries"] = reachPieChartSeries
-
-        context["violationsData"] = violationsData.order_by("period").reverse()
-        context["violations_years"] = violations_years
-        context["violationsChartSeries"] = violationsChartSeries
-        context["violationsPieChartSeries"] = violationsPieChartSeries
+        context["reachPieChartSeries"] = list(reachData)
+        context["violationsPieChartSeries"] = list(violationsData)
 
         return context
 
@@ -306,6 +238,9 @@ class KeyPopulation(ClusterableModel):
 
     def autocomplete_label(self):
         return self.title
+
+    def get_total_reach(self):
+        return +self.comm_reach
 
     class Meta:
         verbose_name = "Key Population"

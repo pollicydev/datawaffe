@@ -44,7 +44,8 @@
             {% if request.user.is_authenticated %}
             <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="/map">Explore the impact</a>
             {% else %}
-            <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="{% url 'account_signup' %}">Get started</a>
+            <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="{% url 'account_signup' %}">Get
+              started</a>
             {% endif %}
           </div>
         </div>
@@ -81,7 +82,8 @@
               <div class="order-sm-1 pe-sm-3 me-xl-4">
                 <h1 class="display-2 text-primary mb-0">{{ districts|length }}</h1>
                 <h3>Districts covered</h3>
-                <p class="mb-4">This represents approximately <strong>{{ percent_districts }}%</strong> of the total districts in Uganda</p>
+                <p class="mb-4">This represents approximately <strong>{{ percent_districts }}%</strong> of the total
+                  districts in Uganda</p>
                 <a class="btn btn-link p-0" href="/map">Learn more<i class="ai-arrow-right ms-2"></i></a>
               </div>
             </div>
@@ -121,11 +123,11 @@
               <ul class="list-unstyled">
                 {% for org in orgs_w_tollfree %}
                 <a href="{{ org.url }}" style="text-decoration:none;">
-                <li class="d-flex pb-1 mb-2">
-                  <span class="badge bg-faded-warning text-primary fs-sm">
-                    <i class="ai-phone-out text-primary fs-5 mt-n1 me-2"></i>{{ org.title }}
-                  </span>
-                </li>
+                  <li class="d-flex pb-1 mb-2">
+                    <span class="badge bg-faded-warning text-primary fs-sm">
+                      <i class="ai-phone-out text-primary fs-5 mt-n1 me-2"></i>{{ org.title }}
+                    </span>
+                  </li>
                 </a>
                 {% endfor %}
               </ul>
@@ -150,8 +152,10 @@
       <div class="col-md-6 col-lg-5 col-xl-4 offset-xl-1 order-md-1" data-aos="fade-right" data-aos-duration="500"
         data-aos-offset="250" data-disable-parallax-down="md">
         <div class="pe-md-4 pe-lg-0">
+          <h1>{{ global_total_reach.global_total_reach }}</h1>
           <h3 class="h2 mb-3 mb-lg-4">Key populations reached</h3>
-          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Organisations have been able to offer services and support to (calculate figure) people in key populations across Uganda</p>
+          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Organisations have been able to offer services and support to (calculate
+            figure) people in key populations across Uganda</p>
         </div>
       </div>
     </div>
@@ -176,7 +180,6 @@
     <div class="row align-items-center position-relative pb-5 pb-lg-0 mb-1 mb-sm-2 mb-md-4 mb-lg-0">
       <div class="col-md-6 col-xl-5 offset-xl-1 pb-2 pb-md-0 mb-4 mb-md-0" data-aos="fade-right" data-aos-duration="500"
         data-aos-offset="250" data-disable-parallax-down="md">
-        {{ servicesData }}
         <div style="max-width: 525px;margin: 0 auto;" id="keyPopReachCanvas">
           <canvas id="keyPopReachChart"></canvas>
         </div>
@@ -185,7 +188,8 @@
         data-aos-offset="250" data-disable-parallax-down="md">
         <div class="ps-md-4 ps-lg-0">
           <h3 class="h2 mb-3 mb-lg-4">Issues and services</h3>
-          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">The organisations are focused on a broad number of issues depending on their mandate. These issues inform their programmes and activities in the communities they support</p>
+          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">The organisations are focused on a broad number of issues depending on
+            their mandate. These issues inform their programmes and activities in the communities they support</p>
         </div>
       </div>
     </div>
@@ -214,17 +218,20 @@
 
         <div style="max-width: 525px;margin: 0 auto;" id="violationsPieChartCanvas">
           <canvas id="violationsPieChart"></canvas>
-      </div>
+        </div>
       </div>
       <div class="col-md-6 col-lg-5 col-xl-4 offset-xl-1 order-md-1" data-aos="fade-right" data-aos-duration="500"
         data-aos-offset="250" data-disable-parallax-down="md">
         <div class="pe-md-4 pe-lg-0">
+          <h1>{{ global_total_violations.global_total_violations }}</h1>
           <h3 class="h2 mb-3 mb-lg-4">On human rights violations and abuses</h3>
-          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Everyday, members of key populations endure various violations that significantly reduce the quality of their lives. This data includes some of the incidents recorded by several organisations</p>
+          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Everyday, members of key populations endure various violations that
+            significantly reduce the quality of their lives. This data includes some of the incidents recorded by
+            several organisations</p>
         </div>
       </div>
     </div>
-    
+
   </div>
 </section>
 
@@ -431,14 +438,14 @@
   new Chart(keyPopPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{% for dataset in reachPieChartSeries %}"{% get_community_acronym dataset.community_id %}",{% endfor %}],
+      "labels": [{% for dataset in reachPieChartSeries %}"{% get_community_acronym dataset.community_id %}", {% endfor %}],
       datasets: [{
         label: 'People reached',
-        data: [{% for dataset in reachPieChartSeries %}{{ dataset.data }},{% endfor %}],
-        backgroundColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}59',{% endfor %}],
-        borderColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}',{% endfor %}],
+        data: [{% for dataset in reachPieChartSeries %}{{ dataset.total_reach }}, {% endfor %}],
+        backgroundColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}59', {% endfor %}],
+        borderColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}', {% endfor %}],
         borderWidth: 1
-    }]
+      }]
     },
     "options": {
       "responsive": true,
@@ -460,21 +467,21 @@
           }
         }
       }
-      }
+    }
   });
 
   // Violations doughnut
   new Chart(violationsPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{% for dataset in violationsPieChartSeries %}"{% get_violation dataset.violation_id %}",{% endfor %}],
+      "labels": [{% for dataset in violationsPieChartSeries %}"{% get_violation dataset.violation_id %}", {% endfor %}],
       datasets: [{
         label: 'Occurrences',
-        data: [{% for dataset in violationsPieChartSeries %}{{ dataset.data }},{% endfor %}],
-        backgroundColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}BF',{% endfor %}],
-        borderColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}',{% endfor %}],
+        data: [{% for dataset in violationsPieChartSeries %} {{ dataset.total_occurences }}, {% endfor %}],
+        backgroundColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}BF', {% endfor %}],
+        borderColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}', {% endfor %}],
         borderWidth: 1
-    }]
+      }]
     },
     "options": {
       "responsive": true,
@@ -497,7 +504,8 @@
           }
         }
       }
-      }
+    }
   });
+
 </script>
 {% endblock inline_javascript %}

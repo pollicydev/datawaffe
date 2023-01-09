@@ -221,7 +221,9 @@ class ViolenceEntry(Orderable):
 
 class CommunityReach(Orderable):
     page = ParentalKey("organizations.OrganisationPage", related_name="reach")
-    community = models.ForeignKey("core.KeyPopulation", on_delete=models.CASCADE)
+    community = models.ForeignKey(
+        "core.KeyPopulation", on_delete=models.CASCADE, related_name="comm_reach"
+    )
     reach = models.PositiveSmallIntegerField(
         blank=True,
         null=True,
