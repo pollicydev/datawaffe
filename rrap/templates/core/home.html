@@ -202,9 +202,29 @@
     <div class="row align-items-center position-relative pb-5 pb-lg-0 mb-1 mb-sm-2 mb-md-4 mb-lg-0">
       <div class="col-md-6 col-xl-5 offset-xl-1 pb-2 pb-md-0 mb-4 mb-md-0" data-aos="fade-right" data-aos-duration="500"
         data-aos-offset="250" data-disable-parallax-down="md">
-        <div style="max-width: 525px;margin: 0 auto;" id="keyPopReachCanvas">
-          <canvas id="keyPopReachChart"></canvas>
-        </div>
+        {% comment %} <div style="max-width: 525px;margin: 0 auto;" id="servicesChartCanvas">
+          <canvas id="servicesPieChart"></canvas>
+        </div> {% endcomment %}
+        <!-- Table -->
+        {{ test }}
+        <table class="table table-striped fs-sm">
+          <thead>
+              <tr class="bg-faded-primary">
+              <th>Issue</th>
+              <th>Organisations</th>
+              <th>Percent</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for row in servicesData %}
+              <tr>
+                  <td>{{ row.title }}</td>
+                  <td class="text-center">{{ row.total_orgs }}</td>
+                  <td>({{ row.percentile }})</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+        </table>
       </div>
       <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1" data-aos="fade-left" data-aos-duration="500"
         data-aos-offset="250" data-disable-parallax-down="md">
@@ -476,6 +496,7 @@
 {% block inline_javascript %}
 <script>
   const keyPopPieCtx = document.getElementById('keyPopReachChart');
+  const servicesPieCtx = document.getElementById('servicesPieChart');
   const violationsPieCtx = document.getElementById('violationsPieChart');
 
   // Key populations doughnut
@@ -496,6 +517,43 @@
       "aspectRatio": 1,
       "plugins": {
         "legend": {
+          "position": "right",
+          "labels": {
+            "usePointStyle": true,
+            "boxWidth": 12,
+            "boxHeight": 12,
+            "useBorderRadius": true,
+            "borderRadius": 8,
+            "padding": 20,
+            "font": {
+              "family": "'Kumbh Sans', sans-serif",
+              "size": 14
+            }
+          }
+        }
+      }
+    },
+  });
+
+  //Services doughnut
+  new Chart(servicesPieCtx, {
+    type: 'doughnut',
+    "data": {
+      "labels": [{% for dataset in servicesPieChartSeries %}"{{ dataset.title }}", {% endfor %}],
+      datasets: [{
+        label: 'Organisations',
+        data: [{% for dataset in servicesPieChartSeries %}{{ dataset.total_orgs }}, {% endfor %}],
+        backgroundColor: ["#ed5050", "#448c74", "#edcb50", "#e3e9ef", "#3f7fca"],
+        borderColor: ["#ed5050", "#448c74", "#edcb50", "#e3e9ef", "#3f7fca"],
+        borderWidth: 1
+      }]
+    },
+    "options": {
+      "responsive": true,
+      "aspectRatio": 1,
+      "plugins": {
+        "legend": {
+          "display": false,
           "position": "right",
           "labels": {
             "usePointStyle": true,

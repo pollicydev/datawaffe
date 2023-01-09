@@ -131,6 +131,16 @@ class HomePage(Page):
             .order_by("violation_id")
         )
 
+        servicesData = (
+            Service.objects.values("title")
+            .annotate(total_orgs=models.Count("organisations"))
+            .annotate(
+                percentile=(models.F("total_orgs") / organisations.count()) * 100
+            )  # percentile not working???
+            .values("title", "total_orgs", "percentile")
+            .order_by("id")
+        )
+
         context["global_total_reach"] = CommunityReach.objects.aggregate(
             global_total_reach=models.Sum("reach")
         )
@@ -138,9 +148,12 @@ class HomePage(Page):
             global_total_violations=models.Sum("occurences")
         )
 
+        context["test"] = servicesData
         context["reachData"] = reachData
+        context["servicesData"] = servicesData
         context["violationsData"] = violationsData
         context["reachPieChartSeries"] = list(reachData)
+        context["servicesPieChartSeries"] = list(servicesData)
         context["violationsPieChartSeries"] = list(violationsData)
 
         return context
