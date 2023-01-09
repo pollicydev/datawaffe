@@ -159,9 +159,8 @@
             {% for row in reachData %}
             <tr>
               <td>
-                <span class="d-inline-block rounded-circle community-icon"
-                          style="width: .625rem; height: .625rem; background-color: {% get_community_color row.community_id %};">
-                </span>&nbsp;{% get_community_name row.community_id %}
+                <span class="d-inline-block rounded-circle community-icon"style="width: .625rem; height: .625rem; background-color: {% get_community_color row.community %};">
+                </span>&nbsp;{% get_community_name row.community %}
               </td>
               <td>{{ row.period }}</td>
               <td class="text-center">{{ row.reach|intcomma }}</td>
@@ -258,46 +257,12 @@
   new Chart(reachPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{
-          %
-          for dataset in reachPieChartSeries %
-        }
-        "{% get_community_acronym dataset.community_id %}", {
-          %
-          endfor %
-        }
-      ],
+      "labels": [{% for dataset in reachPieChartSeries %}"{% get_community_acronym dataset.community_id %}", {% endfor %}],
       datasets: [{
         label: 'People reached',
-        data: [{
-          %
-          for dataset in reachPieChartSeries %
-        } {
-          {
-            dataset.data
-          }
-        }, {
-          %
-          endfor %
-        }],
-        backgroundColor: [{
-            %
-            for dataset in reachPieChartSeries %
-          }
-          '{% get_community_color dataset.community_id %}59', {
-            %
-            endfor %
-          }
-        ],
-        borderColor: [{
-            %
-            for dataset in reachPieChartSeries %
-          }
-          '{% get_community_color dataset.community_id %}', {
-            %
-            endfor %
-          }
-        ],
+        data: [{% for dataset in reachPieChartSeries %} {{ dataset.data }}, {% endfor %}],
+        backgroundColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}59', {% endfor %}],
+        borderColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}', {% endfor %}],
         borderWidth: 1
       }]
     },
@@ -326,31 +291,15 @@
   new Chart(reachCtx, {
     type: 'bar',
     "data": {
-      "labels": {
-        {
-          reach_years
-        }
-      },
-      "datasets": [{
-          %
-          for dataset in reachChartSeries %
-        } {
+      "labels": {{ reach_years }},
+      "datasets": [{% for dataset in reachChartSeries %} {
           "label": "{% get_community_name dataset.community_id %}",
-          "data": {
-            {
-              dataset.data
-            }
-          },
+          "data": {{ dataset.data  }},
           "borderWidth": 2,
           "borderColor": "{% get_community_color dataset.community_id %}",
           "backgroundColor": "{% get_community_color dataset.community_id %}59", // adding 59 to hexcode = alpha 35%
           "hoverBackgroundColor": "{% get_community_color dataset.community_id %}BF" // adding BF to hexcode = alpha 75%
-        },
-        {
-          %
-          endfor %
-        }
-      ]
+        }, {% endfor %}]
     },
     "options": {
       "scales": {
@@ -382,31 +331,14 @@
   new Chart(violationsCtx, {
     type: 'bar',
     "data": {
-      "labels": {
-        {
-          violations_years
-        }
-      },
-      "datasets": [{
-          %
-          for dataset in violationsChartSeries %
-        } {
+      "labels": {{ violations_years }},
+      "datasets": [{% for dataset in violationsChartSeries %} {
           "label": "{% get_violation dataset.violation_id %}",
-          "data": {
-            {
-              dataset.data
-            }
-          },
+          "data": {{ dataset.data }},
           "borderWidth": 2,
           "borderColor": "{% generate_violation_hex dataset.violation_id %}",
           "backgroundColor": "{% generate_violation_hex dataset.violation_id %}59",
-          "hoverBackgroundColor": "{% generate_violation_hex dataset.violation_id %}BF"
-        },
-        {
-          %
-          endfor %
-        }
-      ]
+          "hoverBackgroundColor": "{% generate_violation_hex dataset.violation_id %}BF"},{% endfor %}]
     },
     "options": {
       "scales": {
@@ -441,46 +373,12 @@
   new Chart(violationsPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{
-          %
-          for dataset in violationsPieChartSeries %
-        }
-        "{% get_violation dataset.violation_id %}", {
-          %
-          endfor %
-        }
-      ],
+      "labels": [{% for dataset in violationsPieChartSeries %}"{% get_violation dataset.violation_id %}", {% endfor %}],
       datasets: [{
         label: 'Occurrences',
-        data: [{
-          %
-          for dataset in violationsPieChartSeries %
-        } {
-          {
-            dataset.data
-          }
-        }, {
-          %
-          endfor %
-        }],
-        backgroundColor: [{
-            %
-            for dataset in violationsPieChartSeries %
-          }
-          '{% generate_violation_hex dataset.violation_id %}BF', {
-            %
-            endfor %
-          }
-        ],
-        borderColor: [{
-            %
-            for dataset in violationsPieChartSeries %
-          }
-          '{% generate_violation_hex dataset.violation_id %}', {
-            %
-            endfor %
-          }
-        ],
+        data: [{% for dataset in violationsPieChartSeries %} {{ dataset.data }}, {% endfor %}],
+        backgroundColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}BF', {% endfor %}],
+        borderColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}', {% endfor %}],
         borderWidth: 1
       }]
     },
