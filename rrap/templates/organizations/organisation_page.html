@@ -114,7 +114,8 @@
       </div>
       <div class="col d-md-flex justify-content-center text-center text-md-start position-relative">
         <div class="p-3 px-sm-0 py-sm-4">
-          <div class="h2 display-5 text-primary text-center mb-0">{{ self.total_violations|intcomma }}</div><span>Recorded rights
+          <div class="h2 display-5 text-primary text-center mb-0">{{ self.total_violations|intcomma }}</div>
+          <span>Recorded rights
             violations</span>
         </div>
       </div>
@@ -131,97 +132,104 @@
 
     {% if self.total_reach != 0 %}
     <div class="row">
-        <div class="col-md-4">
-            <small>{{ self.title }} has been able to impact an estimated {{ self.total_reach|intcomma }} people across multiple key populations since {{ reach_years|last }}</small>
-            <div style="max-width: 45rem;margin: 0 auto;" id="reachPieChartCanvas">
-                <canvas id="reachPieChart"></canvas>
-            </div>
+      <div class="col-md-4">
+        <small>{{ self.title }} has been able to impact an estimated {{ self.total_reach|intcomma }} people across
+          multiple key populations since {{ reach_years|last }}</small>
+        <div style="max-width: 45rem;margin: 0 auto;" id="reachPieChartCanvas">
+          <canvas id="reachPieChart"></canvas>
         </div>
+      </div>
 
-        <div class="col-md-8">
-            <div style="max-width: 45rem;margin: 0 auto;" id="reachBarChartCanvas">
-                <canvas id="reachBarChart"></canvas>
-              </div>
+      <div class="col-md-8">
+        <div style="max-width: 45rem;margin: 0 auto;" id="reachBarChartCanvas">
+          <canvas id="reachBarChart"></canvas>
         </div>
+      </div>
 
-        <div style="max-width: 50rem;margin: 0 auto;" class="table-responsive collapse" id="collapsedReachTable">
-            <table class="table table-striped">
-                <thead>
-                    <tr class="bg-faded-primary">
-                    <th>Key population</th>
-                    <th>Period</th>
-                    <th>Estimated reach</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in reachData %}
-                    <tr>
-                        <td>{% get_community_name row.community %}</td>
-                        <td>{{ row.period }}</td>
-                        <td class="text-center">{{ row.reach }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+      <div style="max-width: 50rem;margin: 0 auto;" class="table-responsive collapse" id="collapsedReachTable">
+        <table class="table table-striped">
+          <thead>
+            <tr class="bg-faded-primary">
+              <th>Key population</th>
+              <th>Period</th>
+              <th>Estimated reach</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in reachData %}
+            <tr>
+              <td>
+                <span class="d-inline-block rounded-circle community-icon"
+                          style="width: .625rem; height: .625rem; background-color: {% get_community_color row.community_id %};">
+                </span>&nbsp;{% get_community_name row.community_id %}
+              </td>
+              <td>{{ row.period }}</td>
+              <td class="text-center">{{ row.reach|intcomma }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="text-center mt-4">
-        <a href="#collapsedReachTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsedReachTable">
-            Show/hide reach data
-        </a>
+      <a href="#collapsedReachTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse"
+        role="button" aria-expanded="false" aria-controls="collapsedReachTable">
+        Show/hide reach data
+      </a>
     </div>
     {% endif %}
   </div>
 </section>
 
 <section class="bg-secondary py-5">
-    <div class="container">
-        <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Human rights violations</h2>
-        <p class="text-center mx-auto pb-2 m-0">Data recorded over the years</p>
+  <div class="container">
+    <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">Human rights violations</h2>
+    <p class="text-center mx-auto pb-2 m-0">Data recorded over the years</p>
 
-        <div class="row">
-            <div style="max-width: 45rem;margin: 0 auto;" id="violationsPieChartCanvas">
-                <canvas id="violationsPieChart"></canvas>
-            </div>
-        </div>
-        {% comment %} <div class="row">
-            <div class="col-md-8">
-                <div style="max-width: 45rem;margin: 0 auto;" id="violationsBarChartCanvas">
-                    <canvas id="violationsBarChart"></canvas>
-                </div>
-            </div>
-            <div class="col-md-4">
-
-            </div>
-        </div> {% endcomment %}
-
-        <div style="max-width: 50rem;margin: 0 auto;" class="table-responsive collapse" id="collapsedViolationsTable">
-            <table class="table table-striped">
-                <thead>
-                    <tr class="bg-faded-primary">
-                    <th>Recorded violation</th>
-                    <th>Period</th>
-                    <th>Occurences</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in violationsData %}
-                    <tr>
-                        <td>{% get_violation row.violation %}</td>
-                        <td>{{ row.period }}</td>
-                        <td class="text-center">{{ row.occurences }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        <div class="text-center">
-            <a href="#collapsedViolationsTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsedViolationsTable">
-                Show/hide violations data
-            </a>
-        </div>
+    <div class="row">
+      <div style="max-width: 45rem;margin: 0 auto;" id="violationsPieChartCanvas">
+        <canvas id="violationsPieChart"></canvas>
+      </div>
     </div>
+    {% comment %} <div class="row">
+      <div class="col-md-8">
+        <div style="max-width: 45rem;margin: 0 auto;" id="violationsBarChartCanvas">
+          <canvas id="violationsBarChart"></canvas>
+        </div>
+      </div>
+      <div class="col-md-4">
+
+      </div>
+    </div> {% endcomment %}
+
+    <div style="max-width: 50rem;margin: 0 auto;" class="table-responsive collapse" id="collapsedViolationsTable">
+      <table class="table table-striped">
+        <thead>
+          <tr class="bg-faded-primary">
+            <th>Recorded violation</th>
+            <th>Period</th>
+            <th>Occurences</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in violationsData %}
+          <tr>
+            <td>{% get_violation row.violation %}</td>
+            <td>{{ row.period }}</td>
+            <td class="text-center">{{ row.occurences|intcomma }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-center">
+      <a href="#collapsedViolationsTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse"
+        role="button" aria-expanded="false" aria-controls="collapsedViolationsTable">
+        Show/hide violations data
+      </a>
+    </div>
+  </div>
 </section>
 
 <section class="bg-light py-5">
@@ -250,51 +258,98 @@
   new Chart(reachPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{% for dataset in reachPieChartSeries %}"{% get_community_acronym dataset.community_id %}",{% endfor %}],
+      "labels": [{
+          %
+          for dataset in reachPieChartSeries %
+        }
+        "{% get_community_acronym dataset.community_id %}", {
+          %
+          endfor %
+        }
+      ],
       datasets: [{
         label: 'People reached',
-        data: [{% for dataset in reachPieChartSeries %}{{ dataset.data }},{% endfor %}],
-        backgroundColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}59',{% endfor %}],
-        borderColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}',{% endfor %}],
+        data: [{
+          %
+          for dataset in reachPieChartSeries %
+        } {
+          {
+            dataset.data
+          }
+        }, {
+          %
+          endfor %
+        }],
+        backgroundColor: [{
+            %
+            for dataset in reachPieChartSeries %
+          }
+          '{% get_community_color dataset.community_id %}59', {
+            %
+            endfor %
+          }
+        ],
+        borderColor: [{
+            %
+            for dataset in reachPieChartSeries %
+          }
+          '{% get_community_color dataset.community_id %}', {
+            %
+            endfor %
+          }
+        ],
         borderWidth: 1
-    }]
+      }]
     },
     "options": {
-        "plugins": {
-          "legend": {
-            "position": "right",
-            "labels": {
-              "usePointStyle": true,
-              "boxWidth": 12,
-              "boxHeight": 12,
-              "useBorderRadius": true,
-              "borderRadius": 8,
-              "padding": 20,
-              "font": {
-                "family": "'Kumbh Sans', sans-serif",
-                "size": 15
-              }
+      "plugins": {
+        "legend": {
+          "position": "right",
+          "labels": {
+            "usePointStyle": true,
+            "boxWidth": 12,
+            "boxHeight": 12,
+            "useBorderRadius": true,
+            "borderRadius": 8,
+            "padding": 20,
+            "font": {
+              "family": "'Kumbh Sans', sans-serif",
+              "size": 15
             }
           }
         }
       }
+    }
   });
 
 
   new Chart(reachCtx, {
     type: 'bar',
     "data": {
-      "labels": {{ reach_years }},
-      "datasets": [
-      {% for dataset in reachChartSeries %}{
+      "labels": {
+        {
+          reach_years
+        }
+      },
+      "datasets": [{
+          %
+          for dataset in reachChartSeries %
+        } {
           "label": "{% get_community_name dataset.community_id %}",
-          "data": {{ dataset.data }},
+          "data": {
+            {
+              dataset.data
+            }
+          },
           "borderWidth": 2,
           "borderColor": "{% get_community_color dataset.community_id %}",
           "backgroundColor": "{% get_community_color dataset.community_id %}59", // adding 59 to hexcode = alpha 35%
           "hoverBackgroundColor": "{% get_community_color dataset.community_id %}BF" // adding BF to hexcode = alpha 75%
         },
-        {% endfor %}
+        {
+          %
+          endfor %
+        }
       ]
     },
     "options": {
@@ -322,85 +377,132 @@
     }
   });
 
-  
+
 
   new Chart(violationsCtx, {
     type: 'bar',
     "data": {
-      "labels": {{ violations_years }},
-      "datasets": [
-      {% for dataset in violationsChartSeries %}{
+      "labels": {
+        {
+          violations_years
+        }
+      },
+      "datasets": [{
+          %
+          for dataset in violationsChartSeries %
+        } {
           "label": "{% get_violation dataset.violation_id %}",
-          "data": {{ dataset.data }},
+          "data": {
+            {
+              dataset.data
+            }
+          },
           "borderWidth": 2,
           "borderColor": "{% generate_violation_hex dataset.violation_id %}",
           "backgroundColor": "{% generate_violation_hex dataset.violation_id %}59",
           "hoverBackgroundColor": "{% generate_violation_hex dataset.violation_id %}BF"
         },
-        {% endfor %}
+        {
+          %
+          endfor %
+        }
       ]
     },
     "options": {
-        "scales": {
-            "y": {
-              "beginAtZero": true,
-              "border": {
-                "color": "rgba(133,140,151,.18)"
-              },
-              "grid": {
-                "color": "rgba(133,140,151,.18)"
-              },
-              "stacked": true,
-            },
-            "x": {
-              "border": {
-                "color": "rgba(133,140,151,.18)"
-              },
-              "grid": {
-                "color": "rgba(133,140,151,.18)"
-              },
-              "stacked": true,
-            }
+      "scales": {
+        "y": {
+          "beginAtZero": true,
+          "border": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "grid": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "stacked": true,
         },
-        "plugins": {
-            "legend": {
-                "display": false
-            }
+        "x": {
+          "border": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "grid": {
+            "color": "rgba(133,140,151,.18)"
+          },
+          "stacked": true,
         }
+      },
+      "plugins": {
+        "legend": {
+          "display": false
+        }
+      }
     }
   });
 
   new Chart(violationsPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{% for dataset in violationsPieChartSeries %}"{% get_violation dataset.violation_id %}",{% endfor %}],
+      "labels": [{
+          %
+          for dataset in violationsPieChartSeries %
+        }
+        "{% get_violation dataset.violation_id %}", {
+          %
+          endfor %
+        }
+      ],
       datasets: [{
         label: 'Occurrences',
-        data: [{% for dataset in violationsPieChartSeries %}{{ dataset.data }},{% endfor %}],
-        backgroundColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}BF',{% endfor %}],
-        borderColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}',{% endfor %}],
+        data: [{
+          %
+          for dataset in violationsPieChartSeries %
+        } {
+          {
+            dataset.data
+          }
+        }, {
+          %
+          endfor %
+        }],
+        backgroundColor: [{
+            %
+            for dataset in violationsPieChartSeries %
+          }
+          '{% generate_violation_hex dataset.violation_id %}BF', {
+            %
+            endfor %
+          }
+        ],
+        borderColor: [{
+            %
+            for dataset in violationsPieChartSeries %
+          }
+          '{% generate_violation_hex dataset.violation_id %}', {
+            %
+            endfor %
+          }
+        ],
         borderWidth: 1
-    }]
+      }]
     },
     "options": {
-        "plugins": {
-          "legend": {
-            "position": "right",
-            "labels": {
-              "usePointStyle": true,
-              "boxWidth": 12,
-              "boxHeight": 12,
-              "useBorderRadius": true,
-              "borderRadius": 8,
-              "padding": 20,
-              "font": {
-                "family": "'Kumbh Sans', sans-serif",
-                "size": 15
-              }
+      "plugins": {
+        "legend": {
+          "position": "right",
+          "labels": {
+            "usePointStyle": true,
+            "boxWidth": 12,
+            "boxHeight": 12,
+            "useBorderRadius": true,
+            "borderRadius": 8,
+            "padding": 20,
+            "font": {
+              "family": "'Kumbh Sans', sans-serif",
+              "size": 15
             }
           }
         }
       }
+    }
   });
 
 </script>

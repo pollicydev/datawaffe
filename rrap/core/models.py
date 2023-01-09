@@ -138,6 +138,8 @@ class HomePage(Page):
             global_total_violations=models.Sum("occurences")
         )
 
+        context["reachData"] = reachData
+        context["violationsData"] = violationsData
         context["reachPieChartSeries"] = list(reachData)
         context["violationsPieChartSeries"] = list(violationsData)
 
