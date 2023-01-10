@@ -340,7 +340,7 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 # Your stuff...
 # ------------------------------------------------------------------------------
 
-COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE = env.bool("COMPRESS_OFFLINE", False)
 
 # GRAVATAR SETTINGS
 GRAVATAR_ICON = ""

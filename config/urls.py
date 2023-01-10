@@ -63,3 +63,5 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+
+handler500 = core_views.Handler500.as_error_view()
