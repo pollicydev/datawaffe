@@ -99,6 +99,7 @@ aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws
 
 STATICFILES_STORAGE = "rrap.utils.storages.StaticRootS3Boto3Storage"
 STATICFILES_LOCATION = "static"
+COLLECTFAST_ENABLED = False  # Disabled CollectFast because it's not working
 COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
 AWS_PRELOAD_METADATA = True
 COLLECTFAST_THREADS = 20
