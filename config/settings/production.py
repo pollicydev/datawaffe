@@ -97,7 +97,7 @@ STATICFILES_STORAGE = "rrap.utils.storages.StaticRootS3Boto3Storage"
 COLLECTFAST_STRATEGY = "collectfast.strategies.boto3.Boto3Strategy"
 AWS_PRELOAD_METADATA = True
 COLLECTFAST_THREADS = 20
-# COLLECTFAST_DEBUG = True
+COLLECTFAST_DEBUG = True
 COLLECTFAST_CACHE = "collectfast"
 STATIC_URL = f"https://{aws_s3_domain}/static/"
 # MEDIA
