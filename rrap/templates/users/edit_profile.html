@@ -6,7 +6,7 @@
 {% block body_class %}bg-secondary{% endblock body_class %}
 
 {% block stylesheet %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.16/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="{% static 'vendor/sweetalert2/sweetalert2.min.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -85,8 +85,8 @@
 {% endblock content %}
 
 {% block javascript %}
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.16/dist/sweetalert2.all.min.js"></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/sweetalert2/sweetalert2.all.min.js' %}"></script>
 {% endblock %}
 
 {% block inline_javascript %}

@@ -334,10 +334,13 @@ ACCOUNT_FORMS = {
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
 INSTALLED_APPS += ["compressor"]
+COMPRESS_ENABLED = True
 STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+COMPRESS_OFFLINE = True
 
 # GRAVATAR SETTINGS
 GRAVATAR_ICON = ""

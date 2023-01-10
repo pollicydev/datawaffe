@@ -2,7 +2,7 @@
 {% load static crispy_forms_tags %}
 
 {% block stylesheet %}
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+<link href="{% static 'vendor/mapbox-gl/mapbox-gl.css' %}" rel="stylesheet" />
 <link rel="stylesheet" media="screen" href="{% static 'vendor/simplebar/dist/simplebar.min.css' %}">
 {% endblock %}
 
@@ -124,13 +124,13 @@
 {% endblock content %}
 
 {% block javascript %}
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/simplebar/dist/simplebar.min.js' %}"></script>
 <script src="{% static 'geojson/districts.js' %}"></script>
 {% endblock javascript %}
 
 {% block inline_javascript %}
+<script src="{% static 'vendor/mapbox-gl/mapbox-gl.js' %}"></script>
 {{ map_filter_form.media.js }}
 <noscript>
   <style>

@@ -4,7 +4,7 @@
 {% block title %}{{ self.title }} · Data Waffe{% endblock %}
 
 {% block stylesheet %}
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
+<link href="{% static 'vendor/mapbox-gl/mapbox-gl.min.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -243,11 +243,11 @@
 
 {% block javascript %}
 <script src="{% static 'vendor/chart.js/dist/chart.umd.js' %}"></script>
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
 <script src="{% static 'geojson/districts.js' %}"></script>
 {% endblock javascript %}
 
 {% block inline_javascript %}
+<script src="{% static 'vendor/mapbox-gl/mapbox-gl.js' %}"></script>
 <script>
   const reachCtx = document.getElementById('reachBarChart');
   const reachPieCtx = document.getElementById('reachPieChart');
