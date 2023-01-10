@@ -39,7 +39,10 @@ CACHES = {
         },
     },
     "collectfast": {
-        # Your dedicated Collectfast cache
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "collectfast_cache",
+        "TIMEOUT": 60,
+        "OPTIONS": {"MAX_ENTRIES": 10000},
     },
 }
 
