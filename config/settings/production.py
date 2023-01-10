@@ -38,6 +38,9 @@ CACHES = {
             "IGNORE_EXCEPTIONS": True,
         },
     },
+    "collectfast": {
+        # Your dedicated Collectfast cache
+    },
 }
 
 # SECURITY
