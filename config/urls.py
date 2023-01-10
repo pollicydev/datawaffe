@@ -24,7 +24,6 @@ urlpatterns = [
     path("invitations/", include("rrap.invites.urls", namespace="invitations")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
-    path("select2/", include("django_select2.urls")),
     # User management
     path("users/", include("rrap.users.urls", namespace="users")),
     path(
