@@ -371,8 +371,12 @@ HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
 HITCOUNT_EXCLUDE_USER_GROUP = ()  # not used
 HITCOUNT_KEEP_HIT_IN_DATABASE = {"seconds": 10}
 
-GDAL_LIBRARY_PATH = "/usr/local/Cellar/gdal/3.5.1_2/lib/libgdal.dylib"
-GEOS_LIBRARY_PATH = "/usr/local/Cellar/geos/3.11.0/lib/libgeos_c.dylib"
+GDAL_LIBRARY_PATH = env(
+    "GDAL_LIBRARY_PATH", default="/usr/local/Cellar/gdal/3.5.1_2/lib/libgdal.dylib"
+)
+GEOS_LIBRARY_PATH = env(
+    "GEOS_LIBRARY_PATH", default="/usr/local/Cellar/geos/3.11.0/lib/libgeos_c.dylib"
+)
 
 WAGTAIL_SITE_NAME = "Data Waffe"
 # WAGTAILADMIN_BASE_URL = "https://datawaffe.org"
