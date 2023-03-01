@@ -32,6 +32,7 @@ class HomePage(Page):
     template = "core/home.html"
     max_count = 1
     subpage_types = [
+        "core.StandardPage",
         "blog.BlogIndexPage",
         "organizations.OrganisationIndexPage",
         "core.PublicationsIndexPage",

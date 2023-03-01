@@ -262,13 +262,7 @@
     <footer class="footer py-4">
       <div class="container text-center">
         <ul class="nav fs-sm">
-          <li class="nav-item"><a class="nav-link text-muted" href="/">v{{rrap_version}} ({{ rrap_environment }})</a></li>
-          <li class="nav-item"><a class="nav-link text-muted" href="#">Data methodology</a></li>
-          <li class="nav-item"><a class="nav-link text-muted" href="#">Terms of service</a></li>
-          <li class="nav-item"><a class="nav-link text-muted" href="#">Privacy policy</a></li>
-          <li class="nav-item"><a class="nav-link text-muted" href="#">Help &amp; FAQs</a></li>
-          <li class="nav-item"><a class="nav-link text-muted" href="#">Contact us</a></li>
-          <li class="nav-item"><a class="nav-link text-muted" href="#">&copy;2022 Data Waffe. All rights reserved</a></li>
+          {% flat_menu 'footer' template="menus/footer_menu.html" max_levels=1 %}
         </ul>
       </div>
     </footer>

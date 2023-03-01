@@ -1,0 +1,12 @@
+{% load menu_tags %}
+<li class="nav-item">
+  <a class="nav-link text-muted" href="/">v{{rrap_version}} ({{ rrap_environment }})</a>
+</li>
+{% for item in menu_items %}
+<li class="nav-item {{ item.active_class }}">
+  <a class="nav-link" href="{{ item.href }}">{{ item.text }}</a>
+</li>
+{% endfor %}
+<li class="nav-item">
+  <a class="nav-link text-muted" href="#">&copy;2022 Data Waffe. All rights reserved</a>
+</li>
