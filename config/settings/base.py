@@ -374,12 +374,8 @@ HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
 HITCOUNT_EXCLUDE_USER_GROUP = ()  # not used
 HITCOUNT_KEEP_HIT_IN_DATABASE = {"seconds": 10}
 
-GDAL_LIBRARY_PATH = env(
-    "GDAL_LIBRARY_PATH", default="/usr/local/Cellar/gdal/3.5.1_2/lib/libgdal.dylib"
-)
-GEOS_LIBRARY_PATH = env(
-    "GEOS_LIBRARY_PATH", default="/usr/local/Cellar/geos/3.11.0/lib/libgeos_c.dylib"
-)
+GDAL_LIBRARY_PATH = env("GDAL_PATH", default="")
+GEOS_LIBRARY_PATH = env("GEOS_PATH", default="")
 
 WAGTAIL_SITE_NAME = "Data Waffe"
 # WAGTAILADMIN_BASE_URL = "https://datawaffe.org"
@@ -393,6 +389,7 @@ WAGTAIL_ADMIN_URL = "cms/"
 # https://github.com/springload/wagtail-django-recaptcha
 RECAPTCHA_PUBLIC_KEY = "6LcQotYaAAAAAFPDa0rR8bDiAAF7Fn2f25p5DgiG"
 RECAPTCHA_PRIVATE_KEY = "6LcQotYaAAAAAM3nXQev9ehAK9fAm_M_IAJmxPZ3"
+NOCAPTCHA = True
 
 WAGTAILSEARCH_BACKENDS = {
     "default": {
