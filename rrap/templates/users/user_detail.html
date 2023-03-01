@@ -46,12 +46,18 @@
                   <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.username }}</td>
                 </tr>
                 <tr>
-                  <td class="border-0 text-muted py-1 px-0">Date joined</td>
-                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.date_joined|date:"d F, Y" }}</td>
+                  <td class="border-0 text-muted py-1 px-0">Pronouns</td>
+                  <td class="border-0 text-dark fw-medium py-1 ps-3">
+                    {% if object.profile.other_pronouns %}{{ object.profile.other_pronouns }}{% else %}{{ object.profile.get_pronouns_display }}{% endif %}
+                  </td>
                 </tr>
                 <tr>
-                  <td class="border-0 text-muted py-1 px-0">Following</td>
-                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ following_count }} organizations</td>
+                  <td class="border-0 text-muted py-1 px-0">Country</td>
+                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.profile.country.name }}</td>
+                </tr>
+                <tr>
+                  <td class="border-0 text-muted py-1 px-0">Date joined</td>
+                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.date_joined|date:"d F, Y" }}</td>
                 </tr>
                 <tr>
                   <td class="border-0 text-muted py-1 px-0">Bio</td>

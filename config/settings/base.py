@@ -104,6 +104,7 @@ THIRD_PARTY_APPS = [
     "multiselectfield",
     "hitcount",
     "django_social_share",
+    "django_countries",
     "django_htmx",
     "django_filters",
 ]

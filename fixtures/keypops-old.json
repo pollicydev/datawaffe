@@ -1,0 +1,50 @@
+[{
+  "model": "core.keypopulation",
+  "pk": 1,
+  "fields": {
+    "title": "Adolescent Girls and Young Women",
+    "acronym": "AGYW"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 2,
+  "fields": {
+    "title": "Female Sex Workers",
+    "acronym": "FSW"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 3,
+  "fields": {
+    "title": "Male Sex Workers",
+    "acronym": "MSW"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 4,
+  "fields": {
+    "title": "Men Who Have Sex with Men",
+    "acronym": "MSM"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 5,
+  "fields": {
+    "title": "Persons Living with HIV/AIDS",
+    "acronym": "PLHIV"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 6,
+  "fields": {
+    "title": "People Who Use and Inject Drugs",
+    "acronym": "PWUIDs"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 7,
+  "fields": {
+    "title": "Lesbian, Gay, Bisexual, Transgender, Intersex and Queer",
+    "acronym": "LGBTIQ"
+  }
+}]

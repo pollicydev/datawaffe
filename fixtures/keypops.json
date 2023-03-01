@@ -2,49 +2,126 @@
   "model": "core.keypopulation",
   "pk": 1,
   "fields": {
-    "title": "Adolescent Girls and Young Women",
-    "acronym": "AGYW"
+    "title": "Lesbian",
+    "acronym": ""
   }
 }, {
   "model": "core.keypopulation",
   "pk": 2,
   "fields": {
-    "title": "Female Sex Workers",
-    "acronym": "FSW"
+    "title": "Gay",
+    "acronym": ""
   }
 }, {
   "model": "core.keypopulation",
   "pk": 3,
   "fields": {
-    "title": "Male Sex Workers",
-    "acronym": "MSW"
+    "title": "Bisexual Men",
+    "acronym": ""
   }
 }, {
   "model": "core.keypopulation",
   "pk": 4,
   "fields": {
-    "title": "Men Who Have Sex with Men",
-    "acronym": "MSM"
+    "title": "Bisexual Women",
+    "acronym": ""
   }
 }, {
   "model": "core.keypopulation",
   "pk": 5,
   "fields": {
-    "title": "Persons Living with HIV/AIDS",
-    "acronym": "PLHIV"
+    "title": "Transgender",
+    "acronym": "Trans"
   }
 }, {
   "model": "core.keypopulation",
   "pk": 6,
   "fields": {
-    "title": "People Who Use and Inject Drugs",
-    "acronym": "PWUIDs"
+    "title": "Queer",
+    "acronym": ""
   }
 }, {
   "model": "core.keypopulation",
   "pk": 7,
   "fields": {
-    "title": "Lesbian, Gay, Bisexual, Transgender, Intersex and Queer",
-    "acronym": "LGBTIQ"
+    "title": "Transgender men",
+    "acronym": "Trans men"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 8,
+  "fields": {
+    "title": "Transgender Women",
+    "acronym": "Trans women"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 9,
+  "fields": {
+    "title": "LGB womxn",
+    "acronym": ""
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 10,
+  "fields": {
+    "title": "GBQ men",
+    "acronym": ""
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 11,
+  "fields": {
+    "title": "Transgender sex workers",
+    "acronym": "Trans sex workers"
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 12,
+  "fields": {
+    "title": "LGB sex workers",
+    "acronym": ""
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 13,
+  "fields": {
+    "title": "Gay sex workers",
+    "acronym": ""
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 14,
+  "fields": {
+    "title": "Male bisexual sex workers",
+    "acronym": ""
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 15,
+  "fields": {
+    "title": "Female bisexual sex workers",
+    "acronym": ""
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 16,
+  "fields": {
+    "title": "LGBTQ+ People Who Use and Inject Drugs",
+    "acronym": ""
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 17,
+  "fields": {
+    "title": "LGBTQ+ disabled persons",
+    "acronym": ""
+  }
+}, {
+  "model": "core.keypopulation",
+  "pk": 18,
+  "fields": {
+    "title": "LGBTQ+Persons Living with HIV/AIDS",
+    "acronym": ""
   }
 }]

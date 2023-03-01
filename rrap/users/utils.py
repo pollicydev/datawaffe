@@ -7,21 +7,25 @@ import hashlib
 import urllib.parse as urlparse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
+from django_countries.widgets import CountrySelectWidget
 
 
 class ProfileForm(forms.ModelForm):
-    bio = forms.CharField(
-        widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "3"}),
-        max_length=500,
-        required=False,
-    )
-
     class Meta:
         model = Profile
         fields = (
             "name",
+            "pronouns",
+            "other_pronouns",
+            "country",
             "bio",
         )
+        widgets = {
+            "bio": forms.Textarea(
+                attrs={"class": "form-control expanding", "rows": "3"}
+            ),
+            "country": CountrySelectWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -30,11 +34,16 @@ class ProfileForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             "name",
-            "bio",
+            "pronouns",
+            "other_pronouns",
+            "country" "bio",
             Submit("submit", "Update profile"),
         )
 
         self.fields["name"].label = ""
+        self.fields["pronouns"].label = ""
+        self.fields["other_pronouns"].label = ""
+        self.fields["country"].label = ""
         self.fields["bio"].label = ""
 
 
@@ -49,8 +58,17 @@ class OnboardingForm(forms.ModelForm):
         model = Profile
         fields = (
             "name",
+            "pronouns",
+            "other_pronouns",
+            "country",
             "bio",
         )
+        widgets = {
+            "bio": forms.Textarea(
+                attrs={"class": "form-control expanding", "rows": "3"}
+            ),
+            "country": CountrySelectWidget(),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -59,7 +77,9 @@ class OnboardingForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             "name",
-            "bio",
+            "pronouns",
+            "other_pronouns",
+            "country" "bio",
             Submit("submit", "Update profile"),
         )
 

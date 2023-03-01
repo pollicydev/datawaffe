@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static user_extras crispy_forms_tags %}
 
-{% block title %}User:{% if object.profile.name %}{{ object.profile.name }}{% else %}{{ object.username }}{% endif %}{% endblock %}
+{% block title %}User:{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}{% endblock %}
 
 {% block body_class %}bg-secondary{% endblock body_class %}
 
@@ -60,9 +60,19 @@
           <form method="post" action="{% url 'users:update_profile' %}">
             {% csrf_token %}
             <div class="row g-3 g-sm-4 mt-0 mt-lg-2">
-              <div class="col-sm-12">
-                <label class="form-label" for="fn">Full name</label>
+              <div class="col-sm-6">
+                <label class="form-label" for="name">Full name</label>
                 {{ form.name | as_crispy_field }}
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label" for="pronouns">What are your pronouns?</label>
+                {{ form.pronouns | as_crispy_field }}
+                {{ form.other_pronouns | as_crispy_field }}
+              </div>
+
+              <div class="col-12">
+                <label class="form-label" for="country">Where you live</label>
+                {{ form.country | as_crispy_field }}
               </div>
 
               <div class="col-12">
@@ -164,6 +174,27 @@
     // Associating the plugins
     $('.avatar-update-form').avatarUpdateForm();
   }(jQuery));
+
+  // hide some fields with js
+  let others_option = 8;
+  let others_field = $("#div_id_other_pronouns");
+  let pronouns_field = document.getElementById("div_id_pronouns");
+
+  others_field.hide()
+
+
+  $("#div_id_pronouns").on("change", function () {
+    // check if new selected option is 8 i.e other
+    console.log("selected: ", $("#div_id_pronouns").val());
+    if ($("#div_id_pronouns option:selected").text() === "Other") {
+      others_field.css({
+        "margin-top": "0.5rem"
+      });
+      others_field.show("fast");
+    } else {
+      others_field.hide()
+    }
+  });
 
 </script>
 {% endblock %}

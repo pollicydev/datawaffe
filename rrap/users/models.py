@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.files.base import ContentFile
 from django.utils import timezone
 from rrap.activities.constants import ActivityTypes
+from django_countries.fields import CountryField
 
 
 class User(AbstractUser):
@@ -61,8 +62,45 @@ def change_avatar(user, image_file):
 
 
 class Profile(models.Model):
+
+    # Pronouns
+    NONE = 0
+    HE = 1
+    SHE = 2
+    THEY = 3
+    ZE = 4
+    XE = 5
+    SHE_THEY = 6
+    HE_THEY = 7
+    OTHER = 8
+
+    PRONOUNS = (
+        (NONE, "Just my name please!"),
+        (HE, "he/him/his"),
+        (SHE, "She/her/hers"),
+        (THEY, "They/them/theirs"),
+        (ZE, "Ze/hir/hirs"),
+        (XE, "Xe/xem/xyr"),
+        (SHE_THEY, "She/they"),
+        (HE_THEY, "he/they"),
+        (OTHER, "Other"),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(_("Your full name"), blank=True, max_length=255)
+    pronouns = models.SmallIntegerField(
+        "What are your pronouns?",
+        choices=PRONOUNS,
+        default=0,
+    )
+    other_pronouns = models.CharField(
+        "Other pronouns",
+        max_length=255,
+        help_text="Please specify your pronouns if missing",
+        blank=True,
+        null=True,
+    )
+    country = CountryField(blank_label="Select country", blank=True)
     bio = models.TextField(
         _("Add a short biography to tell others who you are"),
         blank=True,
