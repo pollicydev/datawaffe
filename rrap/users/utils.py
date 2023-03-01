@@ -117,7 +117,7 @@ def gravatar_url(email, style="mp", size=80):
 
 def gravatar(user, size=80):
     if not user or user.is_anonymous:
-        email = "anon@rrap.org".encode("utf8")
+        email = "anon@datawaffe.org".encode("utf8")
         return gravatar_url(email=email)
 
     email = user.email if user.is_authenticated else ""

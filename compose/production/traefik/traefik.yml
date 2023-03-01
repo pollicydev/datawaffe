@@ -28,7 +28,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`rrap.org`) || Host(`www.rrap.org`)"
+      rule: "Host(`datawaffe.org`) || Host(`www.datawaffe.org`)"
       entryPoints:
         - web-secure
       middlewares:
