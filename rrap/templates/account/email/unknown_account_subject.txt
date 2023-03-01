@@ -1,4 +1,4 @@
 {% load i18n %}
 {% autoescape off %}
-{% blocktrans %}Data Waffe: User unknown{% endblocktrans %}
+{% blocktrans %}User unknown{% endblocktrans %}
 {% endautoescape %}

@@ -1,4 +1,4 @@
 {% load i18n %}
 {% autoescape off %}
-{% blocktrans %}Data Waffe: Confirm your e-mail address{% endblocktrans %}
+{% blocktrans %}Confirm your e-mail address{% endblocktrans %}
 {% endautoescape %}
