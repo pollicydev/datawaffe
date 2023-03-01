@@ -167,30 +167,10 @@ class HomePage(Page):
 class StandardPage(Page):
 
     introduction = models.TextField(help_text="Text to describe the page", blank=True)
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Landscape mode only; horizontal width between 1000px and 3000px.",
-    )
-    video_id = models.CharField(max_length=15, null=True, blank=True)
-    cta_link = models.URLField(blank=True, null=True)
-    cta_text = models.CharField(max_length=25, blank=True, null=True)
     body = RichTextField(blank=True)
     content_panels = Page.content_panels + [
         FieldPanel("introduction", classname="full"),
         FieldPanel("body"),
-        ImageChooserPanel("image"),
-        FieldPanel("video_id"),
-        MultiFieldPanel(
-            [
-                FieldPanel("cta_text"),
-                FieldPanel("cta_link"),
-            ],
-            heading="Call to Action",
-        ),
     ]
 
 
