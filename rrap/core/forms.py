@@ -11,11 +11,10 @@ class MapFilterForm(forms.Form):
         self.fields["title"].label = ""
         self.fields["communities"].label = ""
         self.fields["services"].label = ""
-        self.fields["issues"].label = ""
 
     class Meta:
         model = OrganisationPage
-        fields = ["title", "communities", "services", "issues"]
+        fields = ["title", "communities", "services"]
 
 
 class PubFilterForm(forms.Form):

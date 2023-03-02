@@ -5,7 +5,6 @@ from rrap.organizations.models import OrganisationPage
 from rrap.core.models import (
     KeyPopulation,
     Service,
-    Issue,
     PublicationType,
     PublicationPage,
 )
@@ -32,14 +31,6 @@ class MapFilter(django_filters.FilterSet):
     )
     services = django_filters.ModelMultipleChoiceFilter(
         queryset=Service.objects.all(),
-        widget=forms.CheckboxSelectMultiple(
-            attrs={
-                "class": "form-control",
-            }
-        ),
-    )
-    issues = django_filters.ModelMultipleChoiceFilter(
-        queryset=Issue.objects.all(),
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-control",

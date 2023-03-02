@@ -26,6 +26,7 @@ from taggit.models import TaggedItemBase
 from wagtail.search import index
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtailcaptcha.models import WagtailCaptchaEmailForm
+from wagtail.snippets.models import register_snippet
 
 
 class HomePage(Page):
@@ -220,6 +221,8 @@ class Topic(ClusterableModel):
         verbose_name_plural = "Topics"
 
 
+@register_snippet
+# specific to LGBT Organisation (repurposed)
 class KeyPopulation(ClusterableModel):
     title = models.CharField(max_length=100)
     acronym = models.CharField(max_length=10, blank=True, null=True)
@@ -247,6 +250,35 @@ class KeyPopulation(ClusterableModel):
         verbose_name_plural = "Key Populations"
 
 
+@register_snippet
+class SWKeyPopulation(ClusterableModel):
+    title = models.CharField(max_length=100)
+    color = ColorField(default="#000000")
+
+    panels = [
+        FieldPanel(
+            "title",
+            classname="full",
+        ),
+        NativeColorPanel("color"),
+    ]
+
+    def __str__(self):
+        return self.title
+
+    def autocomplete_label(self):
+        return self.title
+
+    def get_total_reach(self):
+        return +self.comm_reach
+
+    class Meta:
+        verbose_name = "SW Key Population"
+        verbose_name_plural = "SW Key Populations"
+
+
+@register_snippet
+# specific to LGBT Organisation (repurposed)
 class Service(ClusterableModel):
     title = models.CharField(max_length=100, help_text="Name/title of service")
     icon = models.CharField(
@@ -275,13 +307,14 @@ class Service(ClusterableModel):
         verbose_name_plural = "Services"
 
 
-class Issue(ClusterableModel):
-    title = models.CharField(max_length=100, help_text="Name/title of issue")
+@register_snippet
+class SWService(ClusterableModel):
+    title = models.CharField(max_length=100, help_text="Name/title of service")
     icon = models.CharField(
         max_length=20, blank=True, null=True, help_text="Enter name of icon"
     )
     summary = models.CharField(
-        max_length=240, blank=True, null=True, help_text="Describe the issue"
+        max_length=240, blank=True, null=True, help_text="Describe the service"
     )
 
     panels = [
@@ -299,10 +332,41 @@ class Issue(ClusterableModel):
         return self.title
 
     class Meta:
-        verbose_name = "Issue"
-        verbose_name_plural = "Issues"
+        verbose_name = "SW Service"
+        verbose_name_plural = "SW Services"
 
 
+@register_snippet
+class PWUIDService(ClusterableModel):
+    title = models.CharField(max_length=100, help_text="Name/title of service")
+    icon = models.CharField(
+        max_length=20, blank=True, null=True, help_text="Enter name of icon"
+    )
+    summary = models.CharField(
+        max_length=240, blank=True, null=True, help_text="Describe the service"
+    )
+
+    panels = [
+        FieldPanel(
+            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
+        ),
+        FieldPanel("summary"),
+        FieldPanel("icon"),
+    ]
+
+    def __str__(self):
+        return self.title
+
+    def autocomplete_label(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "PWUID Service"
+        verbose_name_plural = "PWUID Services"
+
+
+@register_snippet
+# specific to LGBT Organisation (repurposed)
 class Violation(ClusterableModel):
     title = models.CharField(max_length=100, help_text="Name of violation")
     description = models.CharField(
@@ -327,6 +391,57 @@ class Violation(ClusterableModel):
         verbose_name_plural = "Violations"
 
 
+@register_snippet
+class SWViolation(ClusterableModel):
+    title = models.CharField(max_length=100, help_text="Name of violation")
+    description = models.CharField(
+        max_length=240, blank=True, null=True, help_text="Brief description"
+    )
+    color = ColorField(default="#000000", null=True)
+
+    panels = [
+        FieldPanel("title", classname="full"),
+        FieldPanel("description"),
+        NativeColorPanel("color"),
+    ]
+
+    def __str__(self):
+        return self.title
+
+    def autocomplete_label(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "SW Violation"
+        verbose_name_plural = "SW Violations"
+
+
+@register_snippet
+class PWUIDViolation(ClusterableModel):
+    title = models.CharField(max_length=100, help_text="Name of violation")
+    description = models.CharField(
+        max_length=240, blank=True, null=True, help_text="Brief description"
+    )
+    color = ColorField(default="#000000", null=True)
+
+    panels = [
+        FieldPanel("title", classname="full"),
+        FieldPanel("description"),
+        NativeColorPanel("color"),
+    ]
+
+    def __str__(self):
+        return self.title
+
+    def autocomplete_label(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "PWUID Violation"
+        verbose_name_plural = "PWUID Violations"
+
+
+@register_snippet
 class PublicationType(ClusterableModel):
     name = models.CharField(max_length=100)
 

@@ -18,10 +18,6 @@ urlpatterns = [
     path("cms/autocomplete/", include(autocomplete_admin_urls)),
     path(settings.WAGTAIL_ADMIN_URL, include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    path("organizations/", include("rrap.organizations.urls")),
-    path("data/", include("rrap.datasets.urls")),
-    path("activity/", include("rrap.activities.urls", namespace="activities")),
-    path("invitations/", include("rrap.invites.urls", namespace="invitations")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

@@ -8,13 +8,16 @@ from rrap.core.models import (
     Topic,
     KeyPopulation,
     Service,
-    Issue,
     Violation,
     PublicationType,
     PublicationPage,
 )
 from rrap.blog.models import BlogPageType, BlogPage
-from rrap.organizations.models import OrganisationPage
+from rrap.organizations.models import (
+    SexWorkOrganisation,
+    LGBTQOrganisation,
+    PWUIDSOrganisation,
+)
 from wagtail.contrib.modeladmin.helpers import PermissionHelper
 from wagtail.contrib.modeladmin.mixins import ThumbnailMixin
 
@@ -74,11 +77,10 @@ class BlogAdmin(ThumbnailMixin, ModelAdmin):
     search_fields = ("title", "introduction")
 
 
-class OrganisationsAdmin(ThumbnailMixin, ModelAdmin):
-    """Organisations admin."""
+class LGBTQOrganisationsAdmin(ThumbnailMixin, ModelAdmin):
 
-    model = OrganisationPage
-    menu_label = "Organisations"
+    model = LGBTQOrganisation
+    menu_label = "LGBTQ"
     menu_icon = "group"
     menu_order = 100
     add_to_settings_menu = False
@@ -92,7 +94,49 @@ class OrganisationsAdmin(ThumbnailMixin, ModelAdmin):
     thumb_image_filter_spec = "fill-300x150"
     thumb_image_width = 100
     thumb_col_header_text = "Logo"
-    list_filter = ("status", "communities", "services", "issues")
+    list_filter = ("status", "communities", "services")
+    search_fields = ("title",)
+
+
+class SWOrganisationsAdmin(ThumbnailMixin, ModelAdmin):
+
+    model = SexWorkOrganisation
+    menu_label = "Sex Workers"
+    menu_icon = "group"
+    menu_order = 100
+    add_to_settings_menu = False
+    exclude_from_explorer = False
+    thumb_image_field_name = "logo"
+    list_display = (
+        "admin_thumb",
+        "title",
+    )
+    ordering = ("first_published_at",)
+    thumb_image_filter_spec = "fill-300x150"
+    thumb_image_width = 100
+    thumb_col_header_text = "Logo"
+    list_filter = ("status", "communities", "services")
+    search_fields = ("title",)
+
+
+class PWUIDsOrganisationsAdmin(ThumbnailMixin, ModelAdmin):
+
+    model = PWUIDSOrganisation
+    menu_label = "PWUIDs"
+    menu_icon = "group"
+    menu_order = 100
+    add_to_settings_menu = False
+    exclude_from_explorer = False
+    thumb_image_field_name = "logo"
+    list_display = (
+        "admin_thumb",
+        "title",
+    )
+    ordering = ("first_published_at",)
+    thumb_image_filter_spec = "fill-300x150"
+    thumb_image_width = 100
+    thumb_col_header_text = "Logo"
+    list_filter = ("status", "services")
     search_fields = ("title",)
 
 
@@ -185,21 +229,6 @@ class ServicesAdmin(ModelAdmin):
     inspect_view_enabled = True
 
 
-class IssuesAdmin(ModelAdmin):
-    """Issues admin."""
-
-    model = Issue
-    menu_label = "Issues"
-    menu_icon = "snippet"
-    menu_order = 290
-    add_to_settings_menu = False
-    exclude_from_explorer = False
-    list_display = ("title",)
-    search_fields = ("title",)
-    permission_helper_class = GenericValidationPermissionHelper
-    inspect_view_enabled = True
-
-
 class ViolationsAdmin(ModelAdmin):
     """Violations admin."""
 
@@ -252,14 +281,24 @@ class MetaSettingsGroup(ModelAdminGroup):
         TopicsAdmin,
         KeyPopAdmin,
         ServicesAdmin,
-        IssuesAdmin,
         ViolationsAdmin,
         BlogTypesAdmin,
         PubTypesAdmin,
     )
 
 
+class OrganisationsGroup(ModelAdminGroup):
+    menu_label = "Organisations"
+    menu_icon = "group"
+    menu_order = 100
+    items = (
+        LGBTQOrganisationsAdmin,
+        SWOrganisationsAdmin,
+        PWUIDsOrganisationsAdmin,
+    )
+
+
 modeladmin_register(BlogAdmin)
-modeladmin_register(OrganisationsAdmin)
+modeladmin_register(OrganisationsGroup)
 modeladmin_register(PublicationsAdmin)
 modeladmin_register(MetaSettingsGroup)

@@ -114,8 +114,6 @@ LOCAL_APPS = [
     "rrap.blog",
     "rrap.core",
     "rrap.organizations",
-    "rrap.datasets",
-    "rrap.invites",
     "rrap.activities",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

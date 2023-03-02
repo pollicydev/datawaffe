@@ -153,7 +153,7 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '{{ google_analytics_ua }}'{% if user.is_authenticated %}, {'user_id': '{{ user.pk }}'}{% endif %});
+        gtag('config', '{{ google_analytics_ua }}'{% if request.user.is_authenticated %}, {'user_id': '{{ request.user.pk }}'}{% endif %});
       </script>
     {% endif %}
 
@@ -201,16 +201,15 @@
             {% comment %} <a class="btn btn-primary btn-sm fs-sm order-lg-3 d-none d-sm-inline-flex" href="{% url 'users:organizations' user.username %}" rel="noopener"><i class="ai-circle-plus fs-xl me-2 ms-n1"></i>Add data</a> {% endcomment %}
             <div class="dropdown nav d-none d-sm-block order-lg-3"><a class="nav-link d-flex align-items-center p-0 ms-5"
               href="#" data-bs-toggle="dropdown" aria-expanded="false"><img class="border rounded-circle"
-                src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% gravatar user=user %}{% endif %}" width="48" alt="user avatar">
+                src="{% if request.user.profile.avatar %}{{ request.user.profile.avatar.url }}{% else %}{% gravatar user=request.user %}{% endif %}" width="48" alt="user avatar">
               <div class="ps-2">
                 <div class="fs-xs lh-1 opacity-60">Hello,</div>
-                <div class="fs-sm dropdown-toggle">{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username}}{% endif %}</div>
+                <div class="fs-sm dropdown-toggle">{% if request.user.profile.name %}{{ request.user.profile.name }}{% else %}{{ request.user.username}}{% endif %}</div>
               </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end my-1">
               <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pb-1">Account</h6>
-              <a class="dropdown-item" href="{% url 'users:detail' user.username  %}"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Profile</a>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'users:user_invites' user.username %}"><i class="ai-inbox fs-lg opacity-70 me-2"></i>Invitations<span class="badge bg-danger ms-3">{% if total_pending_invitations != 0 %}({{total_pending_invitations}}){% endif %}</span></a>
+              <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Profile</a>
               <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="{% url 'account_logout' %}"><i class="ai-logout fs-lg opacity-70 me-2"></i>Sign out</a>
             </div>
           </div>

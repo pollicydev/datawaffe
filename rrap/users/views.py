@@ -12,7 +12,8 @@ from .models import change_avatar
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.files.base import ContentFile
-from rrap.invites.constants import InviteStatus
+
+# from rrap.invites.constants import InviteStatus
 from allauth.account.views import PasswordChangeView
 
 User = get_user_model()
@@ -148,14 +149,14 @@ def user_organizations(request, username):
     username = request.user.username
     user = get_object_or_404(User, username__iexact=username)
     user_organizations = user.profile.get_organizations()
-    pending_invites = user.invites_received.filter(status=InviteStatus.PENDING)
+    # pending_invites = user.invites_received.filter(status=InviteStatus.PENDING)
 
     return render(
         request,
         "users/organizations.html",
         {
             "user_organizations": user_organizations,
-            "pending_invites": pending_invites,
+            # "pending_invites": pending_invites,
         },
     )
 

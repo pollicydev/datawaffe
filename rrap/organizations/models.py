@@ -10,15 +10,17 @@ from django.db import models
 from django import forms
 from uuid import uuid4
 from rrap.core.managers import ActiveManager
-from rrap.datasets.models import Dataset
 from rrap.activities.constants import ActivityTypes
 from rrap.core.models import (
     Location,
-    Topic,
     KeyPopulation,
     Service,
-    Issue,
     PublicationType,
+    SWKeyPopulation,
+    SWService,
+    SWViolation,
+    PWUIDService,
+    PWUIDViolation,
 )
 from wagtail.core.models import Page, PageManager, Orderable
 from modelcluster.fields import ParentalManyToManyField, ParentalKey
@@ -72,104 +74,6 @@ def change_logo(organization, image_file):
     return organization
 
 
-class Organization(models.Model):
-
-    UNVERIFIED = 0
-    ACTIVE = 1
-    INACTIVE = 2
-    DISABLED = 3
-    SUSPENDED = 4
-    ORG_STATUSES = (
-        (ACTIVE, "Active"),
-        (INACTIVE, "Inactive"),
-        (UNVERIFIED, "Not verified"),
-        (DISABLED, "Disabled"),
-        (SUSPENDED, "Suspended"),
-    )
-
-    ORGANIZATION_TYPE = (
-        ("individual", "Individual"),
-        ("donor", "Donor"),
-        ("government", "Government"),
-        ("int_ngo", "International NGO"),
-        ("cso", "Civil Society Organization"),
-        ("private_sector", "Private sector"),
-        ("religious", "Religious"),
-        ("other", "Other"),
-    )
-
-    name = models.SlugField("name", max_length=255)
-    title = models.CharField("title", max_length=400, unique=True)
-    uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
-    acronym = models.CharField(max_length=10, null=True, blank=True)
-    about = models.TextField(max_length=400, null=True, blank=True)
-    logo = models.ImageField(upload_to=get_logo_full_path, blank=True)
-    logo_version = models.IntegerField(default=0, blank=True, editable=False)
-    website = models.URLField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    create_date = models.DateTimeField("date created", auto_now_add=True)
-    last_update = models.DateTimeField("last update", auto_now=True)
-    owner = models.ForeignKey(User, on_delete=models.PROTECT, verbose_name="owner")
-    members = models.ManyToManyField(
-        User, related_name="members", verbose_name="members"
-    )
-    locations = models.ManyToManyField("core.Location", related_name="organizations")
-    org_type = models.CharField(
-        "Type of organization",
-        blank=True,
-        max_length=20,
-        choices=ORGANIZATION_TYPE,
-    )
-    status = models.SmallIntegerField(choices=ORG_STATUSES, default=0)
-
-    objects = ActiveManager()
-
-    class Meta:
-        ordering = ["name"]
-        verbose_name_plural = "organizations"
-        unique_together = (("name", "owner"),)
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse("organization", kwargs={"org_name": self.name})
-
-    def is_owner_or_member(self, user):
-        if user.id == self.owner.id:
-            return True
-        for member in self.members.all():
-            if user.id == member.id:
-                return True
-        return False
-
-    def get_datasets(self):
-        return Dataset.objects.filter(organization__id=self.id)
-
-    def get_published_datasets(self):
-        return Dataset.objects.filter(organization__id=self.id, status=1)
-
-    def get_draft_datasets(self):
-        return Dataset.objects.filter(organization__id=self.id, status=0)
-
-    def get_followers(self):
-        Activity = apps.get_model("activities", "Activity")
-        activities = Activity.objects.select_related("from_user__profile").filter(
-            organization=self, activity_type=ActivityTypes.FOLLOW
-        )
-        followers = []
-        for activity in activities:
-            followers.append(activity.from_user)
-        return followers
-
-    def get_followers_count(self):
-        Activity = apps.get_model("activities", "Activity")
-        followers_count = Activity.objects.filter(
-            organization=self, activity_type=ActivityTypes.FOLLOW
-        ).count()
-        return followers_count
-
-
 class OrganisationManager(PageManager):
     """custom manager to handle indexing organisations"""
 
@@ -183,7 +87,6 @@ class OrganisationManager(PageManager):
         return {
             "communities": list(set(qs.values_list("services", flat=True))),
             "services": list(set(qs.values_list("services", flat=True))),
-            "issues": list(set(qs.values_list("issues", flat=True))),
         }
 
 
@@ -219,6 +122,84 @@ class ViolenceEntry(Orderable):
     ]
 
 
+class SWViolenceEntry(Orderable):
+    page = ParentalKey(
+        "organizations.SexWorkOrganisation", related_name="sw_violations"
+    )
+    violation = models.ForeignKey("core.SWViolation", on_delete=models.CASCADE)
+    occurences = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+        help_text="How many violations of this nature did you deal with?",
+    )
+    period = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        default=current_year(),
+        validators=[MinValueValidator(2000), max_value_current_year],
+        help_text="Enter year of record",
+    )
+
+    panels = [
+        FieldPanel("violation"),
+        FieldPanel("occurences"),
+        FieldPanel("period"),
+    ]
+
+
+class PWUIDViolenceEntry(Orderable):
+    page = ParentalKey(
+        "organizations.PWUIDSOrganisation", related_name="pwuid_violations"
+    )
+    violation = models.ForeignKey("core.PWUIDViolation", on_delete=models.CASCADE)
+    occurences = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+        help_text="How many violations of this nature did you deal with?",
+    )
+    period = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        default=current_year(),
+        validators=[MinValueValidator(2000), max_value_current_year],
+        help_text="Enter year of record",
+    )
+
+    panels = [
+        FieldPanel("violation"),
+        FieldPanel("occurences"),
+        FieldPanel("period"),
+    ]
+
+
+class SWCommunityReach(Orderable):
+    page = ParentalKey("organizations.SexWorkOrganisation", related_name="sw_reach")
+    community = models.ForeignKey(
+        "core.SWKeyPopulation", on_delete=models.CASCADE, related_name="sw_comm_reach"
+    )
+    reach = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+        help_text="How many people in this community did you reach?",
+    )
+    period = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        default=current_year(),
+        validators=[MinValueValidator(2000), max_value_current_year],
+        help_text="Enter year of record",
+    )
+
+    panels = [
+        FieldPanel("community"),
+        FieldPanel("reach"),
+        FieldPanel("period"),
+    ]
+
+
 class CommunityReach(Orderable):
     page = ParentalKey("organizations.OrganisationPage", related_name="reach")
     community = models.ForeignKey(
@@ -240,6 +221,28 @@ class CommunityReach(Orderable):
 
     panels = [
         FieldPanel("community"),
+        FieldPanel("reach"),
+        FieldPanel("period"),
+    ]
+
+
+class PWUIDSCommunityReach(Orderable):
+    page = ParentalKey("organizations.PWUIDSOrganisation", related_name="pwuid_reach")
+    reach = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+        default=0,
+        help_text="How many people did you reach?",
+    )
+    period = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        default=current_year(),
+        validators=[MinValueValidator(2000), max_value_current_year],
+        help_text="Enter year of record",
+    )
+
+    panels = [
         FieldPanel("reach"),
         FieldPanel("period"),
     ]
@@ -312,7 +315,11 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
         FieldPanel("introduction", classname="full"),
     ]
 
-    subpage_types = ["organizations.OrganisationPage"]
+    subpage_types = [
+        "organizations.LGBTQOrganisation",
+        "organizations.SexWorkOrganisation",
+        "organizations.PWUIDSOrganisation",
+    ]
 
     # wait for filter get request for map organisations
     def get_template(self, request, *args, **kwargs):
@@ -340,8 +347,6 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
 
 class OrganisationPage(Page):
 
-    parent_page_types = ["OrganisationIndexPage"]
-
     subpage_types = []
 
     UNVERIFIED = 0
@@ -357,16 +362,14 @@ class OrganisationPage(Page):
         (SUSPENDED, "Suspended"),
     )
 
-    ORGANIZATION_TYPE = (
+    FUNDING_SOURCES = (
         ("individual", "Individual"),
         ("donor", "Donor"),
         ("government", "Government"),
-        ("int_ngo", "International NGO"),
-        ("cso", "Civil Society Organization"),
-        ("private_sector", "Private sector"),
-        ("religious", "Religious"),
         ("other", "Other"),
     )
+
+    # About
 
     acronym = models.CharField(max_length=10, null=True, blank=True)
     summary = models.TextField(
@@ -386,21 +389,16 @@ class OrganisationPage(Page):
     website = models.URLField(null=True, blank=True)
     # filterables
     locations = ParentalManyToManyField(
-        Location, related_name="organisations", blank=True
+        Location,
+        related_name="organisations",
+        blank=True,
+        verbose_name="Where do you work? (select all districts that apply)",
     )
-    topics = ParentalManyToManyField(Topic, related_name="organisations", blank=True)
-    communities = ParentalManyToManyField(
-        KeyPopulation, related_name="organisations", blank=True
-    )
-    services = ParentalManyToManyField(
-        Service, related_name="organisations", blank=True
-    )
-    issues = ParentalManyToManyField(Issue, related_name="organisations", blank=True)
-    org_type = models.CharField(
-        "Type of organization",
+    funding_sources = models.CharField(
+        "Funding sources",
         blank=True,
         max_length=20,
-        choices=ORGANIZATION_TYPE,
+        choices=FUNDING_SOURCES,
     )
     status = models.SmallIntegerField(
         choices=ORG_STATUSES, default=1
@@ -432,7 +430,13 @@ class OrganisationPage(Page):
         blank=True, null=True, max_length=200, help_text="Office address"
     )
 
-    # DATA AREA
+    needs_priorities = models.TextField(
+        "What are the organisation's needs and priorities?",
+        max_length=2000,
+        null=True,
+        blank=True,
+        help_text="e.g. disability-specific services, mental health support, etc. Write freely. Max 2000 characters",
+    )
 
     # PERSONNEL
     paralegals = models.PositiveSmallIntegerField(null=True, blank=True, default=0)
@@ -443,6 +447,14 @@ class OrganisationPage(Page):
         null=True, blank=True, default=0, verbose_name="Village health teams"
     )
 
+    # PWDs
+    support_pwds = models.BooleanField(
+        "Does the organisation actively support Persons with Disability(PWDs)?",
+        default=True,
+        blank=True,
+        help_text="Check the box if Yes",
+    )
+
     objects = OrganisationManager()
 
     search_fields = Page.search_fields + [
@@ -450,19 +462,16 @@ class OrganisationPage(Page):
         index.SearchField("summary"),
         index.SearchField("about"),
         index.SearchField("acronym"),
-        index.SearchField("get_org_type_display"),
-        index.FilterField("org_type"),
+        index.SearchField("get_funding_sources_display"),
+        index.FilterField("funding_sources"),
         index.RelatedFields("locations", [index.SearchField("name")]),
-        index.RelatedFields("communities", [index.SearchField("title")]),
-        index.RelatedFields("services", [index.SearchField("title")]),
-        index.RelatedFields("issues", [index.SearchField("title")]),
     ]
 
     content_panels = Page.content_panels + [
         FieldPanel("acronym"),
         FieldPanel("summary"),
         FieldPanel("about"),
-        FieldPanel("org_type"),
+        FieldPanel("funding_sources"),
         ImageChooserPanel("logo"),
         MultiFieldPanel(
             [
@@ -476,10 +485,8 @@ class OrganisationPage(Page):
 
     tagging_panels = [
         AutocompletePanel("locations", target_model=Location),
-        FieldPanel("topics", widget=forms.CheckboxSelectMultiple),
-        FieldPanel("communities", widget=forms.CheckboxSelectMultiple),
-        FieldPanel("services", widget=forms.CheckboxSelectMultiple),
-        FieldPanel("issues", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("support_pwds"),
+        FieldPanel("needs_priorities", classname="full"),
     ]
 
     contact_panels = [
@@ -496,20 +503,6 @@ class OrganisationPage(Page):
 
     settings_panels = [FieldPanel("status")] + Page.settings_panels
 
-    reach_panels = [
-        MultiFieldPanel(
-            [InlinePanel("reach", max_num=30, min_num=0, label="Reach")],
-            heading="Reach within key populations",
-        ),
-    ]
-
-    violations_panels = [
-        MultiFieldPanel(
-            [InlinePanel("violations", max_num=30, min_num=0, label="Violation")],
-            heading="Record Human Rights Violations",
-        ),
-    ]
-
     edit_handler = TabbedInterface(
         [
             ObjectList(content_panels, heading="Info"),
@@ -517,8 +510,6 @@ class OrganisationPage(Page):
             ObjectList(contact_panels, heading="Contacts"),
             ObjectList(Page.promote_panels, heading="Meta"),
             ObjectList(settings_panels, heading="Visibility"),
-            ObjectList(reach_panels, heading="Reach & Impact"),
-            ObjectList(violations_panels, heading="Violations"),
         ]
     )
 
@@ -672,3 +663,205 @@ class OrganisationPage(Page):
         context["violationsChartSeries"] = violationsChartSeries
         context["violationsPieChartSeries"] = violationsPieChartSeries
         return context
+
+
+class LGBTQOrganisation(OrganisationPage):
+    """LGBTQ scoped organisation"""
+
+    template = "organizations/lgbtq_page.html"
+    parent_page_types = ["OrganisationIndexPage"]
+
+    communities = ParentalManyToManyField(
+        KeyPopulation, related_name="organisations", blank=True
+    )
+    services = ParentalManyToManyField(
+        Service, related_name="organisations", blank=True
+    )
+
+    lgbt_tagging_panels = [
+        FieldPanel("communities", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("services", widget=forms.CheckboxSelectMultiple),
+    ] + OrganisationPage.tagging_panels
+
+    lgbt_reach_panels = [
+        MultiFieldPanel(
+            [InlinePanel("reach", max_num=30, min_num=0, label="Reach")],
+            heading="Reach within key populations",
+        ),
+    ]
+
+    lgbt_violations_panels = [
+        MultiFieldPanel(
+            [InlinePanel("violations", max_num=30, min_num=0, label="Violation")],
+            heading="Record Human Rights Violations",
+        ),
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(OrganisationPage.content_panels, heading="Info"),
+            ObjectList(lgbt_tagging_panels, heading="Tagging"),
+            ObjectList(OrganisationPage.contact_panels, heading="Contacts"),
+            ObjectList(lgbt_reach_panels, heading="Reach & Impact"),
+            ObjectList(lgbt_violations_panels, heading="Violations"),
+            ObjectList(Page.promote_panels, heading="Meta"),
+            ObjectList(OrganisationPage.settings_panels, heading="Visibility"),
+        ]
+    )
+
+    search_fields = OrganisationPage.search_fields + [
+        index.RelatedFields("communities", [index.SearchField("title")]),
+        index.RelatedFields("services", [index.SearchField("title")]),
+    ]
+
+    class Meta:
+        verbose_name = "LGBTQ Organisation"
+        verbose_name_plural = "LGBTQ Organisations"
+
+
+class SexWorkOrganisation(OrganisationPage):
+    """Sex workers scoped organisation"""
+
+    template = "organizations/sex_workers_page.html"
+    parent_page_types = ["OrganisationIndexPage"]
+
+    AGE_RANGE = (
+        ("", "N/A"),
+        ("15-19", "15-19 years"),
+        ("20-24", "20-24 years"),
+        ("25-29", "25-29 years"),
+        ("30-34", "30-34 years"),
+        ("35-39", "35-39 years"),
+        ("40-44", "40-44 years"),
+        ("45-49", "45-49 years"),
+        ("50-54", "50-54 years"),
+        ("55-59", "55-59 years"),
+        ("60-64", "60-64 years"),
+        ("65-69", "65-69 years"),
+        ("70-74", "70-74 years"),
+        ("75-79", "75-79 years"),
+        ("80+", "80 years and above"),
+    )
+
+    SEXWORK_TYPES = (
+        ("", "N/A"),
+        ("Street", "Street-based"),
+        ("Brothel", "Brothel-based"),
+        ("Escort", "Escort work"),
+    )
+
+    age = models.CharField(
+        "Average age of members",
+        max_length=30,
+        choices=AGE_RANGE,
+        blank=True,
+        help_text="Select range that applies",
+    )
+    sexwork_type = models.CharField(
+        "Sex work activity type",
+        max_length=10,
+        choices=SEXWORK_TYPES,
+        blank=True,
+        help_text="Types of sex work activities performed",
+    )
+    communities = ParentalManyToManyField(
+        SWKeyPopulation, related_name="sw_organisations", blank=True
+    )
+    services = ParentalManyToManyField(
+        SWService, related_name="sw_organisations", blank=True
+    )
+
+    demographics_panels = [
+        FieldPanel("age"),
+        FieldPanel("sexwork_type"),
+    ]
+
+    sw_tagging_panels = [
+        FieldPanel("communities", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("services", widget=forms.CheckboxSelectMultiple),
+    ] + OrganisationPage.tagging_panels
+
+    sw_reach_panels = [
+        MultiFieldPanel(
+            [InlinePanel("sw_reach", max_num=30, min_num=0, label="Reach")],
+            heading="Reach within key populations",
+        ),
+    ]
+
+    sw_violations_panels = [
+        MultiFieldPanel(
+            [InlinePanel("sw_violations", max_num=30, min_num=0, label="Violation")],
+            heading="Record Human Rights Violations",
+        ),
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(OrganisationPage.content_panels, heading="Info"),
+            ObjectList(demographics_panels, heading="Demographics"),
+            ObjectList(sw_tagging_panels, heading="Tagging"),
+            ObjectList(OrganisationPage.contact_panels, heading="Contacts"),
+            ObjectList(sw_reach_panels, heading="Reach & Impact"),
+            ObjectList(sw_violations_panels, heading="Violations"),
+            ObjectList(Page.promote_panels, heading="Meta"),
+            ObjectList(OrganisationPage.settings_panels, heading="Visibility"),
+        ]
+    )
+
+    search_fields = OrganisationPage.search_fields + [
+        index.RelatedFields("communities", [index.SearchField("title")]),
+        index.RelatedFields("services", [index.SearchField("title")]),
+    ]
+
+    class Meta:
+        verbose_name = "Sex Workers Organisation"
+        verbose_name_plural = "Sex Workers Organisations"
+
+
+class PWUIDSOrganisation(OrganisationPage):
+    """PWUIDs scoped organisation"""
+
+    template = "organizations/pwuids_page.html"
+    parent_page_types = ["OrganisationIndexPage"]
+
+    services = ParentalManyToManyField(
+        PWUIDService, related_name="pwuid_organisations", blank=True
+    )
+
+    pwuid_tagging_panels = [
+        FieldPanel("services", widget=forms.CheckboxSelectMultiple),
+    ] + OrganisationPage.tagging_panels
+
+    pwuid_reach_panels = [
+        MultiFieldPanel(
+            [InlinePanel("pwuid_reach", max_num=30, min_num=0, label="Reach")],
+            heading="Reach within key populations",
+        ),
+    ]
+
+    pwuid_violations_panels = [
+        MultiFieldPanel(
+            [InlinePanel("pwuid_violations", max_num=30, min_num=0, label="Violation")],
+            heading="Record Human Rights Violations",
+        ),
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(OrganisationPage.content_panels, heading="Info"),
+            ObjectList(pwuid_tagging_panels, heading="Tagging"),
+            ObjectList(OrganisationPage.contact_panels, heading="Contacts"),
+            ObjectList(pwuid_reach_panels, heading="Reach & Impact"),
+            ObjectList(pwuid_violations_panels, heading="Violations"),
+            ObjectList(Page.promote_panels, heading="Meta"),
+            ObjectList(OrganisationPage.settings_panels, heading="Visibility"),
+        ]
+    )
+
+    search_fields = OrganisationPage.search_fields + [
+        index.RelatedFields("services", [index.SearchField("title")]),
+    ]
+
+    class Meta:
+        verbose_name = "PWUIDs Organisation"
+        verbose_name_plural = "PWUIDs Organisations"

@@ -1,1 +1,0 @@
-{% load i18n %}{% blocktranslate with name=invite.invited_by.profile.name title=invite.organization.title %}{{ name }} is inviting you to collaborate on the Rapid Research for Agile Policymaking platform {{ title }}{% endblocktranslate %}

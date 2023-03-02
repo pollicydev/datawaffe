@@ -937,8 +937,8 @@
   "model": "sites.site",
   "pk": 1,
   "fields": {
-    "domain": "rrap.org",
-    "name": "rrap"
+    "domain": "datawaffe.org",
+    "name": "Data Waffe"
   }
 },
 {
@@ -978,7 +978,7 @@
   "pk": 1,
   "fields": {
     "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$eERLa0FyZmJGUEpSamdwd3E3cU1KUA$GexjNJGL+dt+Kx2CrPOUShn2NJZnOzuOu3RkHT4Pk1Q",
-    "last_login": "2023-01-07T10:00:34.033Z",
+    "last_login": "2023-03-01T18:23:55.167Z",
     "is_superuser": true,
     "username": "admin",
     "email": "support@matchstick.ug",
@@ -994,7 +994,7 @@
   "pk": 2,
   "fields": {
     "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$cG5TclJ6MFdSbTNsYkFoNDlUVmVFRA$fxYIoOSAh8D24ZUptk+4eawfZbU21e0qB/bR0vp2cUo",
-    "last_login": "2023-01-04T13:38:23.686Z",
+    "last_login": "2023-03-01T18:45:56.226Z",
     "is_superuser": false,
     "username": "collin",
     "email": "collin@gmail.com",
@@ -1026,6 +1026,38 @@
   }
 },
 {
+  "model": "users.user",
+  "pk": 4,
+  "fields": {
+    "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$NGZBT3VYbFk5UkU0OFZBRHVMdVFpZQ$YVmNuR+4e5GAxhAOV1iFoyUnMoqDtyxDbfoy6W9rw/o",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "rizz",
+    "email": "rizz@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-03-01T18:02:16.341Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 5,
+  "fields": {
+    "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$WDNvcndxWlVLYXQxMU1YZVpkZUkweg$Bt6i4ctU9ROJN5xF0I61DHXxyTzOSjGUqLP0PZEowyg",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "rizzler",
+    "email": "rizzler@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-03-01T18:04:55.464Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
   "model": "users.profile",
   "pk": 1,
   "fields": {
@@ -1033,6 +1065,9 @@
       "admin"
     ],
     "name": "",
+    "pronouns": 0,
+    "other_pronouns": null,
+    "country": "",
     "bio": "",
     "avatar": "public/avatars/1_0000_I19b9xx.png",
     "avatar_version": 0,
@@ -1049,6 +1084,9 @@
       "collin"
     ],
     "name": "Collin Rukundo",
+    "pronouns": 8,
+    "other_pronouns": "ha/ha",
+    "country": "KE",
     "bio": "I am having the time of my life.",
     "avatar": "public/avatars/2_0004.jpeg",
     "avatar_version": 4,
@@ -1065,11 +1103,52 @@
       "rukundocollin"
     ],
     "name": "",
+    "pronouns": 0,
+    "other_pronouns": null,
+    "country": "",
     "bio": "",
     "avatar": "public/avatars/3_0000_hSy9N5w.png",
     "avatar_version": 0,
     "last_login": "2023-01-03T21:02:49.546Z",
     "date_joined": "2023-01-03T21:02:49.546Z",
+    "has_finished_registration": false
+  }
+},
+{
+  "model": "users.profile",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "rizz"
+    ],
+    "name": "",
+    "pronouns": 0,
+    "other_pronouns": null,
+    "country": "",
+    "bio": "",
+    "avatar": "public/avatars/4_0000_koOVDeF.png",
+    "avatar_version": 0,
+    "last_login": "2023-03-01T18:02:16.439Z",
+    "date_joined": "2023-03-01T18:02:16.440Z",
+    "has_finished_registration": false
+  }
+},
+{
+  "model": "users.profile",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "rizzler"
+    ],
+    "name": "",
+    "pronouns": 0,
+    "other_pronouns": null,
+    "country": "",
+    "bio": "",
+    "avatar": "public/avatars/5_0000_0XzxGXh.png",
+    "avatar_version": 0,
+    "last_login": "2023-03-01T18:04:55.545Z",
+    "date_joined": "2023-03-01T18:04:55.545Z",
     "has_finished_registration": false
   }
 },
@@ -1161,6 +1240,30 @@
     "hero_desc": null,
     "hero_img": null,
     "promo_video": null
+  }
+},
+{
+  "model": "core.standardpage",
+  "pk": 71,
+  "fields": {
+    "introduction": "",
+    "body": ""
+  }
+},
+{
+  "model": "core.standardpage",
+  "pk": 72,
+  "fields": {
+    "introduction": "",
+    "body": ""
+  }
+},
+{
+  "model": "core.standardpage",
+  "pk": 73,
+  "fields": {
+    "introduction": "",
+    "body": ""
   }
 },
 {
@@ -2932,6 +3035,77 @@
       3,
       5
     ]
+  }
+},
+{
+  "model": "core.formfield",
+  "pk": 6,
+  "fields": {
+    "sort_order": 0,
+    "clean_name": "name",
+    "label": "Name",
+    "field_type": "singleline",
+    "required": true,
+    "choices": "",
+    "default_value": "",
+    "help_text": "You may use an alias if you need to",
+    "page": 70
+  }
+},
+{
+  "model": "core.formfield",
+  "pk": 7,
+  "fields": {
+    "sort_order": 1,
+    "clean_name": "email_address",
+    "label": "Email address",
+    "field_type": "email",
+    "required": true,
+    "choices": "",
+    "default_value": "",
+    "help_text": "If necessary, a response will be sent to this email address",
+    "page": 70
+  }
+},
+{
+  "model": "core.formfield",
+  "pk": 8,
+  "fields": {
+    "sort_order": 2,
+    "clean_name": "reason",
+    "label": "Reason",
+    "field_type": "dropdown",
+    "required": true,
+    "choices": "Information request, Report a bug, Feature request, Inquiry, Other",
+    "default_value": "",
+    "help_text": "Why are you reaching out?",
+    "page": 70
+  }
+},
+{
+  "model": "core.formfield",
+  "pk": 9,
+  "fields": {
+    "sort_order": 3,
+    "clean_name": "message",
+    "label": "Message",
+    "field_type": "multiline",
+    "required": true,
+    "choices": "",
+    "default_value": "",
+    "help_text": "How can we help? Please be as specific as possible",
+    "page": 70
+  }
+},
+{
+  "model": "core.contactpage",
+  "pk": 70,
+  "fields": {
+    "to_address": "info@pollicy.org",
+    "from_address": "website@datawaffe.org",
+    "subject": "Data Waffe Contact Form Request",
+    "intro": "<p data-block-key=\"jp01j\">Get in touch with us by filling out this form.</p>",
+    "thank_you_text": "<p data-block-key=\"muh8m\">Thank you for reaching out. A representative will be in touch with you soon, if necessary.</p>"
   }
 },
 {
@@ -8814,6 +8988,29 @@
   }
 },
 {
+  "model": "activities.activity",
+  "pk": 13,
+  "fields": {
+    "from_user": [
+      "admin"
+    ],
+    "to_user": null,
+    "activity_type": "F",
+    "content": "",
+    "organisation": 67,
+    "date": "2023-01-23T14:01:25.370Z"
+  }
+},
+{
+  "model": "wagtailforms.formsubmission",
+  "pk": 4,
+  "fields": {
+    "form_data": "{\"name\": \"test\", \"email_address\": \"test@gmail.com\", \"reason\": \"Information request\", \"message\": \"jdjdjd\"}",
+    "page": 70,
+    "submit_time": "2023-03-01T10:18:01.119Z"
+  }
+},
+{
   "model": "wagtailusers.userprofile",
   "pk": 1,
   "fields": {
@@ -9432,7 +9629,7 @@
   "fields": {
     "hostname": "127.0.0.1:8000",
     "port": 80,
-    "site_name": "",
+    "site_name": "Data Waffe",
     "root_page": 5,
     "is_default_site": true
   }
@@ -10488,6 +10685,69 @@
   }
 },
 {
+  "model": "wagtailcore.modellogentry",
+  "pk": 51,
+  "fields": {
+    "content_type": [
+      "wagtailmenus",
+      "flatmenu"
+    ],
+    "label": "Footer menu (footer)",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:23:05.048Z",
+    "uuid": "308719c6-f0db-4a0b-aeb5-c8694b8ee3b5",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": false,
+    "object_id": "1"
+  }
+},
+{
+  "model": "wagtailcore.modellogentry",
+  "pk": 52,
+  "fields": {
+    "content_type": [
+      "wagtailmenus",
+      "flatmenu"
+    ],
+    "label": "Footer menu (footer)",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:32:51.295Z",
+    "uuid": "4ef78826-d1a7-4442-832f-0dd1da016c0c",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": false,
+    "object_id": "1"
+  }
+},
+{
+  "model": "wagtailcore.modellogentry",
+  "pk": 53,
+  "fields": {
+    "content_type": [
+      "wagtailcore",
+      "site"
+    ],
+    "label": "Data Waffe [default]",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T18:11:42.498Z",
+    "uuid": "ec56c669-1bb9-45d8-92f5-daab42900bbc",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": false,
+    "object_id": "1"
+  }
+},
+{
   "model": "wagtailcore.collection",
   "pk": 1,
   "fields": {
@@ -11136,7 +11396,7 @@
   "fields": {
     "path": "00010002",
     "depth": 2,
-    "numchild": 27,
+    "numchild": 31,
     "translation_key": "d0189f6e-0aab-4264-80e6-37dcd3b7f935",
     "locale": 1,
     "title": "Data Waffe",
@@ -13407,6 +13667,158 @@
     "last_published_at": "2023-01-07T21:03:17.307Z",
     "latest_revision_created_at": "2023-01-07T21:03:16.869Z",
     "live_revision": 158,
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 70,
+  "fields": {
+    "path": "00010002000T",
+    "depth": 3,
+    "numchild": 0,
+    "translation_key": "1b7053bf-5925-4a0d-b0c3-96d0ff923d2d",
+    "locale": 1,
+    "title": "Contact us",
+    "draft_title": "Contact us",
+    "slug": "contact-us",
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/home/contact-us/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": true,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2023-03-01T09:43:39.697Z",
+    "last_published_at": "2023-03-01T11:29:21.692Z",
+    "latest_revision_created_at": "2023-03-01T11:29:21.540Z",
+    "live_revision": 177,
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 71,
+  "fields": {
+    "path": "00010002000U",
+    "depth": 3,
+    "numchild": 0,
+    "translation_key": "11d585dd-598d-462a-bf25-8d046e179887",
+    "locale": 1,
+    "title": "About",
+    "draft_title": "About",
+    "slug": "about",
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/home/about/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": true,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2023-03-01T11:18:46.062Z",
+    "last_published_at": "2023-03-01T11:29:06.247Z",
+    "latest_revision_created_at": "2023-03-01T11:29:06.153Z",
+    "live_revision": 176,
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 72,
+  "fields": {
+    "path": "00010002000V",
+    "depth": 3,
+    "numchild": 0,
+    "translation_key": "79be463d-e371-48e1-8f9d-4785a2432f83",
+    "locale": 1,
+    "title": "Terms and conditions",
+    "draft_title": "Terms and conditions",
+    "slug": "terms-and-conditions",
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/home/terms-and-conditions/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": true,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2023-03-01T11:18:59.586Z",
+    "last_published_at": "2023-03-01T11:28:48.172Z",
+    "latest_revision_created_at": "2023-03-01T11:28:48.022Z",
+    "live_revision": 175,
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 73,
+  "fields": {
+    "path": "00010002000W",
+    "depth": 3,
+    "numchild": 0,
+    "translation_key": "0d73b5a2-7cbc-4447-b074-7135b256e913",
+    "locale": 1,
+    "title": "Privacy Policy",
+    "draft_title": "Privacy Policy",
+    "slug": "privacy-policy",
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/home/privacy-policy/",
+    "owner": [
+      "admin"
+    ],
+    "seo_title": "",
+    "show_in_menus": true,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "first_published_at": "2023-03-01T11:19:12.080Z",
+    "last_published_at": "2023-03-01T11:28:33.268Z",
+    "latest_revision_created_at": "2023-03-01T11:28:33.135Z",
+    "live_revision": 174,
     "alias_of": null
   }
 },
@@ -20664,6 +21076,798 @@
   }
 },
 {
+  "model": "wagtailcore.pagelogentry",
+  "pk": 329,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T08:55:42.387Z",
+    "uuid": "75ebad5c-8464-4737-9865-4812ef127f9a",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 68,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 330,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T08:55:42.577Z",
+    "uuid": "75ebad5c-8464-4737-9865-4812ef127f9a",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 68,
+    "revision": 161
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 331,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:06:07.290Z",
+    "uuid": "8adb1b49-db62-4682-b0b5-06cc2f5b5e4d",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 68,
+    "revision": 162
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 332,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T09:06:07.541Z",
+    "uuid": "8adb1b49-db62-4682-b0b5-06cc2f5b5e4d",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 68,
+    "revision": 162
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 333,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:13:51.005Z",
+    "uuid": "8d5f0790-db5e-49f7-a186-59885a0cc3b5",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 68,
+    "revision": 163
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 334,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:13:57.090Z",
+    "uuid": "3faa9100-c86c-4944-ad6b-04eb82697c7c",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 68,
+    "revision": 164
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 335,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T09:13:57.238Z",
+    "uuid": "3faa9100-c86c-4944-ad6b-04eb82697c7c",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": false,
+    "page": 68,
+    "revision": 164
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 336,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:34:12.725Z",
+    "uuid": "ec97bf87-585c-488e-b72c-53dec49dfe81",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 68,
+    "revision": 165
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 337,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T09:34:12.928Z",
+    "uuid": "ec97bf87-585c-488e-b72c-53dec49dfe81",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": false,
+    "page": 68,
+    "revision": 165
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 338,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "testing",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:36:32.931Z",
+    "uuid": "92aff78a-a8e3-48b5-b993-9587ec9a0dda",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 69,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 339,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "testing",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T09:36:33.063Z",
+    "uuid": "92aff78a-a8e3-48b5-b993-9587ec9a0dda",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 69,
+    "revision": 166
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 340,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "testing",
+    "action": "wagtail.delete",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:38:02.038Z",
+    "uuid": "a0ec2783-e6e0-4f82-97bd-141e5fb0f970",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": true,
+    "page": 69,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 341,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.unpublish",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:39:09.072Z",
+    "uuid": "71c20d0c-262d-4db3-ab82-10ade12d1543",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": false,
+    "page": 68,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 342,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:39:23.285Z",
+    "uuid": "cf528c08-6959-4f5a-a32f-d3142e5f509f",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 68,
+    "revision": 167
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 343,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T09:39:23.498Z",
+    "uuid": "cf528c08-6959-4f5a-a32f-d3142e5f509f",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": false,
+    "page": 68,
+    "revision": 167
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 344,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.delete",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:40:12.017Z",
+    "uuid": "ed6daca1-6bfb-4419-a575-bb442aa50a9c",
+    "user": [
+      "admin"
+    ],
+    "content_changed": false,
+    "deleted": true,
+    "page": 68,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 345,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:43:39.613Z",
+    "uuid": "e0a433d6-87f1-46e7-b057-14efec7c213c",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 70,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 346,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T09:43:39.772Z",
+    "uuid": "e0a433d6-87f1-46e7-b057-14efec7c213c",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 70,
+    "revision": 168
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 347,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:44:18.950Z",
+    "uuid": "2065dc3c-af76-480c-89b3-c2f4f9ab75b3",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 70,
+    "revision": 169
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 348,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T09:44:19.060Z",
+    "uuid": "2065dc3c-af76-480c-89b3-c2f4f9ab75b3",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 70,
+    "revision": 169
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 349,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T09:45:33.904Z",
+    "uuid": "b76e5a85-03f4-495e-89fd-80e3fc788a2d",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 70,
+    "revision": 170
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 350,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T09:45:34.130Z",
+    "uuid": "b76e5a85-03f4-495e-89fd-80e3fc788a2d",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 70,
+    "revision": 170
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 351,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "About",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:18:45.953Z",
+    "uuid": "2a0d0de0-ee89-49c0-b736-ac2685e32557",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 71,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 352,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "About",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T11:18:46.140Z",
+    "uuid": "2a0d0de0-ee89-49c0-b736-ac2685e32557",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 71,
+    "revision": 171
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 353,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "Terms and conditions",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:18:59.507Z",
+    "uuid": "ce2ba79a-c0d6-4db1-a29f-4b3df0702f29",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 72,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 354,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "Terms and conditions",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T11:18:59.646Z",
+    "uuid": "ce2ba79a-c0d6-4db1-a29f-4b3df0702f29",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 72,
+    "revision": 172
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 355,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "Privacy Policy",
+    "action": "wagtail.create",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:19:11.943Z",
+    "uuid": "bbd876bc-b21e-4dc6-b1ed-ed7ba1c67661",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 73,
+    "revision": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 356,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "Privacy Policy",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T11:19:12.163Z",
+    "uuid": "bbd876bc-b21e-4dc6-b1ed-ed7ba1c67661",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 73,
+    "revision": 173
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 357,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "Privacy Policy",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:28:33.212Z",
+    "uuid": "04855255-d2ee-48a5-a0aa-ee0de046bf84",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 73,
+    "revision": 174
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 358,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "Privacy Policy",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T11:28:33.368Z",
+    "uuid": "04855255-d2ee-48a5-a0aa-ee0de046bf84",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 73,
+    "revision": 174
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 359,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "Terms and conditions",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:28:48.113Z",
+    "uuid": "ed038f69-5e97-48a6-b0b3-bf886accd703",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 72,
+    "revision": 175
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 360,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "Terms and conditions",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T11:28:48.275Z",
+    "uuid": "ed038f69-5e97-48a6-b0b3-bf886accd703",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 72,
+    "revision": 175
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 361,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "About",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:29:06.213Z",
+    "uuid": "037bec0a-6760-441f-a7fe-19fb8185730d",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 71,
+    "revision": 176
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 362,
+  "fields": {
+    "content_type": [
+      "core",
+      "standardpage"
+    ],
+    "label": "About",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T11:29:06.300Z",
+    "uuid": "037bec0a-6760-441f-a7fe-19fb8185730d",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 71,
+    "revision": 176
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 363,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.edit",
+    "data_json": "\"\"",
+    "timestamp": "2023-03-01T11:29:21.612Z",
+    "uuid": "a19af9b2-a5a2-46bf-ab3f-92cc3e9b976c",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 70,
+    "revision": 177
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 364,
+  "fields": {
+    "content_type": [
+      "core",
+      "contactpage"
+    ],
+    "label": "Contact us",
+    "action": "wagtail.publish",
+    "data_json": "null",
+    "timestamp": "2023-03-01T11:29:21.800Z",
+    "uuid": "a19af9b2-a5a2-46bf-ab3f-92cc3e9b976c",
+    "user": [
+      "admin"
+    ],
+    "content_changed": true,
+    "deleted": false,
+    "page": 70,
+    "revision": 177
+  }
+},
+{
   "model": "wagtailcore.pagesubscription",
   "pk": 3,
   "fields": {
@@ -21324,6 +22528,50 @@
   }
 },
 {
+  "model": "wagtailcore.pagesubscription",
+  "pk": 66,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "page": 70,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 67,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "page": 71,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 68,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "page": 72,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 69,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "page": 73,
+    "comment_notifications": true
+  }
+},
+{
   "model": "wagtailmenus.mainmenuitem",
   "pk": 1,
   "fields": {
@@ -21394,6 +22642,76 @@
   }
 },
 {
+  "model": "wagtailmenus.mainmenuitem",
+  "pk": 6,
+  "fields": {
+    "sort_order": 5,
+    "link_page": 71,
+    "link_url": null,
+    "url_append": "",
+    "handle": "",
+    "link_text": "",
+    "allow_subnav": true,
+    "menu": 1
+  }
+},
+{
+  "model": "wagtailmenus.flatmenuitem",
+  "pk": 1,
+  "fields": {
+    "sort_order": 1,
+    "link_page": 72,
+    "link_url": null,
+    "url_append": "",
+    "handle": "",
+    "link_text": "",
+    "allow_subnav": false,
+    "menu": 1
+  }
+},
+{
+  "model": "wagtailmenus.flatmenuitem",
+  "pk": 2,
+  "fields": {
+    "sort_order": 2,
+    "link_page": 73,
+    "link_url": null,
+    "url_append": "",
+    "handle": "",
+    "link_text": "",
+    "allow_subnav": false,
+    "menu": 1
+  }
+},
+{
+  "model": "wagtailmenus.flatmenuitem",
+  "pk": 3,
+  "fields": {
+    "sort_order": 3,
+    "link_page": 70,
+    "link_url": null,
+    "url_append": "",
+    "handle": "",
+    "link_text": "",
+    "allow_subnav": false,
+    "menu": 1
+  }
+},
+{
+  "model": "wagtailmenus.flatmenuitem",
+  "pk": 4,
+  "fields": {
+    "sort_order": 0,
+    "link_page": 71,
+    "link_url": null,
+    "url_append": "",
+    "handle": "",
+    "link_text": "",
+    "allow_subnav": false,
+    "menu": 1
+  }
+},
+{
   "model": "wagtailmenus.mainmenu",
   "pk": 1,
   "fields": {
@@ -21402,6 +22720,20 @@
       80
     ],
     "max_levels": 2
+  }
+},
+{
+  "model": "wagtailmenus.flatmenu",
+  "pk": 1,
+  "fields": {
+    "site": [
+      "127.0.0.1:8000",
+      80
+    ],
+    "title": "Footer menu",
+    "handle": "footer",
+    "heading": "",
+    "max_levels": 1
   }
 },
 {
@@ -21450,6 +22782,48 @@
     "email": "rknd@gmail.com",
     "verified": false,
     "primary": false
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "rizz"
+    ],
+    "email": "rizz@gmail.com",
+    "verified": false,
+    "primary": true
+  }
+},
+{
+  "model": "account.emailaddress",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "rizzler"
+    ],
+    "email": "rizzler@gmail.com",
+    "verified": false,
+    "primary": true
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2023-03-01T18:15:58.732Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "sites",
+      "site"
+    ],
+    "object_id": "1",
+    "object_repr": "datawaffe.org",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Domain name\", \"Display name\"]}}]"
   }
 }
 ]
