@@ -197,8 +197,8 @@ class Location(ClusterableModel):
         return self.name
 
     class Meta:
-        verbose_name = "Location"
-        verbose_name_plural = "Locations"
+        verbose_name = "District"
+        verbose_name_plural = "Districts"
 
 
 class Topic(ClusterableModel):
@@ -246,8 +246,8 @@ class KeyPopulation(ClusterableModel):
         return +self.comm_reach
 
     class Meta:
-        verbose_name = "Key Population"
-        verbose_name_plural = "Key Populations"
+        verbose_name = "LGBTQ Key Population"
+        verbose_name_plural = "LGBTQ Key Populations"
 
 
 @register_snippet
@@ -303,8 +303,8 @@ class Service(ClusterableModel):
         return self.title
 
     class Meta:
-        verbose_name = "Service"
-        verbose_name_plural = "Services"
+        verbose_name = "LGBTQ Service"
+        verbose_name_plural = "LGBTQ Services"
 
 
 @register_snippet
@@ -387,8 +387,8 @@ class Violation(ClusterableModel):
         return self.title
 
     class Meta:
-        verbose_name = "Violation"
-        verbose_name_plural = "Violations"
+        verbose_name = "LGBTQ Violation"
+        verbose_name_plural = "LGBTQ Violations"
 
 
 @register_snippet

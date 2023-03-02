@@ -69,6 +69,7 @@ class BlogPageTag(TaggedItemBase):
     )
 
 
+@register_snippet
 class BlogPageType(models.Model):
     name = models.CharField(max_length=255)
     name_plural = models.CharField(max_length=255)

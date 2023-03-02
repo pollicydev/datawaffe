@@ -175,7 +175,7 @@ class LocationsAdmin(ModelAdmin):
     """Locations admin."""
 
     model = Location
-    menu_label = "Locations"
+    menu_label = "Districts"
     menu_icon = "snippet"
     menu_order = 290
     add_to_settings_menu = False
@@ -184,107 +184,6 @@ class LocationsAdmin(ModelAdmin):
     search_fields = ("name",)
     permission_helper_class = LocationsValidationPermissionHelper
     inspect_view_enabled = True
-
-
-class TopicsAdmin(ModelAdmin):
-    """Topics admin."""
-
-    model = Topic
-    menu_label = "Topics"
-    menu_icon = "snippet"
-    menu_order = 290
-    add_to_settings_menu = False
-    exclude_from_explorer = False
-    list_display = ("name",)
-    search_fields = ("name",)
-
-
-class KeyPopAdmin(ModelAdmin):
-    """Key populations admin."""
-
-    model = KeyPopulation
-    menu_label = "Key Populations"
-    menu_icon = "snippet"
-    menu_order = 290
-    add_to_settings_menu = False
-    exclude_from_explorer = False
-    list_display = ("title",)
-    search_fields = ("title",)
-    permission_helper_class = GenericValidationPermissionHelper
-    inspect_view_enabled = True
-
-
-class ServicesAdmin(ModelAdmin):
-    """Services admin."""
-
-    model = Service
-    menu_label = "Services"
-    menu_icon = "snippet"
-    menu_order = 290
-    add_to_settings_menu = False
-    exclude_from_explorer = False
-    list_display = ("title",)
-    search_fields = ("title",)
-    permission_helper_class = GenericValidationPermissionHelper
-    inspect_view_enabled = True
-
-
-class ViolationsAdmin(ModelAdmin):
-    """Violations admin."""
-
-    model = Violation
-    menu_label = "Violations"
-    menu_icon = "snippet"
-    menu_order = 290
-    add_to_settings_menu = False
-    exclude_from_explorer = False
-    list_display = ("title",)
-    search_fields = ("title",)
-    permission_helper_class = GenericValidationPermissionHelper
-    inspect_view_enabled = True
-
-
-class PubTypesAdmin(ModelAdmin):
-    """Publication types admin."""
-
-    model = PublicationType
-    menu_label = "Publication Types"
-    menu_icon = "snippet"
-    menu_order = 290
-    add_to_settings_menu = False
-    exclude_from_explorer = False
-    list_display = ("name",)
-    search_fields = ("name",)
-    # permission_helper_class = GenericValidationPermissionHelper
-
-
-class BlogTypesAdmin(ModelAdmin):
-    """Blog post types admin."""
-
-    model = BlogPageType
-    menu_label = "Blog Post Types"
-    menu_icon = "snippet"
-    menu_order = 290
-    add_to_settings_menu = False
-    exclude_from_explorer = False
-    list_display = ("name",)
-    search_fields = ("name",)
-    # permission_helper_class = GenericValidationPermissionHelper
-
-
-class MetaSettingsGroup(ModelAdminGroup):
-    menu_label = "Metadata"
-    menu_icon = "cog"
-    menu_order = 300
-    items = (
-        LocationsAdmin,
-        TopicsAdmin,
-        KeyPopAdmin,
-        ServicesAdmin,
-        ViolationsAdmin,
-        BlogTypesAdmin,
-        PubTypesAdmin,
-    )
 
 
 class OrganisationsGroup(ModelAdminGroup):
@@ -301,4 +200,4 @@ class OrganisationsGroup(ModelAdminGroup):
 modeladmin_register(BlogAdmin)
 modeladmin_register(OrganisationsGroup)
 modeladmin_register(PublicationsAdmin)
-modeladmin_register(MetaSettingsGroup)
+modeladmin_register(LocationsAdmin)
