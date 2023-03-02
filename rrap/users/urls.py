@@ -28,12 +28,5 @@ urlpatterns = [
         RedirectView.as_view(pattern_name="onboard_user"),
         name="onboarding",
     ),
-    path("onboarding/profile", view=onboard_user, name="onboarding"),
-    path("<str:username>/organizations", view=user_organizations, name="organizations"),
-    # # Invitation routes
-    # path(
-    #     "<str:username>/invitations/",
-    #     invite_views.UserInviteListView.as_view(),
-    #     name="user_invites",
-    # ),
+    path("onboarding/nuxt", view=onboard_user, name="onboarding"),
 ]

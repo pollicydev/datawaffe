@@ -14,17 +14,72 @@
 
     <div class="col-md-6 mx-auto py-xl-0">
 
-      <div class="mb-4">
+      <div class="mb-3">
         <a href="/"><img src="{% static 'images/logo/logo-full-color.png' %}" height="50" alt="" class="mb-4" /></a>
-        <h1 class="h2">Welcome Aboard!</h1>
-        <p class="text-muted">Lets get to know you a little better.</p>
+        <h1 class="h2">We need more information</h1>
+        <p class="text-muted">Please provide the following information to create an account and access the data on Data
+          Waffe. All fields are required.</p>
       </div>
       <!-- Form -->
       <form method="post">
-        {% crispy form %}
+        {% csrf_token %}
+        <div class="row g-3 g-sm-4 mt-0 mt-lg-2">
+          <div class="col-sm-6">
+            <label class="form-label" for="name">What is your name?</label>
+            {{ form.name | as_crispy_field }}
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="pronouns">What are your pronouns?</label>
+            {{ form.pronouns | as_crispy_field }}
+            {{ form.other_pronouns | as_crispy_field }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label" for="country">Where do you live?</label>
+            {{ form.country | as_crispy_field }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label" for="why">Why do you need access to the data? (Purpose)</label>
+            {{ form.why | as_crispy_field }}
+          </div>
+
+          <div class="col-12">
+            <button class="btn btn-primary" type="submit">Update profile</button>
+          </div>
       </form>
     </div>
   </div>
 </div>
 
 {% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+{% endblock %}
+
+{% block inline_javascript %}
+<script type="text/javascript">
+  // hide some fields with js
+  let others_option = 8;
+  let others_field = $("#div_id_other_pronouns");
+  let pronouns_field = document.getElementById("div_id_pronouns");
+
+  others_field.hide()
+
+
+  $("#div_id_pronouns").on("change", function () {
+    // check if new selected option is 8 i.e other
+    console.log("selected: ", $("#div_id_pronouns").val());
+    if ($("#div_id_pronouns option:selected").text() === "Other") {
+      others_field.css({
+        "margin-top": "0.5rem"
+      });
+      others_field.show("fast");
+    } else {
+      others_field.hide("fast")
+    }
+  });
+
+</script>
+{% endblock %}

@@ -1,21 +1,14 @@
 from django.conf import settings
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from django.conf import settings
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 
 
-account_verification_token = PasswordResetTokenGenerator()
-
-def send_verification_email(user):
+def send_welcome_email(user):
 
     from_email = settings.DEFAULT_FROM_EMAIL
-    userid = urlsafe_base64_encode(force_bytes(user.pk))
-    token = account_verification_token.make_token(user)
-    template = "accounts/email_verify.html"
+    template = "account/email/welcome.txt"
     email_list = [user.email]
-    context = dict(token=token, userid=userid, user=user)
+    context = dict(user=user, name=user.get_screen_name)
     subject = "Welcome Aboard!"
     # Send the verification email
     send_mail(
@@ -32,6 +25,7 @@ def send_verification_email(user):
 def message(msg, level=0):
     print(f"{msg}")
 
+
 def verification_email(user):
-    send_verification_email(user=user)
+    send_welcome_email(user=user)
     return

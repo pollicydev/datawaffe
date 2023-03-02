@@ -319,7 +319,7 @@ ACCOUNT_LOGOUT_ON_GET = True  # to be modified properly
 
 
 def ACCOUNT_USER_DISPLAY(user):
-    return user.username
+    return user.email
 
 
 ACCOUNT_FORMS = {
@@ -345,6 +345,12 @@ COMPRESS_OFFLINE = env.bool("COMPRESS_OFFLINE", False)
 GRAVATAR_ICON = ""
 
 RECENTLY_JOINED_DAYS = 10
+
+# Run tasks in multi threaded mode when UWSGI is not installed.
+MULTI_THREAD = True
+
+# A setting to disable tasks altoghether.
+DISABLE_TASKS = False
 
 # APP SETTINGS & CONTEXT
 RRAP_VERSION = env("RRAP_VERSION", default="0.0.0")

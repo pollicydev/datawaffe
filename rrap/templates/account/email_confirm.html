@@ -7,16 +7,17 @@
 
 
 {% block inner %}
-<div class="card card-border-color card-border-color-primary">
-  <div class="card-header card-header-divider"><a href="/"><img class="logo-img"
-        src="{% static 'images/logo/logo.png' %}" alt="logo" width="150" /></a><span
-      class="splash-description text-bold">{% translate "Confirm E-mail Address" %}</span></div>
-  <div class="card-body">
+<div class="d-flex flex-column align-items-center position-relative h-100 px-3 pt-5">
+  <a class="text-nav btn btn-icon bg-light border rounded-circle position-absolute top-0 end-0 zindex-2 p-0 mt-3 me-3 mt-sm-4 me-sm-4"
+    href="/" data-bs-toggle="tooltip" data-bs-placement="left" title="Back to home"><i class="ai-home"></i></a>
+  <div class="mt-auto" style="max-width: 700px;">
+    <h1 class="pt-3 pb-2 pb-lg-3">Confirm E-mail Address</h1>
+
     {% if confirmation %}
 
     {% user_display confirmation.email_address.user as user_display %}
 
-    <p>{% blocktranslate with confirmation.email_address.email as email %}Please confirm that <a
+    <p class="pb-2">{% blocktranslate with confirmation.email_address.email as email %}Please confirm that <a
         href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user
       {{ user_display }}.{% endblocktranslate %}</p>
 
@@ -29,11 +30,16 @@
 
     {% url 'account_email' as email_url %}
 
-    <p>{% blocktranslate %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a
+    <p class="pb-2">{% blocktranslate %}This e-mail confirmation link expired or is invalid. Please <a
+        href="{{ email_url }}">issue a
         new e-mail confirmation request</a>.{% endblocktranslate %}</p>
 
     {% endif %}
+
   </div>
+  <p class="w-100 fs-sm pt-5 mt-auto mb-5" style="max-width: 526px;"><span class="text-muted">&copy; All rights
+      reserved.</span><a class="nav-link d-inline-block p-0 ms-1" href="/" target="_blank" rel="noopener">Data Waffe</a>
+  </p>
 </div>
 
 {% endblock %}

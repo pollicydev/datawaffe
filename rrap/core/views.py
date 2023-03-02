@@ -54,8 +54,6 @@ class HtmxHttpRequest(HttpRequest):
 # @onboarding_required
 def home(request):
 
-    verified = False
-
     if request.user.is_authenticated:
 
         # first check if user is not staff and has whether has finished registration via onboarding
@@ -65,11 +63,11 @@ def home(request):
         ):
             return redirect("users:onboarding")
 
-        # if request.user.is_staff:
-        #     return redirect("/cms")
+        if request.user.is_staff:
+            return redirect("/cms")
 
         # Check if user has verified email
-        verified = ""
+        verified = False
         if EmailAddress.objects.filter(user=request.user, verified=True).exists():
             pass
         else:

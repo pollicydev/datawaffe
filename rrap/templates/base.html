@@ -185,7 +185,7 @@
       </div>
     </div>
     <!-- Page wrapper-->
-    <main class="page-wrapper">
+    <main class="page-wrapper container">
       <!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page-->
       <header class="navbar navbar-expand-lg fixed-top">
         <div class="container">
@@ -204,7 +204,7 @@
                 src="{% if request.user.profile.avatar %}{{ request.user.profile.avatar.url }}{% else %}{% gravatar user=request.user %}{% endif %}" width="48" alt="user avatar">
               <div class="ps-2">
                 <div class="fs-xs lh-1 opacity-60">Hello,</div>
-                <div class="fs-sm dropdown-toggle">{% if request.user.profile.name %}{{ request.user.profile.name }}{% else %}{{ request.user.username}}{% endif %}</div>
+                <div class="fs-sm dropdown-toggle">{{request.user.profile.get_screen_name}}</div>
               </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end my-1">
@@ -258,7 +258,7 @@
       {% endblock content %}
       </div>
     </main>
-    <footer class="footer py-4">
+    <footer style="align-self: center;" class="footer py-4">
       <div class="container text-center">
         <ul class="nav fs-sm">
           {% flat_menu 'footer' template="menus/footer_menu.html" max_levels=1 %}

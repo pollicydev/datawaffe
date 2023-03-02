@@ -101,10 +101,10 @@ class Profile(models.Model):
         null=True,
     )
     country = CountryField(blank_label="Select country", blank=True)
-    bio = models.TextField(
-        _("Add a short biography to tell others who you are"),
+    why = models.TextField(
+        _("Why are you here?"),
         blank=True,
-        max_length=300,
+        max_length=500,
     )
 
     # avatar stuff
@@ -147,7 +147,7 @@ class Profile(models.Model):
 
     def get_screen_name(self):
         try:
-            if self.user.get_full_name():
+            if not self.user.get_full_name() == "None None":
                 return self.user.get_full_name()
 
             elif self.name:
@@ -165,23 +165,6 @@ class Profile(models.Model):
             timezone.now() - self.date_joined
         ).days > settings.RECENTLY_JOINED_DAYS
         return recent
-
-    def get_organizations(self):
-        Organization = apps.get_model("organizations", "Organization")
-
-        user_organizations = []
-        owner_organizations = Organization.objects.select_related(
-            "owner__profile"
-        ).filter(owner=self.user)
-        member_organizations = Organization.objects.select_related(
-            "owner__profile"
-        ).filter(members=self.user)
-        for r in owner_organizations:
-            user_organizations.append(r)
-        for r in member_organizations:
-            user_organizations.append(r)
-        user_organizations.sort(key=lambda r: r.last_update, reverse=True)
-        return user_organizations
 
     def get_following(self):
         Activity = apps.get_model("activities", "Activity")

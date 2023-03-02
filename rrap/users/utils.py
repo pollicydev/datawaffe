@@ -8,6 +8,7 @@ import urllib.parse as urlparse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django_countries.widgets import CountrySelectWidget
+from django_countries.fields import CountryField
 
 
 class ProfileForm(forms.ModelForm):
@@ -18,12 +19,8 @@ class ProfileForm(forms.ModelForm):
             "pronouns",
             "other_pronouns",
             "country",
-            "bio",
         )
         widgets = {
-            "bio": forms.Textarea(
-                attrs={"class": "form-control expanding", "rows": "3"}
-            ),
             "country": CountrySelectWidget(),
         }
 
@@ -36,7 +33,7 @@ class ProfileForm(forms.ModelForm):
             "name",
             "pronouns",
             "other_pronouns",
-            "country" "bio",
+            "country",
             Submit("submit", "Update profile"),
         )
 
@@ -44,14 +41,19 @@ class ProfileForm(forms.ModelForm):
         self.fields["pronouns"].label = ""
         self.fields["other_pronouns"].label = ""
         self.fields["country"].label = ""
-        self.fields["bio"].label = ""
 
 
 class OnboardingForm(forms.ModelForm):
-    bio = forms.CharField(
+    name = forms.CharField(
+        max_length=100,
+        required=True,
+        help_text="We need this to verify your account. If your alias is known, you may use it.",
+    )
+    why = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "3"}),
         max_length=500,
-        required=False,
+        required=True,
+        help_text="500 chars max",
     )
 
     class Meta:
@@ -61,12 +63,9 @@ class OnboardingForm(forms.ModelForm):
             "pronouns",
             "other_pronouns",
             "country",
-            "bio",
+            "why",
         )
         widgets = {
-            "bio": forms.Textarea(
-                attrs={"class": "form-control expanding", "rows": "3"}
-            ),
             "country": CountrySelectWidget(),
         }
 
@@ -79,9 +78,15 @@ class OnboardingForm(forms.ModelForm):
             "name",
             "pronouns",
             "other_pronouns",
-            "country" "bio",
+            "country",
+            "why",
             Submit("submit", "Update profile"),
         )
+        self.fields["name"].label = ""
+        self.fields["pronouns"].label = ""
+        self.fields["other_pronouns"].label = ""
+        self.fields["country"].label = ""
+        self.fields["why"].label = ""
 
 
 class PasswordProtectedForm(forms.Form):

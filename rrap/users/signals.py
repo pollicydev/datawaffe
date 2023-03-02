@@ -4,8 +4,10 @@ from django.dispatch import receiver
 from .models import Profile, User, generate_avatar
 from . import tasks
 
+
 def get_uuid(limit=32):
     return str(uuid.uuid4())[:limit]
+
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
@@ -13,6 +15,7 @@ def create_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
         profile = instance.profile
         profile.avatar = generate_avatar(profile)
+        tasks.send_welcome_email(instance)
 
 
 @receiver(post_save, sender=User)

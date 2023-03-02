@@ -29,17 +29,11 @@
       </div>
       <div class="col-lg-5 order-lg-1 text-center text-lg-start me-xl-5"><span
           class="badge bg-faded-warning text-warning fs-sm">Leave No One Behind&nbsp; 🚀</span>
-        <h1 class="display-5 py-3 my-2 mb-xl-3">Explore data on {{ total_organisations }} LGBT and Sex Work
-          organisations across Uganda </h1>
-        <ul class="list-unstyled d-table text-start mx-auto mx-lg-0 mb-0">
-          <li class="d-flex pb-2 mb-1"><i class="ai-check-alt text-primary lead me-2"></i>Open data to aid inclusive
-            governance and improve access to social services</li>
-          <li class="d-flex pb-2 mb-1"><i class="ai-check-alt text-primary lead me-2"></i>Data visualization for faster
-            decision making</li>
-          <li class="d-flex pb-2 mb-1"><i class="ai-check-alt text-primary lead me-2"></i>Measure impact on key
-            populations wellbeing</li>
-        </ul>
-        <div class="d-flex justify-content-center justify-content-lg-start pt-4 pt-xl-5">
+        <h1 class="py-3 my-2 mb-xl-3">{{ self.hero_heading }}</h1>
+        <div class="text-center text-lg-start mx-auto mx-lg-0 mb-0">
+          <p>{{ self.hero_desc }}</p>
+        </div>
+        <div class="d-flex justify-content-center justify-content-lg-start pt-3 pt-xl-4">
           <div class="text-center">
             {% if request.user.is_authenticated %}
             <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="/map">Explore the impact</a>
@@ -153,31 +147,35 @@
         data-aos-offset="250" data-disable-parallax-down="md">
         <div class="pe-md-4 pe-lg-0">
           <h3 class="h2 mb-3 mb-lg-4">Key populations reached</h3>
-          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Organisations have been able to offer services and support to <strong>{{ global_total_reach.global_total_reach|intcomma }}</strong> people in key populations across Uganda</p>
+          <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Organisations have been able to offer services and support to
+            <strong>{{ global_total_reach.global_total_reach|intcomma }}</strong> people in key populations across
+            Uganda</p>
           <div style="max-width: 50rem;margin: 0 auto;" class="table-responsive collapse" id="collapsedReachTable">
             <table class="table table-striped fs-sm">
-                <thead>
-                    <tr class="bg-faded-primary">
-                    <th>Key population</th>
-                    <th>Est. reach</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in reachData %}
-                    <tr>
-                        <td><span class="d-inline-block rounded-circle community-icon"
-                          style="width: .625rem; height: .625rem; background-color: {% get_community_color row.community_id %};"></span>&nbsp;{% get_community_name row.community_id %}</td>
-                        <td class="text-center">{{ row.total_reach|intcomma }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
+              <thead>
+                <tr class="bg-faded-primary">
+                  <th>Key population</th>
+                  <th>Est. reach</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in reachData %}
+                <tr>
+                  <td><span class="d-inline-block rounded-circle community-icon"
+                      style="width: .625rem; height: .625rem; background-color: {% get_community_color row.community_id %};"></span>&nbsp;{% get_community_name row.community_id %}
+                  </td>
+                  <td class="text-center">{{ row.total_reach|intcomma }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
             </table>
           </div>
           <div class="mt-3">
-            <a href="#collapsedReachTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsedReachTable">
-                Show/hide reach data
+            <a href="#collapsedReachTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse"
+              role="button" aria-expanded="false" aria-controls="collapsedReachTable">
+              Show/hide reach data
             </a>
-        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -208,20 +206,20 @@
         <!-- Table -->
         <table class="table table-striped">
           <thead>
-              <tr class="bg-faded-primary">
+            <tr class="bg-faded-primary">
               <th>Services</th>
               <th>Organisations</th>
               <th>Percentage</th>
-              </tr>
+            </tr>
           </thead>
           <tbody>
-              {% for row in servicesData %}
-              <tr>
-                  <td>{{ row.title }}</td>
-                  <td class="text-center">{{ row.total_orgs }}</td>
-                  <td class="text-center">{{ row.percentile }}</td>
-              </tr>
-              {% endfor %}
+            {% for row in servicesData %}
+            <tr>
+              <td>{{ row.title }}</td>
+              <td class="text-center">{{ row.total_orgs }}</td>
+              <td class="text-center">{{ row.percentile }}</td>
+            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -266,31 +264,35 @@
         <div class="pe-md-4 pe-lg-0">
           <h3 class="h2 mb-3 mb-lg-4">On human rights violations and abuses</h3>
           <p class="pb-1 pb-lg-0 mb-4 mb-lg-5">Everyday, members of key populations endure various violations that
-            significantly reduce the quality of their lives. Looking at the data, there are an estimated <strong>{{ global_total_violations.global_total_violations|intcomma }}</strong> recorded violations on key populations going back to 2020</p>
+            significantly reduce the quality of their lives. Looking at the data, there are an estimated
+            <strong>{{ global_total_violations.global_total_violations|intcomma }}</strong> recorded violations on key
+            populations going back to 2020</p>
           <div style="max-width: 50rem;margin: 0 auto;" class="table-responsive collapse" id="collapsedViolationsTable">
             <table class="table table-striped fs-sm">
-                <thead>
-                    <tr class="bg-faded-primary">
-                    <th>Violation</th>
-                    <th>Recorded occurences</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in violationsData %}
-                    <tr>
-                        <td><span class="d-inline-block rounded-circle community-icon"
-                          style="width: .625rem; height: .625rem; background-color: {% generate_violation_hex row.violation_id %};"></span>&nbsp;{% get_violation row.violation_id %}</td>
-                        <td class="text-center">{{ row.total_occurences|intcomma }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
+              <thead>
+                <tr class="bg-faded-primary">
+                  <th>Violation</th>
+                  <th>Recorded occurences</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in violationsData %}
+                <tr>
+                  <td><span class="d-inline-block rounded-circle community-icon"
+                      style="width: .625rem; height: .625rem; background-color: {% generate_violation_hex row.violation_id %};"></span>&nbsp;{% get_violation row.violation_id %}
+                  </td>
+                  <td class="text-center">{{ row.total_occurences|intcomma }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
             </table>
           </div>
           <div class="mt-3">
-            <a href="#collapsedViolationsTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsedViolationsTable">
-                Show/hide violations data
+            <a href="#collapsedViolationsTable" class="btn btn-outline-primary rounded-pill" data-bs-toggle="collapse"
+              role="button" aria-expanded="false" aria-controls="collapsedViolationsTable">
+              Show/hide violations data
             </a>
-        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -502,12 +504,46 @@
   new Chart(keyPopPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{% for dataset in reachPieChartSeries %}"{% get_community_acronym dataset.community_id %}", {% endfor %}],
+      "labels": [{
+          %
+          for dataset in reachPieChartSeries %
+        }
+        "{% get_community_acronym dataset.community_id %}", {
+          %
+          endfor %
+        }
+      ],
       datasets: [{
         label: 'People reached',
-        data: [{% for dataset in reachPieChartSeries %}{{ dataset.total_reach }}, {% endfor %}],
-        backgroundColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}59', {% endfor %}],
-        borderColor: [{% for dataset in reachPieChartSeries %}'{% get_community_color dataset.community_id %}', {% endfor %}],
+        data: [{
+          %
+          for dataset in reachPieChartSeries %
+        } {
+          {
+            dataset.total_reach
+          }
+        }, {
+          %
+          endfor %
+        }],
+        backgroundColor: [{
+            %
+            for dataset in reachPieChartSeries %
+          }
+          '{% get_community_color dataset.community_id %}59', {
+            %
+            endfor %
+          }
+        ],
+        borderColor: [{
+            %
+            for dataset in reachPieChartSeries %
+          }
+          '{% get_community_color dataset.community_id %}', {
+            %
+            endfor %
+          }
+        ],
         borderWidth: 1
       }]
     },
@@ -538,10 +574,28 @@
   new Chart(servicesPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{% for dataset in servicesPieChartSeries %}"{{ dataset.title }}", {% endfor %}],
+      "labels": [{
+          %
+          for dataset in servicesPieChartSeries %
+        }
+        "{{ dataset.title }}", {
+          %
+          endfor %
+        }
+      ],
       datasets: [{
         label: 'Organisations',
-        data: [{% for dataset in servicesPieChartSeries %}{{ dataset.total_orgs }}, {% endfor %}],
+        data: [{
+          %
+          for dataset in servicesPieChartSeries %
+        } {
+          {
+            dataset.total_orgs
+          }
+        }, {
+          %
+          endfor %
+        }],
         backgroundColor: ["#ed5050", "#448c74", "#edcb50", "#e3e9ef", "#3f7fca"],
         borderColor: ["#ed5050", "#448c74", "#edcb50", "#e3e9ef", "#3f7fca"],
         borderWidth: 1
@@ -575,12 +629,46 @@
   new Chart(violationsPieCtx, {
     type: 'doughnut',
     "data": {
-      "labels": [{% for dataset in violationsPieChartSeries %}"{% get_violation dataset.violation_id %}", {% endfor %}],
+      "labels": [{
+          %
+          for dataset in violationsPieChartSeries %
+        }
+        "{% get_violation dataset.violation_id %}", {
+          %
+          endfor %
+        }
+      ],
       datasets: [{
         label: 'Occurrences',
-        data: [{% for dataset in violationsPieChartSeries %} {{ dataset.total_occurences }}, {% endfor %}],
-        backgroundColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}BF', {% endfor %}],
-        borderColor: [{% for dataset in violationsPieChartSeries %}'{% generate_violation_hex dataset.violation_id %}', {% endfor %}],
+        data: [{
+          %
+          for dataset in violationsPieChartSeries %
+        } {
+          {
+            dataset.total_occurences
+          }
+        }, {
+          %
+          endfor %
+        }],
+        backgroundColor: [{
+            %
+            for dataset in violationsPieChartSeries %
+          }
+          '{% generate_violation_hex dataset.violation_id %}BF', {
+            %
+            endfor %
+          }
+        ],
+        borderColor: [{
+            %
+            for dataset in violationsPieChartSeries %
+          }
+          '{% generate_violation_hex dataset.violation_id %}', {
+            %
+            endfor %
+          }
+        ],
         borderWidth: 1
       }]
     },

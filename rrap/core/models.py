@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.gis.db.models import PolygonField
+from django.shortcuts import redirect
 from wagtail.core.models import Page
 from django import forms
 from wagtail.core.fields import RichTextField
@@ -27,6 +28,8 @@ from wagtail.search import index
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtailcaptcha.models import WagtailCaptchaEmailForm
 from wagtail.snippets.models import register_snippet
+from allauth.account.models import EmailAddress
+from django.contrib import messages
 
 
 class HomePage(Page):
@@ -69,6 +72,22 @@ class HomePage(Page):
             heading="Hero Section",
         )
     ]
+
+    def serve(self, request):
+        if request.user.is_authenticated:
+
+            # first check if user is not staff and has whether has finished registration via onboarding
+            if (
+                not request.user.is_staff
+                and not request.user.profile.has_finished_registration
+            ):
+                return redirect("users:onboarding")
+
+            if request.user.is_staff:
+                return redirect("/cms")
+
+        else:
+            return super().serve(request)
 
     def get_context(self, request, *args, **kwargs):
 
@@ -115,13 +134,15 @@ class HomePage(Page):
 
         districts = Location.objects.filter(id__in=used_locations)
 
-        total_districts_in_ug = Location.objects.all().count()
+        if districts:
 
-        context["districts"] = districts
+            total_districts_in_ug = Location.objects.all().count()
 
-        context["percent_districts"] = round(
-            (districts.count() / total_districts_in_ug) * 100
-        )
+            context["districts"] = districts
+
+            context["percent_districts"] = round(
+                (districts.count() / total_districts_in_ug) * 100
+            )
 
         # getData for chart on reach for this organisation
 

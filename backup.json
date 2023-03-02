@@ -978,7 +978,7 @@
   "pk": 1,
   "fields": {
     "password": "argon2$argon2id$v=19$m=102400,t=2,p=8$eERLa0FyZmJGUEpSamdwd3E3cU1KUA$GexjNJGL+dt+Kx2CrPOUShn2NJZnOzuOu3RkHT4Pk1Q",
-    "last_login": "2023-03-01T18:23:55.167Z",
+    "last_login": "2023-03-02T09:44:55.968Z",
     "is_superuser": true,
     "username": "admin",
     "email": "support@matchstick.ug",
@@ -2661,69 +2661,6 @@
   "pk": 7,
   "fields": {
     "title": "Screening & treatment of STIs",
-    "icon": "",
-    "summary": ""
-  }
-},
-{
-  "model": "core.issue",
-  "pk": 1,
-  "fields": {
-    "title": "Access to justice",
-    "icon": "",
-    "summary": ""
-  }
-},
-{
-  "model": "core.issue",
-  "pk": 2,
-  "fields": {
-    "title": "Advocacy",
-    "icon": "",
-    "summary": ""
-  }
-},
-{
-  "model": "core.issue",
-  "pk": 3,
-  "fields": {
-    "title": "Community empowerment",
-    "icon": "",
-    "summary": ""
-  }
-},
-{
-  "model": "core.issue",
-  "pk": 4,
-  "fields": {
-    "title": "Digital rights",
-    "icon": "",
-    "summary": ""
-  }
-},
-{
-  "model": "core.issue",
-  "pk": 5,
-  "fields": {
-    "title": "Health service delivery",
-    "icon": "",
-    "summary": ""
-  }
-},
-{
-  "model": "core.issue",
-  "pk": 6,
-  "fields": {
-    "title": "Legal services",
-    "icon": "",
-    "summary": ""
-  }
-},
-{
-  "model": "core.issue",
-  "pk": 7,
-  "fields": {
-    "title": "Pyschosocial support",
     "icon": "",
     "summary": ""
   }
@@ -6562,7 +6499,7 @@
     "about": "",
     "logo": 1,
     "website": "https://icebreakersug.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 0,
     "email": "icebreakersug@gmail.com",
     "facebook": "https://icebreakersug.org",
@@ -6573,33 +6510,13 @@
     "phone": null,
     "toll_free": "0800100094",
     "address": "",
+    "needs_priorities": null,
     "paralegals": 5,
     "educators": 35,
     "village_teams": 6,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [
-      1,
-      2,
-      3,
-      6,
-      7
-    ],
-    "communities": [
-      7
-    ],
-    "services": [
-      1,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      3,
-      5,
-      7
     ]
   }
 },
@@ -6612,7 +6529,7 @@
     "about": "",
     "logo": null,
     "website": "https://www.queeryouthuganda.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 0,
     "email": "queerug@gmail.com",
     "facebook": "https://www.facebook.com/QueerYouthUganda/",
@@ -6623,33 +6540,17 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 8,
     "educators": 15,
     "village_teams": 2,
+    "support_pwds": true,
     "locations": [
       1,
       4,
       70,
       19,
       88
-    ],
-    "topics": [],
-    "communities": [
-      4,
-      5,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4
-    ],
-    "issues": [
-      2,
-      3,
-      5,
-      6,
-      7
     ]
   }
 },
@@ -6662,7 +6563,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 0,
     "email": "foasterfoundation@gmail.com",
     "facebook": "https://www.facebook.com/foasterfoudationug/",
@@ -6673,30 +6574,13 @@
     "phone": "+256775176122",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 4,
     "educators": 20,
     "village_teams": 2,
+    "support_pwds": true,
     "locations": [
       38
-    ],
-    "topics": [],
-    "communities": [
-      4,
-      2,
-      5,
-      7
-    ],
-    "services": [
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      3,
-      5,
-      7
     ]
   }
 },
@@ -6709,7 +6593,7 @@
     "about": "",
     "logo": 25,
     "website": "https://blessedrwenzoriuganda.wordpress.com",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 0,
     "email": "alexaa.bru@gmail.com",
     "facebook": "https://www.facebook.com/Blessed-Rwenzori-Uganda-BRU-149222648768302",
@@ -6720,29 +6604,13 @@
     "phone": "+256783351058",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 2,
     "educators": 6,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       70
-    ],
-    "topics": [],
-    "communities": [
-      4,
-      5,
-      6,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      5
-    ],
-    "issues": [
-      1,
-      2,
-      7
     ]
   }
 },
@@ -6755,7 +6623,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 0,
     "email": "comeoutposttestclub@gmail.com",
     "facebook": "https://www.facebook.com/ComeOutPositiveTestClubUganda/",
@@ -6766,28 +6634,12 @@
     "phone": "+256775411388",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 2,
     "educators": 35,
     "village_teams": 0,
-    "locations": [],
-    "topics": [
-      2
-    ],
-    "communities": [
-      4,
-      5,
-      7
-    ],
-    "services": [
-      3,
-      5,
-      7
-    ],
-    "issues": [
-      5,
-      6,
-      7
-    ]
+    "support_pwds": true,
+    "locations": []
   }
 },
 {
@@ -6799,7 +6651,7 @@
     "about": "",
     "logo": null,
     "website": "https://www.awhug.org",
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": "abrian@awhug.org",
     "facebook": "https://www.facebook.com/ArkWellnessHub",
@@ -6810,26 +6662,14 @@
     "phone": "+256752538003",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88,
       38
-    ],
-    "topics": [],
-    "communities": [
-      4,
-      7
-    ],
-    "services": [
-      1,
-      5,
-      7
-    ],
-    "issues": [
-      5,
-      7
     ]
   }
 },
@@ -6842,7 +6682,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": "kabarolewhsi@gmail.com",
     "facebook": "https://www.facebook.com/120382101915221/posts/806453783308046/",
@@ -6853,28 +6693,13 @@
     "phone": "+256782563349",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 10,
     "educators": 20,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       70
-    ],
-    "topics": [],
-    "communities": [
-      1,
-      2,
-      5,
-      6,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4
-    ],
-    "issues": [
-      2,
-      7
     ]
   }
 },
@@ -6887,7 +6712,7 @@
     "about": "",
     "logo": null,
     "website": "https://keypopulationsug.org",
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": "keypopulationug@gmail.com",
     "facebook": null,
@@ -6898,32 +6723,15 @@
     "phone": "+256773321055",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 51,
     "educators": 40,
     "village_teams": 4,
+    "support_pwds": true,
     "locations": [
       56,
       88,
       38
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      6
-    ],
-    "issues": [
-      1,
-      3,
-      4,
-      5,
-      7
     ]
   }
 },
@@ -6936,7 +6744,7 @@
     "about": "",
     "logo": 27,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": "https://www.facebook.com/ACIHEW",
@@ -6947,19 +6755,14 @@
     "phone": "+2560754507089",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       29
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -6971,7 +6774,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -6982,16 +6785,12 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
-    "locations": [],
-    "topics": [],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    "support_pwds": true,
+    "locations": []
   }
 },
 {
@@ -7003,7 +6802,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7014,16 +6813,12 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
-    "locations": [],
-    "topics": [],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    "support_pwds": true,
+    "locations": []
   }
 },
 {
@@ -7035,7 +6830,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7046,19 +6841,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       70
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7070,7 +6860,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7081,19 +6871,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7105,7 +6890,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7116,19 +6901,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7140,7 +6920,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7151,18 +6931,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       38
-    ],
-    "topics": [],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7174,7 +6950,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7185,20 +6961,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       80
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3,
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7210,7 +6980,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 0,
     "email": "livedrealitiesug@gmail.com",
     "facebook": null,
@@ -7221,30 +6991,13 @@
     "phone": "+256700376547",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 1,
     "educators": 30,
     "village_teams": 40,
+    "support_pwds": true,
     "locations": [
       56
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3,
-      4,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      5
-    ],
-    "issues": [
-      1,
-      2,
-      3,
-      5
     ]
   }
 },
@@ -7257,7 +7010,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7268,18 +7021,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7291,7 +7040,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7302,18 +7051,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       38
-    ],
-    "topics": [],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7325,7 +7070,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7336,19 +7081,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       4
-    ],
-    "topics": [],
-    "communities": [
-      4,
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7360,7 +7100,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7371,18 +7111,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7394,7 +7130,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": null,
     "facebook": null,
@@ -7405,18 +7141,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7428,7 +7160,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 0,
     "email": "makocoda@gmail.com",
     "facebook": null,
@@ -7439,33 +7171,14 @@
     "phone": "+256772306299",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88,
       4
-    ],
-    "topics": [
-      1,
-      2
-    ],
-    "communities": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6
-    ],
-    "services": [
-      4,
-      5
-    ],
-    "issues": [
-      2,
-      3,
-      5
     ]
   }
 },
@@ -7478,7 +7191,7 @@
     "about": "",
     "logo": 2,
     "website": "https://www.awhug.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "farugexecutivedirector@gmail.com",
     "facebook": "https://www.facebook.com/groups/313131891796/",
@@ -7489,9 +7202,11 @@
     "phone": "+256782306236",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 4,
     "educators": 20,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       1,
       4,
@@ -7507,33 +7222,6 @@
       56,
       88,
       126
-    ],
-    "topics": [
-      2,
-      6,
-      7
-    ],
-    "communities": [
-      1,
-      5,
-      7
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6
-    ],
-    "issues": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
     ]
   }
 },
@@ -7546,7 +7234,7 @@
     "about": "We are a youth led human rights organization working with the minority sections of the community especially those marginalized and living under stigma like HIV/AIDS. This also includes the entire LGBTI community (men who have sex with men and transgender persons, sex workers (SW), Refugees and victims of Drug Abuse.",
     "logo": 4,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": null,
     "facebook": null,
@@ -7557,30 +7245,13 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       38
-    ],
-    "topics": [
-      2,
-      6,
-      7
-    ],
-    "communities": [
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "services": [
-      1,
-      7
-    ],
-    "issues": [
-      5
     ]
   }
 },
@@ -7593,7 +7264,7 @@
     "about": "iFreedom Uganda provides a free and secure Internet Environment where the marginalized members of the Ugandan LGBTI and sex workers communities can freely express themselves without any fear of risk and reprisal from state agencies and other dangerous hacking groups.",
     "logo": null,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": null,
     "facebook": null,
@@ -7604,26 +7275,13 @@
     "phone": "0393239032",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [
-      5,
-      6
-    ],
-    "communities": [
-      2,
-      3,
-      7
-    ],
-    "services": [
-      6
-    ],
-    "issues": [
-      4
     ]
   }
 },
@@ -7636,7 +7294,7 @@
     "about": "",
     "logo": 5,
     "website": "https://mahipso.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "kpmahipso@gmail.com",
     "facebook": "https://www.facebook.com/mahipso",
@@ -7647,27 +7305,13 @@
     "phone": "+256708141170",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 2,
     "educators": 8,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       1
-    ],
-    "topics": [
-      2
-    ],
-    "communities": [
-      2,
-      3,
-      4,
-      7
-    ],
-    "services": [
-      1,
-      7
-    ],
-    "issues": [
-      5
     ]
   }
 },
@@ -7680,7 +7324,7 @@
     "about": "TYI is a rural transgender youth women, transgender youth sex workers and gender diverse youth led human rights organization that exists to uphold, advocate and advance the health and human rights of rural transgender and gender diverse youth communities in Uganda but specifically western Uganda.",
     "logo": 6,
     "website": "http://transyouthinitiativeuganda.org/",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "transyouthinitiative@gmail.com",
     "facebook": "https://www.facebook.com/transyouthinitiativeuganda2017/",
@@ -7691,33 +7335,13 @@
     "phone": "+256393252651",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 1,
     "educators": 10,
     "village_teams": 2,
+    "support_pwds": true,
     "locations": [
       29
-    ],
-    "topics": [
-      2,
-      6
-    ],
-    "communities": [
-      2,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      3,
-      5,
-      6,
-      7
     ]
   }
 },
@@ -7730,7 +7354,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "akellolydiaogwang@gmail.com",
     "facebook": null,
@@ -7741,31 +7365,13 @@
     "phone": "+256778200858",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 1,
     "educators": 32,
     "village_teams": 20,
+    "support_pwds": true,
     "locations": [
       80
-    ],
-    "topics": [
-      2,
-      6
-    ],
-    "communities": [
-      2,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      7
-    ],
-    "issues": [
-      1,
-      2,
-      5,
-      7
     ]
   }
 },
@@ -7778,7 +7384,7 @@
     "about": "",
     "logo": 7,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "erweo.org@gmail.com",
     "facebook": null,
@@ -7789,33 +7395,14 @@
     "phone": "+256782309162",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 3,
     "educators": 30,
     "village_teams": 7,
+    "support_pwds": true,
     "locations": [
       19,
       4
-    ],
-    "topics": [
-      2,
-      6
-    ],
-    "communities": [
-      2,
-      7
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      5,
-      7
     ]
   }
 },
@@ -7828,7 +7415,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "",
+    "funding_sources": "",
     "status": 1,
     "email": null,
     "facebook": null,
@@ -7839,21 +7426,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [
-      2,
-      6
-    ],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7865,7 +7445,7 @@
     "about": "Visual Echoes is a registered youth Lesbians, Gay men, Bisexuals, Transgender, and sex workers-led organisation founded in 2017 to advocate for the rights and freedoms of sexual minority groups in Uganda through sports, Visual Art and Culture as well as providing legal aid services to LGBTIQ people.",
     "logo": 8,
     "website": "https://www.visualechoesug.org/index.htm",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "visualechoesug@gmail.com",
     "facebook": null,
@@ -7876,40 +7456,17 @@
     "phone": "+256706057211",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 1,
     "educators": 15,
     "village_teams": 2,
+    "support_pwds": true,
     "locations": [
       1,
       136,
       16,
       19,
       88
-    ],
-    "topics": [
-      2,
-      3
-    ],
-    "communities": [
-      3,
-      4,
-      5,
-      7
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      1,
-      2,
-      3,
-      5,
-      7
     ]
   }
 },
@@ -7922,7 +7479,7 @@
     "about": "",
     "logo": 9,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": null,
     "facebook": null,
@@ -7933,18 +7490,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [],
-    "communities": [
-      4
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -7956,7 +7509,7 @@
     "about": "",
     "logo": 10,
     "website": "https://keypopulationsug.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "keypopulationug@gmail.com",
     "facebook": "https://www.facebook.com/KPUGANDA/",
@@ -7967,32 +7520,15 @@
     "phone": "+256773321055",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 1,
     "educators": 40,
     "village_teams": 4,
+    "support_pwds": true,
     "locations": [
       56,
       88,
       38
-    ],
-    "topics": [
-      2
-    ],
-    "communities": [
-      4,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      7
-    ],
-    "issues": [
-      2,
-      3,
-      5,
-      7
     ]
   }
 },
@@ -8005,7 +7541,7 @@
     "about": "",
     "logo": 11,
     "website": "http://www.hopembale.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "hopembale2@gmail.com",
     "facebook": null,
@@ -8016,9 +7552,11 @@
     "phone": "+256782235286",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 3,
     "educators": 30,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       65,
       4,
@@ -8028,31 +7566,6 @@
       26,
       91,
       93
-    ],
-    "topics": [
-      2,
-      6,
-      7
-    ],
-    "communities": [
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      3,
-      5,
-      7
     ]
   }
 },
@@ -8065,7 +7578,7 @@
     "about": "",
     "logo": 12,
     "website": "https://www.tranznetwork.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "info@tranznetwork.org",
     "facebook": "https://www.facebook.com/TranzNetworkUganda/",
@@ -8076,9 +7589,11 @@
     "phone": "+256393217497",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 5,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       38,
       136,
@@ -8086,11 +7601,7 @@
       80,
       88,
       56
-    ],
-    "topics": [],
-    "communities": [],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -8102,7 +7613,7 @@
     "about": "",
     "logo": 14,
     "website": "https://www.spectrumuganda.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "martinrukundo@yahoo.co.uk",
     "facebook": null,
@@ -8113,34 +7624,13 @@
     "phone": "+256771656093",
     "toll_free": "0800100040",
     "address": "",
+    "needs_priorities": null,
     "paralegals": 5,
     "educators": 28,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [
-      2,
-      3
-    ],
-    "communities": [
-      3,
-      4,
-      5
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7
-    ],
-    "issues": [
-      1,
-      2,
-      7
     ]
   }
 },
@@ -8153,7 +7643,7 @@
     "about": "",
     "logo": 15,
     "website": "https://lwuganda.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "lwuganda@gmail.com",
     "facebook": "https://www.facebook.com/LWUGANDA",
@@ -8164,34 +7654,14 @@
     "phone": "+256756975678",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 2,
     "educators": 20,
     "village_teams": 5,
+    "support_pwds": true,
     "locations": [
       88,
       38
-    ],
-    "topics": [
-      2,
-      3,
-      6,
-      7
-    ],
-    "communities": [
-      4,
-      5,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      5
-    ],
-    "issues": [
-      2,
-      3,
-      7
     ]
   }
 },
@@ -8204,7 +7674,7 @@
     "about": "",
     "logo": 16,
     "website": "https://unesouganda.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "uneso2015@gmail.com",
     "facebook": "https://www.facebook.com/UNESO-2164409613788667",
@@ -8215,36 +7685,13 @@
     "phone": "+25678669542",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 2,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [
-      2,
-      3,
-      6
-    ],
-    "communities": [
-      2,
-      3,
-      4,
-      5
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
-    "issues": [
-      1,
-      2,
-      3,
-      5,
-      6
     ]
   }
 },
@@ -8257,7 +7704,7 @@
     "about": "",
     "logo": 17,
     "website": "https://www.awhug.org",
-    "org_type": "",
+    "funding_sources": "",
     "status": 1,
     "email": "abrian@awhug.org",
     "facebook": "https://www.facebook.com/swing.uganda.12",
@@ -8268,33 +7715,15 @@
     "phone": "+256752538003",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 1,
     "educators": 5,
     "village_teams": 1,
+    "support_pwds": true,
     "locations": [
       16,
       88,
       38
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3,
-      4,
-      7
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      5,
-      7
     ]
   }
 },
@@ -8307,7 +7736,7 @@
     "about": "",
     "logo": null,
     "website": "https://menofthenight.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "menofthenightug@gmail.com",
     "facebook": "https://www.facebook.com/Men-of-the-Night-896277277125393/",
@@ -8318,37 +7747,16 @@
     "phone": "+256772536179",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 2,
     "educators": 9,
     "village_teams": 1,
+    "support_pwds": true,
     "locations": [
       16,
       56,
       88,
       38
-    ],
-    "topics": [
-      1,
-      2,
-      6
-    ],
-    "communities": [
-      3,
-      4,
-      5
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      3,
-      5,
-      7
     ]
   }
 },
@@ -8361,7 +7769,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "namiirolilian20@gmail.com",
     "facebook": null,
@@ -8372,36 +7780,13 @@
     "phone": "+256774193476",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 2,
     "educators": 7,
     "village_teams": 1,
+    "support_pwds": true,
     "locations": [
       38
-    ],
-    "topics": [
-      2,
-      3,
-      6
-    ],
-    "communities": [
-      2,
-      5,
-      1
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      1,
-      2,
-      5,
-      6,
-      7
     ]
   }
 },
@@ -8414,7 +7799,7 @@
     "about": "",
     "logo": 18,
     "website": "https://www.femalliance.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "femauganda@gmail.com",
     "facebook": "https://www.facebook.com/femauganda/",
@@ -8425,14 +7810,12 @@
     "phone": "+256393239028",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 3,
     "educators": 12,
     "village_teams": 0,
-    "locations": [],
-    "topics": [],
-    "communities": [],
-    "services": [],
-    "issues": []
+    "support_pwds": true,
+    "locations": []
   }
 },
 {
@@ -8444,7 +7827,7 @@
     "about": "",
     "logo": null,
     "website": "https://www.cosfuganda.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "info@cosfuganda.org",
     "facebook": "https://www.facebook.com/cosf.uganda",
@@ -8455,34 +7838,14 @@
     "phone": "+256707279366",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 1,
     "educators": 8,
     "village_teams": 2,
+    "support_pwds": true,
     "locations": [
       88,
       38
-    ],
-    "topics": [
-      2,
-      6
-    ],
-    "communities": [
-      4,
-      5,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      3,
-      5,
-      7
     ]
   }
 },
@@ -8495,7 +7858,7 @@
     "about": "",
     "logo": 19,
     "website": "https://www.womenwithmission.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "womenwithamission2008@gmail.com",
     "facebook": "https://www.facebook.com/wwmuganda",
@@ -8506,34 +7869,15 @@
     "phone": "+256702165682",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 12,
     "educators": 6,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       56,
       19,
       4
-    ],
-    "topics": [
-      2,
-      3,
-      6
-    ],
-    "communities": [
-      2,
-      6
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
-    "issues": [
-      1,
-      2,
-      3
     ]
   }
 },
@@ -8546,7 +7890,7 @@
     "about": "",
     "logo": 20,
     "website": "http://slumug.org/index.html",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "slumorg@gmail.com",
     "facebook": null,
@@ -8557,16 +7901,14 @@
     "phone": "+256777512752",
     "toll_free": "0800100412",
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 10,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       38
-    ],
-    "topics": [],
-    "communities": [],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -8578,7 +7920,7 @@
     "about": "",
     "logo": 21,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "eadwa2015@gmail.com",
     "facebook": "https://facebook.com/duskwomen/",
@@ -8589,38 +7931,14 @@
     "phone": "+256775468525",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 4,
     "educators": 9,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88,
       38
-    ],
-    "topics": [
-      2,
-      3,
-      6
-    ],
-    "communities": [
-      1,
-      2,
-      3,
-      5,
-      6
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      5,
-      6,
-      7
     ]
   }
 },
@@ -8633,7 +7951,7 @@
     "about": "",
     "logo": 22,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "cwruganda@gmail.com",
     "facebook": "https://www.facebook.com/gcwruganda/",
@@ -8644,36 +7962,14 @@
     "phone": "+256701440742",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 3,
     "educators": 30,
     "village_teams": 5,
+    "support_pwds": true,
     "locations": [
       88,
       38
-    ],
-    "topics": [
-      2,
-      3,
-      6
-    ],
-    "communities": [
-      2,
-      7
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      1,
-      2,
-      3,
-      5,
-      6
     ]
   }
 },
@@ -8686,7 +7982,7 @@
     "about": "",
     "logo": null,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": null,
     "facebook": null,
@@ -8697,18 +7993,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [],
-    "communities": [
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -8720,7 +8012,7 @@
     "about": "",
     "logo": 23,
     "website": null,
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "jeewag2016@gmail.com",
     "facebook": "https://www.facebook.com/JEEWAGUG/",
@@ -8731,31 +8023,15 @@
     "phone": "+256771960688",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 6,
     "educators": 10,
     "village_teams": 4,
+    "support_pwds": true,
     "locations": [
       16,
       56,
       38
-    ],
-    "topics": [],
-    "communities": [
-      1,
-      2,
-      7
-    ],
-    "services": [
-      1,
-      3,
-      4,
-      5
-    ],
-    "issues": [
-      1,
-      3,
-      6,
-      7
     ]
   }
 },
@@ -8768,7 +8044,7 @@
     "about": "",
     "logo": null,
     "website": "https://werain.org",
-    "org_type": "",
+    "funding_sources": "",
     "status": 1,
     "email": "westnilerain@gmail.com",
     "facebook": "https://www.facebook.com/profile.php?id=100067110302418",
@@ -8779,20 +8055,14 @@
     "phone": null,
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 0,
     "educators": 0,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       136
-    ],
-    "topics": [],
-    "communities": [
-      2,
-      3,
-      7
-    ],
-    "services": [],
-    "issues": []
+    ]
   }
 },
 {
@@ -8804,7 +8074,7 @@
     "about": "",
     "logo": 24,
     "website": "https://www.triumphuganda.org",
-    "org_type": "",
+    "funding_sources": "",
     "status": 1,
     "email": "triumphuganda@hotmail.com",
     "facebook": "https://www.facebook.com/triumphuganda",
@@ -8815,39 +8085,15 @@
     "phone": "+256393224570",
     "toll_free": null,
     "address": "",
+    "needs_priorities": null,
     "paralegals": 15,
     "educators": 13,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       56,
       19,
       4
-    ],
-    "topics": [
-      2,
-      3,
-      6
-    ],
-    "communities": [
-      1,
-      2,
-      4,
-      5,
-      7
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
-    "issues": [
-      1,
-      2,
-      5,
-      6,
-      7
     ]
   }
 },
@@ -8860,7 +8106,7 @@
     "about": "",
     "logo": 26,
     "website": "http://www.awacuganda.org",
-    "org_type": "cso",
+    "funding_sources": "",
     "status": 1,
     "email": "awacuganda@gmail.com",
     "facebook": "https://www.facebook.com/awacuganda",
@@ -8871,35 +8117,13 @@
     "phone": "+256392881454",
     "toll_free": "0800333177",
     "address": "",
+    "needs_priorities": null,
     "paralegals": 3,
     "educators": 65,
     "village_teams": 0,
+    "support_pwds": true,
     "locations": [
       88
-    ],
-    "topics": [
-      1,
-      2,
-      3,
-      6
-    ],
-    "communities": [
-      1,
-      2,
-      6
-    ],
-    "services": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      7
-    ],
-    "issues": [
-      2,
-      3,
-      7
     ]
   }
 },

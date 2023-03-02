@@ -2,10 +2,16 @@ from django.templatetags.static import static
 from django.utils.html import format_html
 from wagtail.core import hooks
 from wagtail.admin.ui.components import Component
-from django.utils.safestring import mark_safe
-from rrap.organizations.models import OrganisationPage
+from django.contrib.auth import get_user_model
+from rrap.organizations.models import (
+    SexWorkOrganisation,
+    LGBTQOrganisation,
+    PWUIDSOrganisation,
+)
 from rrap.core.models import PublicationPage
 from rrap.blog.models import BlogPage
+
+User = get_user_model()
 
 
 class DWSummaryPanel(Component):
@@ -15,14 +21,21 @@ class DWSummaryPanel(Component):
     def get_context_data(self, parent_context):
         context = super().get_context_data(parent_context)
 
-        organisations = OrganisationPage.objects.all().count()
+        lgbtq_organisations = LGBTQOrganisation.objects.all().count()
+        sw_organisations = SexWorkOrganisation.objects.all().count()
+        pwuid_organisations = PWUIDSOrganisation.objects.all().count()
         publications = PublicationPage.objects.all().count()
         blogs = BlogPage.objects.all().count()
+        users = User.objects.exclude(is_staff=True).count()
+
         context.update(
             {
-                "organisations": organisations,
+                "lgbtq_organisations": lgbtq_organisations,
+                "sw_organisations": sw_organisations,
+                "pwuid_organisations": pwuid_organisations,
                 "publications": publications,
                 "blogs": blogs,
+                "users": users,
             }
         )
 

@@ -40,15 +40,6 @@
         </div>
       </div>
       <div class="col-12">
-        <div class="btn-group dropdown d-inline-block me-2" x-data="{open: false }">
-          <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="true" @click="open = !open">Filter by broad issues</button>
-          <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
-            {{ map_filter_form.issues|as_crispy_field }}
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
         <a class="btn btn-sm btn-secondary ms-auto text-danger" role="button" href="{% url 'map' %}"><i
             class="ai-refresh ms-n1 me-2"></i>Clear filter</a>
       </div>

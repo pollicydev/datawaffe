@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static user_extras crispy_forms_tags %}
 
-{% block title %}User:{% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username }}{% endif %}{% endblock %}
+{% block title %}User:{{ user.profile.get_screen_name }}{% endblock %}
 
 {% block body_class %}bg-secondary{% endblock body_class %}
 

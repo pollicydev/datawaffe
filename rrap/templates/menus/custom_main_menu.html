@@ -13,7 +13,7 @@
     <div class="ps-2">
       <div class="fs-xs lh-1 opacity-60">Hello,</div>
       <div class="fs-sm dropdown-toggle">
-        {% if user.profile.name %}{{ user.profile.name }}{% else %}{{ user.username}}{% endif %}</div>
+        {{ user.profile.get_screen_name }}</div>
     </div>
   </a>
   <div class="dropdown-menu">
@@ -23,11 +23,6 @@
     <a class="dropdown-item" href="{% url 'users:update_profile'  %}"><i
         class="ai-settings fs-lg opacity-70 me-2"></i>Settings</a>
     <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pt-3 pb-1">Dashboard</h6>
-    <a class="dropdown-item" href="{% url 'users:organizations' user.username %}"><i
-        class="ai-list fs-lg opacity-70 me-2"></i>Organisations</a>
-    <a class="dropdown-item d-flex align-items-center" href="account-chat.html"><i
-        class="ai-inbox fs-lg opacity-70 me-2"></i>Invitations<span
-        class="badge bg-danger ms-3">{% if total_pending_invitations != 0 %}({{total_pending_invitations}}){% endif %}</span></a>
     <div class="dropdown-divider"></div><a class="dropdown-item" href="{% url 'account_logout' %}"><i
         class="ai-logout fs-lg opacity-70 me-2"></i>Sign out</a>
   </div>

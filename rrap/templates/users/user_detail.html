@@ -63,12 +63,6 @@
                   <td class="border-0 text-muted py-1 px-0">Date joined</td>
                   <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.date_joined|date:"d F, Y" }}</td>
                 </tr>
-                {% if object.profile.bio %}
-                <tr>
-                  <td class="border-0 text-muted py-1 px-0">Bio</td>
-                  <td class="border-0 text-dark fw-medium py-1 ps-3">{{ object.profile.bio }}</td>
-                </tr>
-                {% endif %}
               </table>
             </div>
           </div>

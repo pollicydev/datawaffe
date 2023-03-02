@@ -48,7 +48,7 @@ class UserSignupForm(SignupForm):
         super().__init__(*args, **kwargs)
         # Lets make all fields big by default to catch the passwords too
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control form-control-lg ps-5"
+            field.widget.attrs["class"] = "form-control ps-5"
             if field_name == "password2":
                 field.widget.attrs["placeholder"] = "Confirm password"
             elif field_name == "email":
@@ -67,7 +67,7 @@ class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
         super(CustomLoginForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control form-control-lg ps-5"
+            field.widget.attrs["class"] = "form-control ps-5"
 
         self.helper = FormHelper(self)
         self.helper.layout = Layout("login", "password")
@@ -80,7 +80,7 @@ class CustomResetPasswordForm(ResetPasswordForm):
     def __init__(self, *args, **kwargs):
         super(CustomResetPasswordForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control  form-control-lg ps-5"
+            field.widget.attrs["class"] = "form-control ps-5"
 
         self.helper = FormHelper(self)
         self.helper.layout = Layout("email")
@@ -92,7 +92,7 @@ class CustomAddEmailForm(AddEmailForm):
     def __init__(self, *args, **kwargs):
         super(CustomAddEmailForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control form-control-lg"
+            field.widget.attrs["class"] = "form-control"
 
 
 class CustomChangePasswordForm(ChangePasswordForm):
