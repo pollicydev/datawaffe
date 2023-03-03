@@ -28,8 +28,6 @@ from wagtail.search import index
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtailcaptcha.models import WagtailCaptchaEmailForm
 from wagtail.snippets.models import register_snippet
-from allauth.account.models import EmailAddress
-from django.contrib import messages
 
 
 class HomePage(Page):
@@ -82,10 +80,7 @@ class HomePage(Page):
                 and not request.user.profile.has_finished_registration
             ):
                 return redirect("users:onboarding")
-
-            if request.user.is_staff:
-                return redirect("/cms")
-
+            return super().serve(request)
         else:
             return super().serve(request)
 

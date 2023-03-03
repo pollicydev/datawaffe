@@ -1,14 +1,12 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from .models import User, generate_avatar, Profile
+from rrap.users.models import generate_avatar, Profile
 from django.conf import settings
 import hashlib
 import urllib.parse as urlparse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django_countries.widgets import CountrySelectWidget
-from django_countries.fields import CountryField
 
 
 class ProfileForm(forms.ModelForm):
@@ -19,6 +17,9 @@ class ProfileForm(forms.ModelForm):
             "pronouns",
             "other_pronouns",
             "country",
+            "affiliated_ukpc",
+            "organisation",
+            "custom_affiliation",
         )
         widgets = {
             "country": CountrySelectWidget(),
@@ -34,6 +35,9 @@ class ProfileForm(forms.ModelForm):
             "pronouns",
             "other_pronouns",
             "country",
+            "affiliated_ukpc",
+            "organisation",
+            "custom_affiliation",
             Submit("submit", "Update profile"),
         )
 
@@ -41,13 +45,16 @@ class ProfileForm(forms.ModelForm):
         self.fields["pronouns"].label = ""
         self.fields["other_pronouns"].label = ""
         self.fields["country"].label = ""
+        self.fields["affiliated_ukpc"].label = ""
+        self.fields["organisation"].label = ""
+        self.fields["custom_affiliation"].label = ""
 
 
 class OnboardingForm(forms.ModelForm):
     name = forms.CharField(
         max_length=100,
         required=True,
-        help_text="We need this to verify your account. If your alias is known, you may use it.",
+        help_text="Please use a name or alias we can verify.",
     )
     why = forms.CharField(
         widget=forms.Textarea(attrs={"class": "form-control expanding", "rows": "3"}),
@@ -64,6 +71,9 @@ class OnboardingForm(forms.ModelForm):
             "other_pronouns",
             "country",
             "why",
+            "affiliated_ukpc",
+            "organisation",
+            "custom_affiliation",
         )
         widgets = {
             "country": CountrySelectWidget(),
@@ -80,6 +90,9 @@ class OnboardingForm(forms.ModelForm):
             "other_pronouns",
             "country",
             "why",
+            "affiliated_ukpc",
+            "organisation",
+            "custom_affiliation",
             Submit("submit", "Update profile"),
         )
         self.fields["name"].label = ""
@@ -87,6 +100,9 @@ class OnboardingForm(forms.ModelForm):
         self.fields["other_pronouns"].label = ""
         self.fields["country"].label = ""
         self.fields["why"].label = ""
+        self.fields["affiliated_ukpc"].label = ""
+        self.fields["organisation"].label = ""
+        self.fields["custom_affiliation"].label = ""
 
 
 class PasswordProtectedForm(forms.Form):

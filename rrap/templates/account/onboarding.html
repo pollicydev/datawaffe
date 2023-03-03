@@ -2,10 +2,8 @@
 
 {% load static i18n crispy_forms_tags user_extras %}
 
-{% block title %}{% trans "Update Your Profile" %}{% endblock %}
+{% block title %}Onboarding | Data Waffe{% endblock %}
 
-{% block header %}
-{% endblock %}
 
 {% block content %}
 
@@ -14,14 +12,13 @@
 
     <div class="col-md-6 mx-auto py-xl-0">
 
-      <div class="mb-3">
-        <a href="/"><img src="{% static 'images/logo/logo-full-color.png' %}" height="50" alt="" class="mb-4" /></a>
+      <div class="my-4">
         <h1 class="h2">We need more information</h1>
         <p class="text-muted">Please provide the following information to create an account and access the data on Data
           Waffe. All fields are required.</p>
       </div>
       <!-- Form -->
-      <form method="post">
+      <form method="POST">
         {% csrf_token %}
         <div class="row g-3 g-sm-4 mt-0 mt-lg-2">
           <div class="col-sm-6">
@@ -37,6 +34,24 @@
           <div class="col-12">
             <label class="form-label" for="country">Where do you live?</label>
             {{ form.country | as_crispy_field }}
+          </div>
+
+          <div class="col-12">
+            {{ form.affiliated_ukpc | as_crispy_field }}
+            <label class="form-check-label" for="affiliated_ukpc">Is the organisation you are affiliated too a
+              member of
+              UKPC?</label>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label" for="organisation">Select your organisation</label>
+            {{ form.organisation | as_crispy_field }}
+          </div>
+
+          <div class="col-12">
+            <label class="form-label" for="custom_affiliation">What organisation or institution are you affiliated
+              to?</label>
+            {{ form.custom_affiliation | as_crispy_field }}
           </div>
 
           <div class="col-12">
@@ -60,13 +75,10 @@
 
 {% block inline_javascript %}
 <script type="text/javascript">
-  // hide some fields with js
-  let others_option = 8;
+  // show/hide logic for pronouns
   let others_field = $("#div_id_other_pronouns");
-  let pronouns_field = document.getElementById("div_id_pronouns");
 
   others_field.hide()
-
 
   $("#div_id_pronouns").on("change", function () {
     // check if new selected option is 8 i.e other
@@ -76,6 +88,21 @@
         "margin-top": "0.5rem"
       });
       others_field.show("fast");
+    } else {
+      others_field.hide("fast")
+    }
+  });
+
+  // show/hide logic for orgs
+  let custom_affiliation = $("#div_id_custom_affiliation");
+  let organisation_dropdown = $("div_id_organisation");
+
+  organisation_dropdown.hide()
+
+  $("#div_id_affiliated_ukpc").on("change", function () {
+    if ($("#div_id_affiliated_ukpc option:selected").text() === "Yes") {
+      organisation_dropdown.show("fast");
+      custom_affiliation.hide("fast")
     } else {
       others_field.hide("fast")
     }

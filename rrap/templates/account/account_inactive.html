@@ -1,11 +1,24 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 
-{% load i18n %}
+{% block title %}Under review | Data Waffe{% endblock %}
 
-{% block head_title %}{% translate "Account Inactive" %}{% endblock %}
+{% block content %}
+<div class="d-flex flex-column align-items-center position-relative h-100 px-3 pt-3">
+  <div class="mt-auto" style="max-width: 700px;">
+    <h1 class="pt-3 pb-2 pb-lg-3">This account is under review.</h1>
+    <p>Thank you for creating an account on Data Waffe.</p>
+    <p>We are dedicated to safeguarding the data of key populations, and we appreciate your interest in accessing this
+      data.</p>
+    <p>Please note that because we have strict rules about who can access the data, we have a verification process in
+      place to make sure that all users have good reasons to do so.</p>
+    <p>This process may take up to 2-3 working days, and we
+      appreciate your patience during this time.</p>
+    <p>Once your account has been approved, you will receive an email with instructions on how to access
+      the data.</p>
+    <p>Thank you for your understanding.</p>
+    </p>
+    <a class="btn btn-primary" href="/">Return to homepage</a>
+  </div>
+</div>
 
-{% block inner %}
-<h1>{% translate "Account Inactive" %}</h1>
-
-<p>{% translate "This account is inactive." %}</p>
 {% endblock %}

@@ -185,7 +185,7 @@
       </div>
     </div>
     <!-- Page wrapper-->
-    <main class="page-wrapper container">
+    <main class="page-wrapper">
       <!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page-->
       <header class="navbar navbar-expand-lg fixed-top">
         <div class="container">
@@ -209,6 +209,9 @@
             </a>
             <div class="dropdown-menu dropdown-menu-end my-1">
               <h6 class="dropdown-header fs-xs fw-medium text-muted text-uppercase pb-1">Account</h6>
+              {% if request.user.is_authenticated and request.user.is_staff %}
+              <a class="dropdown-item" href="/cms"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Go to CMS</a>
+              {% endif%}
               <a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}"><i class="ai-user-check fs-lg opacity-70 me-2"></i>Profile</a>
               <div class="dropdown-divider"></div><a class="dropdown-item text-danger" href="{% url 'account_logout' %}"><i class="ai-logout fs-lg opacity-70 me-2"></i>Sign out</a>
             </div>

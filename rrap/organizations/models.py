@@ -4,11 +4,9 @@ import json
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
-from django.urls import reverse
 from django.conf import settings
 from django.db import models
 from django import forms
-from uuid import uuid4
 from rrap.core.managers import ActiveManager
 from rrap.activities.constants import ActivityTypes
 from rrap.core.models import (
@@ -18,9 +16,7 @@ from rrap.core.models import (
     PublicationType,
     SWKeyPopulation,
     SWService,
-    SWViolation,
     PWUIDService,
-    PWUIDViolation,
 )
 from wagtail.core.models import Page, PageManager, Orderable
 from modelcluster.fields import ParentalManyToManyField, ParentalKey

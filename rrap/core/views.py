@@ -1,20 +1,14 @@
 import json
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.serializers import serialize
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from allauth.account.models import EmailAddress
 from django.contrib import messages
 from rrap.users.decorators import onboarding_required
-from rrap.organizations.decorators import member_required, main_owner_required
 from rrap.organizations.models import (
     OrganisationPage,
     OrganisationPublication,
 )
 from rrap.core.models import Location
-from .models import Location, Topic
-from hitcount.utils import get_hitcount_model
-from hitcount.views import _update_hit_count
 from django.views.decorators.http import require_http_methods
 from .filters import MapFilter, PublicationsFilter
 from django.views.decorators.http import require_GET
@@ -54,36 +48,13 @@ class HtmxHttpRequest(HttpRequest):
 # @onboarding_required
 def home(request):
 
-    if request.user.is_authenticated:
-
-        # first check if user is not staff and has whether has finished registration via onboarding
-        if (
-            not request.user.is_staff
-            and not request.user.profile.has_finished_registration
-        ):
-            return redirect("users:onboarding")
-
-        if request.user.is_staff:
-            return redirect("/cms")
-
-        # Check if user has verified email
-        verified = False
-        if EmailAddress.objects.filter(user=request.user, verified=True).exists():
-            pass
-        else:
-            verified = False
-            messages.warning(
-                request,
-                "We sent a verification link to your email account. Please click the link to fully activate your account.",
-            )
-
-    context = {
-        "verified": verified,
-    }
+    context = {}
 
     return render(request, "core/home.html", context)
 
 
+@login_required
+@onboarding_required
 @require_GET
 def map(request: HtmxHttpRequest) -> HttpResponse:
     organisations = OrganisationPage.objects.live().public().order_by("title")
@@ -108,6 +79,8 @@ def map(request: HtmxHttpRequest) -> HttpResponse:
     return render(request, base_template, context)
 
 
+@login_required
+@onboarding_required
 @require_GET
 def publications_index(request: HtmxHttpRequest) -> HttpResponse:
     publications = OrganisationPublication.objects.all().order_by("title")
@@ -126,6 +99,8 @@ def publications_index(request: HtmxHttpRequest) -> HttpResponse:
     return render(request, base_template, context)
 
 
+@login_required
+@onboarding_required
 def single_publication(request, slug):
     organisation = OrganisationPage.objects.get(slug=slug)
 
@@ -134,6 +109,8 @@ def single_publication(request, slug):
     return render(request, "organizations/single.html", context)
 
 
+@login_required
+@onboarding_required
 @require_http_methods(["POST", "GET"])
 def search(request):
 

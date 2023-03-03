@@ -16,6 +16,7 @@ urlpatterns = [
     path("core/", include("rrap.core.urls", namespace="core")),
     # Wagtail URLs
     path("cms/autocomplete/", include(autocomplete_admin_urls)),
+    path("select2/", include("django_select2.urls")),
     path(settings.WAGTAIL_ADMIN_URL, include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     # Django Admin, use {% url 'admin:index' %}

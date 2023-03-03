@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 from django.contrib.auth.decorators import login_required
@@ -12,6 +13,7 @@ from .models import change_avatar
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.files.base import ContentFile
+from .tasks import send_welcome_email
 
 # from rrap.invites.constants import InviteStatus
 from allauth.account.views import PasswordChangeView
@@ -130,13 +132,30 @@ def user_delete_account(request):
 @login_required
 def onboard_user(request):
     profile = request.user.profile
+    user = request.user
     if request.method == "POST":
         form = OnboardingForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
             profile.has_finished_registration = True
             form.save()
-            return redirect("core:home")
+            # make user inactive
+            user.is_active = False
+            # update user first and last name
+            firstname = ""
+            lastname = ""
+            fullname = profile.name
+            try:
+                firstname = fullname.split()[0]
+                lastname = fullname.split()[-1]
+            except Exception as e:
+                print(e)
+            user.first_name = firstname
+            user.last_name = lastname
+            user.save()
+            # kwaniliza after user is done with onboarding
+            send_welcome_email(user)
+            return HttpResponseRedirect("/")
     else:
         form = OnboardingForm(instance=profile)
     return render(request, "account/onboarding.html", {"form": form})

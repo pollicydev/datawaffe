@@ -63,6 +63,19 @@ def change_avatar(user, image_file):
 
 class Profile(models.Model):
 
+    NO = 0
+    YES = 1
+    BOOLEAN_CHOICES = ((NO, "No"), (YES, "Yes"))
+
+    PENDING = 0
+    APPROVED = 1
+    REJECTED = 2
+    REVIEW_CHOICES = (
+        (PENDING, "Pending Review"),
+        (APPROVED, "Approved"),
+        (REJECTED, "Rejected"),
+    )
+
     # Pronouns
     NONE = 0
     HE = 1
@@ -117,6 +130,26 @@ class Profile(models.Model):
     # The date the user joined.
     date_joined = models.DateTimeField(auto_now_add=True, max_length=255)
     has_finished_registration = models.BooleanField(default=False, null=True)
+    review_status = models.SmallIntegerField(
+        "Review status", choices=REVIEW_CHOICES, default=0
+    )
+    affiliated_ukpc = models.BooleanField(
+        "Is the organisation you are affiliated to a member of UKPC?", default=True
+    )
+    is_ukpc_affiliate = models.SmallIntegerField(
+        "Is the organisation you are affiliated too a member of UKPC?",
+        choices=BOOLEAN_CHOICES,
+        default=1,
+    )
+    organisation = models.ForeignKey(
+        "organizations.OrganisationPage",
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name=_("Select UKPC organisation"),
+    )
+    custom_affiliation = models.CharField(
+        _("Affiliation"), blank=True, max_length=255, null=True
+    )
 
     def __str__(self):
         return self.get_screen_name()
@@ -182,3 +215,7 @@ class Profile(models.Model):
             from_user=self.user, activity_type=ActivityTypes.FOLLOW
         ).count()
         return following_count
+
+    class Meta:
+        verbose_name = "Data User"
+        verbose_name_plural = "Data Users"

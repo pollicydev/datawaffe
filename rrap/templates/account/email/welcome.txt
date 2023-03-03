@@ -1,19 +1,19 @@
-{% extends "account/email/base_message.txt" %}
-{% load account %}
-{% load i18n %}
-
-{% block content %}{% autoescape off %}{% user_display user as user_display %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}You're receiving this e-mail because user {{ user_display }} has given your e-mail address to register an account on {{ site_domain }}.
 Dear {{ name }},
 
 Thank you for creating an account on Data Waffe - Protecting the Data of Key Populations in Uganda. 
 
 We are dedicated to safeguarding the data of key populations, and we appreciate your interest in accessing this data.
 
-Please note that due to our strict eligibility criteria, we have a verification process in place to ensure that all users have legitimate reasons for accessing the data. 
+Please note that due to our strict eligibility criteria, we have a verification process in place to ensure that all users 
+have legitimate reasons for accessing the data.
+
 This process may take up to 2-3 working days, and we appreciate your patience during this time.
 
 Once your account has been approved, you will receive an email notification with instructions on how to access the data. 
 
-If you have any questions or concerns, please don't hesitate to contact us through the form on the website here: {{ site_domain }}
+If you have any questions or concerns, please don't hesitate to contact us through the form on the website here: {{ contact_link }}
 
-Thank you for your understanding.{% endblocktrans %}{% endautoescape %}{% endblock %}
+Thank you for your understanding.
+
+Best regards,
+Data Collaborative Platform team!

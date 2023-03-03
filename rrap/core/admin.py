@@ -5,14 +5,9 @@ from wagtail.contrib.modeladmin.options import (
 )
 from rrap.core.models import (
     Location,
-    Topic,
-    KeyPopulation,
-    Service,
-    Violation,
-    PublicationType,
     PublicationPage,
 )
-from rrap.blog.models import BlogPageType, BlogPage
+from rrap.blog.models import BlogPage
 from rrap.organizations.models import (
     SexWorkOrganisation,
     LGBTQOrganisation,
@@ -20,6 +15,8 @@ from rrap.organizations.models import (
 )
 from wagtail.contrib.modeladmin.helpers import PermissionHelper
 from wagtail.contrib.modeladmin.mixins import ThumbnailMixin
+from wagtail.contrib.modeladmin.helpers import PermissionHelper
+from rrap.users.models import Profile
 
 
 class LocationsValidationPermissionHelper(PermissionHelper):
@@ -45,6 +42,20 @@ class GenericValidationPermissionHelper(PermissionHelper):
 
     def user_can_edit_obj(self, user, obj):
         return True
+
+    def user_can_delete_obj(self, user, obj):
+        return False
+
+
+class DataUsersValidationHelper(PermissionHelper):
+    def user_can_list(self, user):
+        return True
+
+    def user_can_create(self, user):
+        return False
+
+    def user_can_edit_obj(self, user, obj):
+        return False
 
     def user_can_delete_obj(self, user, obj):
         return False
@@ -197,6 +208,44 @@ class OrganisationsGroup(ModelAdminGroup):
     )
 
 
+class DataUsersAdmin(ModelAdmin):
+    model = Profile
+    permission_helper_class = DataUsersValidationHelper
+    menu_label = "Data Users"
+    menu_icon = "group"
+    menu_order = 100
+    list_display = (
+        "profile_name",
+        "profile_email",
+        "country",
+        "review_status",
+        "date_joined",
+    )
+    ordering = ("name",)
+    list_filter = ("review_status",)
+    search_fields = ("name", "email")
+    inspect_view_enabled = True
+    list_export = (
+        "profile_name",
+        "profile_email",
+        "country",
+        "why",
+        "review_status",
+        "date_joined",
+    )
+    export_filename = "dw_data_users_list"
+
+    def profile_name(self, obj):
+        return obj.name
+
+    def profile_email(self, obj):
+        return obj.user.email
+
+    profile_name.short_description = "Name or Alias"
+    profile_email.short_description = "Email address"
+
+
+modeladmin_register(DataUsersAdmin)
 modeladmin_register(BlogAdmin)
 modeladmin_register(OrganisationsGroup)
 modeladmin_register(PublicationsAdmin)
