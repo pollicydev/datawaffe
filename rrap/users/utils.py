@@ -17,7 +17,7 @@ class ProfileForm(forms.ModelForm):
             "pronouns",
             "other_pronouns",
             "country",
-            "affiliated_ukpc",
+            "is_ukpc_affiliate",
             "organisation",
             "custom_affiliation",
         )
@@ -35,7 +35,7 @@ class ProfileForm(forms.ModelForm):
             "pronouns",
             "other_pronouns",
             "country",
-            "affiliated_ukpc",
+            "is_ukpc_affiliate",
             "organisation",
             "custom_affiliation",
             Submit("submit", "Update profile"),
@@ -45,7 +45,7 @@ class ProfileForm(forms.ModelForm):
         self.fields["pronouns"].label = ""
         self.fields["other_pronouns"].label = ""
         self.fields["country"].label = ""
-        self.fields["affiliated_ukpc"].label = ""
+        self.fields["is_ukpc_affiliate"].label = ""
         self.fields["organisation"].label = ""
         self.fields["custom_affiliation"].label = ""
 
@@ -71,7 +71,7 @@ class OnboardingForm(forms.ModelForm):
             "other_pronouns",
             "country",
             "why",
-            "affiliated_ukpc",
+            "is_ukpc_affiliate",
             "organisation",
             "custom_affiliation",
         )
@@ -90,7 +90,7 @@ class OnboardingForm(forms.ModelForm):
             "other_pronouns",
             "country",
             "why",
-            "affiliated_ukpc",
+            "is_ukpc_affiliate",
             "organisation",
             "custom_affiliation",
             Submit("submit", "Update profile"),
@@ -100,7 +100,7 @@ class OnboardingForm(forms.ModelForm):
         self.fields["other_pronouns"].label = ""
         self.fields["country"].label = ""
         self.fields["why"].label = ""
-        self.fields["affiliated_ukpc"].label = ""
+        self.fields["is_ukpc_affiliate"].label = ""
         self.fields["organisation"].label = ""
         self.fields["custom_affiliation"].label = ""
 

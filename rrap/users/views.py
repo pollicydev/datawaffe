@@ -13,7 +13,7 @@ from .models import change_avatar
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.files.base import ContentFile
-from .tasks import send_welcome_email
+from .tasks import send_delay_notice
 
 # from rrap.invites.constants import InviteStatus
 from allauth.account.views import PasswordChangeView
@@ -141,21 +141,10 @@ def onboard_user(request):
             form.save()
             # make user inactive
             user.is_active = False
-            # update user first and last name
-            firstname = ""
-            lastname = ""
-            fullname = profile.name
-            try:
-                firstname = fullname.split()[0]
-                lastname = fullname.split()[-1]
-            except Exception as e:
-                print(e)
-            user.first_name = firstname
-            user.last_name = lastname
-            user.save()
-            # kwaniliza after user is done with onboarding
-            send_welcome_email(user)
-            return HttpResponseRedirect("/")
+            # inform regarding account approval delay
+            send_delay_notice(user)
+            # take them to account inactive screen
+            return HttpResponseRedirect(reverse("account_inactive"))
     else:
         form = OnboardingForm(instance=profile)
     return render(request, "account/onboarding.html", {"form": form})

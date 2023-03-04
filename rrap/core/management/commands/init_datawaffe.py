@@ -26,7 +26,12 @@ class Command(BaseCommand):
         Page.objects.first().get_root().get_children().delete()
 
         root_page = Page.objects.get(path="0001")
-        home_page = HomePage(title="Data Waffe", slug="home")
+        home_page = HomePage(
+            title="Data Waffe",
+            slug="home",
+            hero_heading="Empowering Key Populations in Uganda Through Data Collaboration and Data Protection",
+            hero_desc="Welcome to Data Waffe, a safe and collaborative platform dedicated to protecting the data of key populations in Uganda. We recognize that such data is sensitive, which is why we have taken steps to protect it and ensure that it remains confidential.",
+        )
         root_page.add_child(instance=home_page)
         home_page.save()
 

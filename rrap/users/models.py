@@ -133,9 +133,6 @@ class Profile(models.Model):
     review_status = models.SmallIntegerField(
         "Review status", choices=REVIEW_CHOICES, default=0
     )
-    affiliated_ukpc = models.BooleanField(
-        "Is the organisation you are affiliated to a member of UKPC?", default=True
-    )
     is_ukpc_affiliate = models.SmallIntegerField(
         "Is the organisation you are affiliated too a member of UKPC?",
         choices=BOOLEAN_CHOICES,
@@ -145,6 +142,7 @@ class Profile(models.Model):
         "organizations.OrganisationPage",
         on_delete=models.CASCADE,
         null=True,
+        blank=True,
         verbose_name=_("Select UKPC organisation"),
     )
     custom_affiliation = models.CharField(
