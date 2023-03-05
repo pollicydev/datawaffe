@@ -25,6 +25,8 @@ django-htmx==1.9.0
 django-filter==21.1 # https://github.com/carltongibson/django-filter
 django-active-link==0.1.8
 django-select2
+django-fsm
+django-fsm-log
 
 # Wagtail
 # ------------------------------------------------------------------------------

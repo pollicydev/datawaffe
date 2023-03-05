@@ -1,3 +1,5 @@
+from django.contrib.admin.utils import quote
+from django.utils.translation import gettext_lazy as _
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
@@ -13,9 +15,13 @@ from rrap.organizations.models import (
     LGBTQOrganisation,
     PWUIDSOrganisation,
 )
-from wagtail.contrib.modeladmin.helpers import PermissionHelper
 from wagtail.contrib.modeladmin.mixins import ThumbnailMixin
-from wagtail.contrib.modeladmin.helpers import PermissionHelper
+from wagtail.contrib.modeladmin.views import InspectView
+from wagtail.contrib.modeladmin.helpers import (
+    PermissionHelper,
+    ButtonHelper,
+    AdminURLHelper,
+)
 from rrap.users.models import Profile
 
 
@@ -208,6 +214,53 @@ class OrganisationsGroup(ModelAdminGroup):
     )
 
 
+class DataUsersButtonHelper(ButtonHelper):
+    # Define classes for our button, here we can set an icon for example
+    approve_button_classnames = ["icon", "icon-tick"]
+    reject_button_classnames = ["no", "icon", "icon-cross"]
+
+    def approve_button(self, obj):
+        approve_text = "Approve"
+        approve_text_inspect = "Approve {}".format(obj.name)
+        index_view = not isinstance(self.view, InspectView)
+        return {
+            # "url": self.url_helper.create_url,
+            "label": approve_text if index_view else approve_text_inspect,
+            "classname": self.finalise_classname(
+                ["button-small" if index_view else "button"]
+                + self.approve_button_classnames
+            ),
+            "title": approve_text if index_view else approve_text_inspect,
+        }
+
+    def reject_button(self, obj):
+        text = "Reject"
+        small = not isinstance(self.view, InspectView)
+        return {
+            "url": self.url_helper.get_action_url("edit", quote(obj.pk)),
+            "label": text,
+            "classname": self.finalise_classname(
+                ["button-small" if small else "button"] + self.reject_button_classnames
+            ),
+            "title": text,
+        }
+
+    def get_buttons_for_obj(
+        self, obj, exclude=None, classnames_add=None, classnames_exclude=None
+    ):
+        """
+        This function is used to gather all available buttons.
+        We append our custom button to the btns list.
+        """
+        btns = super().get_buttons_for_obj(
+            obj, exclude, classnames_add, classnames_exclude
+        )
+        if "view" not in (exclude or []):
+            btns.append(self.approve_button(obj))
+            btns.append(self.reject_button(obj))
+        return btns
+
+
 class DataUsersAdmin(ModelAdmin):
     model = Profile
     permission_helper_class = DataUsersValidationHelper
@@ -215,6 +268,7 @@ class DataUsersAdmin(ModelAdmin):
     menu_icon = "group"
     menu_order = 100
     list_display = (
+        # "profile_avatar",
         "profile_name",
         "profile_email",
         "country",
@@ -225,6 +279,7 @@ class DataUsersAdmin(ModelAdmin):
     list_filter = ("review_status",)
     search_fields = ("name", "email")
     inspect_view_enabled = True
+    # inspect_template_name = "wagtailadmin/profile_inspect.html"
     list_export = (
         "profile_name",
         "profile_email",
@@ -234,6 +289,7 @@ class DataUsersAdmin(ModelAdmin):
         "date_joined",
     )
     export_filename = "dw_data_users_list"
+    button_helper_class = DataUsersButtonHelper
 
     def profile_name(self, obj):
         return obj.name
@@ -241,8 +297,28 @@ class DataUsersAdmin(ModelAdmin):
     def profile_email(self, obj):
         return obj.user.email
 
+    def profile_avatar(self, obj):
+        from django.utils.html import escape
+
+        # styling not possible. Want width&height at 100px and 50% border radius
+        return '<img style="width:100px" class="rounded" src="%s" />' % escape(
+            obj.avatar.url
+        )
+
+    def get_extra_attrs_for_field_col(self, obj, field_name):
+        if field_name == "review_status":
+            return {"style": f"color: {obj.state_color()};text-transform: uppercase;"}
+        return {}
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Only show people that aren't staff (moderator/editor)
+        return qs.exclude(user__is_staff=True)
+
     profile_name.short_description = "Name or Alias"
     profile_email.short_description = "Email address"
+    profile_avatar.short_description = "Avatar"
+    profile_avatar.allow_tags = True
 
 
 modeladmin_register(DataUsersAdmin)

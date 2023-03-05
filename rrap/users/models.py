@@ -10,6 +10,7 @@ from django.core.files.base import ContentFile
 from django.utils import timezone
 from rrap.activities.constants import ActivityTypes
 from django_countries.fields import CountryField
+from django_fsm import FSMField, transition
 
 
 class User(AbstractUser):
@@ -98,7 +99,6 @@ class Profile(models.Model):
         (HE_THEY, "he/they"),
         (OTHER, "Other"),
     )
-
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(_("Your full name"), blank=True, max_length=255)
     pronouns = models.SmallIntegerField(
@@ -213,6 +213,16 @@ class Profile(models.Model):
             from_user=self.user, activity_type=ActivityTypes.FOLLOW
         ).count()
         return following_count
+
+    def state_color(self):
+        if self.review_status == 0:
+            return "#ffa500"
+        elif self.review_status == 1:
+            return "#189370"
+        elif self.review_status == 2:
+            return "#cd3238"
+        else:
+            return "#000"
 
     class Meta:
         verbose_name = "Data User"
