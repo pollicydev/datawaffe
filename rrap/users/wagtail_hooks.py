@@ -1,5 +1,6 @@
 from django.conf.urls import url
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth import get_user_model
 from django.contrib.admin import SimpleListFilter
 from django.contrib.admin.utils import quote
 from django.utils.translation import gettext_lazy as _
@@ -21,6 +22,8 @@ from wagtail.contrib.modeladmin.helpers import (
 from wagtail.admin import messages
 from wagtail.core import hooks
 from rrap.users.models import Profile
+
+User = get_user_model()
 
 
 class DataUsersPermissionHelper(PermissionHelper):
@@ -135,6 +138,15 @@ class DataUsersButtonHelper(ButtonHelper):
         return buttons + status_buttons
 
 
+def update_user_status(user, status):
+    user = get_object_or_404(User, pk=user)
+    if status == "approved":
+        user.is_active = True
+    else:
+        user.is_active = False
+    user.save()
+
+
 class SetStatusView(InstanceSpecificView):
     def check_action_permitted(self, user):
         # return self.permission_helper.user_can_set_status_obj(user, self.instance)
@@ -142,15 +154,9 @@ class SetStatusView(InstanceSpecificView):
 
     def get(self, request, *args, **kwargs):
         status = request.GET.get("status")
-        if status == "approved":
-            user_active = True
-        else:
-            user_active = False
         if status in dict(self.model.REVIEW_CHOICES):
             previous_status = self.instance.review_status
             self.instance.review_status = status
-            # also make user active
-            self.instance.user.is_active = user_active
             self.instance.save()
             verbose_label = self.instance.get_review_status_display()
             person = self.instance.name
@@ -170,6 +176,9 @@ class SetStatusView(InstanceSpecificView):
                     "Successfully changed %s's status to %s." % (person, verbose_label),
                     buttons=[messages.button(revert_url, _("Revert"))],
                 )
+            # also make user active
+            update_user_status(self.instance.user_id, status)
+            print(status)
         url = request.META.get("HTTP_REFERER")
         if url is None:
             url = (
