@@ -14,8 +14,9 @@ def send_welcome_email(user):
         "user": user,
         "name": user.profile.get_screen_name(),
         "contact_link": "https://datawaffe.org/contact",
+        "terms_link": "https://datawaffe.org/terms-and-conditions",
     }
-    subject = f"Welcome to Data Waffe {user.profile.get_screen_name()}!"
+    subject = "Account Approval and Terms Reminder"
     message = render_to_string("account/email/welcome.txt", context)
     try:
         send_mail(subject, message, from_email, recipient_list)

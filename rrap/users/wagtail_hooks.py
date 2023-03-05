@@ -22,6 +22,7 @@ from wagtail.contrib.modeladmin.helpers import (
 from wagtail.admin import messages
 from wagtail.core import hooks
 from rrap.users.models import Profile
+from .tasks import send_welcome_email, send_rejection_notice
 
 User = get_user_model()
 
@@ -142,6 +143,12 @@ def update_user_status(user, status):
     user = get_object_or_404(User, pk=user)
     if status == "approved":
         user.is_active = True
+        # send welcome email
+        send_welcome_email(user)
+    elif status == "rejected":
+        user.is_active = False
+        # send rejection email
+        send_rejection_notice(user)
     else:
         user.is_active = False
     user.save()
@@ -178,7 +185,6 @@ class SetStatusView(InstanceSpecificView):
                 )
             # also make user active
             update_user_status(self.instance.user_id, status)
-            print(status)
         url = request.META.get("HTTP_REFERER")
         if url is None:
             url = (

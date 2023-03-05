@@ -11,8 +11,7 @@ This process may take up to 2-3 working days, and we appreciate your patience du
 
 Once your account has been approved, you will receive an email notification with instructions on how to access the data. 
 
-If you have any questions or concerns, please don't hesitate to contact us through the form on 
-the website here: {{ contact_link }}
+If you have any questions or concerns, please don't hesitate to contact us here: {{ contact_link }}
 
 Thank you for your understanding.
 

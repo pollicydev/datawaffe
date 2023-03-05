@@ -6,8 +6,7 @@ Unfortunately, we were unable to approve your account at this time due to incomp
 
 We encourage you to reapply and provide accurate information so that we can process your application promptly
 
-If you have any questions or concerns, please don't hesitate to contact us through the form on 
-the website here: {{ contact_link }}
+If you have any questions or concerns, please don't hesitate to contact us here: {{ contact_link }}
 
 Thank you for your interest in protecting the data of key populations.
 

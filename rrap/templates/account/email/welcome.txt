@@ -1,20 +1,17 @@
 Dear {{ name }},
 
-Thank you for creating an account on Data Waffe - Protecting the Data of Key Populations in Uganda. 
+We are pleased to inform you that your account has been approved for accessing the data on Data Waffe. 
 
-We are dedicated to safeguarding the data of key populations, and we appreciate your interest in accessing this data.
+We appreciate your interest in protecting the data of key populations.
 
-Please note that due to our strict eligibility criteria, we have a verification process in place to ensure that all users 
-have legitimate reasons for accessing the data.
+Before accessing the data, please remember to review our terms and conditions here: {{ terms_link }}. These include a 
+disclaimer that the data should not be used for harmful purposes and that users are responsible for their own actions. 
 
-This process may take up to 2-3 working days, and we appreciate your patience during this time.
+By using the data, you agree to abide by these terms and conditions.
 
-Once your account has been approved, you will receive an email notification with instructions on how to access the data. 
+If you have any questions or concerns, please don't hesitate to contact us here: {{ contact_link }}
 
-If you have any questions or concerns, please don't hesitate to contact us through the form on 
-the website here: {{ contact_link }}
-
-Thank you for your understanding.
+Thank you for your commitment to protecting the data of key populations.
 
 Best regards,
 Data Waffe team!
