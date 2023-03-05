@@ -68,9 +68,9 @@ class Profile(models.Model):
     YES = 1
     BOOLEAN_CHOICES = ((NO, "No"), (YES, "Yes"))
 
-    PENDING = 0
-    APPROVED = 1
-    REJECTED = 2
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
     REVIEW_CHOICES = (
         (PENDING, "Pending Review"),
         (APPROVED, "Approved"),
@@ -130,8 +130,8 @@ class Profile(models.Model):
     # The date the user joined.
     date_joined = models.DateTimeField(auto_now_add=True, max_length=255)
     has_finished_registration = models.BooleanField(default=False, null=True)
-    review_status = models.SmallIntegerField(
-        "Review status", choices=REVIEW_CHOICES, default=0
+    review_status = models.CharField(
+        "Review status", max_length=10, choices=REVIEW_CHOICES, default=0
     )
     is_ukpc_affiliate = models.SmallIntegerField(
         "Is the organisation you are affiliated too a member of UKPC?",
@@ -215,11 +215,11 @@ class Profile(models.Model):
         return following_count
 
     def state_color(self):
-        if self.review_status == 0:
+        if self.review_status == "pending":
             return "#ffa500"
-        elif self.review_status == 1:
+        elif self.review_status == "approved":
             return "#189370"
-        elif self.review_status == 2:
+        elif self.review_status == "rejected":
             return "#cd3238"
         else:
             return "#000"
