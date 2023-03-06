@@ -293,9 +293,7 @@ class Service(ClusterableModel):
     )
 
     panels = [
-        FieldPanel(
-            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
-        ),
+        FieldPanel("title", classname="full"),
         FieldPanel("summary"),
         FieldPanel("icon"),
     ]

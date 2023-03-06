@@ -10,7 +10,8 @@ class OrganisationsFilterForm(forms.Form):
         self.fields["title"].label = ""
         self.fields["communities"].label = ""
         self.fields["services"].label = ""
+        self.fields["org_type"].label = ""
 
     class Meta:
         model = OrganisationPage
-        fields = ["title", "communities", "services"]
+        fields = ["title", "communities", "services", "org_type"]

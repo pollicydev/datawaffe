@@ -14,6 +14,11 @@ from rrap.core.models import (
     KeyPopulation,
     Service,
     PublicationType,
+    LGBTQKeyPopulation,
+    LGBTQService,
+    SWKeyPopulation,
+    SWService,
+    PWUIDService,
 )
 from wagtail.core.models import Page, PageManager, Orderable
 from modelcluster.fields import ParentalManyToManyField, ParentalKey
@@ -226,8 +231,10 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
         from rrap.organizations.filters import OrganisationsFilter
 
         context = super().get_context(request, *args, **kwargs)
-        # @todo: exclude organisations where status=0,3,4
-        organisations = OrganisationPage.objects.live().public().order_by("title")
+        # get organisations with status 1 (active)
+        organisations = (
+            OrganisationPage.objects.live().public().order_by("title").filter(status=1)
+        )
 
         org_filter = OrganisationsFilter(request.GET, queryset=organisations)
 
@@ -586,10 +593,16 @@ class LGBTQOrganisation(OrganisationPage):
     parent_page_types = ["OrganisationIndexPage"]
 
     communities = ParentalManyToManyField(
-        KeyPopulation, related_name="lgbtq_organisations", blank=True
+        LGBTQKeyPopulation,
+        related_name="lgbtq_organisations",
+        blank=True,
+        verbose_name="Key Populations Supported",
     )
     services = ParentalManyToManyField(
-        Service, related_name="lgbtq_organisations", blank=True
+        LGBTQService,
+        related_name="lgbtq_organisations",
+        blank=True,
+        verbose_name="Services Offered",
     )
 
     lgbt_tagging_panels = [
@@ -613,6 +626,9 @@ class LGBTQOrganisation(OrganisationPage):
         index.RelatedFields("communities", [index.SearchField("title")]),
         index.RelatedFields("services", [index.SearchField("title")]),
     ]
+
+    def org_type(self):
+        return self.Meta.verbose_name_plural
 
     class Meta:
         verbose_name = "LGBTQ Organisation"
@@ -665,10 +681,16 @@ class SexWorkOrganisation(OrganisationPage):
         help_text="Types of sex work activities performed",
     )
     communities = ParentalManyToManyField(
-        KeyPopulation, related_name="sw_organisations", blank=True
+        SWKeyPopulation,
+        related_name="sw_organisations",
+        blank=True,
+        verbose_name="Key Populations Supported",
     )
     services = ParentalManyToManyField(
-        Service, related_name="sw_organisations", blank=True
+        SWService,
+        related_name="sw_organisations",
+        blank=True,
+        verbose_name="Services Offered",
     )
 
     demographics_panels = [
@@ -699,6 +721,9 @@ class SexWorkOrganisation(OrganisationPage):
         index.RelatedFields("services", [index.SearchField("title")]),
     ]
 
+    def org_type(self):
+        return self.Meta.verbose_name_plural
+
     class Meta:
         verbose_name = "Sex Workers Organisation"
         verbose_name_plural = "Sex Workers Organisations"
@@ -711,7 +736,10 @@ class PWUIDSOrganisation(OrganisationPage):
     parent_page_types = ["OrganisationIndexPage"]
 
     services = ParentalManyToManyField(
-        Service, related_name="pwuid_organisations", blank=True
+        PWUIDService,
+        related_name="pwuid_organisations",
+        blank=True,
+        verbose_name="Services Offered",
     )
 
     pwuid_tagging_panels = [
@@ -733,6 +761,9 @@ class PWUIDSOrganisation(OrganisationPage):
     search_fields = OrganisationPage.search_fields + [
         index.RelatedFields("services", [index.SearchField("title")]),
     ]
+
+    def org_type(self):
+        return self.Meta.verbose_name_plural
 
     class Meta:
         verbose_name = "PWUIDs Organisation"
