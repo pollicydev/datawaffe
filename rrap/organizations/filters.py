@@ -1,28 +1,8 @@
 from django import forms
 import django_filters
 from rrap.core.models import KeyPopulation, Service
-from rrap.organizations.models import OrganisationPage, OrganisationIndexPage
+from rrap.organizations.models import OrganisationPage
 from rrap.organizations.forms import OrganisationsFilterForm
-
-
-class CharInFilter(django_filters.BaseInFilter, django_filters.CharFilter):
-    pass
-
-
-class OrgTypeFilter(django_filters.MultipleChoiceFilter):
-    def __init__(self, *args, **kwargs):
-        choices = OrganisationPage.ORG_TYPES
-
-        super(OrgTypeFilter, self).__init__(*args, choices=choices, **kwargs)
-
-    def filter_by_type(self, queryset, value):
-        if value == "lgbtqorganisation":
-            queryset = queryset.filter(org_type="lgbtqorganisation")
-        elif value == "sexworkorganisation":
-            queryset = queryset.filter(sexworkorganisation=True)
-        elif value == "pwuidsorganisation":
-            queryset = queryset.filter(pwuidsorganisation=True)
-        return queryset
 
 
 class OrganisationsFilter(django_filters.FilterSet):
@@ -35,7 +15,8 @@ class OrganisationsFilter(django_filters.FilterSet):
             }
         ),
     )
-    org_type = OrgTypeFilter(
+    org_type = django_filters.MultipleChoiceFilter(
+        choices=OrganisationPage.ORG_TYPES,
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-control",
