@@ -89,7 +89,7 @@ class DataUsersButtonHelper(ButtonHelper):
             pk,
             self.model.APPROVED,
             _("approve"),
-            _("Approve this submission"),
+            _("Approve this user"),
             classnames_add=classnames_add,
             classnames_exclude=classnames_exclude,
         )
@@ -104,10 +104,23 @@ class DataUsersButtonHelper(ButtonHelper):
             pk,
             self.model.REJECTED,
             _("reject"),
-            _("Reject this submission"),
+            _("Reject this user"),
             classnames_add=classnames_add,
             classnames_exclude=classnames_exclude,
         )
+
+    def upgrade_button(self, pk, classnames_add=None, classnames_exclude=None):
+        if classnames_add is None:
+            classnames_add = []
+        if "button-secondary" in classnames_add:
+            classnames_add.remove("button-secondary")
+        classnames_add = ["yes"] + classnames_add
+        return {
+            "url": f"/cms/users/{pk}/#roles",
+            "label": "Upgrade to Data Entrant",
+            "classname": self.finalise_classname(classnames_add, classnames_exclude),
+            "title": "Assign this user to an organisation as Data Entrant",
+        }
 
     def get_buttons_for_obj(
         self, obj, exclude=None, classnames_add=None, classnames_exclude=None
@@ -131,6 +144,13 @@ class DataUsersButtonHelper(ButtonHelper):
         if obj.review_status != obj.REJECTED:
             status_buttons.append(
                 self.reject_button(
+                    pk,
+                    classnames_add=classnames_add,
+                    classnames_exclude=classnames_exclude,
+                )
+            )
+            status_buttons.append(
+                self.upgrade_button(
                     pk,
                     classnames_add=classnames_add,
                     classnames_exclude=classnames_exclude,

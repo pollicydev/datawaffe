@@ -329,7 +329,11 @@ class OrganisationPage(Page):
         blank=True, null=True, max_length=15, help_text="Telephone number"
     )
     toll_free = models.CharField(
-        blank=True, null=True, max_length=20, help_text="Toll-free number"
+        blank=True,
+        null=True,
+        max_length=20,
+        help_text="Toll-free number",
+        verbose_name="Has toll free",
     )
     address = RichTextField(
         blank=True, null=True, max_length=200, help_text="Office address"

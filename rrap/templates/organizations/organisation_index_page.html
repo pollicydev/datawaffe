@@ -6,6 +6,13 @@
 
 {% block content %}
 
+<style>
+  .form-check-label {
+    color: white !important;
+  }
+
+</style>
+
 <div class="bg-primary p-3">
   <div class="container">
     <form id="orgFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get="{{ index_url }}"
@@ -45,6 +52,11 @@
           <div class="dropdown-menu my-3" data-popper-placement="bottom-start">
             {{ org_filter_form.services|as_crispy_field }}
           </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="position-relative mt-2">
+          {{ org_filter_form.toll_free|as_crispy_field }}
         </div>
       </div>
       <div class="col-12">
