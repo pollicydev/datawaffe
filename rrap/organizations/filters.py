@@ -9,6 +9,22 @@ class CharInFilter(django_filters.BaseInFilter, django_filters.CharFilter):
     pass
 
 
+class OrgTypeFilter(django_filters.MultipleChoiceFilter):
+    def __init__(self, *args, **kwargs):
+        choices = OrganisationPage.ORG_TYPES
+
+        super(OrgTypeFilter, self).__init__(*args, choices=choices, **kwargs)
+
+    def filter_by_type(self, queryset, value):
+        if value == "lgbtqorganisation":
+            queryset = queryset.filter(org_type="lgbtqorganisation")
+        elif value == "sexworkorganisation":
+            queryset = queryset.filter(sexworkorganisation=True)
+        elif value == "pwuidsorganisation":
+            queryset = queryset.filter(pwuidsorganisation=True)
+        return queryset
+
+
 class OrganisationsFilter(django_filters.FilterSet):
     title = django_filters.CharFilter(
         lookup_expr="icontains",
@@ -19,9 +35,7 @@ class OrganisationsFilter(django_filters.FilterSet):
             }
         ),
     )
-    org_type = django_filters.ModelMultipleChoiceFilter(
-        # get subclasses of index page by verbose_name
-        queryset=OrganisationPage.objects.all(),
+    org_type = OrgTypeFilter(
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 "class": "form-control",

@@ -156,9 +156,9 @@ class HomePage(Page):
         servicesData = (
             Service.objects.values("title")
             .annotate(
-                total_lgbtq_orgs=models.Count("lgbtq_organisations"),
-                total_sw_orgs=models.Count("sw_organisations"),
-                total_pwuid_orgs=models.Count("pwuid_organisations"),
+                total_lgbtq_orgs=models.Count("lgbtqservice"),
+                total_sw_orgs=models.Count("swservice"),
+                total_pwuid_orgs=models.Count("pwuidservice"),
             )
             .annotate(
                 total_orgs=models.F("total_lgbtq_orgs")

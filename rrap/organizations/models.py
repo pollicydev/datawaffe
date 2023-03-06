@@ -274,7 +274,17 @@ class OrganisationPage(Page):
         ("other", "Other"),
     )
 
-    # About
+    ORG_TYPES = (
+        ("lgbtqorganisation", "LGBTQ organisation"),
+        ("sexworkorganisation", "Sex workers organisation"),
+        ("pwuidsorganisation", "PWUIDs organisation"),
+    )
+
+    org_type = models.CharField(
+        blank=True,
+        max_length=30,
+        choices=ORG_TYPES,
+    )
 
     acronym = models.CharField(max_length=10, null=True, blank=True)
     summary = models.TextField(
@@ -631,12 +641,13 @@ class LGBTQOrganisation(OrganisationPage):
         index.RelatedFields("services", [index.SearchField("title")]),
     ]
 
-    def org_type(self):
-        return self.Meta.verbose_name_plural
-
     class Meta:
         verbose_name = "LGBTQ Organisation"
         verbose_name_plural = "LGBTQ Organisations"
+
+    def save(self, *args, **kwargs):
+        self.org_type = self.org_type or "lgbtqorganisation"
+        super(LGBTQOrganisation, self).save(*args, **kwargs)
 
 
 class SexWorkOrganisation(OrganisationPage):
@@ -725,12 +736,13 @@ class SexWorkOrganisation(OrganisationPage):
         index.RelatedFields("services", [index.SearchField("title")]),
     ]
 
-    def org_type(self):
-        return self.Meta.verbose_name_plural
-
     class Meta:
         verbose_name = "Sex Workers Organisation"
         verbose_name_plural = "Sex Workers Organisations"
+
+    def save(self, *args, **kwargs):
+        self.org_type = self.org_type or "sexworkorganisation"
+        super(SexWorkOrganisation, self).save(*args, **kwargs)
 
 
 class PWUIDSOrganisation(OrganisationPage):
@@ -766,9 +778,10 @@ class PWUIDSOrganisation(OrganisationPage):
         index.RelatedFields("services", [index.SearchField("title")]),
     ]
 
-    def org_type(self):
-        return self.Meta.verbose_name_plural
-
     class Meta:
         verbose_name = "PWUIDs Organisation"
         verbose_name_plural = "PWUIDs Organisations"
+
+    def save(self, *args, **kwargs):
+        self.org_type = self.org_type or "pwuidsorganisation"
+        super(PWUIDSOrganisation, self).save(*args, **kwargs)

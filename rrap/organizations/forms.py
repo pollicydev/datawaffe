@@ -12,7 +12,6 @@ class OrganisationsFilterForm(forms.Form):
         self.fields["services"].label = ""
         self.fields["org_type"].label = ""
         self.fields["toll_free"].label = "With toll free"
-        self.fields["toll_free"].label_classes = "text-white"
 
     class Meta:
         model = OrganisationPage
