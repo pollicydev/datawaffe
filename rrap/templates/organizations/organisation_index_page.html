@@ -53,8 +53,8 @@
       <!-- Organisation cluster-->
       {% for organisation in organisations %}
       <div class="accordion-item border-top mb-0">
-        <div class="accordion-header"><a
-            class="accordion-button d-flex fs-4 fw-normal text-decoration-none py-3 collapsed"
+        <div class="accordion-header">
+          <a class="accordion-button d-flex fs-4 fw-normal text-decoration-none py-3 collapsed"
             href="#{{ organisation.slug }}" data-bs-toggle="collapse" aria-expanded="false"
             aria-controls="{{ organisation.slug }}">
             <div class="d-flex justify-content-between w-100" style="max-width: 840px;">
@@ -77,7 +77,8 @@
                 {% endif %}
               </div>
             </div>
-          </a></div>
+          </a>
+        </div>
         <div class="accordion-collapse collapse" id="{{ organisation.slug }}" data-bs-parent="#organisationsIndex">
           <div class="accordion-body">
             <div class="bg-secondary rounded-1 p-4 my-2">

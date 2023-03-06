@@ -14,9 +14,6 @@ from rrap.core.models import (
     KeyPopulation,
     Service,
     PublicationType,
-    SWKeyPopulation,
-    SWService,
-    PWUIDService,
 )
 from wagtail.core.models import Page, PageManager, Orderable
 from modelcluster.fields import ParentalManyToManyField, ParentalKey
@@ -118,88 +115,11 @@ class ViolenceEntry(Orderable):
     ]
 
 
-class SWViolenceEntry(Orderable):
-    page = ParentalKey(
-        "organizations.SexWorkOrganisation", related_name="sw_violations"
-    )
-    violation = models.ForeignKey("core.SWViolation", on_delete=models.CASCADE)
-    occurences = models.PositiveSmallIntegerField(
-        blank=True,
-        null=True,
-        default=0,
-        help_text="How many violations of this nature did you deal with?",
-    )
-    period = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-        default=current_year(),
-        validators=[MinValueValidator(2000), max_value_current_year],
-        help_text="Enter year of record",
-    )
-
-    panels = [
-        FieldPanel("violation"),
-        FieldPanel("occurences"),
-        FieldPanel("period"),
-    ]
-
-
-class PWUIDViolenceEntry(Orderable):
-    page = ParentalKey(
-        "organizations.PWUIDSOrganisation", related_name="pwuid_violations"
-    )
-    violation = models.ForeignKey("core.PWUIDViolation", on_delete=models.CASCADE)
-    occurences = models.PositiveSmallIntegerField(
-        blank=True,
-        null=True,
-        default=0,
-        help_text="How many violations of this nature did you deal with?",
-    )
-    period = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-        default=current_year(),
-        validators=[MinValueValidator(2000), max_value_current_year],
-        help_text="Enter year of record",
-    )
-
-    panels = [
-        FieldPanel("violation"),
-        FieldPanel("occurences"),
-        FieldPanel("period"),
-    ]
-
-
-class SWCommunityReach(Orderable):
-    page = ParentalKey("organizations.SexWorkOrganisation", related_name="sw_reach")
-    community = models.ForeignKey(
-        "core.SWKeyPopulation", on_delete=models.CASCADE, related_name="sw_comm_reach"
-    )
-    reach = models.PositiveSmallIntegerField(
-        blank=True,
-        null=True,
-        default=0,
-        help_text="How many people in this community did you reach?",
-    )
-    period = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-        default=current_year(),
-        validators=[MinValueValidator(2000), max_value_current_year],
-        help_text="Enter year of record",
-    )
-
-    panels = [
-        FieldPanel("community"),
-        FieldPanel("reach"),
-        FieldPanel("period"),
-    ]
-
-
 class CommunityReach(Orderable):
     page = ParentalKey("organizations.OrganisationPage", related_name="reach")
     community = models.ForeignKey(
-        "core.KeyPopulation", on_delete=models.CASCADE, related_name="comm_reach"
+        "core.KeyPopulation",
+        on_delete=models.CASCADE,
     )
     reach = models.PositiveSmallIntegerField(
         blank=True,
@@ -217,28 +137,6 @@ class CommunityReach(Orderable):
 
     panels = [
         FieldPanel("community"),
-        FieldPanel("reach"),
-        FieldPanel("period"),
-    ]
-
-
-class PWUIDSCommunityReach(Orderable):
-    page = ParentalKey("organizations.PWUIDSOrganisation", related_name="pwuid_reach")
-    reach = models.PositiveSmallIntegerField(
-        blank=True,
-        null=True,
-        default=0,
-        help_text="How many people did you reach?",
-    )
-    period = models.PositiveSmallIntegerField(
-        null=True,
-        blank=True,
-        default=current_year(),
-        validators=[MinValueValidator(2000), max_value_current_year],
-        help_text="Enter year of record",
-    )
-
-    panels = [
         FieldPanel("reach"),
         FieldPanel("period"),
     ]
@@ -499,11 +397,27 @@ class OrganisationPage(Page):
 
     settings_panels = [FieldPanel("status")] + Page.settings_panels
 
+    reach_panels = [
+        MultiFieldPanel(
+            [InlinePanel("reach", max_num=30, min_num=0, label="Reach")],
+            heading="Reach within key populations",
+        ),
+    ]
+
+    violations_panels = [
+        MultiFieldPanel(
+            [InlinePanel("violations", max_num=30, min_num=0, label="Violation")],
+            heading="Record Human Rights Violations",
+        ),
+    ]
+
     edit_handler = TabbedInterface(
         [
             ObjectList(content_panels, heading="Info"),
             ObjectList(tagging_panels, heading="Tagging"),
             ObjectList(contact_panels, heading="Contacts"),
+            ObjectList(reach_panels, heading="Reach & Impact"),
+            ObjectList(violations_panels, heading="Violations"),
             ObjectList(Page.promote_panels, heading="Meta"),
             ObjectList(settings_panels, heading="Visibility"),
         ]
@@ -668,10 +582,10 @@ class LGBTQOrganisation(OrganisationPage):
     parent_page_types = ["OrganisationIndexPage"]
 
     communities = ParentalManyToManyField(
-        KeyPopulation, related_name="organisations", blank=True
+        KeyPopulation, related_name="lgbtq_organisations", blank=True
     )
     services = ParentalManyToManyField(
-        Service, related_name="organisations", blank=True
+        Service, related_name="lgbtq_organisations", blank=True
     )
 
     lgbt_tagging_panels = [
@@ -679,27 +593,13 @@ class LGBTQOrganisation(OrganisationPage):
         FieldPanel("services", widget=forms.CheckboxSelectMultiple),
     ] + OrganisationPage.tagging_panels
 
-    lgbt_reach_panels = [
-        MultiFieldPanel(
-            [InlinePanel("reach", max_num=30, min_num=0, label="Reach")],
-            heading="Reach within key populations",
-        ),
-    ]
-
-    lgbt_violations_panels = [
-        MultiFieldPanel(
-            [InlinePanel("violations", max_num=30, min_num=0, label="Violation")],
-            heading="Record Human Rights Violations",
-        ),
-    ]
-
     edit_handler = TabbedInterface(
         [
             ObjectList(OrganisationPage.content_panels, heading="Info"),
             ObjectList(lgbt_tagging_panels, heading="Tagging"),
             ObjectList(OrganisationPage.contact_panels, heading="Contacts"),
-            ObjectList(lgbt_reach_panels, heading="Reach & Impact"),
-            ObjectList(lgbt_violations_panels, heading="Violations"),
+            ObjectList(OrganisationPage.reach_panels, heading="Reach & Impact"),
+            ObjectList(OrganisationPage.violations_panels, heading="Violations"),
             ObjectList(Page.promote_panels, heading="Meta"),
             ObjectList(OrganisationPage.settings_panels, heading="Visibility"),
         ]
@@ -761,10 +661,10 @@ class SexWorkOrganisation(OrganisationPage):
         help_text="Types of sex work activities performed",
     )
     communities = ParentalManyToManyField(
-        SWKeyPopulation, related_name="sw_organisations", blank=True
+        KeyPopulation, related_name="sw_organisations", blank=True
     )
     services = ParentalManyToManyField(
-        SWService, related_name="sw_organisations", blank=True
+        Service, related_name="sw_organisations", blank=True
     )
 
     demographics_panels = [
@@ -777,28 +677,14 @@ class SexWorkOrganisation(OrganisationPage):
         FieldPanel("services", widget=forms.CheckboxSelectMultiple),
     ] + OrganisationPage.tagging_panels
 
-    sw_reach_panels = [
-        MultiFieldPanel(
-            [InlinePanel("sw_reach", max_num=30, min_num=0, label="Reach")],
-            heading="Reach within key populations",
-        ),
-    ]
-
-    sw_violations_panels = [
-        MultiFieldPanel(
-            [InlinePanel("sw_violations", max_num=30, min_num=0, label="Violation")],
-            heading="Record Human Rights Violations",
-        ),
-    ]
-
     edit_handler = TabbedInterface(
         [
             ObjectList(OrganisationPage.content_panels, heading="Info"),
             ObjectList(demographics_panels, heading="Demographics"),
             ObjectList(sw_tagging_panels, heading="Tagging"),
             ObjectList(OrganisationPage.contact_panels, heading="Contacts"),
-            ObjectList(sw_reach_panels, heading="Reach & Impact"),
-            ObjectList(sw_violations_panels, heading="Violations"),
+            ObjectList(OrganisationPage.reach_panels, heading="Reach & Impact"),
+            ObjectList(OrganisationPage.violations_panels, heading="Violations"),
             ObjectList(Page.promote_panels, heading="Meta"),
             ObjectList(OrganisationPage.settings_panels, heading="Visibility"),
         ]
@@ -821,34 +707,20 @@ class PWUIDSOrganisation(OrganisationPage):
     parent_page_types = ["OrganisationIndexPage"]
 
     services = ParentalManyToManyField(
-        PWUIDService, related_name="pwuid_organisations", blank=True
+        Service, related_name="pwuid_organisations", blank=True
     )
 
     pwuid_tagging_panels = [
         FieldPanel("services", widget=forms.CheckboxSelectMultiple),
     ] + OrganisationPage.tagging_panels
 
-    pwuid_reach_panels = [
-        MultiFieldPanel(
-            [InlinePanel("pwuid_reach", max_num=30, min_num=0, label="Reach")],
-            heading="Reach within key populations",
-        ),
-    ]
-
-    pwuid_violations_panels = [
-        MultiFieldPanel(
-            [InlinePanel("pwuid_violations", max_num=30, min_num=0, label="Violation")],
-            heading="Record Human Rights Violations",
-        ),
-    ]
-
     edit_handler = TabbedInterface(
         [
             ObjectList(OrganisationPage.content_panels, heading="Info"),
             ObjectList(pwuid_tagging_panels, heading="Tagging"),
             ObjectList(OrganisationPage.contact_panels, heading="Contacts"),
-            ObjectList(pwuid_reach_panels, heading="Reach & Impact"),
-            ObjectList(pwuid_violations_panels, heading="Violations"),
+            ObjectList(OrganisationPage.reach_panels, heading="Reach & Impact"),
+            ObjectList(OrganisationPage.violations_panels, heading="Violations"),
             ObjectList(Page.promote_panels, heading="Meta"),
             ObjectList(OrganisationPage.settings_panels, heading="Visibility"),
         ]

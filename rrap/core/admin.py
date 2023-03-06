@@ -88,17 +88,19 @@ class LGBTQOrganisationsAdmin(ThumbnailMixin, ModelAdmin):
     menu_order = 100
     add_to_settings_menu = False
     exclude_from_explorer = False
-    thumb_image_field_name = "logo"
     list_display = (
-        "admin_thumb",
         "title",
+        "pwd_support",
+        "status",
     )
     ordering = ("first_published_at",)
-    thumb_image_filter_spec = "fill-300x150"
-    thumb_image_width = 100
-    thumb_col_header_text = "Logo"
     list_filter = ("status", "communities", "services")
     search_fields = ("title",)
+
+    def pwd_support(self, obj):
+        return obj.support_pwds
+
+    pwd_support.short_description = "Supports PWDs?"
 
 
 class SWOrganisationsAdmin(ThumbnailMixin, ModelAdmin):
@@ -109,17 +111,19 @@ class SWOrganisationsAdmin(ThumbnailMixin, ModelAdmin):
     menu_order = 100
     add_to_settings_menu = False
     exclude_from_explorer = False
-    thumb_image_field_name = "logo"
     list_display = (
-        "admin_thumb",
         "title",
+        "pwd_support",
+        "status",
     )
     ordering = ("first_published_at",)
-    thumb_image_filter_spec = "fill-300x150"
-    thumb_image_width = 100
-    thumb_col_header_text = "Logo"
     list_filter = ("status", "communities", "services")
     search_fields = ("title",)
+
+    def pwd_support(self, obj):
+        return obj.support_pwds
+
+    pwd_support.short_description = "Supports PWDs?"
 
 
 class PWUIDsOrganisationsAdmin(ThumbnailMixin, ModelAdmin):
@@ -132,15 +136,18 @@ class PWUIDsOrganisationsAdmin(ThumbnailMixin, ModelAdmin):
     exclude_from_explorer = False
     thumb_image_field_name = "logo"
     list_display = (
-        "admin_thumb",
         "title",
+        "pwd_support",
+        "status",
     )
     ordering = ("first_published_at",)
-    thumb_image_filter_spec = "fill-300x150"
-    thumb_image_width = 100
-    thumb_col_header_text = "Logo"
-    list_filter = ("status", "services")
+    list_filter = ("status", "communities", "services")
     search_fields = ("title",)
+
+    def pwd_support(self, obj):
+        return obj.support_pwds
+
+    pwd_support.short_description = "Supports PWDs?"
 
 
 class PublicationsAdmin(ThumbnailMixin, ModelAdmin):

@@ -7,7 +7,12 @@ from wagtail.core.models import (
     GroupPagePermission,
     Page,
 )
-from .models import OrganisationPage
+from .models import (
+    OrganisationPage,
+    LGBTQOrganisation,
+    SexWorkOrganisation,
+    PWUIDSOrganisation,
+)
 
 # create a group and collection for that organisation
 def organisation_created_receiver(sender, instance, **kwargs):
@@ -83,4 +88,6 @@ def organisation_created_receiver(sender, instance, **kwargs):
             raise
 
 
-page_published.connect(organisation_created_receiver, sender=OrganisationPage)
+page_published.connect(organisation_created_receiver, sender=LGBTQOrganisation)
+page_published.connect(organisation_created_receiver, sender=SexWorkOrganisation)
+page_published.connect(organisation_created_receiver, sender=PWUIDSOrganisation)

@@ -19,6 +19,7 @@ urlpatterns = [
     path("select2/", include("django_select2.urls")),
     path(settings.WAGTAIL_ADMIN_URL, include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
+    path("activity/", include("rrap.activities.urls", namespace="activities")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

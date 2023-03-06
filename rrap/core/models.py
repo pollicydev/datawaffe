@@ -155,7 +155,16 @@ class HomePage(Page):
 
         servicesData = (
             Service.objects.values("title")
-            .annotate(total_orgs=models.Count("organisations"))
+            .annotate(
+                total_lgbtq_orgs=models.Count("lgbtq_organisations"),
+                total_sw_orgs=models.Count("sw_organisations"),
+                total_pwuid_orgs=models.Count("pwuid_organisations"),
+            )
+            .annotate(
+                total_orgs=models.F("total_lgbtq_orgs")
+                + models.F("total_sw_orgs")
+                + models.F("total_pwuid_orgs")
+            )
             .annotate(
                 percentile=(models.F("total_orgs") / organisations.count()) * 100
             )  # percentile not working???
@@ -237,8 +246,6 @@ class Topic(ClusterableModel):
         verbose_name_plural = "Topics"
 
 
-@register_snippet
-# specific to LGBT Organisation (repurposed)
 class KeyPopulation(ClusterableModel):
     title = models.CharField(max_length=100)
     acronym = models.CharField(max_length=10, blank=True, null=True)
@@ -261,40 +268,21 @@ class KeyPopulation(ClusterableModel):
     def get_total_reach(self):
         return +self.comm_reach
 
+
+@register_snippet
+class LGBTQKeyPopulation(KeyPopulation):
     class Meta:
         verbose_name = "LGBTQ Key Population"
         verbose_name_plural = "LGBTQ Key Populations"
 
 
 @register_snippet
-class SWKeyPopulation(ClusterableModel):
-    title = models.CharField(max_length=100)
-    color = ColorField(default="#000000")
-
-    panels = [
-        FieldPanel(
-            "title",
-            classname="full",
-        ),
-        NativeColorPanel("color"),
-    ]
-
-    def __str__(self):
-        return self.title
-
-    def autocomplete_label(self):
-        return self.title
-
-    def get_total_reach(self):
-        return +self.comm_reach
-
+class SWKeyPopulation(KeyPopulation):
     class Meta:
         verbose_name = "SW Key Population"
         verbose_name_plural = "SW Key Populations"
 
 
-@register_snippet
-# specific to LGBT Organisation (repurposed)
 class Service(ClusterableModel):
     title = models.CharField(max_length=100, help_text="Name/title of service")
     icon = models.CharField(
@@ -318,71 +306,28 @@ class Service(ClusterableModel):
     def autocomplete_label(self):
         return self.title
 
+
+@register_snippet
+class LGBTQService(Service):
     class Meta:
         verbose_name = "LGBTQ Service"
         verbose_name_plural = "LGBTQ Services"
 
 
 @register_snippet
-class SWService(ClusterableModel):
-    title = models.CharField(max_length=100, help_text="Name/title of service")
-    icon = models.CharField(
-        max_length=20, blank=True, null=True, help_text="Enter name of icon"
-    )
-    summary = models.CharField(
-        max_length=240, blank=True, null=True, help_text="Describe the service"
-    )
-
-    panels = [
-        FieldPanel(
-            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
-        ),
-        FieldPanel("summary"),
-        FieldPanel("icon"),
-    ]
-
-    def __str__(self):
-        return self.title
-
-    def autocomplete_label(self):
-        return self.title
-
+class SWService(Service):
     class Meta:
         verbose_name = "SW Service"
         verbose_name_plural = "SW Services"
 
 
 @register_snippet
-class PWUIDService(ClusterableModel):
-    title = models.CharField(max_length=100, help_text="Name/title of service")
-    icon = models.CharField(
-        max_length=20, blank=True, null=True, help_text="Enter name of icon"
-    )
-    summary = models.CharField(
-        max_length=240, blank=True, null=True, help_text="Describe the service"
-    )
-
-    panels = [
-        FieldPanel(
-            "title", classname="full", widget=forms.TextInput(attrs={"disabled": True})
-        ),
-        FieldPanel("summary"),
-        FieldPanel("icon"),
-    ]
-
-    def __str__(self):
-        return self.title
-
-    def autocomplete_label(self):
-        return self.title
-
+class PWUIDService(Service):
     class Meta:
         verbose_name = "PWUID Service"
         verbose_name_plural = "PWUID Services"
 
 
-@register_snippet
-# specific to LGBT Organisation (repurposed)
 class Violation(ClusterableModel):
     title = models.CharField(max_length=100, help_text="Name of violation")
     description = models.CharField(
@@ -408,25 +353,14 @@ class Violation(ClusterableModel):
 
 
 @register_snippet
-class SWViolation(ClusterableModel):
-    title = models.CharField(max_length=100, help_text="Name of violation")
-    description = models.CharField(
-        max_length=240, blank=True, null=True, help_text="Brief description"
-    )
-    color = ColorField(default="#000000", null=True)
+class LGBTQViolation(Violation):
+    class Meta:
+        verbose_name = "LGBTQ Violation"
+        verbose_name_plural = "LGBTQ Violations"
 
-    panels = [
-        FieldPanel("title", classname="full"),
-        FieldPanel("description"),
-        NativeColorPanel("color"),
-    ]
 
-    def __str__(self):
-        return self.title
-
-    def autocomplete_label(self):
-        return self.title
-
+@register_snippet
+class SWViolation(Violation):
     class Meta:
         verbose_name = "SW Violation"
         verbose_name_plural = "SW Violations"
@@ -434,24 +368,6 @@ class SWViolation(ClusterableModel):
 
 @register_snippet
 class PWUIDViolation(ClusterableModel):
-    title = models.CharField(max_length=100, help_text="Name of violation")
-    description = models.CharField(
-        max_length=240, blank=True, null=True, help_text="Brief description"
-    )
-    color = ColorField(default="#000000", null=True)
-
-    panels = [
-        FieldPanel("title", classname="full"),
-        FieldPanel("description"),
-        NativeColorPanel("color"),
-    ]
-
-    def __str__(self):
-        return self.title
-
-    def autocomplete_label(self):
-        return self.title
-
     class Meta:
         verbose_name = "PWUID Violation"
         verbose_name_plural = "PWUID Violations"

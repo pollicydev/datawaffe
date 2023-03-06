@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext
 
-from rrap.organizations.models import Organization, OrganisationPage
+from rrap.organizations.models import OrganisationPage
 
 from .constants import ActivityTypes
 from .models import Activity
@@ -93,7 +93,7 @@ def following(request, username):
 
 
 def followers(request, org_name):
-    organization = get_object_or_404(Organization, name=org_name)
+    organization = get_object_or_404(OrganisationPage, name=org_name)
     page_title = gettext("followers")
     followers = organization.get_followers()
     user_following = None
