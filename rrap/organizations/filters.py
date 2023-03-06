@@ -1,7 +1,7 @@
 from django import forms
 import django_filters
 from rrap.core.models import KeyPopulation, Service
-from rrap.organizations.models import OrganisationPage
+from rrap.organizations.models import OrganisationPage, OrganisationIndexPage
 from rrap.organizations.forms import OrganisationsFilterForm
 
 
@@ -12,6 +12,15 @@ class OrganisationsFilter(django_filters.FilterSet):
             attrs={
                 "class": "form-control form-control-sm ps-5 text-white",
                 "placeholder": "Search by name...",
+            }
+        ),
+    )
+    org_type = django_filters.ModelMultipleChoiceFilter(
+        # get subclasses of index page by verbose_name
+        queryset=OrganisationPage.objects.all(),
+        widget=forms.CheckboxSelectMultiple(
+            attrs={
+                "class": "form-control",
             }
         ),
     )

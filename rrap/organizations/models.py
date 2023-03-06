@@ -238,6 +238,10 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
 
         return context
 
+    def get_sub_types(self):
+        for item in self.subpage_types:
+            return item.verbose_name_plural
+
 
 class OrganisationPage(Page):
 
