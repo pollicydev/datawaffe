@@ -2,4 +2,4 @@
     -e contenttypes -e auth.permission -e postgres_search.indexentry \
     -e wagtailcore.groupcollectionpermission \
     -e wagtailcore.grouppagepermission -e wagtailimages.rendition  -e wagtailcore.pagerevision \
-    -e sessions > backup.json
+    -e sessions > nbackup.json
