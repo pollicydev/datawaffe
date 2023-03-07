@@ -21,8 +21,8 @@ class User(AbstractUser):
     """
 
     #: First and last name do not cover name patterns around the globe
-    first_name = None  # type: ignore
-    last_name = None  # type: ignore
+    first_name = models.CharField(max_length=150, blank=True, verbose_name="first name")
+    last_name = models.CharField(max_length=150, blank=True, verbose_name="last name")
 
     def get_absolute_url(self):
         """Get url for user's detail view.

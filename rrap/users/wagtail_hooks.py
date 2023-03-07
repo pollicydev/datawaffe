@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.admin import SimpleListFilter
@@ -23,6 +24,7 @@ from wagtail.admin import messages
 from wagtail.core import hooks
 from rrap.users.models import Profile
 from .tasks import send_welcome_email, send_rejection_notice
+from wagtail.users.widgets import UserListingButton
 
 User = get_user_model()
 
@@ -149,6 +151,7 @@ class DataUsersButtonHelper(ButtonHelper):
                     classnames_exclude=classnames_exclude,
                 )
             )
+        if obj.review_status == obj.APPROVED:
             status_buttons.append(
                 self.upgrade_button(
                     pk,
@@ -302,3 +305,14 @@ class DataUsersAdmin(ModelAdmin):
 
 
 modeladmin_register(DataUsersAdmin)
+
+
+@hooks.register("construct_main_menu")
+def hide_some_admin_items_from_data_users(request, menu_items):
+    if not request.user.is_superuser:
+        menu_items[:] = [item for item in menu_items if item.label != "Data Users"]
+
+
+@hooks.register("before_create_user")
+def do_before_create_user(request):
+    return HttpResponse("A user creation form", content_type="text/plain")

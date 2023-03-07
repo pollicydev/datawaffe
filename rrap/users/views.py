@@ -141,6 +141,18 @@ def onboard_user(request):
             form.save()
             # make user inactive
             user.is_active = False
+            # update user first and last name
+            firstname = ""
+            lastname = ""
+            fullname = profile.name
+            try:
+                firstname = fullname.split()[0]
+                lastname = fullname.split()[-1]
+            except Exception as e:
+                print(e)
+            user.first_name = firstname
+            user.last_name = lastname
+            user.save()
             # inform regarding account approval delay
             send_delay_notice(user)
             # take them to account inactive screen

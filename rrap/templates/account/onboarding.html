@@ -1,11 +1,11 @@
-{% extends "base.html" %}
+{% extends "account/base.html" %}
 
 {% load static i18n crispy_forms_tags user_extras %}
 
 {% block title %}Onboarding | Data Waffe{% endblock %}
 
 
-{% block content %}
+{% block inner %}
 
 <div class="container d-flex flex-column">
   <div class="row align-items-center justify-content-center no-gutters py-8">
@@ -66,7 +66,7 @@
   </div>
 </div>
 
-{% endblock content %}
+{% endblock inner %}
 
 {% block javascript %}
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
