@@ -21,6 +21,14 @@ class MapFilter(django_filters.FilterSet):
             }
         ),
     )
+    org_type = django_filters.MultipleChoiceFilter(
+        choices=OrganisationPage.ORG_TYPES,
+        widget=forms.CheckboxSelectMultiple(
+            attrs={
+                "class": "form-control",
+            }
+        ),
+    )
     communities = django_filters.ModelMultipleChoiceFilter(
         queryset=KeyPopulation.objects.all(),
         widget=forms.CheckboxSelectMultiple(
@@ -37,6 +45,15 @@ class MapFilter(django_filters.FilterSet):
             }
         ),
     )
+    toll_free = django_filters.BooleanFilter(
+        widget=forms.CheckboxInput(),
+        method="unchecked_means_any_value",
+    )
+
+    def unchecked_means_any_value(self, queryset, name, value):
+        if not value:
+            return queryset
+        return queryset.filter(toll_free__isnull=False)
 
     class Meta:
         model = OrganisationPage

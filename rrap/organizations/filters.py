@@ -23,10 +23,6 @@ class OrganisationsFilter(django_filters.FilterSet):
             }
         ),
     )
-    toll_free = django_filters.BooleanFilter(
-        widget=forms.CheckboxInput(),
-        method="unchecked_means_any_value",
-    )
     communities = django_filters.ModelMultipleChoiceFilter(
         queryset=KeyPopulation.objects.all(),
         widget=forms.CheckboxSelectMultiple(
@@ -42,6 +38,10 @@ class OrganisationsFilter(django_filters.FilterSet):
                 "class": "form-control",
             }
         ),
+    )
+    toll_free = django_filters.BooleanFilter(
+        widget=forms.CheckboxInput(),
+        method="unchecked_means_any_value",
     )
 
     def unchecked_means_any_value(self, queryset, name, value):

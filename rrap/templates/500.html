@@ -3,8 +3,15 @@
 {% block title %}Server Error{% endblock %}
 
 {% block content %}
-<div class="container d-flex flex-column justify-content-center min-vh-100 py-5">
-    <h1 class="display-5">Ooops! Looks like something went wrong!</h1>
-    <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-5">No worries though. We track these errors automatically, but if the problem persists feel free to contact us. In the meantime, try refreshing the page</p>
+
+<div class="container d-flex flex-column">
+    <div class="row align-items-center justify-content-center no-gutters py-8">
+      <div class="col-md-6 mx-auto py-xl-0 text-center">
+        <h1 class="display-5">Ooops! Something's wrong!</h1>
+        <p class="fs-lg">No worries though. We track these errors automatically and we'll be working to resolve this immediately.</p> 
+        <p class="fs-lg pb-2 pb-md-0 mb-4 mb-md-5">If the problem persists feel free to <a href="/contact">contact us</a>. In the meantime, try refreshing the page</p>
+      </div>
+    </div>
 </div>
 {% endblock content %}
+
