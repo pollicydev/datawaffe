@@ -12,10 +12,12 @@
   </div>
 </div>
 
-<section class="container py-4">
+<section class="container">
   <div class="row pb-1 pb-sm-3 pb-lg-4">
-    <h4 class="display-2">{{ self.introduction }}</h4>
-    <p class="fs-lg pb-4 mb-0 mb-sm-2">{{ self.body|richtext }}</p>
+    <div class="col-md-8 py-xl-0">
+      <h5>{{ self.introduction }}</h5>
+      <p class="fs-lg pb-4 mb-0 mb-sm-2">{{ self.body|richtext }}</p>
+    </div>
   </div>
 </section>
 

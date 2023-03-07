@@ -604,6 +604,12 @@ class OrganisationPage(Page):
         context["violationsPieChartSeries"] = violationsPieChartSeries
         return context
 
+    def serve(self, request, view=None, args=None, kwargs=None):
+        if request.user.is_authenticated:
+            return super().serve(request, view, args, kwargs)
+        else:
+            raise PermissionDenied
+
 
 class LGBTQOrganisation(OrganisationPage):
     """LGBTQ scoped organisation"""

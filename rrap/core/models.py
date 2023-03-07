@@ -567,6 +567,12 @@ class PublicationPage(Page):
         """A relevant Wagtail Image to show. Optional."""
         return self.image
 
+    def serve(self, request, view=None, args=None, kwargs=None):
+        if request.user.is_authenticated:
+            return super().serve(request, view, args, kwargs)
+        else:
+            raise PermissionDenied
+
     class Meta:
         verbose_name = "Publication"
         verbose_name_plural = "Publications"
