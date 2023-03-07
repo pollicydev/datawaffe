@@ -5,6 +5,7 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.shortcuts import redirect
 from django.db import models
 from django import forms
 from rrap.core.managers import ActiveManager
@@ -37,7 +38,9 @@ from wagtail.core.fields import RichTextField
 from wagtail.search import index
 import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
-from wagtail.contrib.routable_page.models import RoutablePageMixin
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import login_required
 
 User = get_user_model()
 
@@ -244,6 +247,12 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
         context["index_url"] = self.get_url()
 
         return context
+
+    def serve(self, request, view=None, args=None, kwargs=None):
+        if request.user.is_authenticated:
+            return super().serve(request, view, args, kwargs)
+        else:
+            raise PermissionDenied
 
 
 class OrganisationPage(Page):

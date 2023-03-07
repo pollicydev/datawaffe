@@ -75,6 +75,23 @@
                 {{ form.country | as_crispy_field }}
               </div>
 
+              <div class="col-12">
+                <label class="form-label" for="is_ukpc_affiliate">Is the organisation you are affiliated to a
+                  member of UKPC?</label>
+                {{ form.is_ukpc_affiliate | as_crispy_field }}
+              </div>
+
+              <div class="col-12" id="organisation_select_container">
+                <label class="form-label" for="organisation">Select your organisation</label>
+                {{ form.organisation | as_crispy_field }}
+              </div>
+
+              <div class="col-12" id="custom_affiliation_container">
+                <label class="form-label" for="custom_affiliation">What organisation or institution are you affiliated
+                  to?</label>
+                {{ form.custom_affiliation | as_crispy_field }}
+              </div>
+
               <div class="col-12 d-flex justify-content-end pt-3">
                 <button class="btn btn-secondary" type="button">Cancel</button>
                 <button class="btn btn-primary ms-3" type="submit">Save changes</button>
@@ -188,6 +205,22 @@
       others_field.show("fast");
     } else {
       others_field.hide()
+    }
+  });
+
+  // show/hide logic for orgs
+  let custom_affiliation = $("#custom_affiliation_container");
+  let organisation_dropdown = $("#organisation_select_container");
+
+  custom_affiliation.hide()
+
+  $("#div_id_is_ukpc_affiliate").on("change", function () {
+    if ($("#div_id_is_ukpc_affiliate option:selected").text() === "No") {
+      organisation_dropdown.hide("fast");
+      custom_affiliation.show("fast")
+    } else {
+      organisation_dropdown.show("fast");
+      custom_affiliation.hide("fast")
     }
   });
 

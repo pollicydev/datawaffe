@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.files.base import ContentFile
 from .tasks import send_delay_notice
+from .mixins import ProfileOwnerRequiredMixin
 
 # from rrap.invites.constants import InviteStatus
 from allauth.account.views import PasswordChangeView
@@ -66,7 +67,7 @@ def delete_avatar(request):
     return redirect(reverse("users:update_profile"))
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(LoginRequiredMixin, ProfileOwnerRequiredMixin, DetailView):
 
     model = User
     slug_field = "username"

@@ -28,6 +28,7 @@ from wagtail.search import index
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtailcaptcha.models import WagtailCaptchaEmailForm
 from wagtail.snippets.models import register_snippet
+from django.core.exceptions import PermissionDenied
 
 
 class HomePage(Page):
@@ -420,6 +421,12 @@ class PublicationsIndexPage(RoutablePageMixin, Page):
         context["index_url"] = self.get_url()
 
         return context
+
+    def serve(self, request, view=None, args=None, kwargs=None):
+        if request.user.is_authenticated:
+            return super().serve(request, view, args, kwargs)
+        else:
+            raise PermissionDenied
 
 
 class PublicationTag(TaggedItemBase):
