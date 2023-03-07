@@ -151,7 +151,7 @@ class DataUsersButtonHelper(ButtonHelper):
                     classnames_exclude=classnames_exclude,
                 )
             )
-        if obj.review_status == obj.APPROVED:
+        if not obj.review_status == obj.PENDING and obj.review_status == obj.APPROVED:
             status_buttons.append(
                 self.upgrade_button(
                     pk,

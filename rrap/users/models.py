@@ -131,7 +131,7 @@ class Profile(models.Model):
     date_joined = models.DateTimeField(auto_now_add=True, max_length=255)
     has_finished_registration = models.BooleanField(default=False, null=True)
     review_status = models.CharField(
-        "Review status", max_length=10, choices=REVIEW_CHOICES, default=0
+        "Review status", max_length=10, choices=REVIEW_CHOICES, default="pending"
     )
     is_ukpc_affiliate = models.SmallIntegerField(
         "Is the organisation you are affiliated too a member of UKPC?",
