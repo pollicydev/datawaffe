@@ -506,6 +506,12 @@ class OrganisationPage(Page):
         ).count()
         return followers_count
 
+    def serve(self, request):
+        if request.user.is_authenticated:
+            return super().serve(request)
+        else:
+            raise PermissionDenied
+
     def get_context(self, request):
         context = super(OrganisationPage, self).get_context(request)
 
@@ -602,13 +608,8 @@ class OrganisationPage(Page):
         context["violations_years"] = violations_years
         context["violationsChartSeries"] = violationsChartSeries
         context["violationsPieChartSeries"] = violationsPieChartSeries
-        return context
 
-    def serve(self, request, view=None, args=None, kwargs=None):
-        if request.user.is_authenticated:
-            return super().serve(request, view, args, kwargs)
-        else:
-            raise PermissionDenied
+        return context
 
 
 class LGBTQOrganisation(OrganisationPage):

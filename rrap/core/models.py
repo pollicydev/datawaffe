@@ -548,8 +548,8 @@ class PublicationPage(Page):
     def __str__(self):
         return self.title
 
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
+    def get_context(self, request):
+        context = super().get_context(request)
 
         # TODO: Maybe actually find related posts?
         context["related_publications"] = (
