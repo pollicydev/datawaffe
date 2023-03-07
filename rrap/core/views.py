@@ -57,7 +57,9 @@ def home(request):
 @onboarding_required
 @require_GET
 def map(request: HtmxHttpRequest) -> HttpResponse:
-    organisations = OrganisationPage.objects.live().public().order_by("title")
+    organisations = (
+        OrganisationPage.objects.live().public().order_by("title").filter(status=1)
+    )
     org_filter = MapFilter(request.GET, queryset=organisations)
     filtered_districts = org_filter.qs.values_list("locations", flat=True)
     list_districts = Location.objects.filter(id__in=filtered_districts).values_list(

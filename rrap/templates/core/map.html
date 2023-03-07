@@ -13,14 +13,29 @@
     color: white !important;
   }
 
+  .htmx-indicator {
+    display: none;
+  }
+
+  .htmx-request .htmx-indicator {
+    display: inline;
+  }
+
+  .htmx-request.htmx-indicator {
+    display: inline;
+  }
+
 </style>
 
 <div class="bg-primary p-3">
   <div class="container">
     <form id="mapFilterForm" class="row row-cols-sm-auto g-3 align-items-center" hx-get="{% url 'map' %}"
-      hx-target="#filter-results" hx-trigger="keyup delay:2s, change delay:2s">
-      <div class="col-12">
-        <h6 class="my-0 text-white"><i class="ai-filter me-2"></i> Filter:</h6>
+      hx-target="#filter-results" hx-trigger="keyup delay:2s, change delay:2s" hx-indicator=".spinner-border">
+      <div class="col-12 d-flex">
+        <div class="spinner-border spinner-border-sm text-white mt-1 me-2 htmx-indicator" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <h6 class="my-0 text-white d-inline"><i class="ai-filter me-2"></i> Filter:</h6>
       </div>
       <div class="col-12">
         <div class="position-relative">
@@ -184,8 +199,12 @@
   let hoveredDistrictId = null;
   let clickedDistrictId = null;
 
-  let locations = document.getElementById('districtListOob').innerText;
-  console.log("Locations: ", JSON.parse(locations));
+  var locations = document.getElementById('districtListOob').innerText;
+
+  document.body.addEventListener('htmx:afterRequest', function () {
+    locations = document.getElementById('districtListOob').innerText;
+    console.log("Locations: ", JSON.parse(locations));
+  });
 
   map.on("load", function () {
     // load district polygon data from enqueued geojson
@@ -269,7 +288,7 @@
     });
     // initialize mapbox' expression filter on layer
     let filter = ["in", "name"];
-    map.setFilter('district-fills', filter.concat(JSON.parse(locations)));
+    map.setFilter('district-fills', filter.concat(JSON.parse(locations)), true, false);
     map.resize();
 
   });
