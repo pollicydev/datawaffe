@@ -501,7 +501,7 @@
 
 {% block inline_javascript %}
 <script>
-  const keyPopPieCtx = document.getElementById('keyPopReachChart');
+  {% comment %} const keyPopPieCtx = document.getElementById('keyPopReachChart');
   const servicesPieCtx = document.getElementById('servicesPieChart');
   const violationsPieCtx = document.getElementById('violationsPieChart');
 
@@ -699,7 +699,7 @@
         }
       }
     }
-  });
+  }); {% endcomment %}
 
 </script>
 {% endblock inline_javascript %}

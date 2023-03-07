@@ -248,7 +248,7 @@
 {% block inline_javascript %}
 <script src="{% static 'vendor/mapbox-gl/mapbox-gl.js' %}"></script>
 <script>
-  const reachCtx = document.getElementById('reachBarChart');
+  {% comment %} const reachCtx = document.getElementById('reachBarChart');
   const reachPieCtx = document.getElementById('reachPieChart');
   const violationsCtx = document.getElementById('violationsBarChart');
   const violationsPieCtx = document.getElementById('violationsPieChart');
@@ -497,7 +497,7 @@
         }
       }
     }
-  });
+  }); {% endcomment %}
 
 </script>
 
