@@ -250,7 +250,7 @@ class DataUsersAdmin(ModelAdmin):
     set_status_view_class = SetStatusView
 
     def profile_name(self, obj):
-        return obj.name
+        return obj.name or "{} {}".format(obj.user.first_name, obj.user.last_name)
 
     def profile_email(self, obj):
         return obj.user.email
