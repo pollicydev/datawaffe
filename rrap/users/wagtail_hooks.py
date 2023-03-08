@@ -285,7 +285,7 @@ class DataUsersAdmin(ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.exclude(user__is_staff=True)
+        return qs.exclude(user__is_staff=True).exclude(user__is_superuser=True)
 
     def set_status_view(self, request, instance_pk):
         kwargs = {"model_admin": self, "instance_pk": instance_pk}
