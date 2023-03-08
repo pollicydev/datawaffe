@@ -311,8 +311,3 @@ modeladmin_register(DataUsersAdmin)
 def hide_some_admin_items_from_data_users(request, menu_items):
     if not request.user.is_superuser:
         menu_items[:] = [item for item in menu_items if item.label != "Data Users"]
-
-
-@hooks.register("before_create_user")
-def do_before_create_user(request):
-    return HttpResponse("A user creation form", content_type="text/plain")

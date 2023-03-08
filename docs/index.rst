@@ -32,3 +32,8 @@ Table of contents
    signing-in
    navigating-cms
    creating-content
+   managing-pages
+   managing-users
+   managing-organisations
+   managing-publications
+   managing-blogs
