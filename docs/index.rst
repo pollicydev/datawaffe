@@ -31,7 +31,6 @@ Table of contents
    definitions
    signing-in
    navigating-cms
-   creating-content
    managing-pages
    managing-users
    managing-organisations

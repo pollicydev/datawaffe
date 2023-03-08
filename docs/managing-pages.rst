@@ -32,9 +32,7 @@ Just below the title of the Page, there are several toolbar buttons, each with a
   - **History:** This shows you a log of all the actions taken on this Page.
 
 
-
 Below the title area and the toolbars defined above, you have a table showing the existing child pages.
-""""""""""""""""""""""""""""""""""
 
 .. note::
     You can change the ordering of items in the table by clicking on the column names. This allows you to view the table items in ascending or descending order depending on the column header clicked. 
