@@ -1,6 +1,9 @@
 {% load menu_tags %}
-<li class="nav-item">
+<!-- <li class="nav-item">
   <a class="nav-link text-muted" href="/">v{{rrap_version}} ({{ rrap_environment }})</a>
+</li> -->
+<li class="nav-item">
+  <a class="nav-link text-muted" href="#">&copy;{% now "Y" %} Data Waffe. All rights reserved</a>
 </li>
 {% for item in menu_items %}
 <li class="nav-item {{ item.active_class }}">
@@ -8,5 +11,5 @@
 </li>
 {% endfor %}
 <li class="nav-item">
-  <a class="nav-link text-muted" href="#">&copy;2022 Data Waffe. All rights reserved</a>
+  <a class="nav-link text-muted" href="https://www.matchstick.ug" target="_blank">Built by Matchstick Studio</a>
 </li>

@@ -1,9 +1,9 @@
 from django import forms
 from django.conf import settings
-from django.core.paginator import EmptyPage, Paginator
+from django.urls import reverse
+from django.shortcuts import HttpResponseRedirect
 from django.db import models
-from django.db.models import Q, Count
-from django.shortcuts import redirect, render
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -13,7 +13,6 @@ from taggit.models import TaggedItemBase
 from wagtail.admin.edit_handlers import (
     FieldPanel,
     StreamFieldPanel,
-    MultiFieldPanel,
     TabbedInterface,
     ObjectList,
 )
@@ -61,6 +60,12 @@ class BlogIndexPage(Page):
         context["index_url"] = self.get_url()
 
         return context
+
+    def serve(self, request, view=None, args=None, kwargs=None):
+        if request.user.is_authenticated:
+            return super().serve(request, view, args, kwargs)
+        else:
+            return HttpResponseRedirect(reverse("account_login"))
 
 
 class BlogPageTag(TaggedItemBase):
@@ -190,6 +195,12 @@ class BlogPage(Page):
     def get_meta_image(self):
         """A relevant Wagtail Image to show. Optional."""
         return self.image
+
+    def serve(self, request, view=None, args=None, kwargs=None):
+        if request.user.is_authenticated:
+            return super().serve(request, view, args, kwargs)
+        else:
+            return HttpResponseRedirect(reverse("account_login"))
 
     class Meta:
         verbose_name = "Blog"

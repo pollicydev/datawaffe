@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.gis.db.models import PolygonField
-from django.shortcuts import redirect
+from django.shortcuts import redirect, HttpResponseRedirect
+from django.urls import reverse
 from wagtail.core.models import Page
 from django import forms
 from wagtail.core.fields import RichTextField
@@ -28,7 +29,6 @@ from wagtail.search import index
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtailcaptcha.models import WagtailCaptchaEmailForm
 from wagtail.snippets.models import register_snippet
-from django.core.exceptions import PermissionDenied
 
 
 class HomePage(Page):
@@ -199,6 +199,12 @@ class StandardPage(Page):
         FieldPanel("introduction", classname="full"),
         FieldPanel("body"),
     ]
+
+    def serve(self, request, view=None, args=None, kwargs=None):
+        if request.user.is_authenticated:
+            return super().serve(request, view, args, kwargs)
+        else:
+            return HttpResponseRedirect(reverse("account_login"))
 
 
 # used Location as identifier but initially represents districts. Could scale to have counties and subcounties
@@ -426,7 +432,7 @@ class PublicationsIndexPage(RoutablePageMixin, Page):
         if request.user.is_authenticated:
             return super().serve(request, view, args, kwargs)
         else:
-            raise PermissionDenied
+            return HttpResponseRedirect(reverse("account_login"))
 
 
 class PublicationTag(TaggedItemBase):
@@ -571,7 +577,7 @@ class PublicationPage(Page):
         if request.user.is_authenticated:
             return super().serve(request, view, args, kwargs)
         else:
-            raise PermissionDenied
+            return HttpResponseRedirect(reverse("account_login"))
 
     class Meta:
         verbose_name = "Publication"

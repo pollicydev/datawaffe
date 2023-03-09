@@ -24,7 +24,7 @@ from wagtail.admin import messages
 from wagtail.core import hooks
 from rrap.users.models import Profile
 from .tasks import send_welcome_email, send_rejection_notice
-from wagtail.users.widgets import UserListingButton
+from wagtail.core.models import GroupPagePermission
 
 User = get_user_model()
 
@@ -166,10 +166,12 @@ def update_user_status(user, status):
     user = get_object_or_404(User, pk=user)
     if status == "approved":
         user.is_active = True
+        user.profile.is_datauser = 1
         # send welcome email
         send_welcome_email(user)
     elif status == "rejected":
         user.is_active = False
+        user.profile.is_datauser = 0
         # send rejection email
         send_rejection_notice(user)
     else:
@@ -255,6 +257,9 @@ class DataUsersAdmin(ModelAdmin):
     def profile_email(self, obj):
         return obj.user.email
 
+    def profile_last_login(self, obj):
+        return obj.user.last_login
+
     def profile_avatar(self, obj):
         from django.utils.html import escape
 
@@ -311,3 +316,6 @@ modeladmin_register(DataUsersAdmin)
 def hide_some_admin_items_from_data_users(request, menu_items):
     if not request.user.is_superuser:
         menu_items[:] = [item for item in menu_items if item.label != "Data Users"]
+
+
+# PENDING: we need a hook here that checks if a user has been assigned to a group and sends data entrant email

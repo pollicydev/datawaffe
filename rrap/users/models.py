@@ -124,9 +124,6 @@ class Profile(models.Model):
     avatar = models.ImageField(upload_to=get_avatar_full_path, blank=True)
     avatar_version = models.IntegerField(default=0, blank=True, editable=False)
 
-    # The date the user last logged in.
-    last_login = models.DateTimeField(null=True, max_length=255, db_index=True)
-
     # The date the user joined.
     date_joined = models.DateTimeField(auto_now_add=True, max_length=255)
     has_finished_registration = models.BooleanField(default=False, null=True)
@@ -148,13 +145,16 @@ class Profile(models.Model):
     custom_affiliation = models.CharField(
         _("Affiliation"), blank=True, max_length=255, null=True
     )
+    is_datauser = models.SmallIntegerField(
+        choices=BOOLEAN_CHOICES,
+        default=0,
+    )
 
     def __str__(self):
         return self.get_screen_name()
 
     def save(self, *args, **kwargs):
         self.date_joined = self.date_joined or timezone.now()
-        self.last_login = self.last_login or timezone.now()  # - timedelta(days=1)
         super(Profile, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

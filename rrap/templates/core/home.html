@@ -19,35 +19,53 @@
           </div>
           <div class="parallax-layer" data-depth="-0.05"><img src="{% static 'images/landing/saas-2/hero/02.png' %}"
               style="animation: rotate-cw 100s linear infinite;" alt="Layer"></div>
-          {% comment %} <div class="parallax-layer zindex-2" data-depth="0.3"><img
+          <div class="parallax-layer zindex-2" data-depth="0.3"><img
               src="{% static 'images/landing/saas-2/hero/03.png' %}" alt="Layer"></div>
           <div class="parallax-layer zindex-2" data-depth="0.15"><img
               src="{% static 'images/landing/saas-2/hero/04.png' %}" alt="Layer"></div>
           <div class="parallax-layer zindex-2" data-depth="0.4"><img
-              src="{% static 'images/landing/saas-2/hero/05.png' %}" alt="Layer"></div> {% endcomment %}
+              src="{% static 'images/landing/saas-2/hero/05.png' %}" alt="Layer"></div>
         </div>
       </div>
       <div class="col-lg-5 order-lg-1 text-center text-lg-start me-xl-5"><span
           class="badge bg-faded-warning text-warning fs-sm">Leave No One Behind&nbsp; 🚀</span>
-        <h1 class="py-3 my-2 mb-xl-3">{{ self.hero_heading }}</h1>
+        {% if not request.user.is_authenticated %}
+        <h1 class="py-3 my-2 mb-xl-3">Explore data on {{ total_organisations }} LGBT and Sex Work
+          organisations across Uganda</h1>
         <div class="text-center text-lg-start mx-auto mx-lg-0 mb-0">
-          <p>{{ self.hero_desc }}</p>
+          <p>Welcome to Data Waffe, a safe and collaborative platform dedicated to protecting the data of key
+            populations in Uganda. We recognize that such data is sensitive, which is why we have taken steps to protect
+            it and ensure that it remains confidential.</p>
         </div>
         <div class="d-flex justify-content-center justify-content-lg-start pt-3 pt-xl-4">
           <div class="text-center">
-            {% if request.user.is_authenticated %}
-            <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="/map">Explore the impact</a>
-            {% else %}
             <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="{% url 'account_signup' %}">Get
               started</a>
-            {% endif %}
           </div>
         </div>
+        {% else %}
+        <h1 class="py-3 my-2 mb-xl-3">Empowering Key Populations in Uganda Through Data Collaboration and Data
+          Protection</h1>
+        <ul class="list-unstyled d-table text-start mx-auto mx-lg-0 mb-0">
+          <li class="d-flex pb-2 mb-1"><i class="ai-check-alt text-primary lead me-2"></i>Open data to aid inclusive
+            governance and improve access to social services</li>
+          <li class="d-flex pb-2 mb-1"><i class="ai-check-alt text-primary lead me-2"></i>Data visualization for faster
+            decision making</li>
+          <li class="d-flex pb-2 mb-1"><i class="ai-check-alt text-primary lead me-2"></i>Measure impact on key
+            populations wellbeing</li>
+        </ul>
+        <div class="d-flex justify-content-center justify-content-lg-start pt-3 pt-xl-4">
+          <div class="text-center">
+            <a class="btn btn-lg btn-primary rounded-pill w-100 w-sm-auto" href="/map">Explore the impact</a>
+          </div>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
 </section>
-<!-- Features-->
+
+{% if request.user.is_authenticated %}
 <section class="bg-secondary py-5">
   <div class="container mt-1 py-md-2 py-lg-4 py-xxl-5">
     <h2 class="h1 text-center pt-1 pt-sm-4 mb-1">A few important stats</h2>
@@ -489,6 +507,8 @@
 </section>
 {% endif %}
 
+{% endif %}
+
 {% endblock content %}
 
 {% block javascript %}
@@ -501,7 +521,11 @@
 
 {% block inline_javascript %}
 <script>
-  {% comment %} const keyPopPieCtx = document.getElementById('keyPopReachChart');
+  {
+    %
+    comment %
+  }
+  const keyPopPieCtx = document.getElementById('keyPopReachChart');
   const servicesPieCtx = document.getElementById('servicesPieChart');
   const violationsPieCtx = document.getElementById('violationsPieChart');
 
@@ -699,7 +723,10 @@
         }
       }
     }
-  }); {% endcomment %}
+  }); {
+    %
+    endcomment %
+  }
 
 </script>
 {% endblock inline_javascript %}

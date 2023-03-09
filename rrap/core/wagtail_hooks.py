@@ -26,7 +26,7 @@ class DWSummaryPanel(Component):
         pwuid_organisations = PWUIDSOrganisation.objects.all().count()
         publications = PublicationPage.objects.all().count()
         blogs = BlogPage.objects.all().count()
-        users = User.objects.exclude(is_staff=True).count()
+        users = User.objects.exclude(is_staff=True).exclude(is_superuser=True).count()
 
         context.update(
             {

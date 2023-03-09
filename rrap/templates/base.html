@@ -7,7 +7,8 @@
     <title>{% block title %}Data Waffe{% endblock title %}</title>
     <!-- SEO Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Data Waffe">
+    <meta name="description" content="Empowering Key Populations in Uganda Through Data Collaboration and Data
+    Protection">
     <meta name="author" content="Matchstick Studio">
     <!-- Viewport-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -140,7 +141,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     {% compress css %}
     <!-- Vendor & 3rd party lib styles-->
-    {% block stylesheet %}{% endblock %}
+    {% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'vendor/swiper/swiper-bundle.min.css' %}">
+    {% endblock %}
     <!-- Main Theme Styles + Bootstrap. Minify after changes and switch to .min.css-->
     <link href="{% static 'css/theme.css' %}" rel="stylesheet">
     {% endcompress %}
@@ -232,7 +235,7 @@
           </nav>
         </div>
       </header>
-      <div class="py-5 mt-4">
+      <div class="pt-5 mt-4">
         {% if messages %}
           {% for message in messages %}
           <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
@@ -261,11 +264,67 @@
       {% endblock content %}
       </div>
     </main>
-    <footer style="align-self: center;" class="footer py-4">
-      <div class="container text-center">
-        <ul class="nav fs-sm">
-          {% flat_menu 'footer' template="menus/footer_menu.html" max_levels=1 %}
-        </ul>
+    <footer class="footer bg-secondary py-5">
+      
+      <div class="container pt-1 pt-sm-2 pt-md-3 pt-lg-3 pt-xl-4">
+        <h6 class="text-center">Data Waffe is supported by:</h6>
+        <div class="swiper pt-2 pt-sm-4 swiper-initialized swiper-horizontal swiper-pointer-events swiper-backface-hidden" data-swiper-options="{
+          &quot;slidesPerView&quot;: 2,
+          &quot;spaceBetween&quot;: 24,
+          &quot;pagination&quot;: {
+            &quot;el&quot;: &quot;.swiper-pagination&quot;,
+            &quot;clickable&quot;: true
+          },
+          &quot;breakpoints&quot;: {
+            &quot;500&quot;: {
+              &quot;slidesPerView&quot;: 3
+            },
+            &quot;750&quot;: {
+              &quot;slidesPerView&quot;: 4
+            },
+            &quot;1000&quot;: {
+              &quot;slidesPerView&quot;: 6
+            },
+            &quot;1200&quot;: {
+              &quot;slidesPerView&quot;: 8
+            }
+          }
+        }">
+            <div class="swiper-wrapper pt-2" id="swiper-wrapper-fbaabbe92f9b7b34" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
+              <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 8" style="width: 130px; margin-right: 24px;">
+                <a class="align-items-center justify-content-center" href="/"><img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/partners/fc-light.svg' %}" width="129" alt="Logo"><img class="d-none d-dark-mode-block mx-auto" src="assets/img/landing/business-consulting/clients/04-light.svg" width="196" alt="Logo"></a>
+              </div>
+              <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 8" style="width: 196px; margin-right: 24px;">
+                <div class="border rounded-4"><img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/sample-logo.svg' %}" width="196" alt="Logo"><img class="d-none d-dark-mode-block mx-auto" src="assets/img/landing/business-consulting/clients/01-light.svg" width="196" alt="Logo"></div>
+              </div>
+              <div class="swiper-slide" role="group" aria-label="3 / 8" style="width: 196px; margin-right: 24px;">
+                <div class="border rounded-4"><img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/sample-logo.svg' %}" width="196" alt="Logo"><img class="d-none d-dark-mode-block mx-auto" src="assets/img/landing/business-consulting/clients/02-light.svg" width="196" alt="Logo"></div>
+              </div>
+              <div class="swiper-slide" role="group" aria-label="4 / 8" style="width: 196px; margin-right: 24px;">
+                <div class="border rounded-4"><img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/sample-logo.svg' %}" width="196" alt="Logo"><img class="d-none d-dark-mode-block mx-auto" src="assets/img/landing/business-consulting/clients/03-light.svg" width="196" alt="Logo"></div>
+              </div>
+              <div class="swiper-slide" role="group" aria-label="5 / 8" style="width: 196px; margin-right: 24px;">
+                <div class="border rounded-4"><img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/sample-logo.svg' %}" width="196" alt="Logo"><img class="d-none d-dark-mode-block mx-auto" src="assets/img/landing/business-consulting/clients/05-light.svg" width="196" alt="Logo"></div>
+              </div>
+              <div class="swiper-slide" role="group" aria-label="6 / 8" style="width: 196px; margin-right: 24px;">
+                <div class="border rounded-4"><img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/sample-logo.svg' %}" width="196" alt="Logo"><img class="d-none d-dark-mode-block mx-auto" src="assets/img/landing/business-consulting/clients/06-light.svg" width="196" alt="Logo"></div>
+              </div>
+              <div class="swiper-slide" role="group" aria-label="7 / 8" style="width: 196px; margin-right: 24px;">
+                <div class="border rounded-4"><img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/sample-logo.svg' %}" width="196" alt="Logo"><img class="d-none d-dark-mode-block mx-auto" src="assets/img/landing/business-consulting/clients/06-light.svg" width="196" alt="Logo"></div>
+              </div>
+              <div class="swiper-slide" role="group" aria-label="8 / 8" style="width: 155px; margin-right: 24px;">
+                <a class="align-items-center justify-content-center" href="/"><img class="d-block d-dark-mode-none mx-auto" src="{% static 'images/partners/pollicy-logo-full.svg' %}" width="155" alt="Logo"><img class="d-none d-dark-mode-block mx-auto" src="{% static 'images/partners/pollicy-logo-full.svg' %}" width="155" alt="Logo"></a>
+              </div>
+            </div>
+            <div class="swiper-pagination position-relative bottom-0 mt-2 pt-4 d-xl-none swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal swiper-pagination-lock"><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 1" aria-current="true"></span></div>
+          <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+        </div>
+
+        <div class="d-sm-flex align-items-center justify-content-center pt-4 mt-2 mt-sm-0">
+          <ul class="nav fs-sm">
+            {% flat_menu 'footer' template="menus/footer_menu.html" max_levels=1 %}
+          </ul>
+        </div>
       </div>
     </footer>
     <!-- Back to top button--><a class="btn-scroll-top" href="#top" data-scroll>
@@ -279,7 +338,9 @@
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
   
     {% django_htmx_script %}
-    {% block javascript %}{% endblock javascript %}
+    {% block javascript %}
+    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+    {% endblock javascript %}
     <!-- Main theme script-->
     <script src="{% static 'js/theme.min.js' %}"></script>
     {% endcompress %}

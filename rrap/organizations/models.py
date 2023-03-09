@@ -5,15 +5,14 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.conf import settings
-from django.shortcuts import redirect
+from django.shortcuts import redirect, HttpResponseRedirect
+from django.urls import reverse
 from django.db import models
 from django import forms
 from rrap.core.managers import ActiveManager
 from rrap.activities.constants import ActivityTypes
 from rrap.core.models import (
     Location,
-    KeyPopulation,
-    Service,
     PublicationType,
     LGBTQKeyPopulation,
     LGBTQService,
@@ -252,7 +251,7 @@ class OrganisationIndexPage(RoutablePageMixin, Page):
         if request.user.is_authenticated:
             return super().serve(request, view, args, kwargs)
         else:
-            raise PermissionDenied
+            return HttpResponseRedirect(reverse("account_login"))
 
 
 class OrganisationPage(Page):
@@ -510,7 +509,7 @@ class OrganisationPage(Page):
         if request.user.is_authenticated:
             return super().serve(request)
         else:
-            raise PermissionDenied
+            return HttpResponseRedirect(reverse("account_login"))
 
     def get_context(self, request):
         context = super(OrganisationPage, self).get_context(request)
