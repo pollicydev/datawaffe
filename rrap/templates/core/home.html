@@ -14,17 +14,17 @@
     <div class="row flex-lg-nowrap align-items-center pb-5 pt-2 pt-lg-4 pt-xl-0 mt-lg-4 mt-xl-0">
       <div class="col-lg-7 order-lg-2 ms-lg-4 mb-2 mb-lg-0">
         <div class="parallax order-lg-2 mx-auto" style="max-width: 740px;">
-          <div class="parallax-layer" data-depth="0.05"><img src="{% static 'images/landing/saas-2/hero/01.png' %}"
+          <div class="parallax-layer" data-depth="0.05"><img src="{% static 'images/landing/hero-01.png' %}" width="740"
               alt="Layer">
           </div>
-          <div class="parallax-layer" data-depth="-0.05"><img src="{% static 'images/landing/saas-2/hero/02.png' %}"
+          <div class="parallax-layer" data-depth="-0.05"><img src="{% static 'images/landing/animated-circle.png' %}"
               style="animation: rotate-cw 100s linear infinite;" alt="Layer"></div>
-          <div class="parallax-layer zindex-2" data-depth="0.3"><img
-              src="{% static 'images/landing/saas-2/hero/03.png' %}" alt="Layer"></div>
-          <div class="parallax-layer zindex-2" data-depth="0.15"><img
-              src="{% static 'images/landing/saas-2/hero/04.png' %}" alt="Layer"></div>
-          <div class="parallax-layer zindex-2" data-depth="0.4"><img
-              src="{% static 'images/landing/saas-2/hero/05.png' %}" alt="Layer"></div>
+          <div class="parallax-layer zindex-2" data-depth="0.3"><img src="{% static 'images/landing/lesbian.png' %}"
+              alt="Layer"></div>
+          <div class="parallax-layer zindex-2" data-depth="0.15"><img src="{% static 'images/landing/lgbt.png' %}"
+              alt="Layer"></div>
+          <div class="parallax-layer zindex-2" data-depth="0.4"><img src="{% static 'images/landing/gay.png' %}"
+              alt="Layer"></div>
         </div>
       </div>
       <div class="col-lg-5 order-lg-1 text-center text-lg-start me-xl-5"><span
@@ -108,9 +108,9 @@
           <div class="card-body overflow-hidden">
             <div class="d-sm-flex align-items-center">
               <a class="d-block order-sm-2 flex-shrink-0 mt-n4 mb-n2" href="#"><img class="d-dark-mode-none"
-                  src="{% static 'images/landing/saas-2/features/03-light.png' %}" width="308" alt="Image"><img
-                  class="d-none d-dark-mode-block" src="{% static 'images/landing/saas-2/features/03-dark.png' %}"
-                  width="308" alt="Image"></a>
+                  src="{% static 'images/landing/chart-light.png' %}" width="308" alt="Image"><img
+                  class="d-none d-dark-mode-block" src="{% static 'images/landing/chart-dark.png' %}" width="308"
+                  alt="Image"></a>
               <div class="order-sm-1 pe-sm-3 me-xl-4">
                 <h1 class="display-2 text-primary mb-0">{{ communities|length }}</h1>
                 <h3>Key populations</h3>
@@ -521,10 +521,6 @@
 
 {% block inline_javascript %}
 <script>
-  {
-    %
-    comment %
-  }
   const keyPopPieCtx = document.getElementById('keyPopReachChart');
   const servicesPieCtx = document.getElementById('servicesPieChart');
   const violationsPieCtx = document.getElementById('violationsPieChart');
@@ -723,10 +719,7 @@
         }
       }
     }
-  }); {
-    %
-    endcomment %
-  }
+  });
 
 </script>
 {% endblock inline_javascript %}
