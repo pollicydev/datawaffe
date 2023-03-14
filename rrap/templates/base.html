@@ -139,10 +139,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'vendor/swiper/swiper-bundle.min.css' %}">
     {% compress css %}
     <!-- Vendor & 3rd party lib styles-->
     {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'vendor/swiper/swiper-bundle.min.css' %}">
     {% endblock %}
     <!-- Main Theme Styles + Bootstrap. Minify after changes and switch to .min.css-->
     <link href="{% static 'css/theme.css' %}" rel="stylesheet">
@@ -336,10 +336,10 @@
     <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js' %}"></script>
     <script src="{% static 'js/htmx.min.js' %}" defer></script>
+    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
   
     {% django_htmx_script %}
     {% block javascript %}
-    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
     {% endblock javascript %}
     <!-- Main theme script-->
     <script src="{% static 'js/theme.min.js' %}"></script>
